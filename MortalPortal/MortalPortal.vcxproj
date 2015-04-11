@@ -79,11 +79,13 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Application.cpp" />
+    <ClCompile Include="D3DHandler.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="System.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
+    <ClInclude Include="D3DHandler.h" />
     <ClInclude Include="System.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
