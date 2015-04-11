@@ -102,13 +102,16 @@ System::~System()
 
 void System::Run()
 {
-	float deltaTime = 0.1f;
+	float dt = 1 / 60.0f;
+	float currentTime = GetTickCount() / 1000.0f;
+
 
 	MSG windowMessage;
 	ZeroMemory(&windowMessage, sizeof(windowMessage));
 
 	while (!done)
 	{
+		//Handle window events
 		if (PeekMessage(&windowMessage, NULL, 0, 0, PM_REMOVE))
 		{
 			TranslateMessage(&windowMessage);
@@ -118,11 +121,19 @@ void System::Run()
 		{
 			done = true;
 		}
-		else
+		//Update
+		float newTime = GetTickCount() / 1000.0f;
+		float frameTime = newTime - currentTime;
+		currentTime = newTime;
+
+		while (frameTime > 0.0f)
 		{
+			float deltaTime = min(frameTime, dt);
 			done = Update(deltaTime);
-			Render();
+			frameTime -= deltaTime;
 		}
+		//Render
+		Render();
 	}
 }
 
