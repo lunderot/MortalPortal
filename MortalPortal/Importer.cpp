@@ -1,7 +1,7 @@
 #include "Importer.h"
 #include <fstream>
 #include <iostream>
-// magnus is here ;)
+
 Importer::Importer()
 {
 	meshGeometry = nullptr;

@@ -1,6 +1,6 @@
-#ifndef IMPORTER_H
-#define IMPORTER_H
-#include "../../../Maya/MayaExport/CommonDeclaration.h"
+#pragma once
+
+#include "CommonDeclaration.h"
 #include <string>
 
 struct VertexPositionTexCoordNormalBinormalTangent
@@ -79,5 +79,3 @@ private:
 	Material* materials;
 	Light* lights;
 };
-
-#endif
