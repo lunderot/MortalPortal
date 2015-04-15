@@ -55,7 +55,7 @@
       <SDLCheck>true</SDLCheck>
     </ClCompile>
     <Link>
-      <SubSystem>Windows</SubSystem>
+      <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
   </ItemDefinitionGroup>
@@ -83,6 +83,7 @@
     <ClCompile Include="D3DHandler.cpp" />
     <ClCompile Include="Importer.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Shader.cpp" />
     <ClCompile Include="System.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -90,6 +91,7 @@
     <ClInclude Include="CommonDeclaration.h" />
     <ClInclude Include="D3DHandler.h" />
     <ClInclude Include="Importer.h" />
+    <ClInclude Include="Shader.h" />
     <ClInclude Include="System.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

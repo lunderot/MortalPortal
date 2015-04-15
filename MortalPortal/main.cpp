@@ -3,7 +3,7 @@
 
 #include "Application.h"
 
-int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLine, int nCmdShow)
+int main()
 {
 	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
 
@@ -15,7 +15,7 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 	}
 	catch (std::exception& e)
 	{
-		MessageBoxA(NULL, e.what(), "Exeption", MB_ICONERROR | MB_OK);
+		std::cout << e.what() << std::endl;
 	}
 	return 0;
 }
