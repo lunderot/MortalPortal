@@ -7,7 +7,7 @@ Application::Application(bool fullscreen, bool showCursor, int screenWidth, int 
 	float screenNear = 0.1f;
 	d3dHandler = new D3DHandler(screenWidth, screenHeight, hwnd, fullscreen, screenDepth, screenNear);
 
-	testShader = new Shader(d3dHandler->GetDevice());
+	testShader = new Shader(d3dHandler->GetDevice(), screenWidth, screenHeight);
 
 	/*D3D11_INPUT_ELEMENT_DESC inputDesc[] =
 	{

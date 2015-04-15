@@ -6,5 +6,5 @@ struct VS_OUT
 
 float4 main(VS_OUT input) : SV_Target
 {
-	return float4(input.texCoord, 1, 1);
+	return float4(input.texCoord, 0, 1);
 }

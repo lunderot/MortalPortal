@@ -34,7 +34,7 @@ protected:
 
 public:
 
-	Shader(ID3D11Device* device);
+	Shader(ID3D11Device* device, unsigned int screenWidth, unsigned int screenHeight);
 	virtual ~Shader();
 
 	void CreateMandatoryShaders(ID3D11Device* device, LPCWSTR vertexShaderFilename, LPCWSTR pixelShaderFilename, D3D11_INPUT_ELEMENT_DESC* inputDesc, unsigned int inputDescSize);
