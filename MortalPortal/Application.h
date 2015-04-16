@@ -1,8 +1,15 @@
 #pragma once
+#include <iostream>
+#include <DirectXMath.h>
+
 #include "System.h"
 #include "D3DHandler.h"
 #include "Shader.h"
 #include "Importer.h"
+#include "Input.h"
+#include "ControllerInput.h"
+
+
 
 class Application : public System
 {
@@ -10,6 +17,7 @@ private:
 	D3DHandler* d3dHandler;
 	Shader* testShader;
 	Importer testImporter;
+	Input* input;
 
 	ID3D11Buffer* testVertexBuffer;
 public:

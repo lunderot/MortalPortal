@@ -80,8 +80,10 @@
   <ItemGroup>
     <ClCompile Include="Application.cpp" />
     <ClCompile Include="CommonDeclaration.cpp" />
+    <ClCompile Include="ControllerInput.cpp" />
     <ClCompile Include="D3DHandler.cpp" />
     <ClCompile Include="Importer.cpp" />
+    <ClCompile Include="Input.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Shader.cpp" />
     <ClCompile Include="System.cpp" />
@@ -89,8 +91,10 @@
   <ItemGroup>
     <ClInclude Include="Application.h" />
     <ClInclude Include="CommonDeclaration.h" />
+    <ClInclude Include="ControllerInput.h" />
     <ClInclude Include="D3DHandler.h" />
     <ClInclude Include="Importer.h" />
+    <ClInclude Include="Input.h" />
     <ClInclude Include="Shader.h" />
     <ClInclude Include="System.h" />
   </ItemGroup>
