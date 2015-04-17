@@ -9,7 +9,18 @@ Application::Application(bool fullscreen, bool showCursor, int screenWidth, int 
 
 	testShader = new Shader(d3dHandler->GetDevice(), screenWidth, screenHeight);
 
-	input = new ControllerInput();
+	try
+	{
+		input = new ControllerInput();
+		std::cout << "Using controller input" << std::endl;
+	}
+	catch (std::exception& e)
+	{
+		std::cout << e.what() << std::endl;
+		std::cout << "Using keyboard input" << std::endl;
+		input = new KeyboardInput();
+	}
+	
 
 	/*D3D11_INPUT_ELEMENT_DESC inputDesc[] =
 	{
@@ -27,8 +38,6 @@ Application::Application(bool fullscreen, bool showCursor, int screenWidth, int 
 		{ "TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT, 0, 12, D3D11_INPUT_PER_VERTEX_DATA, 0 }
 	};
 	testShader->CreateMandatoryShaders(d3dHandler->GetDevice(), L"assets/shaders/vs.hlsl", L"assets/shaders/ps.hlsl", inputDesc, ARRAYSIZE(inputDesc));
-
-	testImporter.importFile("assets/test.bin");
 
 	struct tv
 	{
@@ -82,8 +91,6 @@ Application::~Application()
 
 bool Application::Update(float deltaTime)
 {
-	DirectX::XMFLOAT2 dir = input->GetDirection();
-	std::cout << dir.x << " " << dir.y << endl;
 	return false;
 }
 

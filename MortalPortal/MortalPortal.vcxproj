@@ -84,6 +84,7 @@
     <ClCompile Include="D3DHandler.cpp" />
     <ClCompile Include="Importer.cpp" />
     <ClCompile Include="Input.cpp" />
+    <ClCompile Include="KeyboardInput.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Shader.cpp" />
     <ClCompile Include="System.cpp" />
@@ -95,6 +96,7 @@
     <ClInclude Include="D3DHandler.h" />
     <ClInclude Include="Importer.h" />
     <ClInclude Include="Input.h" />
+    <ClInclude Include="KeyboardInput.h" />
     <ClInclude Include="Shader.h" />
     <ClInclude Include="System.h" />
   </ItemGroup>
