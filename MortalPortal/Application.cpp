@@ -87,6 +87,9 @@ Application::~Application()
 	delete d3dHandler;
 	delete testShader;
 	delete input;
+
+	if (testVertexBuffer)
+		testVertexBuffer->Release();
 }
 
 bool Application::Update(float deltaTime)
