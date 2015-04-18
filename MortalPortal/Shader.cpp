@@ -20,14 +20,14 @@ Shader::Shader(ID3D11Device* device, unsigned int screenWidth, unsigned int scre
 	D3D11_SUBRESOURCE_DATA data;
 
 	//Create per frame constant buffer
-	XMFLOAT3 camPos(0, 0, -2);
+	XMFLOAT3 camPos(0, 10, -20);
 	XMFLOAT3 lookAt(0, 0, 0);
 	XMFLOAT3 up(0, 1, 0);
 
 	XMMATRIX view = XMMatrixLookAtLH(XMLoadFloat3(&camPos), XMLoadFloat3(&lookAt), XMLoadFloat3(&up));
 	XMStoreFloat4x4(&constantBufferPerFrameData.viewMatrix, XMMatrixTranspose(view));
 
-	XMMATRIX projection = XMMatrixPerspectiveFovLH(XM_PI * 0.45f, (float)screenHeight / (float)screenWidth, 0.5f, 20.0f);
+	XMMATRIX projection = XMMatrixPerspectiveFovLH(XM_PI * 0.45f, (float)screenWidth / (float)screenHeight, 0.5f, 20.0f);
 	XMStoreFloat4x4(&constantBufferPerFrameData.projectionMatrix, XMMatrixTranspose(projection));
 
 	ZeroMemory(&bufferDesc, sizeof(bufferDesc));
