@@ -1,13 +1,15 @@
 #include "Application.h"
 
+using namespace DirectX;
+
 Application::Application(bool fullscreen, bool showCursor, int screenWidth, int screenHeight, LPCWSTR windowTitle)
 			: System(fullscreen, showCursor, screenWidth, screenHeight, windowTitle)
 {
-	float screenDepth = 1000.0f;
+	float screenFar = 1000.0f;
 	float screenNear = 0.1f;
-	d3dHandler = new D3DHandler(screenWidth, screenHeight, hwnd, fullscreen, screenDepth, screenNear);
+	d3dHandler = new D3DHandler(screenWidth, screenHeight, hwnd, fullscreen, screenFar, screenNear);
 
-	testShader = new Shader(d3dHandler->GetDevice(), screenWidth, screenHeight);
+	testShader = new Shader(d3dHandler->GetDevice(), screenWidth, screenHeight, screenNear, screenFar);
 
 	try
 	{
@@ -62,6 +64,14 @@ Application::~Application()
 
 bool Application::Update(float deltaTime)
 {
+	XMFLOAT2 controllerDir = input->GetDirection();
+
+	ConstantBufferPerModel data;
+	XMMATRIX model = XMMatrixTranslation(controllerDir.x*10, controllerDir.y*10, 0);
+	XMStoreFloat4x4(&data.worldMatrix, XMMatrixTranspose(model));
+
+	testShader->UpdateConstantBufferPerModel(d3dHandler->GetDeviceContext(), &data);
+
 	return false;
 }
 

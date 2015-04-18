@@ -2,7 +2,7 @@
 
 using namespace DirectX;
 
-Shader::Shader(ID3D11Device* device, unsigned int screenWidth, unsigned int screenHeight)
+Shader::Shader(ID3D11Device* device, unsigned int screenWidth, unsigned int screenHeight, float screenNear, float screenFar)
 {
 	vertexShader = nullptr;
 	hullShader = nullptr;
@@ -27,7 +27,7 @@ Shader::Shader(ID3D11Device* device, unsigned int screenWidth, unsigned int scre
 	XMMATRIX view = XMMatrixLookAtLH(XMLoadFloat3(&camPos), XMLoadFloat3(&lookAt), XMLoadFloat3(&up));
 	XMStoreFloat4x4(&constantBufferPerFrameData.viewMatrix, XMMatrixTranspose(view));
 
-	XMMATRIX projection = XMMatrixPerspectiveFovLH(XM_PI * 0.45f, (float)screenWidth / (float)screenHeight, 0.5f, 20.0f);
+	XMMATRIX projection = XMMatrixPerspectiveFovLH(XM_PI * 0.45f, (float)screenWidth / (float)screenHeight, screenNear, screenFar);
 	XMStoreFloat4x4(&constantBufferPerFrameData.projectionMatrix, XMMatrixTranspose(projection));
 
 	ZeroMemory(&bufferDesc, sizeof(bufferDesc));
@@ -148,4 +148,20 @@ void Shader::Use(ID3D11DeviceContext* deviceContext)
 
 	deviceContext->VSSetConstantBuffers(0, 1, &constantBufferPerFrame);
 	deviceContext->VSSetConstantBuffers(1, 1, &constantBufferPerModel);
+}
+
+void Shader::UpdateConstantBufferPerFrame(ID3D11DeviceContext* deviceContext, ConstantBufferPerFrame* buffer)
+{
+	D3D11_MAPPED_SUBRESOURCE mappedResource;
+	deviceContext->Map(constantBufferPerFrame, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
+	memcpy(mappedResource.pData, buffer, sizeof(ConstantBufferPerFrame));
+	deviceContext->Unmap(constantBufferPerFrame, 0);
+}
+
+void Shader::UpdateConstantBufferPerModel(ID3D11DeviceContext* deviceContext, ConstantBufferPerModel* buffer)
+{
+	D3D11_MAPPED_SUBRESOURCE mappedResource;
+	deviceContext->Map(constantBufferPerModel, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
+	memcpy(mappedResource.pData, buffer, sizeof(ConstantBufferPerFrame));
+	deviceContext->Unmap(constantBufferPerModel, 0);
 }

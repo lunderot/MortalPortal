@@ -34,10 +34,12 @@ protected:
 
 public:
 
-	Shader(ID3D11Device* device, unsigned int screenWidth, unsigned int screenHeight);
+	Shader(ID3D11Device* device, unsigned int screenWidth, unsigned int screenHeight, float screenNear, float screenFar);
 	virtual ~Shader();
 
 	void CreateMandatoryShaders(ID3D11Device* device, LPCWSTR vertexShaderFilename, LPCWSTR pixelShaderFilename, D3D11_INPUT_ELEMENT_DESC* inputDesc, unsigned int inputDescSize);
 	void Use(ID3D11DeviceContext* deviceContext);
+	void UpdateConstantBufferPerFrame(ID3D11DeviceContext* deviceContext, ConstantBufferPerFrame* buffer);
+	void UpdateConstantBufferPerModel(ID3D11DeviceContext* deviceContext, ConstantBufferPerModel* buffer);
 };
 
