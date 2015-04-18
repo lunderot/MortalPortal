@@ -13,6 +13,9 @@ struct VS_IN
 {
 	float3 position : POSITION;
 	float2 texCoord : TEXCOORD;
+	float3 normal : NORMAL;
+	float3 biNormal : BINORMAL;
+	float3 tangent : TANGENT;
 };
 
 struct VS_OUT
