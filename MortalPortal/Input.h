@@ -10,5 +10,6 @@ public:
 	virtual ~Input();
 
 	virtual DirectX::XMFLOAT2 GetDirection() = 0;
+	virtual bool GetButtonState() = 0;
 };
 

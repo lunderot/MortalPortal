@@ -42,3 +42,8 @@ DirectX::XMFLOAT2 KeyboardInput::GetDirection()
 
 	return returnValue;
 }
+
+bool KeyboardInput::GetButtonState()
+{
+	return GetAsyncKeyState(VK_SPACE);
+}

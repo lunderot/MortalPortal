@@ -63,3 +63,9 @@ XMFLOAT2 ControllerInput::GetDirection()
 
 	return returnValue;
 }
+
+bool ControllerInput::GetButtonState()
+{
+	XInputGetState(id, &state);
+	return state.Gamepad.wButtons & XINPUT_GAMEPAD_A;
+}

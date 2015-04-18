@@ -13,5 +13,6 @@ public:
 	~KeyboardInput();
 
 	DirectX::XMFLOAT2 GetDirection();
+	bool GetButtonState();
 };
 

@@ -67,7 +67,7 @@ bool Application::Update(float deltaTime)
 	XMFLOAT2 controllerDir = input->GetDirection();
 
 	ConstantBufferPerModel data;
-	XMMATRIX model = XMMatrixTranslation(controllerDir.x*10, controllerDir.y*10, 0);
+	XMMATRIX model = XMMatrixTranslation(controllerDir.x * 10, controllerDir.y * 10, input->GetButtonState()*10);
 	XMStoreFloat4x4(&data.worldMatrix, XMMatrixTranspose(model));
 
 	testShader->UpdateConstantBufferPerModel(d3dHandler->GetDeviceContext(), &data);

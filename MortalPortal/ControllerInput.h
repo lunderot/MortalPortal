@@ -19,5 +19,6 @@ public:
 	~ControllerInput();
 
 	DirectX::XMFLOAT2 GetDirection();
+	bool GetButtonState();
 };
 
