@@ -24,7 +24,6 @@ Application::Application(bool fullscreen, bool showCursor, int screenWidth, int 
 	}
 
 	testImporter.importFile("assets/test.bin");
-	
 
 	D3D11_INPUT_ELEMENT_DESC inputDesc[] =
 	{
@@ -37,19 +36,9 @@ Application::Application(bool fullscreen, bool showCursor, int screenWidth, int 
 
 	testShader->CreateMandatoryShaders(d3dHandler->GetDevice(), L"assets/shaders/vs.hlsl", L"assets/shaders/ps.hlsl", inputDesc, ARRAYSIZE(inputDesc));
 
-	D3D11_BUFFER_DESC bufferDesc;
-	memset(&bufferDesc, 0, sizeof(bufferDesc));
-	bufferDesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
-	bufferDesc.Usage = D3D11_USAGE_DEFAULT;
-	bufferDesc.ByteWidth = testImporter.getMeshVertexCount(0) * sizeof(VertexPositionTexCoordNormalBinormalTangent);
-
-	D3D11_SUBRESOURCE_DATA data;
-	data.pSysMem = testImporter.getMesh(0);
-	HRESULT hr = d3dHandler->GetDevice()->CreateBuffer(&bufferDesc, &data, &testVertexBuffer);
-	if (FAILED(hr))
-	{
-		throw std::runtime_error("Failed to create vertex buffer");
-	}
+	entityHandler = new EntityHandler();
+	entityHandler->Add(new Entity(d3dHandler->GetDevice(), &testImporter, 0, XMFLOAT2(0, 0), XMFLOAT2(1, 1)));
+	entityHandler->Add(new Entity(d3dHandler->GetDevice(), &testImporter, 0, XMFLOAT2(0, 0), XMFLOAT2(10, 20), XMFLOAT2(0, -30)));
 }
 
 Application::~Application()
@@ -57,6 +46,7 @@ Application::~Application()
 	delete d3dHandler;
 	delete testShader;
 	delete input;
+	delete entityHandler;
 
 	if (testVertexBuffer)
 		testVertexBuffer->Release();
@@ -64,13 +54,7 @@ Application::~Application()
 
 bool Application::Update(float deltaTime)
 {
-	XMFLOAT2 controllerDir = input->GetDirection();
-
-	ConstantBufferPerModel data;
-	XMMATRIX model = XMMatrixTranslation(controllerDir.x * 10, controllerDir.y * 10, input->GetButtonState()*10);
-	XMStoreFloat4x4(&data.worldMatrix, XMMatrixTranspose(model));
-
-	testShader->UpdateConstantBufferPerModel(d3dHandler->GetDeviceContext(), &data);
+	entityHandler->Update(deltaTime);
 
 	return false;
 }
@@ -80,14 +64,7 @@ void Application::Render()
 	d3dHandler->BeginScene(0.0f, 0.0f, 0.0f, 1.0f);
 	testShader->Use(d3dHandler->GetDeviceContext());
 
-	unsigned int vertexSize = sizeof(VertexPositionTexCoordNormalBinormalTangent);
-	unsigned int vertexCount = testImporter.getMeshVertexCount(0);
-	unsigned int offset = 0;
-
-	d3dHandler->GetDeviceContext()->IASetVertexBuffers(0, 1, &testVertexBuffer,  &vertexSize, &offset);
-	d3dHandler->GetDeviceContext()->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-
-	d3dHandler->GetDeviceContext()->Draw(vertexCount, 0);
+	entityHandler->Render(d3dHandler->GetDeviceContext(), testShader);
 
 	d3dHandler->EndScene();
 }

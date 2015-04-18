@@ -82,6 +82,8 @@
     <ClCompile Include="CommonDeclaration.cpp" />
     <ClCompile Include="ControllerInput.cpp" />
     <ClCompile Include="D3DHandler.cpp" />
+    <ClCompile Include="Entity.cpp" />
+    <ClCompile Include="EntityHandler.cpp" />
     <ClCompile Include="Importer.cpp" />
     <ClCompile Include="Input.cpp" />
     <ClCompile Include="KeyboardInput.cpp" />
@@ -94,6 +96,8 @@
     <ClInclude Include="CommonDeclaration.h" />
     <ClInclude Include="ControllerInput.h" />
     <ClInclude Include="D3DHandler.h" />
+    <ClInclude Include="Entity.h" />
+    <ClInclude Include="EntityHandler.h" />
     <ClInclude Include="Importer.h" />
     <ClInclude Include="Input.h" />
     <ClInclude Include="KeyboardInput.h" />
