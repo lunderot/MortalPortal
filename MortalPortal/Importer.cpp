@@ -412,14 +412,22 @@ bool Importer::constructVerticiesAndGeometry()
 		meshGeometry[i] = new VertexPositionTexCoordNormalBinormalTangent[meshHeaders[i].indice_count];
 		for (unsigned int j = 0; j < meshHeaders[i].indice_count; j++)
 		{
-			unsigned int& positionID = meshes[i].vertices[j].position;
-			unsigned int& uvID = meshes[i].vertices[j].uv;
-			unsigned int& normalID = meshes[i].vertices[j].normal;
-			memcpy(meshGeometry[i][j].position, meshes[i].position[positionID].data(), sizeof(double) * 3);
-			memcpy(meshGeometry[i][j].texCoord, meshes[i].uv[uvID].data(), sizeof(double) * 3);
-			memcpy(meshGeometry[i][j].normal, meshes[i].normal[normalID].data(), sizeof(double) * 3);
-			memcpy(meshGeometry[i][j].biNormal, meshes[i].bi_tangent[normalID].data(), sizeof(double) * 3);
-			memcpy(meshGeometry[i][j].tangent, meshes[i].tangent[normalID].data(), sizeof(double) * 3);
+			unsigned int positionID = meshes[i].vertices[j].position;
+			unsigned int uvID = meshes[i].vertices[j].uv;
+			unsigned int normalID = meshes[i].vertices[j].normal;
+			meshGeometry[i][j].position[0] = (float)meshes[i].position[positionID][0];
+			meshGeometry[i][j].position[1] = (float)meshes[i].position[positionID][1];
+			meshGeometry[i][j].position[2] = (float)meshes[i].position[positionID][2];
+			memcpy(meshGeometry[i][j].texCoord, meshes[i].uv[uvID].data(), sizeof(float) * 2);
+			meshGeometry[i][j].normal[0] = (float)meshes[i].normal[normalID][0];
+			meshGeometry[i][j].normal[1] = (float)meshes[i].normal[normalID][1];
+			meshGeometry[i][j].normal[2] = (float)meshes[i].normal[normalID][2];
+			meshGeometry[i][j].biNormal[0] = (float)meshes[i].bi_tangent[normalID][0];
+			meshGeometry[i][j].biNormal[1] = (float)meshes[i].bi_tangent[normalID][1];
+			meshGeometry[i][j].biNormal[2] = (float)meshes[i].bi_tangent[normalID][2];
+			meshGeometry[i][j].tangent[0] = (float)meshes[i].tangent[normalID][0];
+			meshGeometry[i][j].tangent[1] = (float)meshes[i].tangent[normalID][1];
+			meshGeometry[i][j].tangent[2] = (float)meshes[i].tangent[normalID][2];
 		}
 	}
 

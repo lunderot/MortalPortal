@@ -5,11 +5,11 @@
 
 struct VertexPositionTexCoordNormalBinormalTangent
 {
-	double position[3];
+	float position[3];
 	float texCoord[2];
-	double normal[3];
-	double biNormal[3];
-	double tangent[3];
+	float normal[3];
+	float biNormal[3];
+	float tangent[3];
 };
 
 struct Model
