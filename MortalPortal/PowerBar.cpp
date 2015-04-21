@@ -9,12 +9,12 @@ PowerBar::PowerBar(ID3D11Device* device)
 	posColor.color.x = 0.0f;
 	posColor.color.y = 0.0f;
 
-	max = -0.5f;
-	min = -0.7f;
+	maxMinValue.x = -0.5f;
+	maxMinValue.y = -0.7f;
 
 	D3D11_BUFFER_DESC bufferDesc;
 	ZeroMemory(&bufferDesc, sizeof(bufferDesc));
-	bufferDesc.BindFlags = D3D11_BIND_VERTEX_BUFFER | D3D11_BIND_SHADER_RESOURCE;
+	bufferDesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
 	bufferDesc.Usage = D3D11_USAGE_DYNAMIC;
 	bufferDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
 	bufferDesc.ByteWidth = sizeof(PosColor);
@@ -25,12 +25,15 @@ PowerBar::PowerBar(ID3D11Device* device)
 	HRESULT hr = device->CreateBuffer(&bufferDesc, &data, &vertexBuffer);
 	if (FAILED(hr))
 	{
-		throw std::runtime_error("Failed to create vertex buffer");
+		throw std::runtime_error("Failed to create vertex buffer in the PowerBar class.");
 	}
 
 	barSpeed = 0.00001f;
 }
-
+void PowerBar::SetBarSpeed(float speed)
+{
+	this->barSpeed = speed;
+}
 void PowerBar::SetPosition(DirectX::XMFLOAT2 point[4])
 {
 	this->posColor.pos[0] = point[0];
@@ -45,15 +48,25 @@ void PowerBar::SetColor(DirectX::XMFLOAT2 color)
 	this->posColor.color.y = color.y;
 }
 
+void PowerBar::SetMaxMinValue(DirectX::XMFLOAT2 value)
+{
+	this->maxMinValue.x = value.x;
+	this->maxMinValue.y = value.y;
+}
+
+const float PowerBar::GetBarSpeed()
+{
+	return barSpeed;
+}
+
 const DirectX::XMFLOAT2* PowerBar::GetPosition()
 {
 	return posColor.pos;
 }
 
-void PowerBar::SetMaxMinValue(DirectX::XMFLOAT2 value)
+const DirectX::XMFLOAT2 PowerBar::GetMaxMinValue()
 {
-	this->max = value.x;
-	this->min = value.y;
+	return maxMinValue;
 }
 
 
@@ -74,18 +87,18 @@ void PowerBar::Render(ID3D11DeviceContext* deviceContext, Shader* shader)
 	result = deviceContext->Map(vertexBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &resource);
 
 
-	if (posColor.pos[0].x > max)
+	if (posColor.pos[0].x > maxMinValue.x)
 	{
 		barSpeed = barSpeed * - 1;
 	} 
-	if (posColor.pos[0].x < min)
+	if (posColor.pos[0].x < maxMinValue.y)
 	{
 		barSpeed = barSpeed * -1;
 	}
 
 	posColor.pos[0].x += barSpeed;
 	posColor.pos[1].x += barSpeed;
-	//resource.pData = point;
+
 	memcpy(resource.pData, &posColor, sizeof(PosColor));
 	deviceContext->Unmap(vertexBuffer, 0);
 

@@ -15,8 +15,7 @@ protected:
 	ID3D11Buffer* vertexBuffer;
 	float barSpeed;
 
-	float max;
-	float min;
+	DirectX::XMFLOAT2 maxMinValue;
 
 	PosColor posColor;
 
@@ -24,13 +23,15 @@ public:
 
 	PowerBar(ID3D11Device* device);
 	~PowerBar();
+
+	void SetBarSpeed(float speed);
 	void SetPosition(DirectX::XMFLOAT2 point[4]);
 	void SetColor(DirectX::XMFLOAT2 color);
-
 	void SetMaxMinValue(DirectX::XMFLOAT2 value);
 
+	const float GetBarSpeed();
 	const DirectX::XMFLOAT2* GetPosition();
-
+	const DirectX::XMFLOAT2 GetMaxMinValue();
 	ID3D11Buffer* GetVertexBuffer();
 
 	void Render(ID3D11DeviceContext* deviceContext, Shader* shader);
