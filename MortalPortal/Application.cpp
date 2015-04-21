@@ -74,7 +74,7 @@ bool Application::Update(float deltaTime)
 	//mange
 	//player->PlayerColorState(player->colorState);
 	player->colorState = input->GetButtonState();
-	testShader->constantBufferPerStateData.colorState = player->colorState;
+	shader->constantBufferPerStateData.colorState = player->colorState;
 
 
 	entityHandler->Update(deltaTime);
