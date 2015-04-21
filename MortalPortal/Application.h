@@ -12,6 +12,8 @@
 #include "EntityHandler.h"
 #include "Player.h"
 #include "DefaultShader.h"
+#include "PowerBar.h"
+#include "PowerBarShader.h"
 
 
 class Application : public System
@@ -25,6 +27,9 @@ private:
 	EntityHandler* entityHandler;
 
 	Player* player;
+
+	PowerBar* powerBar;
+	PowerBarShader* powerBarShader;
 public:
 	Application(bool fullscreen, bool showCursor, int screenWidth, int screenHeight, LPCWSTR windowTitle);
 	~Application();

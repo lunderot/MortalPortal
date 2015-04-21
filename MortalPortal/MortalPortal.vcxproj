@@ -90,6 +90,8 @@
     <ClCompile Include="KeyboardInput.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Player.cpp" />
+    <ClCompile Include="PowerBar.cpp" />
+    <ClCompile Include="PowerBarShader.cpp" />
     <ClCompile Include="Shader.cpp" />
     <ClCompile Include="System.cpp" />
   </ItemGroup>
@@ -105,6 +107,8 @@
     <ClInclude Include="Input.h" />
     <ClInclude Include="KeyboardInput.h" />
     <ClInclude Include="Player.h" />
+    <ClInclude Include="PowerBar.h" />
+    <ClInclude Include="PowerBarShader.h" />
     <ClInclude Include="Shader.h" />
     <ClInclude Include="System.h" />
   </ItemGroup>

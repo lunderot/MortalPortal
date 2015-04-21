@@ -12,7 +12,7 @@ Application::Application(bool fullscreen, bool showCursor, int screenWidth, int 
 
 	//Create shader
 	shader = new DefaultShader(d3dHandler->GetDevice(), L"assets/shaders/vs.hlsl", L"assets/shaders/ps.hlsl", screenWidth, screenHeight, screenNear, screenFar);
-
+	powerBarShader = new PowerBarShader(d3dHandler->GetDevice(), L"assets/shaders/powerBarVS.hlsl", L"assets/shaders/powerBarPS.hlsl", screenWidth, screenHeight, screenNear, screenFar);
 	//Setup input
 	try
 	{
@@ -35,6 +35,8 @@ Application::Application(bool fullscreen, bool showCursor, int screenWidth, int 
 	//Create player and add it to entity handler
 	player = new Player(d3dHandler->GetDevice(), &testImporter, 0, XMFLOAT2(0, 0), XMFLOAT2(1, 1));
 	entityHandler->Add(player);
+
+	powerBar = new PowerBar(d3dHandler->GetDevice());
 }
 
 Application::~Application()
@@ -43,6 +45,7 @@ Application::~Application()
 	delete shader;
 	delete input;
 	delete entityHandler;
+	delete powerBarShader;
 }
 
 bool Application::Update(float deltaTime)
@@ -63,6 +66,9 @@ void Application::Render()
 	shader->Use(d3dHandler->GetDeviceContext());
 
 	entityHandler->Render(d3dHandler->GetDeviceContext(), shader);
+
+	powerBarShader->Use(d3dHandler->GetDeviceContext());
+	powerBar->Render(d3dHandler->GetDeviceContext(), powerBarShader);
 
 	d3dHandler->EndScene();
 }
