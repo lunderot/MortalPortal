@@ -66,9 +66,16 @@ Application::~Application()
 bool Application::Update(float deltaTime)
 {
 	XMFLOAT2 dir = input->GetDirection();
+
 	dir.x *= 10;
 	dir.y *= 10;
 	player->SetAcceleration(dir);
+
+	//mange
+	//player->PlayerColorState(player->colorState);
+	player->colorState = input->GetButtonState();
+	testShader->constantBufferPerStateData.colorState = player->colorState;
+
 
 	entityHandler->Update(deltaTime);
 

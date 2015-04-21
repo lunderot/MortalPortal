@@ -14,7 +14,7 @@ Entity::Entity(ID3D11Device* device,
 	this->velocity = velocity;
 	this->acceleration = acceleration;
 
-	
+
 
 	D3D11_BUFFER_DESC bufferDesc;
 	ZeroMemory(&bufferDesc, sizeof(bufferDesc));
@@ -90,3 +90,6 @@ unsigned int Entity::GetVertexCount() const
 {
 	return vertexCount;
 }
+
+
+
