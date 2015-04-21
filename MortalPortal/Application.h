@@ -22,8 +22,6 @@ private:
 	Importer testImporter;
 	Input* input;
 
-	ID3D11Buffer* testVertexBuffer;
-
 	EntityHandler* entityHandler;
 
 	Player* player;

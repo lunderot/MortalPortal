@@ -43,9 +43,6 @@ Application::~Application()
 	delete shader;
 	delete input;
 	delete entityHandler;
-
-	if (testVertexBuffer)
-		testVertexBuffer->Release();
 }
 
 bool Application::Update(float deltaTime)
