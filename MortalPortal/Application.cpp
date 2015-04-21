@@ -5,12 +5,15 @@ using namespace DirectX;
 Application::Application(bool fullscreen, bool showCursor, int screenWidth, int screenHeight, LPCWSTR windowTitle)
 			: System(fullscreen, showCursor, screenWidth, screenHeight, windowTitle)
 {
+	//Setup DirectX
 	float screenFar = 1000.0f;
 	float screenNear = 0.1f;
 	d3dHandler = new D3DHandler(screenWidth, screenHeight, hwnd, fullscreen, screenFar, screenNear);
 
+	//Create shader
 	shader = new DefaultShader(d3dHandler->GetDevice(), L"assets/shaders/vs.hlsl", L"assets/shaders/ps.hlsl", screenWidth, screenHeight, screenNear, screenFar);
 
+	//Setup input
 	try
 	{
 		input = new ControllerInput();
@@ -23,9 +26,13 @@ Application::Application(bool fullscreen, bool showCursor, int screenWidth, int 
 		input = new KeyboardInput();
 	}
 
+	//Import asset
 	testImporter.importFile("assets/test.bin");
 
+	//Setup entity handler
 	entityHandler = new EntityHandler();
+
+	//Create player and add it to entity handler
 	player = new Player(d3dHandler->GetDevice(), &testImporter, 0, XMFLOAT2(0, 0), XMFLOAT2(1, 1));
 	entityHandler->Add(player);
 }
