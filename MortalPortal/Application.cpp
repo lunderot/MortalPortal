@@ -9,7 +9,7 @@ Application::Application(bool fullscreen, bool showCursor, int screenWidth, int 
 	float screenNear = 0.1f;
 	d3dHandler = new D3DHandler(screenWidth, screenHeight, hwnd, fullscreen, screenFar, screenNear);
 
-	testShader = new Shader(d3dHandler->GetDevice(), screenWidth, screenHeight, screenNear, screenFar);
+	shader = new DefaultShader(d3dHandler->GetDevice(), L"assets/shaders/vs.hlsl", L"assets/shaders/ps.hlsl", screenWidth, screenHeight, screenNear, screenFar);
 
 	try
 	{
@@ -25,17 +25,6 @@ Application::Application(bool fullscreen, bool showCursor, int screenWidth, int 
 
 	testImporter.importFile("assets/test.bin");
 
-	D3D11_INPUT_ELEMENT_DESC inputDesc[] =
-	{
-		{ "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0 },
-		{ "TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT, 0, 12, D3D11_INPUT_PER_VERTEX_DATA, 0 },
-		{ "NORMAL", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 20, D3D11_INPUT_PER_VERTEX_DATA, 0 },
-		{ "BINORMAL", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 32, D3D11_INPUT_PER_VERTEX_DATA, 0 },
-		{ "TANGENT", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 44, D3D11_INPUT_PER_VERTEX_DATA, 0 }
-	};
-
-	testShader->CreateMandatoryShaders(d3dHandler->GetDevice(), L"assets/shaders/vs.hlsl", L"assets/shaders/ps.hlsl", inputDesc, ARRAYSIZE(inputDesc));
-
 	entityHandler = new EntityHandler();
 	player = new Player(d3dHandler->GetDevice(), &testImporter, 0, XMFLOAT2(0, 0), XMFLOAT2(1, 1));
 	entityHandler->Add(player);
@@ -44,7 +33,7 @@ Application::Application(bool fullscreen, bool showCursor, int screenWidth, int 
 Application::~Application()
 {
 	delete d3dHandler;
-	delete testShader;
+	delete shader;
 	delete input;
 	delete entityHandler;
 
@@ -67,9 +56,9 @@ bool Application::Update(float deltaTime)
 void Application::Render()
 {
 	d3dHandler->BeginScene(0.0f, 0.0f, 0.0f, 1.0f);
-	testShader->Use(d3dHandler->GetDeviceContext());
+	shader->Use(d3dHandler->GetDeviceContext());
 
-	entityHandler->Render(d3dHandler->GetDeviceContext(), testShader);
+	entityHandler->Render(d3dHandler->GetDeviceContext(), shader);
 
 	d3dHandler->EndScene();
 }

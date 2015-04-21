@@ -11,13 +11,14 @@
 #include "KeyboardInput.h"
 #include "EntityHandler.h"
 #include "Player.h"
+#include "DefaultShader.h"
 
 
 class Application : public System
 {
 private:
 	D3DHandler* d3dHandler;
-	Shader* testShader;
+	DefaultShader* shader;
 	Importer testImporter;
 	Input* input;
 
