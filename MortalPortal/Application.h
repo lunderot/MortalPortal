@@ -10,6 +10,7 @@
 #include "ControllerInput.h"
 #include "KeyboardInput.h"
 #include "EntityHandler.h"
+#include "Player.h"
 
 
 class Application : public System
@@ -23,6 +24,8 @@ private:
 	ID3D11Buffer* testVertexBuffer;
 
 	EntityHandler* entityHandler;
+
+	Player* player;
 public:
 	Application(bool fullscreen, bool showCursor, int screenWidth, int screenHeight, LPCWSTR windowTitle);
 	~Application();

@@ -37,8 +37,8 @@ Application::Application(bool fullscreen, bool showCursor, int screenWidth, int 
 	testShader->CreateMandatoryShaders(d3dHandler->GetDevice(), L"assets/shaders/vs.hlsl", L"assets/shaders/ps.hlsl", inputDesc, ARRAYSIZE(inputDesc));
 
 	entityHandler = new EntityHandler();
-	entityHandler->Add(new Entity(d3dHandler->GetDevice(), &testImporter, 0, XMFLOAT2(0, 0), XMFLOAT2(1, 1)));
-	entityHandler->Add(new Entity(d3dHandler->GetDevice(), &testImporter, 0, XMFLOAT2(0, 0), XMFLOAT2(10, 20), XMFLOAT2(0, -30)));
+	player = new Player(d3dHandler->GetDevice(), &testImporter, 0, XMFLOAT2(0, 0), XMFLOAT2(1, 1));
+	entityHandler->Add(player);
 }
 
 Application::~Application()
@@ -54,6 +54,11 @@ Application::~Application()
 
 bool Application::Update(float deltaTime)
 {
+	XMFLOAT2 dir = input->GetDirection();
+	dir.x *= 10;
+	dir.y *= 10;
+	player->SetAcceleration(dir);
+
 	entityHandler->Update(deltaTime);
 
 	return false;
