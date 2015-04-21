@@ -1,16 +1,23 @@
-cbuffer ConstantBufferPerFrame : register(cb0)
+
+struct VS_IN
 {
-	matrix viewMatrix;
-	matrix projectionMatrix;
+	float2 position : POSITION;
+	float2 texCoord : TEXCOORD;
 };
 
-cbuffer ConstantBufferPerModel : register(cb1)
+struct VS_OUT
 {
-	matrix worldMatrix;
+	float4 position : SV_POSITION;
+	float2 texCoord : TEXCOORD;
 };
 
-float4 main(float2 input : POSITION) : SV_POSITION
+VS_OUT main(VS_IN input)
 {
+	VS_OUT output = (VS_OUT)0;
 
-	return float4(input, 0.0f, 1.0f);
+	output.position = float4(input.position, 0.0f, 1.0f);
+
+	output.texCoord = input.texCoord;
+
+	return output;
 }

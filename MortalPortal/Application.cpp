@@ -36,7 +36,20 @@ Application::Application(bool fullscreen, bool showCursor, int screenWidth, int 
 	player = new Player(d3dHandler->GetDevice(), &testImporter, 0, XMFLOAT2(0, 0), XMFLOAT2(1, 1));
 	entityHandler->Add(player);
 
-	powerBar = new PowerBar(d3dHandler->GetDevice());
+	// Create Power Bars
+	player1Bar = new PowerBar(d3dHandler->GetDevice());
+	player2Bar = new PowerBar(d3dHandler->GetDevice());
+
+	player2Bar->SetColor(DirectX::XMFLOAT2(1.0f, 1.0f));
+	DirectX::XMFLOAT2 player2BarPos[4];
+
+	player2BarPos[0] = DirectX::XMFLOAT2(0.5f, 1.0f);
+	player2BarPos[1] = DirectX::XMFLOAT2(0.5f, 0.9f);
+	player2BarPos[2] = DirectX::XMFLOAT2(0.5f, 1.0f);
+	player2BarPos[3] = DirectX::XMFLOAT2(0.5f, 0.9f);
+	player2Bar->SetPosition(player2BarPos);
+	player2Bar->SetMaxMinValue(DirectX::XMFLOAT2(0.7f, 0.5f));
+
 }
 
 Application::~Application()
@@ -46,6 +59,8 @@ Application::~Application()
 	delete input;
 	delete entityHandler;
 	delete powerBarShader;
+	delete player1Bar;
+	delete player2Bar;
 }
 
 bool Application::Update(float deltaTime)
@@ -68,7 +83,8 @@ void Application::Render()
 	entityHandler->Render(d3dHandler->GetDeviceContext(), shader);
 
 	powerBarShader->Use(d3dHandler->GetDeviceContext());
-	powerBar->Render(d3dHandler->GetDeviceContext(), powerBarShader);
+	player1Bar->Render(d3dHandler->GetDeviceContext(), powerBarShader);
+	player2Bar->Render(d3dHandler->GetDeviceContext(), powerBarShader);
 
 	d3dHandler->EndScene();
 }

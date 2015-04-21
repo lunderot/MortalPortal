@@ -28,7 +28,8 @@ private:
 
 	Player* player;
 
-	PowerBar* powerBar;
+	PowerBar* player1Bar;
+	PowerBar* player2Bar;
 	PowerBarShader* powerBarShader;
 public:
 	Application(bool fullscreen, bool showCursor, int screenWidth, int screenHeight, LPCWSTR windowTitle);
