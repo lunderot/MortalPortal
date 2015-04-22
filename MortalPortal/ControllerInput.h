@@ -14,6 +14,9 @@ class ControllerInput :
 private:
 	unsigned int id;
 	XINPUT_STATE state;
+	
+	int returnColorState = 1;
+	bool keyPressed = false;
 public:
 	ControllerInput();
 	~ControllerInput();

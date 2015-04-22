@@ -1,5 +1,6 @@
 #include "ControllerInput.h"
 
+#include <iostream>
 using namespace DirectX;
 
 ControllerInput::ControllerInput()
@@ -67,5 +68,20 @@ XMFLOAT2 ControllerInput::GetDirection()
 unsigned int ControllerInput::GetButtonState()
 {
 	XInputGetState(id, &state);
-	return state.Gamepad.wButtons & XINPUT_GAMEPAD_A;
+
+	short test = state.Gamepad.wButtons & XINPUT_GAMEPAD_A;
+	
+	if (keyPressed == false && test > 0)
+	{
+		returnColorState *= -1;
+		keyPressed = true;
+	}
+	else if (test == 0)
+	{
+		keyPressed = false;
+	}
+	
+	std::cout << test << std::endl;
+	return returnColorState;
+	/*return state.Gamepad.wButtons & XINPUT_GAMEPAD_A;*/
 }

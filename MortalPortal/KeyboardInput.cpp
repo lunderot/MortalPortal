@@ -14,7 +14,7 @@ KeyboardInput::~KeyboardInput()
 DirectX::XMFLOAT2 KeyboardInput::GetDirection()
 {
 	DirectX::XMFLOAT2 returnValue(0.0f, 0.0f);
-
+	
 	if (GetAsyncKeyState('W'))
 	{
 		returnValue.y += 1.0f;
@@ -61,7 +61,7 @@ unsigned int KeyboardInput::GetButtonState()
 	{
 		keyPressed = false;
 	}
-	
+	std::cout << test << std::endl;
 	return returnColorState;
 	//return GetAsyncKeyState(VK_SPACE);
 }
