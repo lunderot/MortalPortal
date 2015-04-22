@@ -8,13 +8,20 @@ class Entity
 {
 	friend class EntityHandler;
 protected:
- 	ID3D11Buffer* vertexBuffer;
+	Entity(); // ---
+
+	ID3D11Buffer* vertexBuffer;
 	unsigned int vertexCount;
 
 	DirectX::XMFLOAT2 position;
 	DirectX::XMFLOAT2 velocity;
 	DirectX::XMFLOAT2 acceleration;
+
 public:
+	Entity(ID3D11Device* device,
+		DirectX::XMFLOAT2 position = DirectX::XMFLOAT2(0, 0),
+		DirectX::XMFLOAT2 velocity = DirectX::XMFLOAT2(0, 0),
+		DirectX::XMFLOAT2 acceleration = DirectX::XMFLOAT2(0, 0));
 	Entity(ID3D11Device* device,
 		Importer* importer,
 		unsigned int meshID,
@@ -29,6 +36,7 @@ public:
 	void SetPosition(DirectX::XMFLOAT2 position);
 	void SetVelocity(DirectX::XMFLOAT2 velocity);
 	void SetAcceleration(DirectX::XMFLOAT2 acceleration);
+
 
 	DirectX::XMFLOAT2 GetPosition() const;
 	DirectX::XMFLOAT2 GetVelocity() const;

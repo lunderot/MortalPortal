@@ -2,6 +2,7 @@
 
 using namespace DirectX;
 
+
 Shader::Shader(ID3D11Device* device, unsigned int screenWidth, unsigned int screenHeight, float screenNear, float screenFar)
 {
 	vertexShader = nullptr;
@@ -14,6 +15,10 @@ Shader::Shader(ID3D11Device* device, unsigned int screenWidth, unsigned int scre
 
 	constantBufferPerFrame = nullptr;
 	constantBufferPerModel = nullptr;
+	
+	//mange
+	constantBufferPerState = nullptr;
+	//constantBufferPerStateData.colorState = 2;
 
 	HRESULT hr;
 	D3D11_BUFFER_DESC bufferDesc;
@@ -62,6 +67,18 @@ Shader::Shader(ID3D11Device* device, unsigned int screenWidth, unsigned int scre
 	{
 		throw std::runtime_error("Failed to create per model constant buffer");
 	}
+
+
+	//mange
+	D3D11_BUFFER_DESC colorStateBufferDesc;
+	ZeroMemory(&colorStateBufferDesc, sizeof(D3D11_BUFFER_DESC));
+	colorStateBufferDesc.Usage = D3D11_USAGE_DEFAULT;
+	colorStateBufferDesc.ByteWidth = sizeof(constantBufferPerStateData);
+	colorStateBufferDesc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
+	colorStateBufferDesc.CPUAccessFlags = 0;
+	colorStateBufferDesc.MiscFlags = 0;
+	hr = device->CreateBuffer(&colorStateBufferDesc, NULL, &constantBufferPerState);
+
 }
 
 Shader::~Shader()
@@ -148,6 +165,10 @@ void Shader::Use(ID3D11DeviceContext* deviceContext)
 
 	deviceContext->VSSetConstantBuffers(0, 1, &constantBufferPerFrame);
 	deviceContext->VSSetConstantBuffers(1, 1, &constantBufferPerModel);
+
+	//mange
+	deviceContext->UpdateSubresource(constantBufferPerState, 0, NULL, &constantBufferPerStateData, 0, 0);
+	deviceContext->PSSetConstantBuffers(0, 1, &constantBufferPerState);
 }
 
 void Shader::UpdateConstantBufferPerFrame(ID3D11DeviceContext* deviceContext, ConstantBufferPerFrame* buffer)

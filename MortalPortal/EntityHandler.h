@@ -13,7 +13,7 @@ public:
 	~EntityHandler();
 
 	void Update(float deltaTime);
-	void Render(ID3D11DeviceContext* deviceContext, Shader* shader);
+	virtual void Render(ID3D11DeviceContext* deviceContext, Shader* shader);
 
 	void Add(Entity* entity);
 };

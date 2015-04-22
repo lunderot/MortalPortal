@@ -5,12 +5,22 @@ using namespace DirectX;
 Application::Application(bool fullscreen, bool showCursor, int screenWidth, int screenHeight, LPCWSTR windowTitle)
 			: System(fullscreen, showCursor, screenWidth, screenHeight, windowTitle)
 {
+	//Setup DirectX
 	float screenFar = 1000.0f;
 	float screenNear = 0.1f;
 	d3dHandler = new D3DHandler(screenWidth, screenHeight, hwnd, fullscreen, screenFar, screenNear);
 
-	testShader = new Shader(d3dHandler->GetDevice(), screenWidth, screenHeight, screenNear, screenFar);
+	//Create shaders
+	shader = new DefaultShader(d3dHandler->GetDevice(), L"assets/shaders/vs.hlsl", L"assets/shaders/ps.hlsl", screenWidth, screenHeight, screenNear, screenFar);
+	powerBarShader = new PowerBarShader(d3dHandler->GetDevice(), L"assets/shaders/powerBarVS.hlsl", L"assets/shaders/powerBarPS.hlsl", screenWidth, screenHeight, screenNear, screenFar);
 
+	// Ayu
+	backgShader = new BackgroundShader(d3dHandler->GetDevice(), L"assets/shaders/BackgroundVertexShader.hlsl", L"assets/shaders/BackgroundPixelShader.hlsl", screenWidth, screenHeight, screenNear, screenFar);
+
+	particleShader = new ParticleShader(L"assets/shaders/particleCS.hlsl", L"assets/shaders/particleGS.hlsl", d3dHandler->GetDevice(), L"assets/shaders/powerBarVS.hlsl", L"assets/shaders/powerBarPS.hlsl", screenWidth, screenHeight, screenNear, screenFar);
+	
+
+	//Setup input
 	try
 	{
 		input = new ControllerInput();
@@ -23,37 +33,69 @@ Application::Application(bool fullscreen, bool showCursor, int screenWidth, int 
 		input = new KeyboardInput();
 	}
 
+	//Import asset
 	testImporter.importFile("assets/test.bin");
 
-	D3D11_INPUT_ELEMENT_DESC inputDesc[] =
-	{
-		{ "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0 },
-		{ "TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT, 0, 12, D3D11_INPUT_PER_VERTEX_DATA, 0 },
-		{ "NORMAL", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 20, D3D11_INPUT_PER_VERTEX_DATA, 0 },
-		{ "BINORMAL", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 32, D3D11_INPUT_PER_VERTEX_DATA, 0 },
-		{ "TANGENT", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 44, D3D11_INPUT_PER_VERTEX_DATA, 0 }
-	};
-
-	testShader->CreateMandatoryShaders(d3dHandler->GetDevice(), L"assets/shaders/vs.hlsl", L"assets/shaders/ps.hlsl", inputDesc, ARRAYSIZE(inputDesc));
-
+	//Setup entity handler
 	entityHandler = new EntityHandler();
-	entityHandler->Add(new Entity(d3dHandler->GetDevice(), &testImporter, 0, XMFLOAT2(0, 0), XMFLOAT2(1, 1)));
-	entityHandler->Add(new Entity(d3dHandler->GetDevice(), &testImporter, 0, XMFLOAT2(0, 0), XMFLOAT2(10, 20), XMFLOAT2(0, -30)));
+
+	//Create player and add it to entity handler
+	player = new Player(d3dHandler->GetDevice(), &testImporter, 0, XMFLOAT2(0, 0), XMFLOAT2(1, 1));
+	entityHandler->Add(player);
+
+	// Create Power Bars
+	player1Bar = new PowerBar(d3dHandler->GetDevice());
+	player2Bar = new PowerBar(d3dHandler->GetDevice());
+
+	player2Bar->SetColor(DirectX::XMFLOAT2(1.0f, 1.0f));
+	DirectX::XMFLOAT2 player2BarPos[4];
+
+	player2BarPos[0] = DirectX::XMFLOAT2(0.5f, 1.0f);
+	player2BarPos[1] = DirectX::XMFLOAT2(0.5f, 0.9f);
+	player2BarPos[2] = DirectX::XMFLOAT2(0.5f, 1.0f);
+	player2BarPos[3] = DirectX::XMFLOAT2(0.5f, 0.9f);
+	player2Bar->SetPosition(player2BarPos);
+	player2Bar->SetMaxMinValue(DirectX::XMFLOAT2(0.7f, 0.5f));
+
+	// Particles testing area
+	particle = new Particle(10, d3dHandler->GetDevice());
+	particle->SetNrOfParticles(10);
+	entityHandler->Add(particle);
+
+	// Create Background
+	background = new Background(d3dHandler->GetDevice());
+
 }
 
 Application::~Application()
 {
 	delete d3dHandler;
-	delete testShader;
+	delete shader;
 	delete input;
 	delete entityHandler;
-
-	if (testVertexBuffer)
-		testVertexBuffer->Release();
+	delete powerBarShader;
+	delete player1Bar;
+	delete player2Bar;
+	//delete particle;
+	delete particleShader;
 }
 
 bool Application::Update(float deltaTime)
 {
+	XMFLOAT2 dir = input->GetDirection();
+
+	dir.x *= 10;
+	dir.y *= 10;
+
+
+	player->SetAcceleration(dir);
+	//mange
+	//player->PlayerColorState(player->colorState);
+	player->colorState = input->GetButtonState();
+	shader->constantBufferPerStateData.colorState = player->colorState;
+
+	player1Bar->Update(deltaTime);
+	player2Bar->Update(deltaTime);
 	entityHandler->Update(deltaTime);
 
 	return false;
@@ -62,9 +104,24 @@ bool Application::Update(float deltaTime)
 void Application::Render()
 {
 	d3dHandler->BeginScene(0.0f, 0.0f, 0.0f, 1.0f);
-	testShader->Use(d3dHandler->GetDeviceContext());
+	shader->Use(d3dHandler->GetDeviceContext());
 
-	entityHandler->Render(d3dHandler->GetDeviceContext(), testShader);
+	entityHandler->Render(d3dHandler->GetDeviceContext(), shader);
+
+	powerBarShader->Use(d3dHandler->GetDeviceContext());
+	player1Bar->Render(d3dHandler->GetDeviceContext(), powerBarShader);
+	player2Bar->Render(d3dHandler->GetDeviceContext(), powerBarShader);
+
+
+	// Ayu
+	//Avkommentera ifall bakgrunden ska synas (z ej klar)
+	//backgShader->Use(d3dHandler->GetDeviceContext());
+	//background->Render(d3dHandler->GetDeviceContext(), backgShader);
+
+
+
+	particleShader->Use(d3dHandler->GetDeviceContext());
+	particle->Render(d3dHandler->GetDeviceContext(), particleShader, particleShader->GetComputeShader());
 
 	d3dHandler->EndScene();
 }

@@ -13,6 +13,9 @@ public:
 	~KeyboardInput();
 
 	DirectX::XMFLOAT2 GetDirection();
-	bool GetButtonState();
+	unsigned int GetButtonState();
+private:
+	int returnColorState = 1;
+	bool keyPressed = false;
 };
 

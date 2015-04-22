@@ -2,6 +2,25 @@
 
 using namespace DirectX;
 
+//---
+Entity::Entity()
+{
+
+}
+
+Entity::Entity(ID3D11Device* device,
+	DirectX::XMFLOAT2 position,
+	DirectX::XMFLOAT2 velocity,
+	DirectX::XMFLOAT2 acceleration)
+{
+	vertexBuffer = nullptr;
+	vertexCount = 0;
+
+	this->position = position;
+	this->velocity = velocity;
+	this->acceleration = acceleration;
+
+}
 Entity::Entity(ID3D11Device* device,
 	Importer* importer,
 	unsigned int meshID,
@@ -14,7 +33,7 @@ Entity::Entity(ID3D11Device* device,
 	this->velocity = velocity;
 	this->acceleration = acceleration;
 
-	
+
 
 	D3D11_BUFFER_DESC bufferDesc;
 	ZeroMemory(&bufferDesc, sizeof(bufferDesc));
@@ -90,3 +109,6 @@ unsigned int Entity::GetVertexCount() const
 {
 	return vertexCount;
 }
+
+
+

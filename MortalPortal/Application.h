@@ -10,19 +10,45 @@
 #include "ControllerInput.h"
 #include "KeyboardInput.h"
 #include "EntityHandler.h"
+#include "Player.h"
+#include "DefaultShader.h"
+#include "PowerBar.h"
+#include "PowerBarShader.h"
+#include "Particles.h"
+
+#include "Background.h"
+#include "BackgroundShader.h"
+
+#include "ParticleShader.h"
+
 
 
 class Application : public System
 {
 private:
 	D3DHandler* d3dHandler;
-	Shader* testShader;
+	DefaultShader* shader;
 	Importer testImporter;
 	Input* input;
 
-	ID3D11Buffer* testVertexBuffer;
-
 	EntityHandler* entityHandler;
+
+	Player* player;
+
+	PowerBar* player1Bar;
+	PowerBar* player2Bar;
+	PowerBarShader* powerBarShader;
+
+	Particle* particle;
+
+
+	Background* background;
+	BackgroundShader* backgShader;
+
+
+
+	ParticleShader* particleShader;
+
 public:
 	Application(bool fullscreen, bool showCursor, int screenWidth, int screenHeight, LPCWSTR windowTitle);
 	~Application();
