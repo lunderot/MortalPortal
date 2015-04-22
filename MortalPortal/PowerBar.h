@@ -34,5 +34,6 @@ public:
 	const DirectX::XMFLOAT2 GetMaxMinValue();
 	ID3D11Buffer* GetVertexBuffer();
 
+	void Update(float deltaTime);
 	void Render(ID3D11DeviceContext* deviceContext, Shader* shader);
 };

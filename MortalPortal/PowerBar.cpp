@@ -28,7 +28,7 @@ PowerBar::PowerBar(ID3D11Device* device)
 		throw std::runtime_error("Failed to create vertex buffer in the PowerBar class.");
 	}
 
-	barSpeed = 0.00001f;
+	barSpeed = 0.001f;
 }
 void PowerBar::SetBarSpeed(float speed)
 {
@@ -87,18 +87,6 @@ void PowerBar::Render(ID3D11DeviceContext* deviceContext, Shader* shader)
 	result = deviceContext->Map(vertexBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &resource);
 
 
-	if (posColor.pos[0].x > maxMinValue.x)
-	{
-		barSpeed = barSpeed * - 1;
-	} 
-	if (posColor.pos[0].x < maxMinValue.y)
-	{
-		barSpeed = barSpeed * -1;
-	}
-
-	posColor.pos[0].x += barSpeed;
-	posColor.pos[1].x += barSpeed;
-
 	memcpy(resource.pData, &posColor, sizeof(PosColor));
 	deviceContext->Unmap(vertexBuffer, 0);
 
@@ -107,6 +95,21 @@ void PowerBar::Render(ID3D11DeviceContext* deviceContext, Shader* shader)
 
 	deviceContext->Draw(vertexCount, 0);
 
+}
+
+void PowerBar::Update(float deltaTime)
+{
+	if (posColor.pos[0].x > maxMinValue.x)
+	{
+		barSpeed = barSpeed * -1;
+	}
+	if (posColor.pos[0].x < maxMinValue.y)
+	{
+		barSpeed = barSpeed * -1;
+	}
+
+	posColor.pos[0].x += barSpeed;
+	posColor.pos[1].x += barSpeed;
 }
 PowerBar::~PowerBar()
 {

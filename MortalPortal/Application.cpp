@@ -86,13 +86,16 @@ bool Application::Update(float deltaTime)
 
 	dir.x *= 10;
 	dir.y *= 10;
+
+
 	player->SetAcceleration(dir);
 	//mange
 	//player->PlayerColorState(player->colorState);
 	player->colorState = input->GetButtonState();
 	shader->constantBufferPerStateData.colorState = player->colorState;
 
-
+	player1Bar->Update(deltaTime);
+	player2Bar->Update(deltaTime);
 	entityHandler->Update(deltaTime);
 
 	return false;
