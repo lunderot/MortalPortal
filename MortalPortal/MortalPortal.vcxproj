@@ -79,6 +79,8 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Application.cpp" />
+    <ClCompile Include="Background.cpp" />
+    <ClCompile Include="BackgroundShader.cpp" />
     <ClCompile Include="CommonDeclaration.cpp" />
     <ClCompile Include="ControllerInput.cpp" />
     <ClCompile Include="D3DHandler.cpp" />
@@ -99,6 +101,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
+    <ClInclude Include="Background.h" />
+    <ClInclude Include="BackgroundShader.h" />
     <ClInclude Include="CommonDeclaration.h" />
     <ClInclude Include="ControllerInput.h" />
     <ClInclude Include="D3DHandler.h" />
@@ -115,6 +119,22 @@
     <ClInclude Include="PowerBarShader.h" />
     <ClInclude Include="Shader.h" />
     <ClInclude Include="System.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="assets\shaders\BackgroundPixelShader.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Pixel</ShaderType>
+    </FxCompile>
+    <FxCompile Include="assets\shaders\BackgroundVertexShader.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Vertex</ShaderType>
+    </FxCompile>
+    <FxCompile Include="assets\shaders\powerBarPS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Pixel</ShaderType>
+    </FxCompile>
+    <FxCompile Include="assets\shaders\powerBarVS.hlsl" />
+    <FxCompile Include="assets\shaders\ps.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Pixel</ShaderType>
+    </FxCompile>
+    <FxCompile Include="assets\shaders\vs.hlsl" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -2,6 +2,12 @@
 
 using namespace DirectX;
 
+//---
+Entity::Entity()
+{
+
+}
+
 Entity::Entity(ID3D11Device* device,
 	DirectX::XMFLOAT2 position,
 	DirectX::XMFLOAT2 velocity,

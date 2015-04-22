@@ -13,6 +13,8 @@ Application::Application(bool fullscreen, bool showCursor, int screenWidth, int 
 	//Create shader
 	shader = new DefaultShader(d3dHandler->GetDevice(), L"assets/shaders/vs.hlsl", L"assets/shaders/ps.hlsl", screenWidth, screenHeight, screenNear, screenFar);
 	powerBarShader = new PowerBarShader(d3dHandler->GetDevice(), L"assets/shaders/powerBarVS.hlsl", L"assets/shaders/powerBarPS.hlsl", screenWidth, screenHeight, screenNear, screenFar);
+	// Ayu
+	backgShader = new BackgroundShader(d3dHandler->GetDevice(), L"assets/shaders/BackgroundVertexShader.hlsl", L"assets/shaders/BackgroundPixelShader.hlsl", screenWidth, screenHeight, screenNear, screenFar);
 	//Setup input
 	try
 	{
@@ -53,6 +55,9 @@ Application::Application(bool fullscreen, bool showCursor, int screenWidth, int 
 	// Particles testing area
 	particle = new Particle(1000, d3dHandler->GetDevice());
 	entityHandler->Add(particle);
+
+	// Create Background
+	background = new Background(d3dHandler->GetDevice());
 
 }
 
@@ -96,6 +101,11 @@ void Application::Render()
 	powerBarShader->Use(d3dHandler->GetDeviceContext());
 	player1Bar->Render(d3dHandler->GetDeviceContext(), powerBarShader);
 	player2Bar->Render(d3dHandler->GetDeviceContext(), powerBarShader);
+
+	// Ayu
+	backgShader->Use(d3dHandler->GetDeviceContext());
+	background->Render(d3dHandler->GetDeviceContext(), backgShader);
+
 
 
 	d3dHandler->EndScene();

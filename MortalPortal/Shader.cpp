@@ -2,6 +2,7 @@
 
 using namespace DirectX;
 
+
 Shader::Shader(ID3D11Device* device, unsigned int screenWidth, unsigned int screenHeight, float screenNear, float screenFar)
 {
 	vertexShader = nullptr;

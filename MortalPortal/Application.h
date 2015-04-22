@@ -15,7 +15,8 @@
 #include "PowerBar.h"
 #include "PowerBarShader.h"
 #include "Particles.h"
-
+#include "Background.h"
+#include "BackgroundShader.h"
 
 class Application : public System
 {
@@ -34,6 +35,11 @@ private:
 	PowerBarShader* powerBarShader;
 
 	Particle* particle;
+
+	Background* background;
+	BackgroundShader* backgShader;
+
+
 public:
 	Application(bool fullscreen, bool showCursor, int screenWidth, int screenHeight, LPCWSTR windowTitle);
 	~Application();

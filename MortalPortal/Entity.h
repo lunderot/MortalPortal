@@ -8,6 +8,8 @@ class Entity
 {
 	friend class EntityHandler;
 protected:
+	Entity(); // ---
+
 	ID3D11Buffer* vertexBuffer;
 	unsigned int vertexCount;
 
