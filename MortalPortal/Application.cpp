@@ -50,6 +50,10 @@ Application::Application(bool fullscreen, bool showCursor, int screenWidth, int 
 	player2Bar->SetPosition(player2BarPos);
 	player2Bar->SetMaxMinValue(DirectX::XMFLOAT2(0.7f, 0.5f));
 
+	// Particles testing area
+	particle = new Particle(1000, d3dHandler->GetDevice());
+	entityHandler->Add(particle);
+
 }
 
 Application::~Application()
@@ -92,6 +96,7 @@ void Application::Render()
 	powerBarShader->Use(d3dHandler->GetDeviceContext());
 	player1Bar->Render(d3dHandler->GetDeviceContext(), powerBarShader);
 	player2Bar->Render(d3dHandler->GetDeviceContext(), powerBarShader);
+
 
 	d3dHandler->EndScene();
 }

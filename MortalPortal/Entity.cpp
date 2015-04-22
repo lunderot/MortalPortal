@@ -3,6 +3,19 @@
 using namespace DirectX;
 
 Entity::Entity(ID3D11Device* device,
+	DirectX::XMFLOAT2 position,
+	DirectX::XMFLOAT2 velocity,
+	DirectX::XMFLOAT2 acceleration)
+{
+	vertexBuffer = nullptr;
+	vertexCount = 0;
+
+	this->position = position;
+	this->velocity = velocity;
+	this->acceleration = acceleration;
+
+}
+Entity::Entity(ID3D11Device* device,
 	Importer* importer,
 	unsigned int meshID,
 	DirectX::XMFLOAT2 position,

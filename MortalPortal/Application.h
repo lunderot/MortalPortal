@@ -14,6 +14,7 @@
 #include "DefaultShader.h"
 #include "PowerBar.h"
 #include "PowerBarShader.h"
+#include "Particles.h"
 
 
 class Application : public System
@@ -31,6 +32,8 @@ private:
 	PowerBar* player1Bar;
 	PowerBar* player2Bar;
 	PowerBarShader* powerBarShader;
+
+	Particle* particle;
 public:
 	Application(bool fullscreen, bool showCursor, int screenWidth, int screenHeight, LPCWSTR windowTitle);
 	~Application();

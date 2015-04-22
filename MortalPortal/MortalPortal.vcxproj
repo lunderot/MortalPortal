@@ -89,6 +89,8 @@
     <ClCompile Include="Input.cpp" />
     <ClCompile Include="KeyboardInput.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Particles.cpp" />
+    <ClCompile Include="ParticleShader.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="PowerBar.cpp" />
     <ClCompile Include="PowerBarShader.cpp" />
@@ -106,6 +108,8 @@
     <ClInclude Include="Importer.h" />
     <ClInclude Include="Input.h" />
     <ClInclude Include="KeyboardInput.h" />
+    <ClInclude Include="Particles.h" />
+    <ClInclude Include="ParticleShader.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="PowerBar.h" />
     <ClInclude Include="PowerBarShader.h" />
