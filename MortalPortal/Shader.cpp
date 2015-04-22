@@ -153,11 +153,6 @@ void Shader::CreateMandatoryShaders(ID3D11Device* device, LPCWSTR vertexShaderFi
 	pPS->Release();
 }
 
-void Shader::CreateComputeShader(ID3D11Device* device, LPCWSTR vertexShaderFilename)
-{
-
-}
-
 void Shader::Use(ID3D11DeviceContext* deviceContext)
 {
 	deviceContext->IASetInputLayout(inputLayout);
