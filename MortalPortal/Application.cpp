@@ -111,8 +111,9 @@ void Application::Render()
 
 
 	// Ayu
-	backgShader->Use(d3dHandler->GetDeviceContext());
-	background->Render(d3dHandler->GetDeviceContext(), backgShader);
+	//Avkommentera ifall bakgrunden ska synas (z ej klar)
+	//backgShader->Use(d3dHandler->GetDeviceContext());
+	//background->Render(d3dHandler->GetDeviceContext(), backgShader);
 
 
 
