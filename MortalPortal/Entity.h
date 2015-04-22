@@ -8,7 +8,7 @@ class Entity
 {
 	friend class EntityHandler;
 protected:
-	ID3D11Buffer* vertexBuffer;
+ 	ID3D11Buffer* vertexBuffer;
 	unsigned int vertexCount;
 
 	DirectX::XMFLOAT2 position;
