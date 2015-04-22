@@ -13,8 +13,8 @@ Particle::Particle(unsigned int nrOfParticles,
 	memset(&partbufferDesc, 0, sizeof(partbufferDesc));
 	partbufferDesc.BindFlags = D3D11_BIND_UNORDERED_ACCESS | D3D11_BIND_VERTEX_BUFFER;
 	partbufferDesc.Usage = D3D11_USAGE_DEFAULT;
-	partbufferDesc.ByteWidth = sizeof(DirectX::XMFLOAT2) * nrOfParticles;
-	partbufferDesc.StructureByteStride = sizeof(DirectX::XMFLOAT2);
+	partbufferDesc.ByteWidth = sizeof(float) * 5 * nrOfParticles;
+	partbufferDesc.StructureByteStride = sizeof(float) * 5;
 	partbufferDesc.MiscFlags = D3D11_RESOURCE_MISC_BUFFER_ALLOW_RAW_VIEWS;
 
 	/*D3D11_SUBRESOURCE_DATA datar;
@@ -29,9 +29,38 @@ Particle::Particle(unsigned int nrOfParticles,
 	uavDesc.ViewDimension = D3D11_UAV_DIMENSION_BUFFER;
 	uavDesc.Buffer.FirstElement = 0;
 	uavDesc.Buffer.Flags = D3D11_BUFFER_UAV_FLAG_RAW;
-	uavDesc.Buffer.NumElements = sizeof(DirectX::XMFLOAT2) * nrOfParticles / 4;
+	uavDesc.Buffer.NumElements = nrOfParticles * 5;
 
 	hr = device->CreateUnorderedAccessView(vertexBuffer, &uavDesc, &particleUAV);
+}
+void Particle::SetNrOfParticles(unsigned int number)
+{
+	this->nrOfParticles = number;
+}
+
+unsigned int Particle::GetNrOfParticles()
+{
+	return nrOfParticles;
+}
+ID3D11UnorderedAccessView* Particle::getUAV()
+{
+	return particleUAV;
+}
+
+void Particle::Render(ID3D11DeviceContext* deviceContext, Shader* shader, ID3D11ComputeShader* computeShader)
+{
+	UINT stride = sizeof(float) * 5;
+	UINT offset = 0;
+	ID3D11UnorderedAccessView* pUAV[] = { particleUAV };
+	deviceContext->CSSetUnorderedAccessViews(0, 1, pUAV, NULL);
+	deviceContext->CSSetShader(computeShader, nullptr, 0);
+
+	deviceContext->Dispatch(floor(nrOfParticles / 1024) + 1, 1, 1);
+	pUAV[0] = NULL;
+	deviceContext->CSSetUnorderedAccessViews(0, 1, pUAV, NULL);
+	deviceContext->CSSetShader(nullptr, nullptr, 0);
+	deviceContext->IASetVertexBuffers(0, 1, &vertexBuffer, &stride, &offset);
+	deviceContext->Draw(10, 0);
 }
 
 Particle::~Particle()
