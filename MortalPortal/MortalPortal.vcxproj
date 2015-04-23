@@ -79,6 +79,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Application.cpp" />
+    <ClCompile Include="AssetHandler.cpp" />
     <ClCompile Include="Background.cpp" />
     <ClCompile Include="BackgroundShader.cpp" />
     <ClCompile Include="CommonDeclaration.cpp" />
@@ -87,10 +88,10 @@
     <ClCompile Include="DefaultShader.cpp" />
     <ClCompile Include="Entity.cpp" />
     <ClCompile Include="EntityHandler.cpp" />
+    <ClCompile Include="Geometry.cpp" />
     <ClCompile Include="Importer.cpp" />
     <ClCompile Include="Input.cpp" />
     <ClCompile Include="KeyboardInput.cpp" />
-    <ClCompile Include="LevelGenerator.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Particles.cpp" />
     <ClCompile Include="ParticleShader.cpp" />
@@ -102,6 +103,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
+    <ClInclude Include="AssetHandler.h" />
     <ClInclude Include="Background.h" />
     <ClInclude Include="BackgroundShader.h" />
     <ClInclude Include="CommonDeclaration.h" />
@@ -110,6 +112,7 @@
     <ClInclude Include="DefaultShader.h" />
     <ClInclude Include="Entity.h" />
     <ClInclude Include="EntityHandler.h" />
+    <ClInclude Include="Geometry.h" />
     <ClInclude Include="Importer.h" />
     <ClInclude Include="Input.h" />
     <ClInclude Include="KeyboardInput.h" />
@@ -118,7 +121,6 @@
     <ClInclude Include="Player.h" />
     <ClInclude Include="PowerBar.h" />
     <ClInclude Include="PowerBarShader.h" />
-    <ClInclude Include="LevelGenerator.h" />
     <ClInclude Include="Shader.h" />
     <ClInclude Include="System.h" />
   </ItemGroup>

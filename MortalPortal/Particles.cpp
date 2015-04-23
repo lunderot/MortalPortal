@@ -4,9 +4,12 @@ Particle::Particle(unsigned int nrOfParticles,
 	ID3D11Device* device,
 	DirectX::XMFLOAT3 position,
 	DirectX::XMFLOAT3 velocity,
-	DirectX::XMFLOAT3 acceleration) : Entity(device, position, velocity, acceleration)
+	DirectX::XMFLOAT3 acceleration) : Entity(nullptr, position, velocity, acceleration)
 {
+	
+
 	HRESULT hr;
+	ID3D11Buffer* vertexBuffer = nullptr;
 
 	D3D11_BUFFER_DESC partbufferDesc;
 	ZeroMemory(&partbufferDesc, sizeof(partbufferDesc));
@@ -32,6 +35,9 @@ Particle::Particle(unsigned int nrOfParticles,
 	uavDesc.Buffer.NumElements = nrOfParticles * 5;
 
 	hr = device->CreateUnorderedAccessView(vertexBuffer, &uavDesc, &particleUAV);
+
+
+	geometry = new Geometry(vertexBuffer, 0);
 }
 void Particle::SetNrOfParticles(unsigned int number)
 {
@@ -49,6 +55,7 @@ ID3D11UnorderedAccessView* Particle::getUAV()
 
 void Particle::Render(ID3D11DeviceContext* deviceContext, Shader* shader, ID3D11ComputeShader* computeShader)
 {
+	ID3D11Buffer* vertexBuffer = geometry->GetVertexBuffer();
 	UINT stride = sizeof(float) * 5;
 	UINT offset = 0;
 	ID3D11UnorderedAccessView* pUAV[] = { particleUAV };
@@ -67,4 +74,5 @@ Particle::~Particle()
 {
 	if (particleUAV)
 		particleUAV->Release();
+	delete geometry;
 }

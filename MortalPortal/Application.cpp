@@ -33,6 +33,9 @@ Application::Application(bool fullscreen, bool showCursor, int screenWidth, int 
 		input = new KeyboardInput();
 	}
 
+	//Create assetHandler
+	assetHandler = new AssetHandler();
+
 	//Import asset
 	testImporter.importFile("assets/test.bin");
 
@@ -40,7 +43,7 @@ Application::Application(bool fullscreen, bool showCursor, int screenWidth, int 
 	entityHandler = new EntityHandler();
 
 	//Create player and add it to entity handler
-	player = new Player(d3dHandler->GetDevice(), &testImporter, 0, XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(40, 0, 30));
+	player = new Player(assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/test.bin"), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(40, 0, 30));
 	entityHandler->Add(player);
 
 	// Create Power Bars
@@ -73,6 +76,7 @@ Application::~Application()
 	delete shader;
 	delete input;
 	delete entityHandler;
+	delete assetHandler;
 	delete powerBarShader;
 	delete player1Bar;
 	delete player2Bar;

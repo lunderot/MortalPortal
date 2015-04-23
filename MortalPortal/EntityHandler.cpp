@@ -40,9 +40,9 @@ void EntityHandler::Render(ID3D11DeviceContext* deviceContext, Shader* shader)
 
 		//Draw the mesh
 		unsigned int vertexSize = sizeof(VertexPositionTexCoordNormalBinormalTangent);
-		unsigned int vertexCount = (*i)->GetVertexCount();
+		unsigned int vertexCount = (*i)->GetGeometry()->GetVertexCount();
 		unsigned int offset = 0;
-		ID3D11Buffer* vb = (*i)->GetVertexBuffer();
+		ID3D11Buffer* vb = (*i)->GetGeometry()->GetVertexBuffer();
 
 		deviceContext->IASetVertexBuffers(0, 1, &vb, &vertexSize, &offset);
 		deviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);

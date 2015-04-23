@@ -2,8 +2,10 @@
 
 using namespace DirectX;
 
-Background::Background(ID3D11Device* device)
+Background::Background(ID3D11Device* device) : Entity(nullptr)
 {
+	ID3D11Buffer* vertexBuffer = nullptr;
+
 	struct vertex
 	{
 		float x, u, z;
@@ -71,13 +73,15 @@ Background::Background(ID3D11Device* device)
 
 	HRESULT hr = device->CreateBuffer(&bufferDesc, &data, &vertexBuffer);
 
+	geometry = new Geometry(vertexBuffer, 12);
+
 
 }
 
 
 void Background::Render(ID3D11DeviceContext* deviceContext, Shader* shader)
 {
-
+	ID3D11Buffer* vertexBuffer = geometry->GetVertexBuffer();
 
 	UINT32 vertexSize = sizeof(float)* 6;
 	UINT32 offset = 0;
@@ -85,17 +89,13 @@ void Background::Render(ID3D11DeviceContext* deviceContext, Shader* shader)
 	deviceContext->IASetVertexBuffers(0, 1, &vertexBuffer, &vertexSize, &offset);
 	deviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
-	deviceContext->Draw(12, 0);
+	deviceContext->Draw(geometry->GetVertexCount(), 0);
 }
 
 
 Background::~Background()
 {
-	if (vertexBuffer)
-	{
-		vertexBuffer->Release();
-	}
-
+	delete geometry;
 };
 
 

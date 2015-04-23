@@ -2,67 +2,24 @@
 
 using namespace DirectX;
 
-//---
-Entity::Entity()
-{
-
-}
-
-Entity::Entity(ID3D11Device* device,
+Entity::Entity(Geometry* geometry,
 	DirectX::XMFLOAT3 position,
 	DirectX::XMFLOAT3 velocity,
 	DirectX::XMFLOAT3 acceleration,
 	DirectX::XMFLOAT3 rotation)
 {
-	vertexBuffer = nullptr;
-	vertexCount = 0;
-
+	this->geometry = geometry;
 	this->position = position;
 	this->velocity = velocity;
 	this->acceleration = acceleration;
 	this->rotation = rotation;
 
-}
-Entity::Entity(ID3D11Device* device,
-	Importer* importer,
-	unsigned int meshID,
-	DirectX::XMFLOAT3 position,
-	DirectX::XMFLOAT3 velocity,
-	DirectX::XMFLOAT3 acceleration,
-	DirectX::XMFLOAT3 rotation
-	)
-{
-	this->position = position;
-	this->velocity = velocity;
-	this->acceleration = acceleration;
-	this->rotation = rotation;
-
-
-
-	D3D11_BUFFER_DESC bufferDesc;
-	ZeroMemory(&bufferDesc, sizeof(bufferDesc));
-	bufferDesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
-	bufferDesc.Usage = D3D11_USAGE_DEFAULT;
-	bufferDesc.ByteWidth = importer->getMeshVertexCount(meshID) * sizeof(VertexPositionTexCoordNormalBinormalTangent);
-
-	D3D11_SUBRESOURCE_DATA data;
-	data.pSysMem = importer->getMesh(meshID);
-	HRESULT hr = device->CreateBuffer(&bufferDesc, &data, &vertexBuffer);
-	if (FAILED(hr))
-	{
-		throw std::runtime_error("Failed to create vertex buffer");
-	}
-
-	vertexCount = importer->getMeshVertexCount(meshID);
 }
 
 
 Entity::~Entity()
 {
-	if (vertexBuffer)
-	{
-		vertexBuffer->Release();
-	}
+
 }
 
 void Entity::Update(float deltaTime)
@@ -126,14 +83,9 @@ XMFLOAT3 Entity::GetRotation() const
 	return rotation;
 }
 
-ID3D11Buffer* Entity::GetVertexBuffer() const
+Geometry* Entity::GetGeometry() const
 {
-	return vertexBuffer;
-}
-
-unsigned int Entity::GetVertexCount() const
-{
-	return vertexCount;
+	return geometry;
 }
 
 
