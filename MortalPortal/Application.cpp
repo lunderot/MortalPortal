@@ -17,7 +17,7 @@ Application::Application(bool fullscreen, bool showCursor, int screenWidth, int 
 	// Ayu
 	backgShader = new BackgroundShader(d3dHandler->GetDevice(), L"assets/shaders/BackgroundVertexShader.hlsl", L"assets/shaders/BackgroundPixelShader.hlsl", screenWidth, screenHeight, screenNear, screenFar);
 
-	particleShader = new ParticleShader(L"assets/shaders/particleCS.hlsl", L"assets/shaders/particleGS.hlsl", d3dHandler->GetDevice(), L"assets/shaders/powerBarVS.hlsl", L"assets/shaders/powerBarPS.hlsl", screenWidth, screenHeight, screenNear, screenFar);
+	particleShader = new ParticleShader(L"assets/shaders/particleCS.hlsl", L"assets/shaders/particleGS.hlsl", d3dHandler->GetDevice(), L"assets/shaders/particleVS.hlsl", L"assets/shaders/particlePS.hlsl", screenWidth, screenHeight, screenNear, screenFar);
 	
 
 	//Setup input
@@ -40,7 +40,7 @@ Application::Application(bool fullscreen, bool showCursor, int screenWidth, int 
 	entityHandler = new EntityHandler();
 
 	//Create player and add it to entity handler
-	player = new Player(d3dHandler->GetDevice(), &testImporter, 0, XMFLOAT2(0, 0), XMFLOAT2(1, 1));
+	player = new Player(d3dHandler->GetDevice(), &testImporter, 0, XMFLOAT2(0, 0), XMFLOAT2(0, 0));
 	entityHandler->Add(player);
 
 	// Create Power Bars
@@ -59,7 +59,6 @@ Application::Application(bool fullscreen, bool showCursor, int screenWidth, int 
 
 	// Particles testing area
 	particle = new Particle(10, d3dHandler->GetDevice());
-	particle->SetNrOfParticles(10);
 	entityHandler->Add(particle);
 
 	// Create Background
@@ -76,8 +75,9 @@ Application::~Application()
 	delete powerBarShader;
 	delete player1Bar;
 	delete player2Bar;
-	//delete particle;
 	delete particleShader;
+	//delete background;
+	delete backgShader;
 }
 
 bool Application::Update(float deltaTime)
@@ -98,6 +98,8 @@ bool Application::Update(float deltaTime)
 	player2Bar->Update(deltaTime);
 	entityHandler->Update(deltaTime);
 
+	particle->UpdatePosition(player->GetPosition());
+
 	return false;
 }
 
@@ -108,6 +110,7 @@ void Application::Render()
 
 	entityHandler->Render(d3dHandler->GetDeviceContext(), shader);
 
+	// Power Bars
 	powerBarShader->Use(d3dHandler->GetDeviceContext());
 	player1Bar->Render(d3dHandler->GetDeviceContext(), powerBarShader);
 	player2Bar->Render(d3dHandler->GetDeviceContext(), powerBarShader);
@@ -119,7 +122,7 @@ void Application::Render()
 	//background->Render(d3dHandler->GetDeviceContext(), backgShader);
 
 
-
+	// Particles
 	particleShader->Use(d3dHandler->GetDeviceContext());
 	particle->Render(d3dHandler->GetDeviceContext(), particleShader, particleShader->GetComputeShader());
 

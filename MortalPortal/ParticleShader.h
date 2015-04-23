@@ -11,6 +11,8 @@ public:
 	~ParticleShader();
 
 	void CreateShaders(ID3D11Device* device, LPCWSTR computeShaderFilename, LPCWSTR geometryShaderFilename);
+
 	ID3D11ComputeShader* GetComputeShader();
+	void Use(ID3D11DeviceContext* deviceContext);
 
 };

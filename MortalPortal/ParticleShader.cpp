@@ -6,12 +6,12 @@ ParticleShader::ParticleShader(LPCWSTR computeShaderPath, LPCWSTR geometryShader
 	D3D11_INPUT_ELEMENT_DESC inputDesc[] =
 	{
 		{ "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0 },
-		{ "TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT, 0, 12, D3D11_INPUT_PER_VERTEX_DATA, 0 }
+		{ "TEXCOORD0", 0, DXGI_FORMAT_R32G32_FLOAT, 0, 12, D3D11_INPUT_PER_VERTEX_DATA, 0 }
 	};
 
 	CreateMandatoryShaders(device, vertexShaderPath, pixelShaderPath, inputDesc, ARRAYSIZE(inputDesc));
 	CreateShaders(device, computeShaderPath, geometryShaderPath);
-}
+}    
 
 void ParticleShader::CreateShaders(ID3D11Device* device, LPCWSTR computeShaderFilename, LPCWSTR geometryShaderFilename)
 {
@@ -55,6 +55,19 @@ void ParticleShader::CreateShaders(ID3D11Device* device, LPCWSTR computeShaderFi
 
 	device->CreateGeometryShader(pGS->GetBufferPointer(), pGS->GetBufferSize(), nullptr, &geometryShader);
 	pGS->Release();
+}
+
+void ParticleShader::Use(ID3D11DeviceContext* deviceContext)
+{
+	deviceContext->IASetInputLayout(inputLayout);
+	deviceContext->VSSetShader(vertexShader, nullptr, 0);
+	deviceContext->HSSetShader(hullShader, nullptr, 0);
+	deviceContext->DSSetShader(domainShader, nullptr, 0);
+	deviceContext->GSSetShader(geometryShader, nullptr, 0);
+	deviceContext->PSSetShader(pixelShader, nullptr, 0);
+
+	deviceContext->GSSetConstantBuffers(0, 1, &constantBufferPerFrame);
+	deviceContext->GSSetConstantBuffers(1, 1, &constantBufferPerModel);
 }
 
 ID3D11ComputeShader* ParticleShader::GetComputeShader()

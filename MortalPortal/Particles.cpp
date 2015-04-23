@@ -7,7 +7,7 @@ Particle::Particle(unsigned int nrOfParticles,
 	DirectX::XMFLOAT2 acceleration) : Entity(device, position, velocity, acceleration)
 {
 	HRESULT hr;
-
+	this->nrOfParticles = nrOfParticles;
 	D3D11_BUFFER_DESC partbufferDesc;
 	ZeroMemory(&partbufferDesc, sizeof(partbufferDesc));
 	memset(&partbufferDesc, 0, sizeof(partbufferDesc));
@@ -32,10 +32,22 @@ Particle::Particle(unsigned int nrOfParticles,
 	uavDesc.Buffer.NumElements = nrOfParticles * 5;
 
 	hr = device->CreateUnorderedAccessView(vertexBuffer, &uavDesc, &particleUAV);
-}
-void Particle::SetNrOfParticles(unsigned int number)
-{
-	this->nrOfParticles = number;
+
+	// Constant Buffer
+	D3D11_BUFFER_DESC bufferDesc;
+	ZeroMemory(&bufferDesc, sizeof(bufferDesc));
+
+	bufferDesc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
+	bufferDesc.Usage = D3D11_USAGE_DEFAULT;
+	bufferDesc.ByteWidth = sizeof(constantBufferData);
+
+	hr = device->CreateBuffer(&bufferDesc, NULL, &constantBuffer);
+	if (FAILED(hr))
+	{
+		throw std::runtime_error("Failed to create constant buffer in Particles");
+	}
+	// Ett stycke hård kod
+	constantBufferData.maxRange = 10;
 }
 
 unsigned int Particle::GetNrOfParticles()
@@ -47,10 +59,18 @@ ID3D11UnorderedAccessView* Particle::getUAV()
 	return particleUAV;
 }
 
+void Particle::UpdatePosition(DirectX::XMFLOAT2 position)
+{
+	constantBufferData.position = position;
+}
+
 void Particle::Render(ID3D11DeviceContext* deviceContext, Shader* shader, ID3D11ComputeShader* computeShader)
 {
 	UINT stride = sizeof(float) * 5;
 	UINT offset = 0;
+
+	deviceContext->UpdateSubresource(constantBuffer, 0, NULL, &constantBufferData, 0, 0);
+	deviceContext->CSSetConstantBuffers(0, 1, &constantBuffer);
 	ID3D11UnorderedAccessView* pUAV[] = { particleUAV };
 	deviceContext->CSSetUnorderedAccessViews(0, 1, pUAV, NULL);
 	deviceContext->CSSetShader(computeShader, nullptr, 0);
@@ -60,7 +80,8 @@ void Particle::Render(ID3D11DeviceContext* deviceContext, Shader* shader, ID3D11
 	deviceContext->CSSetUnorderedAccessViews(0, 1, pUAV, NULL);
 	deviceContext->CSSetShader(nullptr, nullptr, 0);
 	deviceContext->IASetVertexBuffers(0, 1, &vertexBuffer, &stride, &offset);
-	deviceContext->Draw(10, 0);
+	deviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_POINTLIST);
+	deviceContext->Draw(nrOfParticles, 0);
 }
 
 Particle::~Particle()
