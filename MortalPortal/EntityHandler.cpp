@@ -33,8 +33,9 @@ void EntityHandler::Render(ID3D11DeviceContext* deviceContext, Shader* shader)
 		XMFLOAT3 playerRotation = (*i)->GetRotation();
 		XMVECTOR PlayerRotationQuat = XMQuaternionRotationRollPitchYawFromVector(XMLoadFloat3(&playerRotation));
 		ConstantBufferPerModel data;
-		XMMATRIX model = XMMatrixTranslation(playerPosition.x, playerPosition.y, playerPosition.z);
-		model = XMMatrixMultiply(model, XMMatrixRotationQuaternion(PlayerRotationQuat));
+		XMMATRIX model = XMMatrixRotationQuaternion(PlayerRotationQuat);
+		model = XMMatrixMultiply(model, XMMatrixTranslation(playerPosition.x, playerPosition.y, playerPosition.z));
+		
 		XMStoreFloat4x4(&data.worldMatrix, XMMatrixTranspose(model));
 		shader->UpdateConstantBufferPerModel(deviceContext, &data);
 

@@ -88,8 +88,8 @@ bool Application::Update(float deltaTime)
 {
 	XMFLOAT2 dir = input->GetDirection();
 
-	dir.x /= 5;
-	dir.y /= 5;
+	dir.x *= 10;
+	dir.y *= 10;
 
 
 	player->SetAcceleration(XMFLOAT3(dir.x, dir.y, 0.0f));

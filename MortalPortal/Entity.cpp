@@ -28,19 +28,9 @@ void Entity::Update(float deltaTime)
 	velocity.y += acceleration.y * deltaTime;
 	velocity.z += acceleration.z * deltaTime;
 
-	XMVECTOR positionVec = XMLoadFloat3(&position);
-	XMVECTOR velocityVec = XMLoadFloat3(&velocity);
-	XMVECTOR rotationQuat = XMQuaternionRotationRollPitchYawFromVector(XMLoadFloat3(&rotation));
-
-	rotationQuat = XMQuaternionInverse(rotationQuat);
-
-	XMVectorScale(velocityVec, deltaTime);
-
-	velocityVec = XMVector3Rotate(velocityVec, rotationQuat);
-
-	positionVec = XMVectorAdd(positionVec, velocityVec);
-
-	XMStoreFloat3(&position, positionVec);
+	position.x += velocity.x * deltaTime;
+	position.y += velocity.y * deltaTime;
+	position.z += velocity.z * deltaTime;
 }
 
 void Entity::SetPosition(XMFLOAT3 position)
