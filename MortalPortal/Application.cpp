@@ -14,6 +14,9 @@ Application::Application(bool fullscreen, bool showCursor, int screenWidth, int 
 	shader = new DefaultShader(d3dHandler->GetDevice(), L"assets/shaders/vs.hlsl", L"assets/shaders/ps.hlsl", screenWidth, screenHeight, screenNear, screenFar);
 	powerBarShader = new PowerBarShader(d3dHandler->GetDevice(), L"assets/shaders/powerBarVS.hlsl", L"assets/shaders/powerBarPS.hlsl", screenWidth, screenHeight, screenNear, screenFar);
 
+	playerShader = new PlayerShader(d3dHandler->GetDevice(), L"assets/shaders/playerVS.hlsl", L"assets/shaders/playerPS.hlsl", screenWidth, screenHeight, screenNear, screenFar);
+	//playerShader2 = new PlayerShader(d3dHandler->GetDevice(), L"assets/shaders/player2VS.hlsl", L"assets/shaders/player2PS.hlsl", screenWidth, screenHeight, screenNear, screenFar);
+
 	// Ayu
 	backgShader = new BackgroundShader(d3dHandler->GetDevice(), L"assets/shaders/BackgroundVertexShader.hlsl", L"assets/shaders/BackgroundPixelShader.hlsl", screenWidth, screenHeight, screenNear, screenFar);
 
@@ -43,8 +46,8 @@ Application::Application(bool fullscreen, bool showCursor, int screenWidth, int 
 	entityHandler = new EntityHandler();
 
 	//Create player and add it to entity handler
-	player = new Player(assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/test.bin"), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(40, 0, 30));
-	entityHandler->Add(player);
+	player1 = new Player(assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/test.bin"), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(40, 0, 30));
+	entityHandler->Add(player1);
 
 	// Create Power Bars
 	player1Bar = new PowerBar(d3dHandler->GetDevice());
@@ -87,16 +90,19 @@ Application::~Application()
 bool Application::Update(float deltaTime)
 {
 	XMFLOAT2 dir = input->GetDirection();
-
 	dir.x *= 10;
 	dir.y *= 10;
+	player1->SetAcceleration(XMFLOAT3(dir.x, dir.y, 0.0f));
+
+	
 
 
-	player->SetAcceleration(XMFLOAT3(dir.x, dir.y, 0.0f));
 	//mange
 	//player->PlayerColorState(player->colorState);
-	player->colorState = input->GetButtonState();
-	shader->constantBufferPerStateData.colorState = player->colorState;
+	player1->colorState = input->GetButtonState();
+	playerShader->constantBufferPerStateData.colorState = player1->colorState;
+	//player1->constantBufferPerStateData.colorState = player1->colorState;
+	player1->Update(deltaTime);
 
 	player1Bar->Update(deltaTime);
 	player2Bar->Update(deltaTime);
@@ -109,9 +115,13 @@ bool Application::Update(float deltaTime)
 void Application::Render()
 {
 	d3dHandler->BeginScene(0.0f, 0.0f, 0.0f, 1.0f);
-	shader->Use(d3dHandler->GetDeviceContext());
+	//shader->Use(d3dHandler->GetDeviceContext());
 
-	entityHandler->Render(d3dHandler->GetDeviceContext(), shader);
+	playerShader->Use(d3dHandler->GetDeviceContext());
+	playerShader->Render(d3dHandler->GetDeviceContext(), playerShader);
+	//player1->Render(d3dHandler->GetDeviceContext(), playerShader);
+
+	entityHandler->Render(d3dHandler->GetDeviceContext(), playerShader);
 
 	// Power Bars
 	powerBarShader->Use(d3dHandler->GetDeviceContext());

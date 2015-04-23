@@ -15,15 +15,6 @@ struct ConstantBufferPerModel
 	DirectX::XMFLOAT4X4 worldMatrix;
 };
 
-//mange
-struct ConstantBufferPerState
-{
-	UINT colorState;
-	float pad1;
-	float pad2;
-	float pad3;
-};
-
 class Shader
 {
 protected:
@@ -40,8 +31,6 @@ protected:
 	ID3D11Buffer*			constantBufferPerFrame;
 	ID3D11Buffer*			constantBufferPerModel;
 	
-	//mange
-	ID3D11Buffer*			constantBufferPerState;
 
 public:
 
@@ -52,9 +41,5 @@ public:
 	virtual void Use(ID3D11DeviceContext* deviceContext);
 	void UpdateConstantBufferPerFrame(ID3D11DeviceContext* deviceContext, ConstantBufferPerFrame* buffer);
 	void UpdateConstantBufferPerModel(ID3D11DeviceContext* deviceContext, ConstantBufferPerModel* buffer);
-
-	//mange
-	ConstantBufferPerState	constantBufferPerStateData;
-	void UpdateConstantBufferPerState(ID3D11DeviceContext* deviceContext, ConstantBufferPerState* buffer);
 };
 

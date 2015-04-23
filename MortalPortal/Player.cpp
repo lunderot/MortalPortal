@@ -12,13 +12,8 @@ Player::Player(Geometry* geometry,
 
 }
 
+
 Player::~Player()
 {
-}
 
-unsigned int Player::PlayerColorState(unsigned int state)
-{
-	state = 5;
-	std::cout << "state: " << state << std::endl;
-	return state;
 }

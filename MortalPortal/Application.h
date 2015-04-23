@@ -11,6 +11,7 @@
 #include "KeyboardInput.h"
 #include "EntityHandler.h"
 #include "Player.h"
+#include "PlayerShader.h"
 #include "DefaultShader.h"
 #include "PowerBar.h"
 #include "PowerBarShader.h"
@@ -34,7 +35,10 @@ private:
 	EntityHandler* entityHandler;
 	AssetHandler* assetHandler;
 
-	Player* player;
+	Player* player1;
+	Player* player2;
+	PlayerShader* playerShader;
+	PlayerShader* playerShader2;
 
 	PowerBar* player1Bar;
 	PowerBar* player2Bar;
