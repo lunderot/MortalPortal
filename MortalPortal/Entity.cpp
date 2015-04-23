@@ -2,112 +2,80 @@
 
 using namespace DirectX;
 
-//---
-Entity::Entity()
+Entity::Entity(Geometry* geometry,
+	DirectX::XMFLOAT3 position,
+	DirectX::XMFLOAT3 velocity,
+	DirectX::XMFLOAT3 acceleration,
+	DirectX::XMFLOAT3 rotation)
 {
-
-}
-
-Entity::Entity(ID3D11Device* device,
-	DirectX::XMFLOAT2 position,
-	DirectX::XMFLOAT2 velocity,
-	DirectX::XMFLOAT2 acceleration)
-{
-	vertexBuffer = nullptr;
-	vertexCount = 0;
-
+	this->geometry = geometry;
 	this->position = position;
 	this->velocity = velocity;
 	this->acceleration = acceleration;
+	this->rotation = rotation;
 
-}
-Entity::Entity(ID3D11Device* device,
-	Importer* importer,
-	unsigned int meshID,
-	DirectX::XMFLOAT2 position,
-	DirectX::XMFLOAT2 velocity,
-	DirectX::XMFLOAT2 acceleration
-	)
-{
-	this->position = position;
-	this->velocity = velocity;
-	this->acceleration = acceleration;
-
-
-
-	D3D11_BUFFER_DESC bufferDesc;
-	ZeroMemory(&bufferDesc, sizeof(bufferDesc));
-	bufferDesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
-	bufferDesc.Usage = D3D11_USAGE_DEFAULT;
-	bufferDesc.ByteWidth = importer->getMeshVertexCount(meshID) * sizeof(VertexPositionTexCoordNormalBinormalTangent);
-
-	D3D11_SUBRESOURCE_DATA data;
-	data.pSysMem = importer->getMesh(meshID);
-	HRESULT hr = device->CreateBuffer(&bufferDesc, &data, &vertexBuffer);
-	if (FAILED(hr))
-	{
-		throw std::runtime_error("Failed to create vertex buffer");
-	}
-
-	vertexCount = importer->getMeshVertexCount(meshID);
 }
 
 
 Entity::~Entity()
 {
-	if (vertexBuffer)
-	{
-		vertexBuffer->Release();
-	}
+
 }
 
 void Entity::Update(float deltaTime)
 {
 	velocity.x += acceleration.x * deltaTime;
 	velocity.y += acceleration.y * deltaTime;
+	velocity.z += acceleration.z * deltaTime;
 
 	position.x += velocity.x * deltaTime;
 	position.y += velocity.y * deltaTime;
+	position.z += velocity.z * deltaTime;
 }
 
-void Entity::SetPosition(XMFLOAT2 position)
+void Entity::SetPosition(XMFLOAT3 position)
 {
 	this->position = position;
 }
 
-void Entity::SetVelocity(XMFLOAT2 velocity)
+void Entity::SetVelocity(XMFLOAT3 velocity)
 {
 	this->velocity = velocity;
 }
 
-void Entity::SetAcceleration(XMFLOAT2 acceleration)
+void Entity::SetAcceleration(XMFLOAT3 acceleration)
 {
 	this->acceleration = acceleration;
 }
 
-XMFLOAT2 Entity::GetPosition() const
+void Entity::SetRotation(DirectX::XMFLOAT3 rotation)
+{
+	this->rotation = rotation;
+}
+
+XMFLOAT3 Entity::GetPosition() const
 {
 	return position;
 }
 
-XMFLOAT2 Entity::GetVelocity() const
+XMFLOAT3 Entity::GetVelocity() const
 {
 	return velocity;
 }
 
-XMFLOAT2 Entity::GetAcceleration() const
+XMFLOAT3 Entity::GetAcceleration() const
 {
 	return acceleration;
 }
 
-ID3D11Buffer* Entity::GetVertexBuffer() const
+XMFLOAT3 Entity::GetRotation() const
 {
-	return vertexBuffer;
+	return rotation;
 }
 
-unsigned int Entity::GetVertexCount() const
+Geometry* Entity::GetGeometry() const
 {
-	return vertexCount;
+	return geometry;
 }
 
 

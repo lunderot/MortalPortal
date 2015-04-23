@@ -33,6 +33,9 @@ Application::Application(bool fullscreen, bool showCursor, int screenWidth, int 
 		input = new KeyboardInput();
 	}
 
+	//Create assetHandler
+	assetHandler = new AssetHandler();
+
 	//Import asset
 	testImporter.importFile("assets/test.bin");
 
@@ -40,7 +43,7 @@ Application::Application(bool fullscreen, bool showCursor, int screenWidth, int 
 	entityHandler = new EntityHandler();
 
 	//Create player and add it to entity handler
-	player = new Player(d3dHandler->GetDevice(), &testImporter, 0, XMFLOAT2(0, 0), XMFLOAT2(0, 0));
+	player = new Player(assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/test.bin"), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(40, 0, 30));
 	entityHandler->Add(player);
 
 	// Create Power Bars
@@ -72,6 +75,7 @@ Application::~Application()
 	delete shader;
 	delete input;
 	delete entityHandler;
+	delete assetHandler;
 	delete powerBarShader;
 	delete player1Bar;
 	delete player2Bar;
@@ -88,7 +92,7 @@ bool Application::Update(float deltaTime)
 	dir.y *= 10;
 
 
-	player->SetAcceleration(dir);
+	player->SetAcceleration(XMFLOAT3(dir.x, dir.y, 0.0f));
 	//mange
 	//player->PlayerColorState(player->colorState);
 	player->colorState = input->GetButtonState();
@@ -97,7 +101,6 @@ bool Application::Update(float deltaTime)
 	player1Bar->Update(deltaTime);
 	player2Bar->Update(deltaTime);
 	entityHandler->Update(deltaTime);
-
 	particle->UpdatePosition(player->GetPosition());
 
 	return false;

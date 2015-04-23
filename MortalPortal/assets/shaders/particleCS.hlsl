@@ -1,7 +1,7 @@
 cbuffer particleBuffer : register (cb0)
 {
 	int maxRange;
-	float2 position;
+	float3 position;
 	float2 velocity;
 	float2 accelaration;
 };

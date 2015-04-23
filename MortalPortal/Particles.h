@@ -5,10 +5,9 @@
 struct ConstantBufferData
 {
 	UINT maxRange;
-	DirectX::XMFLOAT2 position;
+	DirectX::XMFLOAT3 position;
 	DirectX::XMFLOAT2 velocity;
 	DirectX::XMFLOAT2 acceleration;
-	float pad;
 };
 
 class Particle :
@@ -24,16 +23,16 @@ public:
 
 	Particle(unsigned int nrOfParticles,
 		ID3D11Device* device,
-		DirectX::XMFLOAT2 position = DirectX::XMFLOAT2(0, 0),
-		DirectX::XMFLOAT2 velocity = DirectX::XMFLOAT2(0, 0),
-		DirectX::XMFLOAT2 acceleration = DirectX::XMFLOAT2(0, 0));
+		DirectX::XMFLOAT3 position = DirectX::XMFLOAT3(0, 0, 0),
+		DirectX::XMFLOAT3 velocity = DirectX::XMFLOAT3(0, 0, 0),
+		DirectX::XMFLOAT3 acceleration = DirectX::XMFLOAT3(0, 0, 0));
 
 	~Particle();
 
 	ID3D11UnorderedAccessView* getUAV();
 	unsigned int GetNrOfParticles();
 
-	void UpdatePosition(DirectX::XMFLOAT2 pos);
+	void UpdatePosition(DirectX::XMFLOAT3 pos);
 	void Render(ID3D11DeviceContext* deviceContext, Shader* shader, ID3D11ComputeShader* computeShader);
 
 };

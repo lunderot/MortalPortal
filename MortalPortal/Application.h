@@ -20,7 +20,7 @@
 #include "BackgroundShader.h"
 
 #include "ParticleShader.h"
-
+#include "AssetHandler.h"
 
 
 class Application : public System
@@ -32,6 +32,7 @@ private:
 	Input* input;
 
 	EntityHandler* entityHandler;
+	AssetHandler* assetHandler;
 
 	Player* player;
 

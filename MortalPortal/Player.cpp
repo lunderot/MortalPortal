@@ -2,12 +2,12 @@
 
 #include <iostream>
 
-Player::Player(ID3D11Device* device,
-	Importer* importer,
-	unsigned int meshID,
-	DirectX::XMFLOAT2 position,
-	DirectX::XMFLOAT2 velocity,
-	DirectX::XMFLOAT2 acceleration) : Entity(device, importer, meshID, position, velocity, acceleration)
+Player::Player(Geometry* geometry,
+	DirectX::XMFLOAT3 position,
+	DirectX::XMFLOAT3 velocity,
+	DirectX::XMFLOAT3 acceleration,
+	DirectX::XMFLOAT3 rotation
+	) : Entity(geometry, position, velocity, acceleration, rotation)
 {
 
 }

@@ -4,6 +4,7 @@
 
 #include "Entity.h"
 #include "Shader.h"
+#include "Importer.h"
 
 class EntityHandler
 {
