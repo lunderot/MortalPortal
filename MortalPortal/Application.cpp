@@ -40,7 +40,7 @@ Application::Application(bool fullscreen, bool showCursor, int screenWidth, int 
 	entityHandler = new EntityHandler();
 
 	//Create player and add it to entity handler
-	player = new Player(d3dHandler->GetDevice(), &testImporter, 0, XMFLOAT2(0, 0), XMFLOAT2(1, 1));
+	player = new Player(d3dHandler->GetDevice(), &testImporter, 0, XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(40, 0, 30));
 	entityHandler->Add(player);
 
 	// Create Power Bars
@@ -84,11 +84,11 @@ bool Application::Update(float deltaTime)
 {
 	XMFLOAT2 dir = input->GetDirection();
 
-	dir.x *= 10;
-	dir.y *= 10;
+	dir.x /= 5;
+	dir.y /= 5;
 
 
-	player->SetAcceleration(dir);
+	player->SetAcceleration(XMFLOAT3(dir.x, dir.y, 0.0f));
 	//mange
 	//player->PlayerColorState(player->colorState);
 	player->colorState = input->GetButtonState();

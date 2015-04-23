@@ -7,9 +7,11 @@ public:
 	Player(ID3D11Device* device,
 		Importer* importer,
 		unsigned int meshID,
-		DirectX::XMFLOAT2 position = DirectX::XMFLOAT2(0, 0),
-		DirectX::XMFLOAT2 velocity = DirectX::XMFLOAT2(0, 0),
-		DirectX::XMFLOAT2 acceleration = DirectX::XMFLOAT2(0, 0));
+		DirectX::XMFLOAT3 position = DirectX::XMFLOAT3(0, 0, 0),
+		DirectX::XMFLOAT3 velocity = DirectX::XMFLOAT3(0, 0, 0),
+		DirectX::XMFLOAT3 acceleration = DirectX::XMFLOAT3(0, 0, 0),
+		DirectX::XMFLOAT3 rotation = DirectX::XMFLOAT3(0, 0, 0)
+		);
 	
 		//mange
 		unsigned int colorState = 0;

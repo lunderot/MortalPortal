@@ -2,9 +2,9 @@
 
 Particle::Particle(unsigned int nrOfParticles,
 	ID3D11Device* device,
-	DirectX::XMFLOAT2 position,
-	DirectX::XMFLOAT2 velocity,
-	DirectX::XMFLOAT2 acceleration) : Entity(device, position, velocity, acceleration)
+	DirectX::XMFLOAT3 position,
+	DirectX::XMFLOAT3 velocity,
+	DirectX::XMFLOAT3 acceleration) : Entity(device, position, velocity, acceleration)
 {
 	HRESULT hr;
 

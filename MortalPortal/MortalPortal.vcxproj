@@ -90,6 +90,7 @@
     <ClCompile Include="Importer.cpp" />
     <ClCompile Include="Input.cpp" />
     <ClCompile Include="KeyboardInput.cpp" />
+    <ClCompile Include="LevelGenerator.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Particles.cpp" />
     <ClCompile Include="ParticleShader.cpp" />
@@ -117,6 +118,7 @@
     <ClInclude Include="Player.h" />
     <ClInclude Include="PowerBar.h" />
     <ClInclude Include="PowerBarShader.h" />
+    <ClInclude Include="LevelGenerator.h" />
     <ClInclude Include="Shader.h" />
     <ClInclude Include="System.h" />
   </ItemGroup>

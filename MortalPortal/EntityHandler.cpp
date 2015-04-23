@@ -29,10 +29,12 @@ void EntityHandler::Render(ID3D11DeviceContext* deviceContext, Shader* shader)
 	for (std::vector<Entity*>::iterator i = entities.begin(); i != entities.end(); ++i)
 	{
 		//Update per model constant buffer
-		XMFLOAT2 playerPosition = (*i)->GetPosition();
-
+		XMFLOAT3 playerPosition = (*i)->GetPosition();
+		XMFLOAT3 playerRotation = (*i)->GetRotation();
+		XMVECTOR PlayerRotationQuat = XMQuaternionRotationRollPitchYawFromVector(XMLoadFloat3(&playerRotation));
 		ConstantBufferPerModel data;
-		XMMATRIX model = XMMatrixTranslation(playerPosition.x, playerPosition.y, 0);
+		XMMATRIX model = XMMatrixTranslation(playerPosition.x, playerPosition.y, playerPosition.z);
+		model = XMMatrixMultiply(model, XMMatrixRotationQuaternion(PlayerRotationQuat));
 		XMStoreFloat4x4(&data.worldMatrix, XMMatrixTranspose(model));
 		shader->UpdateConstantBufferPerModel(deviceContext, &data);
 

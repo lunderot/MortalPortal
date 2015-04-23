@@ -5,9 +5,11 @@
 Player::Player(ID3D11Device* device,
 	Importer* importer,
 	unsigned int meshID,
-	DirectX::XMFLOAT2 position,
-	DirectX::XMFLOAT2 velocity,
-	DirectX::XMFLOAT2 acceleration) : Entity(device, importer, meshID, position, velocity, acceleration)
+	DirectX::XMFLOAT3 position,
+	DirectX::XMFLOAT3 velocity,
+	DirectX::XMFLOAT3 acceleration,
+	DirectX::XMFLOAT3 rotation
+	) : Entity(device, importer, meshID, position, velocity, acceleration, rotation)
 {
 
 }

@@ -9,9 +9,10 @@ Entity::Entity()
 }
 
 Entity::Entity(ID3D11Device* device,
-	DirectX::XMFLOAT2 position,
-	DirectX::XMFLOAT2 velocity,
-	DirectX::XMFLOAT2 acceleration)
+	DirectX::XMFLOAT3 position,
+	DirectX::XMFLOAT3 velocity,
+	DirectX::XMFLOAT3 acceleration,
+	DirectX::XMFLOAT3 rotation)
 {
 	vertexBuffer = nullptr;
 	vertexCount = 0;
@@ -19,19 +20,22 @@ Entity::Entity(ID3D11Device* device,
 	this->position = position;
 	this->velocity = velocity;
 	this->acceleration = acceleration;
+	this->rotation = rotation;
 
 }
 Entity::Entity(ID3D11Device* device,
 	Importer* importer,
 	unsigned int meshID,
-	DirectX::XMFLOAT2 position,
-	DirectX::XMFLOAT2 velocity,
-	DirectX::XMFLOAT2 acceleration
+	DirectX::XMFLOAT3 position,
+	DirectX::XMFLOAT3 velocity,
+	DirectX::XMFLOAT3 acceleration,
+	DirectX::XMFLOAT3 rotation
 	)
 {
 	this->position = position;
 	this->velocity = velocity;
 	this->acceleration = acceleration;
+	this->rotation = rotation;
 
 
 
@@ -65,39 +69,61 @@ void Entity::Update(float deltaTime)
 {
 	velocity.x += acceleration.x * deltaTime;
 	velocity.y += acceleration.y * deltaTime;
+	velocity.z += acceleration.z * deltaTime;
 
-	position.x += velocity.x * deltaTime;
-	position.y += velocity.y * deltaTime;
+	XMVECTOR positionVec = XMLoadFloat3(&position);
+	XMVECTOR velocityVec = XMLoadFloat3(&velocity);
+	XMVECTOR rotationQuat = XMQuaternionRotationRollPitchYawFromVector(XMLoadFloat3(&rotation));
+
+	rotationQuat = XMQuaternionInverse(rotationQuat);
+
+	XMVectorScale(velocityVec, deltaTime);
+
+	velocityVec = XMVector3Rotate(velocityVec, rotationQuat);
+
+	positionVec = XMVectorAdd(positionVec, velocityVec);
+
+	XMStoreFloat3(&position, positionVec);
 }
 
-void Entity::SetPosition(XMFLOAT2 position)
+void Entity::SetPosition(XMFLOAT3 position)
 {
 	this->position = position;
 }
 
-void Entity::SetVelocity(XMFLOAT2 velocity)
+void Entity::SetVelocity(XMFLOAT3 velocity)
 {
 	this->velocity = velocity;
 }
 
-void Entity::SetAcceleration(XMFLOAT2 acceleration)
+void Entity::SetAcceleration(XMFLOAT3 acceleration)
 {
 	this->acceleration = acceleration;
 }
 
-XMFLOAT2 Entity::GetPosition() const
+void Entity::SetRotation(DirectX::XMFLOAT3 rotation)
+{
+	this->rotation = rotation;
+}
+
+XMFLOAT3 Entity::GetPosition() const
 {
 	return position;
 }
 
-XMFLOAT2 Entity::GetVelocity() const
+XMFLOAT3 Entity::GetVelocity() const
 {
 	return velocity;
 }
 
-XMFLOAT2 Entity::GetAcceleration() const
+XMFLOAT3 Entity::GetAcceleration() const
 {
 	return acceleration;
+}
+
+XMFLOAT3 Entity::GetRotation() const
+{
+	return rotation;
 }
 
 ID3D11Buffer* Entity::GetVertexBuffer() const
