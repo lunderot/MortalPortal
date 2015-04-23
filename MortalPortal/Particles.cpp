@@ -11,7 +11,6 @@ Particle::Particle(unsigned int nrOfParticles,
 	HRESULT hr;
 	this->nrOfParticles = nrOfParticles;
 	ID3D11Buffer* vertexBuffer = nullptr;
-	geometry = new Geometry(vertexBuffer, 0);
 
 	D3D11_BUFFER_DESC partbufferDesc;
 	ZeroMemory(&partbufferDesc, sizeof(partbufferDesc));
@@ -37,6 +36,7 @@ Particle::Particle(unsigned int nrOfParticles,
 	uavDesc.Buffer.NumElements = nrOfParticles * 5;
 
 	hr = device->CreateUnorderedAccessView(vertexBuffer, &uavDesc, &particleUAV);
+	geometry = new Geometry(vertexBuffer, 0);
 
 	// Constant Buffer
 	D3D11_BUFFER_DESC bufferDesc;
