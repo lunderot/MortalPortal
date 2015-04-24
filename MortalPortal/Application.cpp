@@ -94,9 +94,6 @@ bool Application::Update(float deltaTime)
 	dir.y *= 10;
 	player1->SetAcceleration(XMFLOAT3(dir.x, dir.y, 0.0f));
 
-	
-
-
 	//mange
 	//player->PlayerColorState(player->colorState);
 	player1->colorState = input->GetButtonState();

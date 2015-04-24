@@ -103,6 +103,7 @@
     <ClCompile Include="PowerBarShader.cpp" />
     <ClCompile Include="Shader.cpp" />
     <ClCompile Include="System.cpp" />
+    <ClCompile Include="TextureHandler.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
@@ -127,6 +128,7 @@
     <ClInclude Include="PowerBarShader.h" />
     <ClInclude Include="Shader.h" />
     <ClInclude Include="System.h" />
+    <ClInclude Include="TextureHandler.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="assets\shaders\BackgroundPixelShader.hlsl">
