@@ -109,6 +109,8 @@ Application::Application(bool fullscreen, bool showCursor, int screenWidth, int 
 	// Create Background
 	background = new Background(d3dHandler->GetDevice());
 
+	levelGenerator = new LevelGenerator("assets/levelparts/", "LEVELPARTNAMES.txt");
+
 }
 
 Application::~Application()

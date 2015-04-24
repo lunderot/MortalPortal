@@ -16,6 +16,7 @@
 #include "PowerBar.h"
 #include "PowerBarShader.h"
 #include "Particles.h"
+#include "LevelGenerator.h"
 
 #include "Background.h"
 #include "BackgroundShader.h"
@@ -53,6 +54,7 @@ private:
 
 	Particle* particle;
 
+	LevelGenerator* levelGenerator;
 
 	Background* background;
 	BackgroundShader* backgShader;

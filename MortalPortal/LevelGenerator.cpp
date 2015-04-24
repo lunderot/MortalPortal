@@ -6,7 +6,7 @@ using namespace std;
 
 LevelGenerator::LevelGenerator(std::string pathToFiles, std::string pheaderFile)
 {
-	std::string pathToLevelHeaderFile = pathToFiles + "//" + pheaderFile;
+	std::string pathToLevelHeaderFile = pathToFiles + pheaderFile;
 
 	ifstream in(pathToLevelHeaderFile.c_str());
 
@@ -23,20 +23,21 @@ LevelGenerator::LevelGenerator(std::string pathToFiles, std::string pheaderFile)
 	srand(time(NULL));
 }
 
-void LevelGenerator::setComets(Geometry* cometsGeometry, Material* cometsMaterial, unsigned int numComets)
+void LevelGenerator::setComets(Geometry** cometsGeometry, Material** cometsMaterial, Shader* cometsShader, unsigned int numComets)
 {
 	this->cometsGeometry = cometsGeometry;
+	this->cometsMaterial = cometsMaterial;
+	this->cometsShader = cometsShader;
 	this->numComets = numComets;
 }
 
-void LevelGenerator::setPlayerOneCrystals(Geometry* playerOneGeometry, Material* playerOneMaterial)
+void LevelGenerator::setPlayerCrystals(Geometry** playerOneGeometry, Material** playerOneMaterial, Geometry** playerTwoGeometry, Material** playerTwoMaterial, Shader* crystalShader)
 {
 	this->playerOneGeometry = playerOneGeometry;
-}
-
-void LevelGenerator::setPlayerTwoCrystals(Geometry* playerTwoGeometry, Material* playerTwoMaterial)
-{
+	this->playerOneMaterial = playerOneMaterial;
 	this->playerTwoGeometry = playerTwoGeometry;
+	this->playerTwoMaterial = playerTwoMaterial;
+	this->crystalShader = crystalShader;
 }
 
 void LevelGenerator::Update(EntityHandler* entityHandler, float deltaTime)
@@ -54,7 +55,7 @@ void LevelGenerator::Update(EntityHandler* entityHandler, float deltaTime)
 		if (lastLine.type == "m")
 		{
 			unsigned int rnd = rand() % numComets;
-			Entity* comet = new Comet(cometsGeometry[rnd], cometsMaterial[rnd], DirectX::XMFLOAT3(0, lastLine.position, 0), DirectX::XMFLOAT3(-lastLine.velocity, 0, 0), DirectX::XMFLOAT3(0, 0, 0));
+			Entity* comet = new Comet(cometsGeometry[rnd], cometsMaterial[rnd], cometsShader, DirectX::XMFLOAT3(0, lastLine.position, 0), DirectX::XMFLOAT3(-lastLine.velocity, 0, 0), DirectX::XMFLOAT3(0, 0, 0));
 			entityHandler->Add(comet);
 		}
 		else if (lastLine.type == "p11")
