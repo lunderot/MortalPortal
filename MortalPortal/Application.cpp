@@ -78,10 +78,14 @@ Application::Application(bool fullscreen, bool showCursor, int screenWidth, int 
 	textureHandler->LoadTexture(L"assets/textures/grass.dds", d3dHandler->GetDevice());
 
 	//Create player and add it to entity handler
-	player1 = new Player(assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/test.bin"), nullptr, playerShader, XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(40, 0, 30));
+	player1 = new Player(	assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/test.bin"),
+							assetHandler->GetMaterial(d3dHandler->GetDevice(), "assets/textures/grass.dds"),
+							playerShader, XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(40, 0, 30));
 	entityHandler->Add(player1);
 
-	player2 = new Player(assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/test.bin"), nullptr, playerShader, XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(40, 0, 30));
+	player2 = new Player(assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/test.bin"),
+		assetHandler->GetMaterial(d3dHandler->GetDevice(), "assets/textures/grass.dds"),
+		playerShader, XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(40, 0, 30));
 	entityHandler->Add(player2);
 
 	// Create Power Bars
@@ -100,7 +104,7 @@ Application::Application(bool fullscreen, bool showCursor, int screenWidth, int 
 
 	// Particles testing area
 	particle = new Particle(10, d3dHandler->GetDevice());
-	entityHandler->Add(particle);
+	//entityHandler->Add(particle);
 
 	// Create Background
 	background = new Background(d3dHandler->GetDevice());
@@ -164,7 +168,7 @@ void Application::Render()
 	playerShader->Render(d3dHandler->GetDeviceContext(), playerShader);
 	//player1->Render(d3dHandler->GetDeviceContext(), playerShader);
 
-	entityHandler->Render(d3dHandler->GetDeviceContext(), playerShader);
+	entityHandler->Render(d3dHandler->GetDeviceContext());
 
 	// Power Bars
 	powerBarShader->Use(d3dHandler->GetDeviceContext());
