@@ -32,7 +32,7 @@ void EntityHandler::Render(ID3D11DeviceContext* deviceContext)
 		Geometry* geometry = (*i)->GetGeometry();
 		Material* material = (*i)->GetMaterial();
 
-		/*if (currentShader == nullptr)
+		if (currentShader == nullptr)
 		{
 			throw std::runtime_error("Shader pointer is nullptr");
 		}
@@ -43,7 +43,7 @@ void EntityHandler::Render(ID3D11DeviceContext* deviceContext)
 		if (material == nullptr)
 		{
 			throw std::runtime_error("Material pointer is nullptr");
-		}*/
+		}
 
 		//Update per model constant buffer
 		XMFLOAT3 position = (*i)->GetPosition();

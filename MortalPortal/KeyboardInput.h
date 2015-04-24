@@ -13,10 +13,10 @@ public:
 	~KeyboardInput();
 
 	DirectX::XMFLOAT2 GetDirection(unsigned int playerNr);
-	unsigned int GetButtonState(unsigned int playerNr);
+	bool GetButtonState();
 private:
 	char keys[5];
-	int returnColorState = 1;
-	bool keyPressed = false;
+	int returnColorState;
+	bool keyPressed;
 };
 
