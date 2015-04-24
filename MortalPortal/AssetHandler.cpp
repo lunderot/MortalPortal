@@ -58,7 +58,11 @@ Geometry* AssetHandler::LoadGeometry(ID3D11Device* device, std::string filename)
 	unsigned int meshID = 0;
 
 	Importer importer;
-	importer.importFile(filename);
+	bool importResult = importer.importFile(filename);
+	if (!importResult)
+	{
+		throw std::runtime_error("Failed to import file: " + filename);
+	}
 
 	D3D11_BUFFER_DESC bufferDesc;
 	ZeroMemory(&bufferDesc, sizeof(bufferDesc));
