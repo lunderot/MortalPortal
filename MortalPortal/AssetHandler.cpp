@@ -10,6 +10,10 @@ AssetHandler::~AssetHandler()
 	{
 		delete i->second;
 	}
+	for (std::map<std::string, Material*>::iterator i = material.begin(); i != material.end(); ++i)
+	{
+		delete i->second;
+	}
 }
 
 Geometry* AssetHandler::GetGeometry(ID3D11Device* device, std::string filename)
@@ -23,6 +27,26 @@ Geometry* AssetHandler::GetGeometry(ID3D11Device* device, std::string filename)
 	{
 		returnValue = LoadGeometry(device, filename);
 		geometry[filename] = returnValue;
+	}
+	return returnValue;
+}
+
+Material* AssetHandler::GetMaterial(ID3D11Device* device, std::string filename)
+{
+	Material* returnValue = nullptr;
+
+	//Convert string to LPCWSTR
+	std::wstring stemp = std::wstring(filename.begin(), filename.end());
+	LPCWSTR sw = stemp.c_str();
+
+	if (material.find(filename) != material.end()) //Material is found
+	{
+		returnValue = material[filename];
+	}
+	else
+	{
+		returnValue = new Material(textureHandler.LoadTexture(sw, device));
+		material[filename] = returnValue;
 	}
 	return returnValue;
 }
