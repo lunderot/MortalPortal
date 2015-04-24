@@ -20,7 +20,7 @@ void ParticleShader::CreateShaders(ID3D11Device* device, LPCWSTR computeShaderFi
 
 	// Create Compute Shader
 	ID3DBlob* pCS = nullptr;
-	hr = D3DCompileFromFile(computeShaderFilename, NULL, D3D_COMPILE_STANDARD_FILE_INCLUDE, "main", "cs_4_0", NULL, NULL, &pCS, &errorMessage);
+	hr = D3DCompileFromFile(computeShaderFilename, NULL, D3D_COMPILE_STANDARD_FILE_INCLUDE, "main", "cs_5_0", NULL, NULL, &pCS, &errorMessage);
 
 	if (FAILED(hr))
 	{

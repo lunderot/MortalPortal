@@ -31,12 +31,15 @@ private:
 	DefaultShader* shader;
 	Importer testImporter;
 	Input* input;
-
+	Input* input2;
 	EntityHandler* entityHandler;
 	AssetHandler* assetHandler;
 
+	char keys[4];
 	Player* player1;
+	unsigned int player1Test = 0;
 	Player* player2;
+	unsigned int player2Test = 1;
 	PlayerShader* playerShader;
 	PlayerShader* playerShader2;
 

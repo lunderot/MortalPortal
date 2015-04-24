@@ -9,12 +9,13 @@ class KeyboardInput :
 	public Input
 {
 public:
-	KeyboardInput();
+	 KeyboardInput(char keys[]);
 	~KeyboardInput();
 
-	DirectX::XMFLOAT2 GetDirection();
-	unsigned int GetButtonState();
+	DirectX::XMFLOAT2 GetDirection(unsigned int playerNr);
+	unsigned int GetButtonState(unsigned int playerNr);
 private:
+	char keys[5];
 	int returnColorState = 1;
 	bool keyPressed = false;
 };
