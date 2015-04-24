@@ -71,12 +71,6 @@ Application::Application(bool fullscreen, bool showCursor, int screenWidth, int 
 	//Setup entity handler
 	entityHandler = new EntityHandler();
 
-	//Setup texture handler & TESTING
-	textureHandler = new TextureHandler();
-	textureHandler->LoadTexture(L"assets/textures/grass.dds", d3dHandler->GetDevice());
-	textureHandler->LoadTexture(L"assets/textures/grass2.dds", d3dHandler->GetDevice());
-	textureHandler->LoadTexture(L"assets/textures/grass.dds", d3dHandler->GetDevice());
-
 	//Create player and add it to entity handler
 	player1 = new Player(
 		assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/test.bin"),
@@ -130,9 +124,8 @@ Application::~Application()
 	delete player1Bar;
 	delete player2Bar;
 	delete particleShader;
-	//delete background;
+	delete background;
 	delete backgShader;
-	delete textureHandler;
 }
 
 bool Application::Update(float deltaTime)

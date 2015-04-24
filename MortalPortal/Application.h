@@ -36,12 +36,10 @@ private:
 	Input* input2;
 	EntityHandler* entityHandler;
 	AssetHandler* assetHandler;
-	TextureHandler* textureHandler;
 
 	Player* player1;
 	char player1Keys[5];
 	unsigned int player1Test = 0;
-	bool player1PreviousButton = false;
 	PlayerShader* playerShader;
 
 	Player* player2;
