@@ -1,5 +1,6 @@
 #pragma once
 #include "Shader.h"
+#include <DirectXTex.h>
 
 //mange
 struct ConstantBufferPerState
@@ -21,6 +22,9 @@ public:
 	ID3D11Buffer*				constantBufferPerState;
 	ConstantBufferPerState		constantBufferPerStateData;
 	ID3D11ShaderResourceView*	test;
+
+	DirectX::TexMetadata texMetadata;
+	DirectX::ScratchImage image;
 
 	unsigned int colorState = 0;
 	void Render(ID3D11DeviceContext* deviceContext, Shader* shader);

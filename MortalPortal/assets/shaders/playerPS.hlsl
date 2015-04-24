@@ -23,8 +23,8 @@ float4 main(VS_OUT input) : SV_Target
 	}
 	else
 	{
-		//return float4(test3, 1.0f);
-		return float4(input.texCoord, 1, 1);
+		return float4(test3, 1.0f);
+		//return float4(input.texCoord, 1, 1);
 	}
 
 }
