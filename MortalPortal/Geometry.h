@@ -16,5 +16,6 @@ public:
 
 	ID3D11Buffer* GetVertexBuffer() const;
 	unsigned int GetVertexCount() const;
+	Collision* GetCollision() const;
 };
 
