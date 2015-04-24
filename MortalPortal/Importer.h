@@ -70,7 +70,7 @@ public:
 
 	//unsigned int numGroups();
 	const Model* getModels() const;
-	const Material* getMatrials() const;
+	const MaterialData* getMatrials() const;
 	const VertexPositionTexCoordNormalBinormalTangent* getMesh(unsigned int meshID) const;
 
 private:
@@ -99,7 +99,7 @@ private:
 	Transform* transforms;
 	meshStruct* meshes;
 	camera* cameras;
-	Material* materials;
+	MaterialData* materials;
 	Light* lights;
 	Joint* joints;
 	Nurb* nurbs;

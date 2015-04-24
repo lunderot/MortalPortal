@@ -14,7 +14,7 @@ Entity::Entity(Geometry* geometry,
 	this->acceleration = acceleration;
 	this->rotation = rotation;
 
-}
+}	
 
 
 Entity::~Entity()

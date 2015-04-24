@@ -202,9 +202,9 @@ struct MorphAnimation
 	// color
 };
 
-struct Material
+struct MaterialData
 {
-	Material()
+	MaterialData()
 	{
 		name_length = duffuse_map_length = normal_map_length = specular_map_length = 0;
 		mtrl_type = eLambert;
@@ -216,7 +216,7 @@ struct Material
 		specular_map = nullptr;
 	}
 #ifndef MAYA_EXPORT
-	~Material()
+	~MaterialData()
 	{
 		delete[] node_name;
 		delete[] diffuse_map;
@@ -248,7 +248,7 @@ struct Material
 
 	void WriteBinary(ofstream& outputfile);
 
-	friend std::ostream& operator<<(std::ostream& out, const Material& obj);
+	friend std::ostream& operator<<(std::ostream& out, const MaterialData& obj);
 };
 
 struct Animation
