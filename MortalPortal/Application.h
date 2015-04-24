@@ -30,37 +30,40 @@ class Application : public System
 {
 private:
 	D3DHandler* d3dHandler;
+	
+	//Shaders
 	DefaultShader* shader;
-	Importer testImporter;
+	PowerBarShader* powerBarShader;
+	ParticleShader* particleShader;
+	PlayerShader* playerShader;
+	BackgroundShader* backgShader;
+
+	//Handlers
 	Input* input;
 	Input* input2;
+
 	EntityHandler* entityHandler;
 	AssetHandler* assetHandler;
 
-	Player* player1;
-	char player1Keys[5];
-	unsigned int player1Test = 0;
-	PlayerShader* playerShader;
-
-	Player* player2;
-	char player2Keys[5];
-	unsigned int player2Test = 1;
-	//PlayerShader* playerShader2;
-
-	PowerBar* player1Bar;
-	PowerBar* player2Bar;
-	PowerBarShader* powerBarShader;
-
-	Particle* particle;
-
 	LevelGenerator* levelGenerator;
 
+	//Entities
+	Player* player1;
+	Player* player2;
+	Particle* particle;
 	Background* background;
-	BackgroundShader* backgShader;
 
+	//Player data
+	char player1Keys[5];
+	char player2Keys[5];
+	unsigned int player1Test = 0;
+	unsigned int player2Test = 1;
 
+	//HUD
+	PowerBar* player1Bar;
+	PowerBar* player2Bar;
 
-	ParticleShader* particleShader;
+	
 
 public:
 	Application(bool fullscreen, bool showCursor, int screenWidth, int screenHeight, LPCWSTR windowTitle);
@@ -68,7 +71,5 @@ public:
 
 	bool Update(float deltaTime); //Returns true on quit
 	void Render();
-
-
 };
 

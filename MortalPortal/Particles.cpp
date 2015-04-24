@@ -99,5 +99,7 @@ Particle::~Particle()
 {
 	if (particleUAV)
 		particleUAV->Release();
+	if (geometry->GetVertexBuffer())
+		geometry->GetVertexBuffer()->Release();
 	delete geometry;
 }
