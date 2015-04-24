@@ -83,9 +83,9 @@ Application::Application(bool fullscreen, bool showCursor, int screenWidth, int 
 							playerShader, XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(40, 0, 30));
 	entityHandler->Add(player1);
 
-	player2 = new Player(assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/test.bin"),
-		assetHandler->GetMaterial(d3dHandler->GetDevice(), "assets/textures/grass.dds"),
-		playerShader, XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(40, 0, 30));
+	player2 = new Player(	assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/test.bin"),
+							assetHandler->GetMaterial(d3dHandler->GetDevice(), "assets/textures/grass.dds"),
+							playerShader, XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(40, 0, 30));
 	entityHandler->Add(player2);
 
 	// Create Power Bars
@@ -110,7 +110,10 @@ Application::Application(bool fullscreen, bool showCursor, int screenWidth, int 
 	background = new Background(d3dHandler->GetDevice());
 
 	levelGenerator = new LevelGenerator("assets/levelparts/", "LEVELPARTNAMES.txt");
-
+	levelGenerator->addComet(	assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/test.bin"),
+								assetHandler->GetMaterial(d3dHandler->GetDevice(), "assets/textures/grass.dds"),
+								shader);
+		
 }
 
 Application::~Application()
@@ -158,6 +161,7 @@ bool Application::Update(float deltaTime)
 	player2Bar->Update(deltaTime);
 	entityHandler->Update(deltaTime);
 	particle->UpdatePosition(player1->GetPosition());
+	levelGenerator->Update(entityHandler, deltaTime);
 
 	return false;
 }

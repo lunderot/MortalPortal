@@ -1,18 +1,21 @@
 #pragma once
 #include "Entity.h"
-#include "EntityHandler.h"	
+#include "EntityHandler.h"
+#include "Comet.h"
+
 #include <string>
 #include <map>
 #include <fstream>
-#include "Comet.h"
+#include <vector>
 
 class LevelGenerator
 {
 public:
 	LevelGenerator(std::string pathToFiles, std::string pheaderFile);
 
-	void setComets(Geometry** cometsGeometry, Material** cometsMaterial, Shader* cometsShader, unsigned int numComets);
-	void setPlayerCrystals(Geometry** playerOneGeometry, Material** playerOneMaterial, Geometry** playerTwoGeometry, Material** playerTwoMaterial, Shader* crystalShader);
+	void addComet(Geometry* cometsGeometry, Material* cometsMaterial, Shader* cometsShader);
+	void addForPlayerOne(Geometry* playerOneCrystalGeometry, Material* playerOneCrystalMaterial, Shader* playerOneCrystalShader);
+	void addForPlayerTow(Geometry* playerTwoCrystalGeometry, Material* playerTwoCrystalMaterial, Shader* playerTwoCrystalShader);
 
 	void Update(EntityHandler* entityHandler, float deltaTime);
 
@@ -29,20 +32,20 @@ protected:
 	std::string  pathToFiles;
 	unsigned int numFiles;
 	std::map<unsigned int, std::string> fileIndex;
-	FILE* partFile;
+	ifstream partFile;
 	lineFormat lastLine;
 	float timeSinceLastSpawn;
 
-	unsigned int numComets;
-	Geometry** cometsGeometry;
-	Material** cometsMaterial;
-	Shader*	cometsShader;
+	vector<Geometry*> cometsGeometry;
+	vector<Material*> cometsMaterial;
+	vector<Shader*>	cometsShader;
 
 
-	Shader*crystalShader;
-	Geometry** playerOneGeometry;
-	Material** playerOneMaterial;
+	vector<Shader*> playerOneCrystalShader;
+	vector<Geometry*> playerOneCrystalGeometry;
+	vector<Material*> playerOneCrystalMaterial;
 
-	Geometry** playerTwoGeometry;
-	Material** playerTwoMaterial;
+	vector<Shader*> playerTwoCrystalShader;
+	vector<Geometry*> playerTwoCrystalGeometry;
+	vector<Material*> playerTwoCrystalMaterial;
 };

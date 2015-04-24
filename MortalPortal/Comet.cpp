@@ -7,6 +7,7 @@ Comet::Comet(Geometry* geometry, Material* material, Shader* shader, DirectX::XM
 
 void Comet::Update(float deltaTime)
 {
+	Entity::Update(deltaTime);
 	if (position.x < -30)
 	{
 		alive = false;
