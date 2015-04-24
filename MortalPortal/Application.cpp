@@ -107,7 +107,7 @@ bool Application::Update(float deltaTime)
 	player1Bar->Update(deltaTime);
 	player2Bar->Update(deltaTime);
 	entityHandler->Update(deltaTime);
-	particle->UpdatePosition(player->GetPosition());
+	particle->UpdatePosition(player1->GetPosition());
 
 	return false;
 }
