@@ -9,5 +9,6 @@ void Comet::Update(float deltaTime)
 {
 	if (position.x < -30)
 	{
+		alive = false;
 	};
 }

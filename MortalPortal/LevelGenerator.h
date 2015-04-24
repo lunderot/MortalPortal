@@ -11,9 +11,9 @@ class LevelGenerator
 public:
 	LevelGenerator(std::string pathToFiles, std::string pheaderFile);
 
-	void setComets(Geometry** cometsGeometry /*, material* meteoritesMaterial*/, unsigned int numComets);
-	void setPlayerOneCrystals(Geometry* playerOneGeometry);
-	void setPlayerTwoCrystals(Geometry* playerTwoGeometry);
+	void setComets(Geometry* cometsGeometry, Material* cometsMaterial, unsigned int numComets);
+	void setPlayerOneCrystals(Geometry* playerOneGeometry, Material* playerOneMaterial);
+	void setPlayerTwoCrystals(Geometry* playerTwoGeometry, Material* playerTwoMaterial);
 
 	void Update(EntityHandler* entityHandler, float deltaTime);
 
@@ -35,7 +35,12 @@ protected:
 	float timeSinceLastSpawn;
 
 	unsigned int numComets;
-	Geometry** cometsGeometry;
+	Geometry* cometsGeometry;
+	Material* cometsMaterial;
+	Shader*
 	Geometry* playerOneGeometry;
+	Material* playerOneMaterial;
+
 	Geometry* playerTwoGeometry;
+	Material* playerTwoMaterial;
 };

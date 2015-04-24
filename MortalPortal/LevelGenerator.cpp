@@ -23,18 +23,18 @@ LevelGenerator::LevelGenerator(std::string pathToFiles, std::string pheaderFile)
 	srand(time(NULL));
 }
 
-void LevelGenerator::setComets(Geometry** cometsGeometry /*, material* meteoritesMaterial*/, unsigned int numComets)
+void LevelGenerator::setComets(Geometry* cometsGeometry, Material* cometsMaterial, unsigned int numComets)
 {
 	this->cometsGeometry = cometsGeometry;
 	this->numComets = numComets;
 }
 
-void LevelGenerator::setPlayerOneCrystals(Geometry* playerOneGeometry)
+void LevelGenerator::setPlayerOneCrystals(Geometry* playerOneGeometry, Material* playerOneMaterial)
 {
 	this->playerOneGeometry = playerOneGeometry;
 }
 
-void LevelGenerator::setPlayerTwoCrystals(Geometry* playerTwoGeometry)
+void LevelGenerator::setPlayerTwoCrystals(Geometry* playerTwoGeometry, Material* playerTwoMaterial)
 {
 	this->playerTwoGeometry = playerTwoGeometry;
 }
@@ -53,9 +53,9 @@ void LevelGenerator::Update(EntityHandler* entityHandler, float deltaTime)
 
 		if (lastLine.type == "m")
 		{
-			//unsigned int rnd = rand() % numComets;
-			//Entity* comet = new Comet(cometsGeometry[rnd], DirectX::XMFLOAT3(0, lastLine.position, 0), DirectX::XMFLOAT3(-lastLine.velocity, 0, 0), DirectX::XMFLOAT3(0, 0, 0));
-			//entityHandler->Add(comet);
+			unsigned int rnd = rand() % numComets;
+			Entity* comet = new Comet(cometsGeometry[rnd], cometsMaterial[rnd], DirectX::XMFLOAT3(0, lastLine.position, 0), DirectX::XMFLOAT3(-lastLine.velocity, 0, 0), DirectX::XMFLOAT3(0, 0, 0));
+			entityHandler->Add(comet);
 		}
 		else if (lastLine.type == "p11")
 		{
