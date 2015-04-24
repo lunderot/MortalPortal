@@ -27,14 +27,14 @@ Application::Application(bool fullscreen, bool showCursor, int screenWidth, int 
 	player1Keys[1] = 'S';
 	player1Keys[2] = 'A';
 	player1Keys[3] = 'D';
-	player1Keys[4] = VK_SPACE;
+	player1Keys[4] = 'X';
 	
 	// Player 2 keys
 	player2Keys[0] = 'I';
 	player2Keys[1] = 'K';
 	player2Keys[2] = 'J';
 	player2Keys[3] = 'L';
-	player2Keys[4] = 'P';
+	player2Keys[4] = 'M';
 
 	//Setup input
 	try
@@ -140,15 +140,16 @@ bool Application::Update(float deltaTime)
 	dir2.y *= 10;
 	player2->SetAcceleration(XMFLOAT3(dir2.x, dir2.y, 0.0f));
 
-
-
-	//mange
-	//player->PlayerColorState(player->colorState);
 	player1->colorState = input->GetButtonState(player1Test);
 	playerShader->constantBufferPerStateData.colorState = player1->colorState;
-	//player1->constantBufferPerStateData.colorState = player1->colorState;
-	player1->Update(deltaTime);
+	
+	player2->colorState = input->GetButtonState(player2Test);
+	playerShader->constantBufferPerStateData.colorState = player2->colorState;
 
+
+	//player1->constantBufferPerStateData.colorState = player1->colorState;
+	
+	player1->Update(deltaTime);
 	player2->Update(deltaTime);
 
 	player1Bar->Update(deltaTime);

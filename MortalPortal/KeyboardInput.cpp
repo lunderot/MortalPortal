@@ -51,21 +51,30 @@ DirectX::XMFLOAT2 KeyboardInput::GetDirection(unsigned int playerNr)
 
 unsigned int KeyboardInput::GetButtonState(unsigned int playerNr)
 {
-	if (playerNr == 0)
-	{
-		short test = GetAsyncKeyState(keys[4]);
+	short test = GetAsyncKeyState(keys[4]);
 
-		if (keyPressed == false && test < 0)
-		{
-			returnColorState *= -1;
-			keyPressed = true;
-		}
-		else if (test >= 0)
-		{
-			keyPressed = false;
-		}
+
+	if (keyPressed == false && test < 0)
+	{
+		returnColorState *= -1;
+		keyPressed = true;
 		std::cout << test << std::endl;
 	}
+	else if (test >= 0)
+	{
+		keyPressed = false;
+	}
+
+	/*if (keyPressed == false && test < 0)
+	{
+		returnColorState *= -1;
+		keyPressed = true;
+	}
+	else if (test >= 0)
+	{
+		keyPressed = false;
+	}*/
+	
 
 	return returnColorState;
 	//return GetAsyncKeyState(VK_SPACE);
