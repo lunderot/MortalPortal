@@ -82,6 +82,7 @@
     <ClCompile Include="AssetHandler.cpp" />
     <ClCompile Include="Background.cpp" />
     <ClCompile Include="BackgroundShader.cpp" />
+    <ClCompile Include="Comet.cpp" />
     <ClCompile Include="CommonDeclaration.cpp" />
     <ClCompile Include="ControllerInput.cpp" />
     <ClCompile Include="D3DHandler.cpp" />
@@ -92,6 +93,7 @@
     <ClCompile Include="Importer.cpp" />
     <ClCompile Include="Input.cpp" />
     <ClCompile Include="KeyboardInput.cpp" />
+    <ClCompile Include="LevelGenerator.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Particles.cpp" />
     <ClCompile Include="ParticleShader.cpp" />
@@ -107,6 +109,7 @@
     <ClInclude Include="AssetHandler.h" />
     <ClInclude Include="Background.h" />
     <ClInclude Include="BackgroundShader.h" />
+    <ClInclude Include="Comet.h" />
     <ClInclude Include="CommonDeclaration.h" />
     <ClInclude Include="ControllerInput.h" />
     <ClInclude Include="D3DHandler.h" />
@@ -117,6 +120,7 @@
     <ClInclude Include="Importer.h" />
     <ClInclude Include="Input.h" />
     <ClInclude Include="KeyboardInput.h" />
+    <ClInclude Include="LevelGenerator.h" />
     <ClInclude Include="Particles.h" />
     <ClInclude Include="ParticleShader.h" />
     <ClInclude Include="Player.h" />
