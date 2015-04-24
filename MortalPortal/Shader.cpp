@@ -21,7 +21,7 @@ Shader::Shader(ID3D11Device* device, unsigned int screenWidth, unsigned int scre
 	D3D11_SUBRESOURCE_DATA data;
 
 	//Create per frame constant buffer
-	XMFLOAT3 camPos(0, 10, -20);
+	XMFLOAT3 camPos(0, 0, -20);
 	XMFLOAT3 lookAt(0, 0, 0);
 	XMFLOAT3 up(0, 1, 0);
 
