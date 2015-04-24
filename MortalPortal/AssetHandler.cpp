@@ -10,6 +10,10 @@ AssetHandler::~AssetHandler()
 	{
 		delete i->second;
 	}
+	for (std::map<std::string, Material*>::iterator i = material.begin(); i != material.end(); ++i)
+	{
+		delete i->second;
+	}
 }
 
 Geometry* AssetHandler::GetGeometry(ID3D11Device* device, std::string filename)
@@ -27,6 +31,26 @@ Geometry* AssetHandler::GetGeometry(ID3D11Device* device, std::string filename)
 	return returnValue;
 }
 
+Material* AssetHandler::GetMaterial(ID3D11Device* device, std::string filename)
+{
+	Material* returnValue = nullptr;
+
+	//Convert string to LPCWSTR
+	std::wstring stemp = std::wstring(filename.begin(), filename.end());
+	LPCWSTR sw = stemp.c_str();
+
+	if (material.find(filename) != material.end()) //Material is found
+	{
+		returnValue = material[filename];
+	}
+	else
+	{
+		returnValue = new Material(textureHandler.LoadTexture(sw, device));
+		material[filename] = returnValue;
+	}
+	return returnValue;
+}
+
 Geometry* AssetHandler::LoadGeometry(ID3D11Device* device, std::string filename)
 {
 	Geometry* returnValue = nullptr;
@@ -34,7 +58,11 @@ Geometry* AssetHandler::LoadGeometry(ID3D11Device* device, std::string filename)
 	unsigned int meshID = 0;
 
 	Importer importer;
-	importer.importFile(filename);
+	bool importResult = importer.importFile(filename);
+	if (!importResult)
+	{
+		throw std::runtime_error("Failed to import file: " + filename);
+	}
 
 	D3D11_BUFFER_DESC bufferDesc;
 	ZeroMemory(&bufferDesc, sizeof(bufferDesc));
@@ -50,7 +78,7 @@ Geometry* AssetHandler::LoadGeometry(ID3D11Device* device, std::string filename)
 		throw std::runtime_error("Failed to create vertex buffer");
 	}
 
-	returnValue = new Geometry(vertexBuffer, importer.getMeshVertexCount(meshID));
+	returnValue = new Geometry(vertexBuffer, importer.getMeshVertexCount(meshID), nullptr);
 
 	return returnValue;
 }

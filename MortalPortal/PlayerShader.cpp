@@ -22,7 +22,8 @@ PlayerShader::PlayerShader(ID3D11Device* device, LPWSTR vertexShaderPath, LPWSTR
 	colorStateBufferDesc.MiscFlags = 0;
 	device->CreateBuffer(&colorStateBufferDesc, NULL, &constantBufferPerState);
 	//HRESULT hr = DirectX::CreateDDSTextureFromFile(device, L"grass.dds", nullptr, &test);
-
+	HRESULT hr = DirectX::LoadFromDDSFile(L"grass.dds", DirectX::DDS_FLAGS_NONE, &texMetadata, image);
+	hr = DirectX::CreateShaderResourceView(device, image.GetImages(), image.GetImageCount(), texMetadata, &test);
 	CreateMandatoryShaders(device, vertexShaderPath, pixelShaderPath, inputDesc, ARRAYSIZE(inputDesc));
 
 }

@@ -18,10 +18,10 @@ private:
 	int returnColorState = 1;
 	bool keyPressed = false;
 public:
-	ControllerInput();
+	ControllerInput(unsigned int playerNr);
 	~ControllerInput();
 
-	DirectX::XMFLOAT2 GetDirection();
-	unsigned int GetButtonState();
+	DirectX::XMFLOAT2 GetDirection(unsigned int playerNr);
+	unsigned int GetButtonState(unsigned int playerNr);
 };
 

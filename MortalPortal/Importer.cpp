@@ -226,11 +226,11 @@ bool Importer::extractCameras(unsigned int& offset, char* fileData, unsigned int
 
 bool Importer::extractMaterials(unsigned int& offset, char* fileData, unsigned int& fileSize)
 {
-	materials = new Material[headers.material_count];
+	materials = new MaterialData[headers.material_count];
 	for (unsigned int i = 0; i < headers.material_count; i++)
 	{
-		memcpy(&materials[i], &fileData[offset], sizeof(Material) - sizeof(const char*) * 4);
-		offset += sizeof(Material) - sizeof(const char*) * 4;
+		memcpy(&materials[i], &fileData[offset], sizeof(MaterialData) - sizeof(const char*) * 4);
+		offset += sizeof(MaterialData) - sizeof(const char*) * 4;
 		char* node_name = new char[materials[i].name_length + 1];
 		node_name[materials[i].name_length] = '\0';
 
@@ -489,7 +489,7 @@ bool Importer::constructSpere()
 	return true;
 }
 
-const Material* Importer::getMatrials() const
+const MaterialData* Importer::getMatrials() const
 {
 	return materials;
 }

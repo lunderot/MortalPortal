@@ -53,19 +53,19 @@ void LevelGenerator::Update(EntityHandler* entityHandler, float deltaTime)
 
 		if (lastLine.type == "m")
 		{
-			unsigned int rnd = rand() % numComets;
-			Entity* comet = new Comet(cometsGeometry[rnd], DirectX::XMFLOAT3(0, lastLine.position, 0), DirectX::XMFLOAT3(-lastLine.velocity, 0, 0), DirectX::XMFLOAT3(0, 0, 0));
-			entityHandler->Add(comet);
+			//unsigned int rnd = rand() % numComets;
+			//Entity* comet = new Comet(cometsGeometry[rnd], DirectX::XMFLOAT3(0, lastLine.position, 0), DirectX::XMFLOAT3(-lastLine.velocity, 0, 0), DirectX::XMFLOAT3(0, 0, 0));
+			//entityHandler->Add(comet);
 		}
 		else if (lastLine.type == "p11")
 		{
-			Entity* crystal = new Entity(&playerOneGeometry[1], DirectX::XMFLOAT3(0, lastLine.position, 0), DirectX::XMFLOAT3(-lastLine.velocity, 0, 0), DirectX::XMFLOAT3(0, 0, 0));
-			entityHandler->Add(crystal);
+			//Entity* crystal = new Entity(&playerOneGeometry[1], DirectX::XMFLOAT3(0, lastLine.position, 0), DirectX::XMFLOAT3(-lastLine.velocity, 0, 0), DirectX::XMFLOAT3(0, 0, 0));
+			//entityHandler->Add(crystal);
 		}
 		else if (lastLine.type == "p12")
 		{
-			Entity* crystal = new Entity(&playerOneGeometry[1], DirectX::XMFLOAT3(0, lastLine.position, 0), DirectX::XMFLOAT3(-lastLine.velocity, 0, 0), DirectX::XMFLOAT3(0, 0, 0));
-			entityHandler->Add(crystal);
+			//Entity* crystal = new Entity(&playerOneGeometry[1], DirectX::XMFLOAT3(0, lastLine.position, 0), DirectX::XMFLOAT3(-lastLine.velocity, 0, 0), DirectX::XMFLOAT3(0, 0, 0));
+			//entityHandler->Add(crystal);
 		}
 		else if (lastLine.type == "p21")
 		{

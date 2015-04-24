@@ -21,19 +21,45 @@ Application::Application(bool fullscreen, bool showCursor, int screenWidth, int 
 	backgShader = new BackgroundShader(d3dHandler->GetDevice(), L"assets/shaders/BackgroundVertexShader.hlsl", L"assets/shaders/BackgroundPixelShader.hlsl", screenWidth, screenHeight, screenNear, screenFar);
 
 	particleShader = new ParticleShader(L"assets/shaders/particleCS.hlsl", L"assets/shaders/particleGS.hlsl", d3dHandler->GetDevice(), L"assets/shaders/particleVS.hlsl", L"assets/shaders/particlePS.hlsl", screenWidth, screenHeight, screenNear, screenFar);
+
+	// Player 1 keys
+	player1Keys[0] = 'W';
+	player1Keys[1] = 'S';
+	player1Keys[2] = 'A';
+	player1Keys[3] = 'D';
+	player1Keys[4] = VK_SPACE;
 	
+	// Player 2 keys
+	player2Keys[0] = 'I';
+	player2Keys[1] = 'K';
+	player2Keys[2] = 'J';
+	player2Keys[3] = 'L';
+	player2Keys[4] = 'P';
 
 	//Setup input
 	try
 	{
-		input = new ControllerInput();
+		input = new ControllerInput(player1Test);
 		std::cout << "Using controller input" << std::endl;
 	}
 	catch (std::exception& e)
 	{
 		std::cout << e.what() << std::endl;
 		std::cout << "Using keyboard input" << std::endl;
-		input = new KeyboardInput();
+		input = new KeyboardInput(player1Keys);
+	}
+
+	try
+	{
+		input2 = new ControllerInput(player2Test);
+		std::cout << "Using controller input" << std::endl;
+
+	}
+	catch (std::exception& e)
+	{
+		std::cout << e.what() << std::endl;
+		std::cout << "Using keyboard input" << std::endl;
+		input2 = new KeyboardInput(player2Keys);
 	}
 
 	//Create assetHandler
@@ -45,9 +71,18 @@ Application::Application(bool fullscreen, bool showCursor, int screenWidth, int 
 	//Setup entity handler
 	entityHandler = new EntityHandler();
 
+	//Setup texture handler & TESTING
+	textureHandler = new TextureHandler();
+	textureHandler->LoadTexture(L"assets/textures/grass.dds", d3dHandler->GetDevice());
+	textureHandler->LoadTexture(L"assets/textures/grass2.dds", d3dHandler->GetDevice());
+	textureHandler->LoadTexture(L"assets/textures/grass.dds", d3dHandler->GetDevice());
+
 	//Create player and add it to entity handler
-	player1 = new Player(assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/test.bin"), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(40, 0, 30));
+	player1 = new Player(assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/test.bin"), nullptr, playerShader, XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(40, 0, 30));
 	entityHandler->Add(player1);
+
+	player2 = new Player(assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/test.bin"), nullptr, playerShader, XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(40, 0, 30));
+	entityHandler->Add(player2);
 
 	// Create Power Bars
 	player1Bar = new PowerBar(d3dHandler->GetDevice());
@@ -85,24 +120,32 @@ Application::~Application()
 	delete particleShader;
 	//delete background;
 	delete backgShader;
+	delete textureHandler;
 }
 
 bool Application::Update(float deltaTime)
 {
-	XMFLOAT2 dir = input->GetDirection();
+	XMFLOAT2 dir = input->GetDirection(player1Test);
 	dir.x *= 10;
 	dir.y *= 10;
 	player1->SetAcceleration(XMFLOAT3(dir.x, dir.y, 0.0f));
 
-	
+
+	XMFLOAT2 dir2 = input2->GetDirection(player2Test);
+	dir2.x *= 10;
+	dir2.y *= 10;
+	player2->SetAcceleration(XMFLOAT3(dir2.x, dir2.y, 0.0f));
+
 
 
 	//mange
 	//player->PlayerColorState(player->colorState);
-	player1->colorState = input->GetButtonState();
+	player1->colorState = input->GetButtonState(player1Test);
 	playerShader->constantBufferPerStateData.colorState = player1->colorState;
 	//player1->constantBufferPerStateData.colorState = player1->colorState;
 	player1->Update(deltaTime);
+
+	player2->Update(deltaTime);
 
 	player1Bar->Update(deltaTime);
 	player2Bar->Update(deltaTime);

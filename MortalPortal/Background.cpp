@@ -2,7 +2,7 @@
 
 using namespace DirectX;
 
-Background::Background(ID3D11Device* device) : Entity(nullptr)
+Background::Background(ID3D11Device* device) : Entity(nullptr, nullptr, nullptr)
 {
 	ID3D11Buffer* vertexBuffer = nullptr;
 
@@ -73,7 +73,7 @@ Background::Background(ID3D11Device* device) : Entity(nullptr)
 
 	HRESULT hr = device->CreateBuffer(&bufferDesc, &data, &vertexBuffer);
 
-	geometry = new Geometry(vertexBuffer, 12);
+	geometry = new Geometry(vertexBuffer, 12, nullptr);
 
 
 }

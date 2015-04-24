@@ -22,6 +22,7 @@
 
 #include "ParticleShader.h"
 #include "AssetHandler.h"
+#include "TextureHandler.h"
 
 
 class Application : public System
@@ -31,12 +32,17 @@ private:
 	DefaultShader* shader;
 	Importer testImporter;
 	Input* input;
-
+	Input* input2;
 	EntityHandler* entityHandler;
 	AssetHandler* assetHandler;
+	TextureHandler* textureHandler;
 
 	Player* player1;
+	char player1Keys[5];
+	unsigned int player1Test = 0;
 	Player* player2;
+	char player2Keys[5];
+	unsigned int player2Test = 1;
 	PlayerShader* playerShader;
 	PlayerShader* playerShader2;
 
