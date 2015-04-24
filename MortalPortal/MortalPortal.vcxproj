@@ -84,6 +84,8 @@
     <ClCompile Include="AssetHandler.cpp" />
     <ClCompile Include="Background.cpp" />
     <ClCompile Include="BackgroundShader.cpp" />
+    <ClCompile Include="Collision.cpp" />
+    <ClCompile Include="CollisionSphere.cpp" />
     <ClCompile Include="CommonDeclaration.cpp" />
     <ClCompile Include="ControllerInput.cpp" />
     <ClCompile Include="D3DHandler.cpp" />
@@ -111,6 +113,8 @@
     <ClInclude Include="AssetHandler.h" />
     <ClInclude Include="Background.h" />
     <ClInclude Include="BackgroundShader.h" />
+    <ClInclude Include="Collision.h" />
+    <ClInclude Include="CollisionSphere.h" />
     <ClInclude Include="CommonDeclaration.h" />
     <ClInclude Include="ControllerInput.h" />
     <ClInclude Include="D3DHandler.h" />

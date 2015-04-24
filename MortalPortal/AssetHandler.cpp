@@ -50,7 +50,7 @@ Geometry* AssetHandler::LoadGeometry(ID3D11Device* device, std::string filename)
 		throw std::runtime_error("Failed to create vertex buffer");
 	}
 
-	returnValue = new Geometry(vertexBuffer, importer.getMeshVertexCount(meshID));
+	returnValue = new Geometry(vertexBuffer, importer.getMeshVertexCount(meshID), nullptr);
 
 	return returnValue;
 }

@@ -36,7 +36,7 @@ Particle::Particle(unsigned int nrOfParticles,
 	uavDesc.Buffer.NumElements = nrOfParticles * 5;
 
 	hr = device->CreateUnorderedAccessView(vertexBuffer, &uavDesc, &particleUAV);
-	geometry = new Geometry(vertexBuffer, 0);
+	geometry = new Geometry(vertexBuffer, 0, nullptr);
 
 	// Constant Buffer
 	D3D11_BUFFER_DESC bufferDesc;
