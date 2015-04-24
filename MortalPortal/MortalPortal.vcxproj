@@ -95,6 +95,7 @@
     <ClCompile Include="Input.cpp" />
     <ClCompile Include="KeyboardInput.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Material.cpp" />
     <ClCompile Include="Particles.cpp" />
     <ClCompile Include="ParticleShader.cpp" />
     <ClCompile Include="Player.cpp" />
@@ -103,6 +104,7 @@
     <ClCompile Include="PowerBarShader.cpp" />
     <ClCompile Include="Shader.cpp" />
     <ClCompile Include="System.cpp" />
+    <ClCompile Include="TextureHandler.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
@@ -119,6 +121,7 @@
     <ClInclude Include="Importer.h" />
     <ClInclude Include="Input.h" />
     <ClInclude Include="KeyboardInput.h" />
+    <ClInclude Include="Material.h" />
     <ClInclude Include="Particles.h" />
     <ClInclude Include="ParticleShader.h" />
     <ClInclude Include="Player.h" />
@@ -127,6 +130,7 @@
     <ClInclude Include="PowerBarShader.h" />
     <ClInclude Include="Shader.h" />
     <ClInclude Include="System.h" />
+    <ClInclude Include="TextureHandler.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="assets\shaders\BackgroundPixelShader.hlsl">

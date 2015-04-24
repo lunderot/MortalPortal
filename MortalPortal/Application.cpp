@@ -58,11 +58,17 @@ Application::Application(bool fullscreen, bool showCursor, int screenWidth, int 
 	//Setup entity handler
 	entityHandler = new EntityHandler();
 
+	//Setup texture handler & TESTING
+	textureHandler = new TextureHandler();
+	textureHandler->LoadTexture(L"assets/textures/grass.dds", d3dHandler->GetDevice());
+	textureHandler->LoadTexture(L"assets/textures/grass2.dds", d3dHandler->GetDevice());
+	textureHandler->LoadTexture(L"assets/textures/grass.dds", d3dHandler->GetDevice());
+
 	//Create player and add it to entity handler
-	player1 = new Player(assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/test.bin"), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(40, 0, 30));
+	player1 = new Player(assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/test.bin"), nullptr, playerShader, XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(40, 0, 30));
 	entityHandler->Add(player1);
 
-	player2 = new Player(assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/test.bin"), XMFLOAT3(1, 1, 0), XMFLOAT3(1, 1, 0), XMFLOAT3(1, 1, 0), XMFLOAT3(1, 1, 0));
+	player2 = new Player(assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/test.bin"), nullptr, playerShader, XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(40, 0, 30));
 	entityHandler->Add(player2);
 
 	// Create Power Bars
@@ -101,6 +107,7 @@ Application::~Application()
 	delete particleShader;
 	//delete background;
 	delete backgShader;
+	delete textureHandler;
 }
 
 bool Application::Update(float deltaTime)
@@ -110,10 +117,12 @@ bool Application::Update(float deltaTime)
 	dir.y *= 10;
 	player1->SetAcceleration(XMFLOAT3(dir.x, dir.y, 0.0f));
 
+
 	XMFLOAT2 dir2 = input2->GetDirection(player2Test);
 	dir2.x *= 10;
 	dir2.y *= 10;
 	player2->SetAcceleration(XMFLOAT3(dir2.x, dir2.y, 0.0f));
+
 
 
 	//mange
