@@ -22,7 +22,20 @@ Application::Application(bool fullscreen, bool showCursor, int screenWidth, int 
 
 	particleShader = new ParticleShader(L"assets/shaders/particleCS.hlsl", L"assets/shaders/particleGS.hlsl", d3dHandler->GetDevice(), L"assets/shaders/particleVS.hlsl", L"assets/shaders/particlePS.hlsl", screenWidth, screenHeight, screenNear, screenFar);
 	
+	// Player 1 keys
+	player1Keys[0] = 'W';
+	player1Keys[1] = 'S';
+	player1Keys[2] = 'A';
+	player1Keys[3] = 'D';
+	player1Keys[4] = VK_SPACE;
 	
+	// Player 2 keys
+	player2Keys[0] = 'I';
+	player2Keys[1] = 'K';
+	player2Keys[2] = 'J';
+	player2Keys[3] = 'L';
+	player2Keys[4] = 'P';
+
 	//Setup input
 	try
 	{
@@ -33,7 +46,7 @@ Application::Application(bool fullscreen, bool showCursor, int screenWidth, int 
 	{
 		std::cout << e.what() << std::endl;
 		std::cout << "Using keyboard input" << std::endl;
-		input = new KeyboardInput(keys);
+		input = new KeyboardInput(player1Keys);
 	}
 
 	try
@@ -46,7 +59,7 @@ Application::Application(bool fullscreen, bool showCursor, int screenWidth, int 
 	{
 		std::cout << e.what() << std::endl;
 		std::cout << "Using keyboard input" << std::endl;
-		input2 = new KeyboardInput(keys);
+		input2 = new KeyboardInput(player2Keys);
 	}
 
 	//Create assetHandler

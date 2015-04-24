@@ -30,11 +30,11 @@ DirectX::XMFLOAT2 KeyboardInput::GetDirection(unsigned int playerNr)
 	}
 	if (GetAsyncKeyState(keys[2]))
 	{
-		returnValue.x += 1.0f;
+		returnValue.x -= 1.0f;
 	}
 	if (GetAsyncKeyState(keys[3]))
 	{
-		returnValue.x -= 1.0f;
+		returnValue.x += 1.0f;
 	}
 	
 	
