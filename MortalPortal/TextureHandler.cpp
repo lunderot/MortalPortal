@@ -5,7 +5,7 @@ TextureHandler::TextureHandler()
 
 }
 
-ID3D11ShaderResourceView* TextureHandler::LoadTexture(std::string name)
+ID3D11ShaderResourceView* TextureHandler::LoadTexture(LPCWSTR name, ID3D11Device* device)
 {
 	if (texture.find(name) != texture.end())
 	{
@@ -13,19 +13,33 @@ ID3D11ShaderResourceView* TextureHandler::LoadTexture(std::string name)
 	}
 
 	HRESULT hr;
+	ID3DBlob* errorMessage = nullptr;
 
 	//Create DDS Texture
-
-	//loadtexture stuff
 	ID3D11ShaderResourceView* DDSTexture;
-	//texture[name] = DDSTexture;
+	DirectX::TexMetadata texMetadata;
+	DirectX::ScratchImage image;
 
-	return NULL;
+	hr = DirectX::LoadFromDDSFile(name, DirectX::DDS_FLAGS_NONE, &texMetadata, image);
+	if (FAILED(hr))
+		throw std::runtime_error("Failed to LoadFromDDSFile in TextureHandler");
+
+	hr = DirectX::CreateShaderResourceView(device, image.GetImages(), image.GetImageCount(), texMetadata, &DDSTexture);
+	if (FAILED(hr))
+		throw std::runtime_error("Failed to CreateShaderResourceView in TextureHandler");
+
+	if (FAILED(hr))
+		throw std::runtime_error("Failed to return a texture in TextureHandler");
+
+	//Map the name & ShaderResourceView
+	texture[name] = DDSTexture;
+
+	return DDSTexture;
 }
 
 TextureHandler::~TextureHandler()
 {
-	for (std::map<std::string, ID3D11ShaderResourceView*>::iterator i = texture.begin(); i != texture.end(); ++i)
+	for (std::map<LPCWSTR, ID3D11ShaderResourceView*>::iterator i = texture.begin(); i != texture.end(); ++i)
 	{
 		(*i).second->Release();
 	}

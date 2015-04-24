@@ -22,6 +22,7 @@
 
 #include "ParticleShader.h"
 #include "AssetHandler.h"
+#include "TextureHandler.h"
 
 
 class Application : public System
@@ -34,6 +35,7 @@ private:
 
 	EntityHandler* entityHandler;
 	AssetHandler* assetHandler;
+	TextureHandler* textureHandler;
 
 	Player* player1;
 	Player* player2;
