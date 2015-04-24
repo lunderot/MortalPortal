@@ -4,7 +4,7 @@ Particle::Particle(unsigned int nrOfParticles,
 	ID3D11Device* device,
 	DirectX::XMFLOAT3 position,
 	DirectX::XMFLOAT3 velocity,
-	DirectX::XMFLOAT3 acceleration) : Entity(nullptr, position, velocity, acceleration)
+	DirectX::XMFLOAT3 acceleration) : Entity(nullptr, nullptr, nullptr, position, velocity, acceleration)
 {
 
 

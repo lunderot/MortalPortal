@@ -2,7 +2,7 @@
 
 using namespace DirectX;
 
-Background::Background(ID3D11Device* device) : Entity(nullptr)
+Background::Background(ID3D11Device* device) : Entity(nullptr, nullptr, nullptr)
 {
 	ID3D11Buffer* vertexBuffer = nullptr;
 

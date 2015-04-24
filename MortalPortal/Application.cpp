@@ -52,7 +52,7 @@ Application::Application(bool fullscreen, bool showCursor, int screenWidth, int 
 	textureHandler->LoadTexture(L"assets/textures/grass.dds", d3dHandler->GetDevice());
 
 	//Create player and add it to entity handler
-	player1 = new Player(assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/test.bin"), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(40, 0, 30));
+	player1 = new Player(assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/test.bin"), nullptr, playerShader, XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(40, 0, 30));
 	entityHandler->Add(player1);
 
 	// Create Power Bars

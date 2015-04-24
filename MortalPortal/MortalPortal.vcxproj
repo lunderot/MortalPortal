@@ -95,6 +95,7 @@
     <ClCompile Include="Input.cpp" />
     <ClCompile Include="KeyboardInput.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Material.cpp" />
     <ClCompile Include="Particles.cpp" />
     <ClCompile Include="ParticleShader.cpp" />
     <ClCompile Include="Player.cpp" />
@@ -120,6 +121,7 @@
     <ClInclude Include="Importer.h" />
     <ClInclude Include="Input.h" />
     <ClInclude Include="KeyboardInput.h" />
+    <ClInclude Include="Material.h" />
     <ClInclude Include="Particles.h" />
     <ClInclude Include="ParticleShader.h" />
     <ClInclude Include="Player.h" />
