@@ -52,7 +52,7 @@ Particle::Particle(unsigned int nrOfParticles,
 		throw std::runtime_error("Failed to create constant buffer in Particles");
 	}
 	// Ett stycke hård kod
-	constantBufferData.maxRange = 10;
+	constantBufferData.lifeTime = 10;
 }
 
 unsigned int Particle::GetNrOfParticles()
@@ -67,6 +67,11 @@ ID3D11UnorderedAccessView* Particle::getUAV()
 void Particle::UpdatePosition(DirectX::XMFLOAT3 position)
 {
 	constantBufferData.position = position;
+}
+
+void Particle::SetLifeTime(float time)
+{
+	constantBufferData.lifeTime = time;
 }
 
 void Particle::Render(ID3D11DeviceContext* deviceContext, Shader* shader, ID3D11ComputeShader* computeShader)
