@@ -4,7 +4,7 @@
 
 struct ConstantBufferData
 {
-	UINT maxRange;
+	float lifeTime;
 	DirectX::XMFLOAT3 position;
 	DirectX::XMFLOAT2 velocity;
 	DirectX::XMFLOAT2 acceleration;
@@ -33,6 +33,7 @@ public:
 	unsigned int GetNrOfParticles();
 
 	void UpdatePosition(DirectX::XMFLOAT3 pos);
+	void SetLifeTime(float time);
 	void Render(ID3D11DeviceContext* deviceContext, Shader* shader, ID3D11ComputeShader* computeShader);
 
 };

@@ -13,7 +13,6 @@ ID3D11ShaderResourceView* TextureHandler::LoadTexture(LPCWSTR name, ID3D11Device
 	}
 
 	HRESULT hr;
-	ID3DBlob* errorMessage = nullptr;
 
 	//Create DDS Texture
 	ID3D11ShaderResourceView* DDSTexture;
@@ -27,9 +26,6 @@ ID3D11ShaderResourceView* TextureHandler::LoadTexture(LPCWSTR name, ID3D11Device
 	hr = DirectX::CreateShaderResourceView(device, image.GetImages(), image.GetImageCount(), texMetadata, &DDSTexture);
 	if (FAILED(hr))
 		throw std::runtime_error("Failed to CreateShaderResourceView in TextureHandler");
-
-	if (FAILED(hr))
-		throw std::runtime_error("Failed to return a texture in TextureHandler");
 
 	//Map the name & ShaderResourceView
 	texture[name] = DDSTexture;
