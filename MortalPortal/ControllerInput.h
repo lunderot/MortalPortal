@@ -22,6 +22,6 @@ public:
 	~ControllerInput();
 
 	DirectX::XMFLOAT2 GetDirection(unsigned int playerNr);
-	unsigned int GetButtonState(unsigned int playerNr);
+	bool GetButtonState();
 };
 

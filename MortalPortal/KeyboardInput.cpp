@@ -9,6 +9,8 @@ KeyboardInput::KeyboardInput(char keys[])
 	this->keys[2] = keys[2];
 	this->keys[3] = keys[3];
 	this->keys[4] = keys[4];
+	returnColorState = 1;
+	keyPressed = false;
 }
 
 
@@ -49,10 +51,9 @@ DirectX::XMFLOAT2 KeyboardInput::GetDirection(unsigned int playerNr)
 	return returnValue;
 }
 
-unsigned int KeyboardInput::GetButtonState(unsigned int playerNr)
+bool KeyboardInput::GetButtonState()
 {
-	short test = GetAsyncKeyState(keys[4]);
-
+	/*short test = GetAsyncKeyState(keys[4]);
 
 	if (keyPressed == false && test < 0)
 	{
@@ -76,6 +77,6 @@ unsigned int KeyboardInput::GetButtonState(unsigned int playerNr)
 	}*/
 	
 
-	return returnColorState;
-	//return GetAsyncKeyState(VK_SPACE);
+	//return returnColorState;
+	return GetAsyncKeyState(keys[4]);
 }

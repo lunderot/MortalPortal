@@ -78,23 +78,8 @@ XMFLOAT2 ControllerInput::GetDirection(unsigned int playerNr)
 	return returnValue;
 }
 
-unsigned int ControllerInput::GetButtonState(unsigned int playerNr)
+bool ControllerInput::GetButtonState()
 {
 	XInputGetState(id, &state);
-
-	short test = state.Gamepad.wButtons & XINPUT_GAMEPAD_A;
-	
-	if (keyPressed == false && test > 0)
-	{
-		returnColorState *= -1;
-		keyPressed = true;
-	}
-	else if (test == 0)
-	{
-		keyPressed = false;
-	}
-	
-	std::cout << test << std::endl;
-	return returnColorState;
-	/*return state.Gamepad.wButtons & XINPUT_GAMEPAD_A;*/
+	return state.Gamepad.wButtons & XINPUT_GAMEPAD_A;
 }

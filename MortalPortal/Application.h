@@ -41,6 +41,7 @@ private:
 	Player* player1;
 	char player1Keys[5];
 	unsigned int player1Test = 0;
+	bool player1PreviousButton = false;
 	PlayerShader* playerShader;
 
 	Player* player2;
@@ -69,5 +70,7 @@ public:
 
 	bool Update(float deltaTime); //Returns true on quit
 	void Render();
+
+
 };
 
