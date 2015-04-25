@@ -52,7 +52,7 @@ Particle::Particle(unsigned int nrOfParticles,
 		throw std::runtime_error("Failed to create constant buffer in Particles");
 	}
 	// Ett stycke hård kod
-	constantBufferData.lifeTime = 10;
+	constantBufferData.lifeTime = 20;
 }
 
 unsigned int Particle::GetNrOfParticles()
