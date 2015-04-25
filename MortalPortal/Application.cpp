@@ -15,7 +15,8 @@ Application::Application(bool fullscreen, bool showCursor, int screenWidth, int 
 	powerBarShader = new PowerBarShader(d3dHandler->GetDevice(), L"assets/shaders/powerBarVS.hlsl", L"assets/shaders/powerBarPS.hlsl", screenWidth, screenHeight, screenNear, screenFar);
 
 	playerShader = new PlayerShader(d3dHandler->GetDevice(), L"assets/shaders/playerVS.hlsl", L"assets/shaders/playerPS.hlsl", screenWidth, screenHeight, screenNear, screenFar);
-	//playerShader2 = new PlayerShader(d3dHandler->GetDevice(), L"assets/shaders/player2VS.hlsl", L"assets/shaders/player2PS.hlsl", screenWidth, screenHeight, screenNear, screenFar);
+
+	mapItemShader = new MapItemShader(d3dHandler->GetDevice(), L"assets/shaders/MapItemVS.hlsl", L"assets/shaders/MapItemPS.hlsl", screenWidth, screenHeight, screenNear, screenFar);
 
 	// Ayu
 	backgShader = new BackgroundShader(d3dHandler->GetDevice(), L"assets/shaders/BackgroundVertexShader.hlsl", L"assets/shaders/BackgroundPixelShader.hlsl", screenWidth, screenHeight, screenNear, screenFar);
@@ -65,11 +66,30 @@ Application::Application(bool fullscreen, bool showCursor, int screenWidth, int 
 	//Create assetHandler
 	assetHandler = new AssetHandler();
 
-	//Import asset
-	testImporter.importFile("assets/test.bin");
-
 	//Setup entity handler
 	entityHandler = new EntityHandler();
+
+	//Setup levelGenerator
+	levelGenerator = new LevelGenerator("assets/levelparts/", "LEVELPARTNAMES.txt");
+
+	levelGenerator->setPlayerOneCrystals(assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/Player1Crystal.bin"),
+		assetHandler->GetMaterial(d3dHandler->GetDevice(), "assets/textures/grass.dds"),
+		mapItemShader,
+		assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/Player1Crystal.bin"),
+		assetHandler->GetMaterial(d3dHandler->GetDevice(), "assets/textures/snow.dds"),
+		mapItemShader);
+
+	levelGenerator->setPlayerTwoCrystals(assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/Player2Crystal.bin"),
+		assetHandler->GetMaterial(d3dHandler->GetDevice(), "assets/textures/grass.dds"),
+		mapItemShader,
+		assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/Player2Crystal.bin"),
+		assetHandler->GetMaterial(d3dHandler->GetDevice(), "assets/textures/snow.dds"),
+		mapItemShader);
+
+	//Add avaible comets for LevelGenerator so choos from
+	levelGenerator->addComet(assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/test.bin"),
+		assetHandler->GetMaterial(d3dHandler->GetDevice(), "assets/textures/grass.dds"),
+		shader);
 
 	//Create player and add it to entity handler
 	player1 = new Player(
@@ -85,6 +105,12 @@ Application::Application(bool fullscreen, bool showCursor, int screenWidth, int 
 		playerShader, XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(40, 0, 30));
 	entityHandler->Add(player2);
 
+	// Particles testing area
+	particle = new Particle(10, d3dHandler->GetDevice());
+
+	// Create Background
+	background = new Background(d3dHandler->GetDevice());
+
 	// Create Power Bars
 	player1Bar = new PowerBar(d3dHandler->GetDevice());
 	player2Bar = new PowerBar(d3dHandler->GetDevice());
@@ -99,50 +125,34 @@ Application::Application(bool fullscreen, bool showCursor, int screenWidth, int 
 	player2Bar->SetPosition(player2BarPos);
 	player2Bar->SetMaxMinValue(DirectX::XMFLOAT2(0.7f, 0.5f));
 
-	// Particles testing area
-	particle = new Particle(10, d3dHandler->GetDevice());
-	//entityHandler->Add(particle);
 
-	// Create Background
-	background = new Background(d3dHandler->GetDevice());
-
-
-	mapItemShader = new MapItemShader(d3dHandler->GetDevice(), L"assets/shaders/MapItemVS.hlsl", L"assets/shaders/MapItemPS.hlsl", screenWidth, screenHeight, screenNear, screenFar);
-	levelGenerator = new LevelGenerator("assets/levelparts/", "LEVELPARTNAMES.txt");
-	levelGenerator->addComet(	assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/test.bin"),
-								assetHandler->GetMaterial(d3dHandler->GetDevice(), "assets/textures/grass.dds"),
-								shader);
-
-	levelGenerator->setPlayerOneCrystals(	assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/Player1Crystal.bin"),
-											assetHandler->GetMaterial(d3dHandler->GetDevice(), "assets/textures/grass.dds"),
-											mapItemShader,
-											assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/Player1Crystal.bin"),
-											assetHandler->GetMaterial(d3dHandler->GetDevice(), "assets/textures/snow.dds"),
-											mapItemShader);
-
-	levelGenerator->setPlayerTwoCrystals(	assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/Player2Crystal.bin"),
-											assetHandler->GetMaterial(d3dHandler->GetDevice(), "assets/textures/grass.dds"),
-											mapItemShader,
-											assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/Player2Crystal.bin"),
-											assetHandler->GetMaterial(d3dHandler->GetDevice(), "assets/textures/snow.dds"),
-											mapItemShader);
 }
 
 Application::~Application()
 {
 	delete d3dHandler;
+
 	delete shader;
+	delete powerBarShader;
+	delete particleShader;
+	delete playerShader;
+	delete backgShader;
+	delete mapItemShader;
+
 	delete input;
+	delete input2;
+
 	delete entityHandler;
 	delete assetHandler;
-	delete powerBarShader;
+
+	delete levelGenerator;
+
+	delete particle;
+	delete background;
+
 	delete player1Bar;
 	delete player2Bar;
-	delete particleShader;
-	delete background;
-	delete backgShader;
-	delete levelGenerator;
-	delete mapItemShader;
+
 }
 
 bool Application::Update(float deltaTime)

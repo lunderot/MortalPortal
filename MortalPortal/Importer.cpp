@@ -27,6 +27,10 @@ Importer::~Importer()
 	delete[] materials;
 	delete[] lights;
 	delete[] nurbs;
+
+	delete[] spheres;
+	delete[] models;
+	delete[] joints;
 };
 
 bool Importer::importFile(string filePathAndName)
@@ -66,6 +70,8 @@ bool Importer::importFile(string filePathAndName)
 	if (!constructModels()) return false;
 
 	if (!constructSpere()) return false;
+
+	delete fileData;
 
 	return true;
 };

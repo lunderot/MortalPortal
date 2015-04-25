@@ -95,6 +95,10 @@ void Background::Render(ID3D11DeviceContext* deviceContext, Shader* shader)
 
 Background::~Background()
 {
+	if (geometry->GetVertexBuffer())
+	{
+		geometry->GetVertexBuffer()->Release();
+	}
 	delete geometry;
 };
 
