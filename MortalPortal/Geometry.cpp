@@ -11,6 +11,7 @@ Geometry::Geometry(ID3D11Buffer* vertexBuffer, unsigned int vertexCount, Collisi
 
 Geometry::~Geometry()
 {
+	delete collision;
 }
 
 

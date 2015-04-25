@@ -78,7 +78,24 @@ Geometry* AssetHandler::LoadGeometry(ID3D11Device* device, std::string filename)
 		throw std::runtime_error("Failed to create vertex buffer");
 	}
 
-	returnValue = new Geometry(vertexBuffer, importer.getMeshVertexCount(meshID), nullptr);
+	//Copy collision data
+	Collision* objectCollision = new Collision();
+
+	for (int i = 0; i < importer.getNumBoundingSphere(); i++)
+	{
+		DirectX::XMFLOAT3 position;
+		float radius;
+		const BoundingSphere* spheres = importer.getBoundingSphere();
+
+		position.x = spheres[i].position[0];
+		position.y = spheres[i].position[1];
+		position.z = spheres[i].position[2];
+		radius = spheres[i].radius;
+
+		objectCollision->spheres.push_back(CollisionSphere(position, radius));
+	}
+
+	returnValue = new Geometry(vertexBuffer, importer.getMeshVertexCount(meshID), objectCollision);
 
 	return returnValue;
 }

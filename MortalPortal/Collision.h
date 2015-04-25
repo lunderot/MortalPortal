@@ -5,12 +5,10 @@
 
 class Collision
 {
-private:
+public:
 	std::vector<CollisionSphere> spheres;
 public:
 	Collision();
 	~Collision();
-
-	void Add(CollisionSphere collisionSphere);
 };
 
