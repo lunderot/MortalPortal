@@ -174,6 +174,7 @@ bool Application::Update(float deltaTime)
 	player2Bar->Update(deltaTime);
 	entityHandler->Update(deltaTime);
 	particle->UpdatePosition(player1->GetPosition());
+	particle->UpdateDeltaTime(deltaTime);
 	levelGenerator->Update(entityHandler, deltaTime);
 
 	return false;

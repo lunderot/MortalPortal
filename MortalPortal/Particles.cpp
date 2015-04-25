@@ -69,6 +69,11 @@ void Particle::UpdatePosition(DirectX::XMFLOAT3 position)
 	constantBufferData.position = position;
 }
 
+void Particle::UpdateDeltaTime(float deltaTime)
+{
+	constantBufferData.deltaTime = deltaTime;
+}
+
 void Particle::SetLifeTime(float time)
 {
 	constantBufferData.lifeTime = time;

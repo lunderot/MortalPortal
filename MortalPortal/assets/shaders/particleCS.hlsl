@@ -4,6 +4,7 @@ cbuffer particleBuffer : register (cb0)
 	float3 position;
 	float2 velocity;
 	float2 accelaration;
+	float deltaTime;
 };
 struct Particle
 {
@@ -16,7 +17,7 @@ RWByteAddressBuffer buffer : register (t0);
 void main(uint3 dispatchThreadID : SV_DispatchThreadID)
 {
 	float3 pos = asfloat(buffer.Load3(dispatchThreadID.x * 20));
-	pos.x -= 0.001f;
+	pos.x -= deltaTime * 0.3f;
 
 	if (abs(position.x - pos.x) > maxRange)
 	{
