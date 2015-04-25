@@ -1,7 +1,7 @@
 #pragma once
 #include "Entity.h"
 #include "EntityHandler.h"
-#include "Comet.h"
+#include "MapItem.h"
 
 #include <string>
 #include <map>
@@ -14,8 +14,8 @@ public:
 	LevelGenerator(std::string pathToFiles, std::string pheaderFile);
 
 	void addComet(Geometry* cometsGeometry, Material* cometsMaterial, Shader* cometsShader);
-	void addForPlayerOne(Geometry* playerOneCrystalGeometry, Material* playerOneCrystalMaterial, Shader* playerOneCrystalShader);
-	void addForPlayerTow(Geometry* playerTwoCrystalGeometry, Material* playerTwoCrystalMaterial, Shader* playerTwoCrystalShader);
+	void setPlayerOneCrystals(Geometry* Crystal1Geometry, Material* Crystal1Material, Shader* Crystal1Shader, Geometry* Crystal2Geometry, Material* Crystal2Material, Shader* Crystal2Shader);
+	void setPlayerTwoCrystals(Geometry* Crystal1Geometry, Material* Crystal1Material, Shader* Crystal1Shader, Geometry* Crystal2Geometry, Material* Crystal2Material, Shader* Crystal2Shader);
 
 	void Update(EntityHandler* entityHandler, float deltaTime);
 
@@ -41,11 +41,11 @@ protected:
 	vector<Shader*>	cometsShader;
 
 
-	vector<Shader*> playerOneCrystalShader;
-	vector<Geometry*> playerOneCrystalGeometry;
-	vector<Material*> playerOneCrystalMaterial;
+	Shader* playerOneCrystalShader[2];
+	Geometry* playerOneCrystalGeometry[2];
+	Material* playerOneCrystalMaterial[2];
 
-	vector<Shader*> playerTwoCrystalShader;
-	vector<Geometry*> playerTwoCrystalGeometry;
-	vector<Material*> playerTwoCrystalMaterial;
+	Shader* playerTwoCrystalShader[2];
+	Geometry* playerTwoCrystalGeometry[2];
+	Material* playerTwoCrystalMaterial[2];
 };

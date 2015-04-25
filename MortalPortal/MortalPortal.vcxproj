@@ -84,7 +84,8 @@
     <ClCompile Include="AssetHandler.cpp" />
     <ClCompile Include="Background.cpp" />
     <ClCompile Include="BackgroundShader.cpp" />
-    <ClCompile Include="Comet.cpp" />
+    <ClCompile Include="MapItemShader.cpp" />
+    <ClCompile Include="MapItem.cpp" />
     <ClCompile Include="Collision.cpp" />
     <ClCompile Include="CollisionSphere.cpp" />
     <ClCompile Include="CommonDeclaration.cpp" />
@@ -115,7 +116,8 @@
     <ClInclude Include="AssetHandler.h" />
     <ClInclude Include="Background.h" />
     <ClInclude Include="BackgroundShader.h" />
-    <ClInclude Include="Comet.h" />
+    <ClInclude Include="MapItemShader.h" />
+    <ClInclude Include="MapItem.h" />
     <ClInclude Include="Collision.h" />
     <ClInclude Include="CollisionSphere.h" />
     <ClInclude Include="CommonDeclaration.h" />
