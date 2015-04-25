@@ -110,7 +110,10 @@ void Shader::CreateMandatoryShaders(ID3D11Device* device, LPCWSTR vertexShaderFi
 		}
 		else
 		{
-			throw std::runtime_error("No such file");
+			char tmp[256];
+			size_t returnsize; //Or else VS complains...
+			wcstombs_s(&returnsize, tmp, vertexShaderFilename, ARRAYSIZE(tmp));
+			throw std::runtime_error("This file does not exist: " + std::string(tmp));
 		}
 	}
 	device->CreateVertexShader(pVS->GetBufferPointer(), pVS->GetBufferSize(), nullptr, &vertexShader);
@@ -131,7 +134,10 @@ void Shader::CreateMandatoryShaders(ID3D11Device* device, LPCWSTR vertexShaderFi
 		}
 		else
 		{
-			throw std::runtime_error("No such file");
+			char tmp[256];
+			size_t returnsize; //Or else VS complains...
+			wcstombs_s(&returnsize, tmp, vertexShaderFilename, ARRAYSIZE(tmp));
+			throw std::runtime_error("This file does not exist: " + std::string(tmp));
 		}
 	}
 
