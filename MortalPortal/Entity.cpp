@@ -16,6 +16,8 @@ Entity::Entity(Geometry* geometry, Material* material, Shader* shader,
 	this->velocity = velocity;
 	this->acceleration = acceleration;
 	this->rotation = rotation;
+
+	this->alive = true;
 }	
 
 

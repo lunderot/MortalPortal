@@ -11,3 +11,5 @@ public:
 	~CollisionSphere();
 };
 
+bool IsSpheresColliding(const CollisionSphere& sphere1, const CollisionSphere& sphere2, const DirectX::XMMATRIX& world1, const DirectX::XMMATRIX& world2);
+

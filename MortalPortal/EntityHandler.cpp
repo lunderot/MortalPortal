@@ -18,9 +18,61 @@ EntityHandler::~EntityHandler()
 
 void EntityHandler::Update(float deltaTime)
 {
+	for (std::vector<Entity*>::iterator i = entities.begin(); i != entities.end();)
+	{
+		if (!(*i)->GetAlive())
+		{
+			delete (*i);
+			i = entities.erase(i);
+		}
+		else
+		{
+			(*i)->Update(deltaTime);
+			++i;
+		}
+		
+	}
 	for (std::vector<Entity*>::iterator i = entities.begin(); i != entities.end(); ++i)
 	{
-		(*i)->Update(deltaTime);
+		for (std::vector<Entity*>::iterator j = entities.begin(); j != entities.end(); ++j)
+		{
+			if ((*i) != (*j))
+			{
+				Collision* collision1 = (*i)->GetGeometry()->GetCollision();
+				Collision* collision2 = (*j)->GetGeometry()->GetCollision();
+
+				
+				XMFLOAT3 position = (*i)->GetPosition();
+				XMFLOAT3 rotation = (*i)->GetRotation();
+				XMVECTOR rotationQuat = XMQuaternionRotationRollPitchYawFromVector(XMLoadFloat3(&rotation));
+
+				XMMATRIX model1 = XMMatrixRotationQuaternion(rotationQuat);
+				model1 = XMMatrixMultiply(model1, XMMatrixTranslationFromVector(XMLoadFloat3(&position)));
+
+
+				position = (*j)->GetPosition();
+				rotation = (*j)->GetRotation();
+				rotationQuat = XMQuaternionRotationRollPitchYawFromVector(XMLoadFloat3(&rotation));
+
+				XMMATRIX model2 = XMMatrixRotationQuaternion(rotationQuat);
+				XMFLOAT4X4 worldMatrix2;
+				model2 = XMMatrixMultiply(model2, XMMatrixTranslationFromVector(XMLoadFloat3(&position)));
+
+				bool collision = false;
+				for (std::vector<CollisionSphere>::iterator k = collision1->spheres.begin(); k != collision1->spheres.end() && !collision; ++k)
+				{
+					for (std::vector<CollisionSphere>::iterator l = collision2->spheres.begin(); l != collision2->spheres.end() && !collision; ++l)
+					{
+						if (IsSpheresColliding((*k), (*l), model1, model2))
+						{
+							HandleCollision((*i), (*j));
+							collision = true;
+						}
+					}
+				}
+			}
+		}
+		
 	}
 }
 
@@ -80,4 +132,15 @@ void EntityHandler::Render(ID3D11DeviceContext* deviceContext)
 void EntityHandler::Add(Entity* entity)
 {
 	entities.push_back(entity);
+}
+
+void EntityHandler::HandleCollision(Entity* entity1, Entity* entity2)
+{
+	if (dynamic_cast<Player*>(entity1))
+	{
+		if (dynamic_cast<MapItem*>(entity2))
+		{
+			entity2->SetAlive(false);
+		}
+	}
 }
