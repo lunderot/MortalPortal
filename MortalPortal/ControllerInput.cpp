@@ -5,7 +5,7 @@ using namespace DirectX;
 
 ControllerInput::ControllerInput(unsigned int playerNr)
 {
-	for (int i = 0; i < XUSER_MAX_COUNT; i++)
+	/*for (int i = 0; i < XUSER_MAX_COUNT; i++)
 	{
 		ZeroMemory(&state, sizeof(state));
 
@@ -25,6 +25,24 @@ ControllerInput::ControllerInput(unsigned int playerNr)
 		else
 		{
 			throw std::runtime_error("No controller found");
+		}
+	}*/
+	for (int i = 0; i < XUSER_MAX_COUNT; i++)
+	{
+		ZeroMemory(&state, sizeof(state));
+		
+		DWORD result = XInputGetState(i, &state);
+		if (playerNr == i)
+		{
+			if (result == ERROR_SUCCESS)
+			{
+				id = i;
+				break;
+			}
+			else
+			{
+				throw std::runtime_error("No controller found");
+			}
 		}
 	}
 }

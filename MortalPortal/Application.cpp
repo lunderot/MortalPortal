@@ -164,10 +164,11 @@ bool Application::Update(float deltaTime)
 	player1->ReactToInput(input->GetButtonState());
 
 	XMFLOAT2 dir2 = input2->GetDirection(player2Test);
-	dir2.x *= 10;
-	dir2.y *= 10;
+	dir2.x *= 5;
+	dir2.y *= 5;
 	player2->SetAcceleration(XMFLOAT3(dir2.x, dir2.y, 0.0f));
 	player2->ReactToInput(input2->GetButtonState());
+	
 	
 
 	player1Bar->Update(deltaTime);
