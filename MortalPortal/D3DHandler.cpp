@@ -62,6 +62,10 @@ D3DHandler::D3DHandler(int screenWidth, int screenHeight, HWND hwnd, bool fullsc
 
 	// Create the swap chain, device, and device context.
 	result = D3D11CreateDeviceAndSwapChain(NULL, D3D_DRIVER_TYPE_HARDWARE, NULL, 0, &featureLevel, 1, D3D11_SDK_VERSION, &swapChainDesc, &swapChain, &device, NULL, &deviceContext);
+	
+	// FOR DEBUGGING PURPOSES ONLY
+	//result = D3D11CreateDeviceAndSwapChain(NULL, D3D_DRIVER_TYPE_SOFTWARE, LoadLibrary(L"d3d11ref.dll"), 0, &featureLevel, 1, D3D11_SDK_VERSION, &swapChainDesc, &swapChain, &device, NULL, &deviceContext);
+
 	if (FAILED(result))
 	{
 		throw std::runtime_error("Could not create swap buffer");

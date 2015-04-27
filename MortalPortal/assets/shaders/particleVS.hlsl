@@ -1,7 +1,7 @@
 struct VS_IN
 {
 	float3 position : POSITION;
-	float2 texCoord : TEXCOORD0;
+	float2 texCoord : TEXCOORD;
 };
 
 struct VS_OUT

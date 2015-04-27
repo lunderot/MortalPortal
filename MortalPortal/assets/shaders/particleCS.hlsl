@@ -13,11 +13,11 @@ struct Particle
 };
 
 RWByteAddressBuffer buffer : register (t0);
-[numthreads(512, 1, 1)]
+[numthreads(64, 1, 1)]
 void main(uint3 dispatchThreadID : SV_DispatchThreadID)
 {
 	float3 pos = asfloat(buffer.Load3(dispatchThreadID.x * 20));
-	pos.x -= deltaTime * 0.3f;
+	pos.x -= 0.1f;
 
 	if (abs(position.x - pos.x) > maxRange)
 	{
