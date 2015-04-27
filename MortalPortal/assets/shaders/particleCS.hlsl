@@ -17,7 +17,7 @@ RWByteAddressBuffer buffer : register (t0);
 void main(uint3 dispatchThreadID : SV_DispatchThreadID)
 {
 	float3 pos = asfloat(buffer.Load3(dispatchThreadID.x * 20));
-	pos.x -= 0.1f;
+	pos.x -= 0.3f * deltaTime;
 
 	if (abs(position.x - pos.x) > maxRange)
 	{

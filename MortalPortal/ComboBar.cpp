@@ -62,7 +62,6 @@ void ComboBar::Render(ID3D11DeviceContext* deviceContext, Shader* shader)
 	unsigned int vertexSize = sizeof(DirectX::XMFLOAT2);
 	unsigned int offset = 0;
 	unsigned int vertexCount = 4;
-	ID3D11Buffer* vb = vertexBuffer;
 
 	D3D11_MAPPED_SUBRESOURCE resource;
 	HRESULT result;
@@ -72,7 +71,7 @@ void ComboBar::Render(ID3D11DeviceContext* deviceContext, Shader* shader)
 	memcpy(resource.pData, &posColor, sizeof(PosColorr));
 	deviceContext->Unmap(vertexBuffer, 0);
 
-	deviceContext->IASetVertexBuffers(0, 1, &vb, &vertexSize, &offset);
+	deviceContext->IASetVertexBuffers(0, 1, &vertexBuffer, &vertexSize, &offset);
 	deviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);
 
 	deviceContext->Draw(vertexCount, 0);

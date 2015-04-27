@@ -139,6 +139,7 @@ Application::~Application()
 
 	delete shader;
 	delete powerBarShader;
+	delete comboBarShader;
 	delete particleShader;
 	delete playerShader;
 	delete backgShader;

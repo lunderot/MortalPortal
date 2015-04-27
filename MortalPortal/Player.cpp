@@ -21,6 +21,7 @@ Player::Player(ID3D11Device* device, Geometry* geometry, Material* material, Mat
 Player::~Player()
 {
 	delete powerBar;
+	delete comboBar;
 }
 
 void Player::ReactToInput(bool currentButtonState)
