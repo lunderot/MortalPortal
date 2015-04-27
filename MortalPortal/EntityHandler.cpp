@@ -147,13 +147,13 @@ void EntityHandler::HandleCollision(Entity* entity1, Entity* entity2)
 			}
 		}
 	}
-	//else
-	//	if (dynamic_cast<Player*>(entity1))
-	//	{
-	//		if (dynamic_cast<MapItem*>(entity2))
-	//		{
-	//			entity2->SetAlive(false);
-	//			dynamic_cast<Player*>(entity1)->RemovePower();
-	//		}
-	//	}
+	else if (entity1->GetMaterial() != entity2->GetMaterial())
+		if (dynamic_cast<Player*>(entity1))
+		{
+			if (dynamic_cast<MapItem*>(entity2))
+			{
+				entity2->SetAlive(false);
+				dynamic_cast<Player*>(entity1)->RemovePower();
+			}
+		}
 }
