@@ -1,6 +1,7 @@
 #pragma once
 #include "Entity.h"
 #include "PowerBar.h"
+#include "ComboBar.h"
 
 class Player :
 	public Entity
@@ -21,6 +22,10 @@ public:
 	void AddPower();
 	void RemovePower();
 	PowerBar* powerBar;
+
+	void AddCombo();
+	void RemoveCombo();
+	ComboBar* comboBar;
 
 private:
 	unsigned int colorState;

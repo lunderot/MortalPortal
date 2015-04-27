@@ -13,7 +13,7 @@ Application::Application(bool fullscreen, bool showCursor, int screenWidth, int 
 	//Create shaders
 	shader = new DefaultShader(d3dHandler->GetDevice(), L"assets/shaders/vs.hlsl", L"assets/shaders/ps.hlsl", screenWidth, screenHeight, screenNear, screenFar);
 	powerBarShader = new PowerBarShader(d3dHandler->GetDevice(), L"assets/shaders/powerBarVS.hlsl", L"assets/shaders/powerBarPS.hlsl", screenWidth, screenHeight, screenNear, screenFar);
-
+	comboBarShader = new ComboBarShader(d3dHandler->GetDevice(), L"assets/shaders/comboBarVS.hlsl", L"assets/shaders/comboBarPS.hlsl", screenWidth, screenHeight, screenNear, screenFar);
 	playerShader = new PlayerShader(d3dHandler->GetDevice(), L"assets/shaders/playerVS.hlsl", L"assets/shaders/playerPS.hlsl", screenWidth, screenHeight, screenNear, screenFar);
 
 	mapItemShader = new MapItemShader(d3dHandler->GetDevice(), L"assets/shaders/MapItemVS.hlsl", L"assets/shaders/MapItemPS.hlsl", screenWidth, screenHeight, screenNear, screenFar);
@@ -99,6 +99,8 @@ Application::Application(bool fullscreen, bool showCursor, int screenWidth, int 
 		playerShader, XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(40, 0, 30));
 	entityHandler->Add(player1);
 
+	player1->comboBar->setMaterial(assetHandler->GetMaterial(d3dHandler->GetDevice(), "assets/textures/grass.dds"));
+
 	player2 = new Player(d3dHandler->GetDevice(),
 		assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/test.bin"),
 		assetHandler->GetMaterial(d3dHandler->GetDevice(), "assets/textures/grass.dds"), 
@@ -112,7 +114,6 @@ Application::Application(bool fullscreen, bool showCursor, int screenWidth, int 
 	// Create Background
 	background = new Background(d3dHandler->GetDevice());
 
-
 	player2->powerBar->SetColor(DirectX::XMFLOAT2(1.0f, 1.0f));
 	DirectX::XMFLOAT2 player2BarPos[4];
 
@@ -123,6 +124,13 @@ Application::Application(bool fullscreen, bool showCursor, int screenWidth, int 
 	player2->powerBar->SetPosition(player2BarPos);
 
 
+	player2->comboBar->SetColor(DirectX::XMFLOAT2(1.0f, 1.0f));
+	DirectX::XMFLOAT2 player2ComboBarPos[4];
+	player2ComboBarPos[0] = DirectX::XMFLOAT2(0.0f, -1.0f);
+	player2ComboBarPos[1] = DirectX::XMFLOAT2(0.0f, -0.8f);
+	player2ComboBarPos[2] = DirectX::XMFLOAT2(0.15f, -1.0f);
+	player2ComboBarPos[3] = DirectX::XMFLOAT2(0.15f, -0.8f);
+	player2->comboBar->SetPosition(player2ComboBarPos);
 }
 
 Application::~Application()
@@ -166,6 +174,9 @@ bool Application::Update(float deltaTime)
 	player1->powerBar->Update(deltaTime);
 	player2->powerBar->Update(deltaTime);
 
+	player1->comboBar->Update(deltaTime);
+	player2->comboBar->Update(deltaTime);
+
 	entityHandler->Update(deltaTime);
 	particle->UpdatePosition(player1->GetPosition());
 	particle->UpdateDeltaTime(deltaTime);
@@ -185,6 +196,9 @@ void Application::Render()
 	player1->powerBar->Render(d3dHandler->GetDeviceContext(), powerBarShader);
 	player2->powerBar->Render(d3dHandler->GetDeviceContext(), powerBarShader);
 
+	comboBarShader->Use(d3dHandler->GetDeviceContext());
+	player1->comboBar->Render(d3dHandler->GetDeviceContext(), comboBarShader);
+	player2->comboBar->Render(d3dHandler->GetDeviceContext(), comboBarShader);
 
 	// Ayu
 	//Avkommentera ifall bakgrunden ska synas (z ej klar)

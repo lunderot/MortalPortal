@@ -15,6 +15,8 @@
 #include "DefaultShader.h"
 #include "PowerBar.h"
 #include "PowerBarShader.h"
+#include "ComboBar.h"
+#include "ComboBarShader.h"
 #include "Particles.h"
 #include "LevelGenerator.h"
 #include "MapItemShader.h"
@@ -34,6 +36,7 @@ private:
 	
 	//Shaders
 	DefaultShader* shader;
+	ComboBarShader* comboBarShader;
 	PowerBarShader* powerBarShader;
 	ParticleShader* particleShader;
 	PlayerShader* playerShader;
