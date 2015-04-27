@@ -2,15 +2,17 @@
 
 PowerBar::PowerBar(ID3D11Device* device)
 {
-	posColor.pos[0] = DirectX::XMFLOAT2(-0.7f, 1.0f);
-	posColor.pos[1] = DirectX::XMFLOAT2(-0.7f, 0.9f);
+	posColor.pos[0] = DirectX::XMFLOAT2(-0.1f, 1.0f);
+	posColor.pos[1] = DirectX::XMFLOAT2(-0.1f, 0.9f);
 	posColor.pos[2] = DirectX::XMFLOAT2(-0.7f, 1.0f);
 	posColor.pos[3] = DirectX::XMFLOAT2(-0.7f, 0.9f);
 	posColor.color.x = 0.0f;
 	posColor.color.y = 0.0f;
 
-	maxMinValue.x = -0.5f;
+	maxMinValue.x = -0.1f;
 	maxMinValue.y = -0.7f;
+	powerAdd = 0.02f;
+	powerRemove = 0.04f;
 
 	D3D11_BUFFER_DESC bufferDesc;
 	ZeroMemory(&bufferDesc, sizeof(bufferDesc));
@@ -28,7 +30,7 @@ PowerBar::PowerBar(ID3D11Device* device)
 		throw std::runtime_error("Failed to create vertex buffer in the PowerBar class.");
 	}
 
-	barSpeed = 0.001f;
+	barSpeed = -0.01f;
 }
 void PowerBar::SetBarSpeed(float speed)
 {
@@ -97,20 +99,55 @@ void PowerBar::Render(ID3D11DeviceContext* deviceContext, Shader* shader)
 
 }
 
+void PowerBar::AddPower()
+{
+	if (posColor.pos[0].x + powerAdd > maxMinValue.x)
+	{
+		posColor.pos[0].x = maxMinValue.x;
+		posColor.pos[1].x = maxMinValue.x;
+	}
+	else
+	{
+		posColor.pos[0].x += powerAdd;
+		posColor.pos[1].x += powerAdd;
+	}
+}
+
+void PowerBar::RemovePower()
+{
+	if (posColor.pos[0].x - powerRemove < maxMinValue.y)
+	{
+		posColor.pos[0].x = maxMinValue.y;
+		posColor.pos[1].x = maxMinValue.y;
+	}
+	else
+	{
+		posColor.pos[0].x -= powerRemove;
+		posColor.pos[1].x -= powerRemove;
+	}
+}
+
+
 void PowerBar::Update(float deltaTime)
 {
-	if (posColor.pos[0].x > maxMinValue.x)
+
+	if (posColor.pos[0].x <= maxMinValue.y)
 	{
-		barSpeed = barSpeed * -1;
+		posColor.pos[0].x = maxMinValue.y;
 	}
-	if (posColor.pos[0].x < maxMinValue.y)
+	else if (posColor.pos[0].x > maxMinValue.x)
 	{
-		barSpeed = barSpeed * -1;
+		posColor.pos[0].x = maxMinValue.x;
+		posColor.pos[1].x = maxMinValue.x;
+	}
+	else
+	{
+		posColor.pos[0].x += barSpeed * deltaTime;
+		posColor.pos[1].x += barSpeed * deltaTime;
 	}
 
-	posColor.pos[0].x += barSpeed;
-	posColor.pos[1].x += barSpeed;
 }
+
 PowerBar::~PowerBar()
 {
 	if (vertexBuffer)

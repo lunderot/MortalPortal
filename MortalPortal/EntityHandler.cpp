@@ -143,7 +143,17 @@ void EntityHandler::HandleCollision(Entity* entity1, Entity* entity2)
 			if (dynamic_cast<MapItem*>(entity2))
 			{
 				entity2->SetAlive(false);
+				dynamic_cast<Player*>(entity1)->AddPower();
 			}
 		}
 	}
+	//else
+	//	if (dynamic_cast<Player*>(entity1))
+	//	{
+	//		if (dynamic_cast<MapItem*>(entity2))
+	//		{
+	//			entity2->SetAlive(false);
+	//			dynamic_cast<Player*>(entity1)->RemovePower();
+	//		}
+	//	}
 }

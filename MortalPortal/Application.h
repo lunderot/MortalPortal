@@ -61,10 +61,6 @@ private:
 	unsigned int player1Test = 0;
 	unsigned int player2Test = 1;
 
-	//HUD
-	PowerBar* player1Bar;
-	PowerBar* player2Bar;
-
 public:
 	Application(bool fullscreen, bool showCursor, int screenWidth, int screenHeight, LPCWSTR windowTitle);
 	~Application();

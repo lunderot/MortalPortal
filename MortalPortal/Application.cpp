@@ -92,14 +92,15 @@ Application::Application(bool fullscreen, bool showCursor, int screenWidth, int 
 		shader);
 
 	//Create player and add it to entity handler
-	player1 = new Player(
+	player1 = new Player(d3dHandler->GetDevice(),
 		assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/test.bin"),
 		assetHandler->GetMaterial(d3dHandler->GetDevice(), "assets/textures/grass.dds"), 
 		assetHandler->GetMaterial(d3dHandler->GetDevice(), "assets/textures/snow.dds"),
 		playerShader, XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(40, 0, 30));
 	entityHandler->Add(player1);
 
-	player2 = new Player(assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/test.bin"),
+	player2 = new Player(d3dHandler->GetDevice(),
+		assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/test.bin"),
 		assetHandler->GetMaterial(d3dHandler->GetDevice(), "assets/textures/grass.dds"), 
 		assetHandler->GetMaterial(d3dHandler->GetDevice(), "assets/textures/snow.dds"),
 		playerShader, XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(40, 0, 30));
@@ -111,19 +112,15 @@ Application::Application(bool fullscreen, bool showCursor, int screenWidth, int 
 	// Create Background
 	background = new Background(d3dHandler->GetDevice());
 
-	// Create Power Bars
-	player1Bar = new PowerBar(d3dHandler->GetDevice());
-	player2Bar = new PowerBar(d3dHandler->GetDevice());
 
-	player2Bar->SetColor(DirectX::XMFLOAT2(1.0f, 1.0f));
+	player2->powerBar->SetColor(DirectX::XMFLOAT2(1.0f, 1.0f));
 	DirectX::XMFLOAT2 player2BarPos[4];
 
-	player2BarPos[0] = DirectX::XMFLOAT2(0.5f, 1.0f);
-	player2BarPos[1] = DirectX::XMFLOAT2(0.5f, 0.9f);
-	player2BarPos[2] = DirectX::XMFLOAT2(0.5f, 1.0f);
-	player2BarPos[3] = DirectX::XMFLOAT2(0.5f, 0.9f);
-	player2Bar->SetPosition(player2BarPos);
-	player2Bar->SetMaxMinValue(DirectX::XMFLOAT2(0.7f, 0.5f));
+	player2BarPos[0] = DirectX::XMFLOAT2(-0.1f, -0.9f);
+	player2BarPos[1] = DirectX::XMFLOAT2(-0.1f, -1.0f);
+	player2BarPos[2] = DirectX::XMFLOAT2(-0.7f, -0.9f);
+	player2BarPos[3] = DirectX::XMFLOAT2(-0.7f, -1.0f);
+	player2->powerBar->SetPosition(player2BarPos);
 
 
 }
@@ -150,9 +147,6 @@ Application::~Application()
 	delete particle;
 	delete background;
 
-	delete player1Bar;
-	delete player2Bar;
-
 }
 
 bool Application::Update(float deltaTime)
@@ -169,10 +163,9 @@ bool Application::Update(float deltaTime)
 	player2->SetAcceleration(XMFLOAT3(dir2.x, dir2.y, 0.0f));
 	player2->ReactToInput(input2->GetButtonState());
 	
-	
+	player1->powerBar->Update(deltaTime);
+	player2->powerBar->Update(deltaTime);
 
-	player1Bar->Update(deltaTime);
-	player2Bar->Update(deltaTime);
 	entityHandler->Update(deltaTime);
 	particle->UpdatePosition(player1->GetPosition());
 	particle->UpdateDeltaTime(deltaTime);
@@ -189,8 +182,8 @@ void Application::Render()
 
 	// Power Bars
 	powerBarShader->Use(d3dHandler->GetDeviceContext());
-	player1Bar->Render(d3dHandler->GetDeviceContext(), powerBarShader);
-	player2Bar->Render(d3dHandler->GetDeviceContext(), powerBarShader);
+	player1->powerBar->Render(d3dHandler->GetDeviceContext(), powerBarShader);
+	player2->powerBar->Render(d3dHandler->GetDeviceContext(), powerBarShader);
 
 
 	// Ayu

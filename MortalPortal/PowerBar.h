@@ -14,6 +14,8 @@ class PowerBar
 protected:
 	ID3D11Buffer* vertexBuffer;
 	float barSpeed;
+	float powerAdd;
+	float powerRemove;
 
 	DirectX::XMFLOAT2 maxMinValue;
 
@@ -28,6 +30,8 @@ public:
 	void SetPosition(DirectX::XMFLOAT2 point[4]);
 	void SetColor(DirectX::XMFLOAT2 color);
 	void SetMaxMinValue(DirectX::XMFLOAT2 value);
+	void AddPower();
+	void RemovePower();
 
 	const float GetBarSpeed();
 	const DirectX::XMFLOAT2* GetPosition();

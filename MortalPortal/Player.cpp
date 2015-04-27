@@ -2,13 +2,15 @@
 
 #include <iostream>
 
-Player::Player(Geometry* geometry, Material* material, Material* switchMaterial, Shader* shader,
+Player::Player(ID3D11Device* device, Geometry* geometry, Material* material, Material* switchMaterial, Shader* shader,
 	DirectX::XMFLOAT3 position,
 	DirectX::XMFLOAT3 velocity,
 	DirectX::XMFLOAT3 acceleration,
 	DirectX::XMFLOAT3 rotation
 	) : Entity(geometry, material, shader, position, velocity, acceleration, rotation)
-{
+
+{ 
+	powerBar = new PowerBar(device);
 	this->switchMaterial = switchMaterial;
 	colorState = 0;
 	previousButtonState = false;
@@ -17,7 +19,7 @@ Player::Player(Geometry* geometry, Material* material, Material* switchMaterial,
 
 Player::~Player()
 {
-
+	delete powerBar;
 }
 
 void Player::ReactToInput(bool currentButtonState)
@@ -49,5 +51,15 @@ Material* Player::GetMaterial() const
 	{
 		return switchMaterial;
 	}
+}
+
+void Player::AddPower()
+{
+	powerBar->AddPower();
+}
+
+void Player::RemovePower()
+{
+	powerBar->RemovePower();
 }
 
