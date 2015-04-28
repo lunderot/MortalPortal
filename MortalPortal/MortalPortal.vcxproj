@@ -86,6 +86,7 @@
     <ClCompile Include="BackgroundShader.cpp" />
     <ClCompile Include="ComboBar.cpp" />
     <ClCompile Include="ComboBarShader.cpp" />
+    <ClCompile Include="GameOver.cpp" />
     <ClCompile Include="MapItemShader.cpp" />
     <ClCompile Include="MapItem.cpp" />
     <ClCompile Include="Collision.cpp" />
@@ -103,6 +104,7 @@
     <ClCompile Include="LevelGenerator.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Material.cpp" />
+    <ClCompile Include="Menu.cpp" />
     <ClCompile Include="Particles.cpp" />
     <ClCompile Include="ParticleShader.cpp" />
     <ClCompile Include="Player.cpp" />
@@ -120,6 +122,7 @@
     <ClInclude Include="BackgroundShader.h" />
     <ClInclude Include="ComboBar.h" />
     <ClInclude Include="ComboBarShader.h" />
+    <ClInclude Include="GameOver.h" />
     <ClInclude Include="MapItemShader.h" />
     <ClInclude Include="MapItem.h" />
     <ClInclude Include="Collision.h" />
@@ -136,6 +139,7 @@
     <ClInclude Include="KeyboardInput.h" />
     <ClInclude Include="LevelGenerator.h" />
     <ClInclude Include="Material.h" />
+    <ClInclude Include="Menu.h" />
     <ClInclude Include="Particles.h" />
     <ClInclude Include="ParticleShader.h" />
     <ClInclude Include="Player.h" />

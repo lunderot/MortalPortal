@@ -3,7 +3,7 @@
 using namespace DirectX;
 
 Application::Application(bool fullscreen, bool showCursor, int screenWidth, int screenHeight, LPCWSTR windowTitle)
-			: System(fullscreen, showCursor, screenWidth, screenHeight, windowTitle)
+	: System(fullscreen, showCursor, screenWidth, screenHeight, windowTitle)
 {
 	//Setup DirectX
 	float screenFar = 1000.0f;
@@ -29,7 +29,7 @@ Application::Application(bool fullscreen, bool showCursor, int screenWidth, int 
 	player1Keys[2] = 'A';
 	player1Keys[3] = 'D';
 	player1Keys[4] = 'X';
-	
+
 	// Player 2 keys
 	player2Keys[0] = 'I';
 	player2Keys[1] = 'K';
@@ -94,7 +94,7 @@ Application::Application(bool fullscreen, bool showCursor, int screenWidth, int 
 	//Create player and add it to entity handler
 	player1 = new Player(d3dHandler->GetDevice(),
 		assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/test.bin"),
-		assetHandler->GetMaterial(d3dHandler->GetDevice(), "assets/textures/grass.dds"), 
+		assetHandler->GetMaterial(d3dHandler->GetDevice(), "assets/textures/grass.dds"),
 		assetHandler->GetMaterial(d3dHandler->GetDevice(), "assets/textures/snow.dds"),
 		playerShader, XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(40, 0, 30));
 	entityHandler->Add(player1);
@@ -102,7 +102,7 @@ Application::Application(bool fullscreen, bool showCursor, int screenWidth, int 
 
 	player2 = new Player(d3dHandler->GetDevice(),
 		assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/test.bin"),
-		assetHandler->GetMaterial(d3dHandler->GetDevice(), "assets/textures/grass.dds"), 
+		assetHandler->GetMaterial(d3dHandler->GetDevice(), "assets/textures/grass.dds"),
 		assetHandler->GetMaterial(d3dHandler->GetDevice(), "assets/textures/snow.dds"),
 		playerShader, XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(40, 0, 30));
 	entityHandler->Add(player2);
@@ -112,7 +112,13 @@ Application::Application(bool fullscreen, bool showCursor, int screenWidth, int 
 	particle = new Particle(10, d3dHandler->GetDevice());
 
 	// Create Background
-	background = new Background(d3dHandler->GetDevice());
+	entityHandler->Add(
+		new Background(
+			assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/test.bin"),
+			assetHandler->GetMaterial(d3dHandler->GetDevice(), "assets/textures/grass.dds"),
+			playerShader, XMFLOAT3(0, 0, 0), XMFLOAT3(30, 0, 0)
+		)
+	);
 
 	player2->powerBar->SetColor(DirectX::XMFLOAT2(1.0f, 1.0f));
 	DirectX::XMFLOAT2 player2BarPos[4];
@@ -149,26 +155,19 @@ Application::Application(bool fullscreen, bool showCursor, int screenWidth, int 
 	player2ComboBarUV[3] = DirectX::XMFLOAT2(0.0f, 1.0f);
 	player2->comboBar->SetUV(player2ComboBarUV);
 
-	/*DirectX::XMFLOAT2 player2ComboBarPos[4];
-	player2ComboBarPos[0] = DirectX::XMFLOAT2(0.5f, 0.0f);
-	player2ComboBarPos[1] = DirectX::XMFLOAT2(0.5f, -0.9f);
-	player2ComboBarPos[2] = DirectX::XMFLOAT2(0.0f, 0.0f);
-	player2ComboBarPos[3] = DirectX::XMFLOAT2(0.0f, -0.9f);
-	player2->comboBar->SetPosition(player2ComboBarPos);
-	DirectX::XMFLOAT2 player2ComboBarColor[4];
-	player2ComboBarColor[0] = DirectX::XMFLOAT2(1.0f, 1.0f);
-	player2ComboBarColor[1] = DirectX::XMFLOAT2(1.0f, 0.0f);
-	player2ComboBarColor[2] = DirectX::XMFLOAT2(0.0f, -1.0f);
-	player2ComboBarColor[3] = DirectX::XMFLOAT2(0.0f, 0.0f);
-	player2->comboBar->SetUV(player2ComboBarColor);*/
+	// Menu
+	Points gameOverRec;
+	gameOverRec.pos[0] = DirectX::XMFLOAT2(-0.5f, -0.5f);
+	gameOverRec.pos[1] = DirectX::XMFLOAT2(-0.5f, 0.5f);
+	gameOverRec.pos[2] = DirectX::XMFLOAT2(0.5f, -0.5f);
+	gameOverRec.pos[3] = DirectX::XMFLOAT2(0.5f, 0.5f);
 
-	//player2->comboBar->SetColor(DirectX::XMFLOAT2(1.0f, 1.0f));
-	//DirectX::XMFLOAT2 player2ComboBarPos[4];
-	//player2ComboBarPos[0] = DirectX::XMFLOAT2(0.0f, -1.0f);
-	//player2ComboBarPos[1] = DirectX::XMFLOAT2(0.0f, -0.8f);
-	//player2ComboBarPos[2] = DirectX::XMFLOAT2(0.15f, -1.0f);
-	//player2ComboBarPos[3] = DirectX::XMFLOAT2(0.15f, -0.8f);
-	//player2->comboBar->SetPosition(player2ComboBarPos);
+	gameOverRec.uv[0] = DirectX::XMFLOAT2(0.5f, 0.5f);
+	gameOverRec.uv[1] = DirectX::XMFLOAT2(0.5f, 0.5f);
+	gameOverRec.uv[2] = DirectX::XMFLOAT2(0.5f, 0.5f);
+	gameOverRec.uv[3] = DirectX::XMFLOAT2(0.5f, 0.5f);
+
+	gameOver = new GameOver(gameOverRec, d3dHandler->GetDevice());
 }
 
 Application::~Application()
@@ -192,7 +191,7 @@ Application::~Application()
 	delete levelGenerator;
 
 	delete particle;
-	delete background;
+	delete gameOver;
 
 }
 
@@ -210,8 +209,8 @@ bool Application::Update(float deltaTime)
 	player2->SetAcceleration(XMFLOAT3(dir2.x, dir2.y, 0.0f));
 	player2->ReactToInput(input2->GetButtonState());
 	
-	player1->powerBar->Update(deltaTime);
-	player2->powerBar->Update(deltaTime);
+	player1->powerBar->Update(deltaTime, d3dHandler->GetDeviceContext());
+	player2->powerBar->Update(deltaTime, d3dHandler->GetDeviceContext());
 
 	player1->comboBar->Update(deltaTime);
 	player2->comboBar->Update(deltaTime);
@@ -234,6 +233,9 @@ void Application::Render()
 	powerBarShader->Use(d3dHandler->GetDeviceContext());
 	player1->powerBar->Render(d3dHandler->GetDeviceContext(), powerBarShader);
 	player2->powerBar->Render(d3dHandler->GetDeviceContext(), powerBarShader);
+
+	if (player1->powerBar->IsDead() == true)
+		gameOver->RenderText(d3dHandler->GetDeviceContext());
 
 	comboBarShader->Use(d3dHandler->GetDeviceContext());
 	player1->comboBar->Render(d3dHandler->GetDeviceContext(), comboBarShader);

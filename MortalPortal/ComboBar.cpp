@@ -20,8 +20,10 @@ ComboBar::ComboBar(ID3D11Device* device, Material* materialCombo)
 	bufferDesc.StructureByteStride = sizeof(ComboPoints);
 
 	D3D11_SUBRESOURCE_DATA data;
+
 	data.pSysMem = &comboPoints;
 	HRESULT hr = device->CreateBuffer(&bufferDesc, &data, &vertexBuffer);
+
 	if (FAILED(hr))
 	{
 		throw std::runtime_error("Failed to create vertex buffer in the PowerBar class.");
