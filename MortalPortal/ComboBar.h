@@ -4,27 +4,26 @@
 #include "Shader.h"
 #include "Entity.h"
 
-struct PosColorr
+struct ComboPoints
 {
 	DirectX::XMFLOAT2 pos[4];
-	DirectX::XMFLOAT2 color;
+	DirectX::XMFLOAT2 uv[4];
 };
 
 class ComboBar
 {
 protected:
 	ID3D11Buffer* vertexBuffer;
-	PosColorr posColor;
+	ComboPoints comboPoints;
 
 public:
 	ComboBar(ID3D11Device* device, Material* materialCombo);
 	~ComboBar();
 
-	void setMaterial(Material* materialCombo);
-
+	void setMaterial(Material* materialCombo[2]);
 
 	void SetPosition(DirectX::XMFLOAT2 point[4]);
-	void SetColor(DirectX::XMFLOAT2 color);
+	void SetUV(DirectX::XMFLOAT2 UV[4]);
 	
 	const DirectX::XMFLOAT2* GetPosition();
 	ID3D11Buffer* GetVertexBuffer();
@@ -33,5 +32,6 @@ public:
 	void Render(ID3D11DeviceContext* deviceContext, Shader* shader);
 
 private:
-	Material* materialUsing;
+	ID3D11ShaderResourceView* SRV;
+	Material* materialUsing[2];
 };

@@ -2,6 +2,7 @@
 #include <d3d11.h>
 #include <DirectXMath.h>
 #include "Shader.h"
+#include "GameOver.h"
 
 struct PosColor
 {
@@ -16,6 +17,7 @@ protected:
 	float barSpeed;
 	float powerAdd;
 	float powerRemove;
+	bool dead;
 
 	DirectX::XMFLOAT2 maxMinValue;
 
@@ -34,10 +36,11 @@ public:
 	void RemovePower();
 
 	const float GetBarSpeed();
+	const bool IsDead();
 	const DirectX::XMFLOAT2* GetPosition();
 	const DirectX::XMFLOAT2 GetMaxMinValue();
 	ID3D11Buffer* GetVertexBuffer();
 
-	void Update(float deltaTime);
+	void Update(float deltaTime, ID3D11DeviceContext* deviceContext);
 	void Render(ID3D11DeviceContext* deviceContext, Shader* shader);
 };
