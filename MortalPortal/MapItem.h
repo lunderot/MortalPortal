@@ -11,7 +11,8 @@ public:
 		DirectX::XMFLOAT3 position = DirectX::XMFLOAT3(0, 0, 0),
 		DirectX::XMFLOAT3 velocity = DirectX::XMFLOAT3(0, 0, 0),
 		DirectX::XMFLOAT3 acceleration = DirectX::XMFLOAT3(0, 0, 0),
-		DirectX::XMFLOAT3 rotation = DirectX::XMFLOAT3(0, 0, 0)
+		DirectX::XMFLOAT3 rotation = DirectX::XMFLOAT3(0, 0, 0),
+		DirectX::XMFLOAT3 scale = DirectX::XMFLOAT3(1, 1, 1)
 		);
 
 	objectType type;

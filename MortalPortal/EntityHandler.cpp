@@ -55,18 +55,30 @@ void EntityHandler::Update(float deltaTime)
 						XMFLOAT3 position = (*i)->GetPosition();
 						XMFLOAT3 rotation = (*i)->GetRotation();
 						XMVECTOR rotationQuat = XMQuaternionRotationRollPitchYawFromVector(XMLoadFloat3(&rotation));
+						//Här - Scaling
+						XMFLOAT3 scaling = (*i)->GetScale();
+						XMMATRIX scaleMatrix = XMMatrixScaling(scaling.x, scaling.y, scaling.z);
 
 						XMMATRIX model1 = XMMatrixRotationQuaternion(rotationQuat);
 						model1 = XMMatrixMultiply(model1, XMMatrixTranslationFromVector(XMLoadFloat3(&position)));
 
+						// --
+						model1 = scaleMatrix * model1;
 
+						
 						position = (*j)->GetPosition();
 						rotation = (*j)->GetRotation();
 						rotationQuat = XMQuaternionRotationRollPitchYawFromVector(XMLoadFloat3(&rotation));
 
+						// scaling
+						scaling = (*j)->GetScale();
+						scaleMatrix = XMMatrixScaling(scaling.x, scaling.y, scaling.z);
+
 						XMMATRIX model2 = XMMatrixRotationQuaternion(rotationQuat);
 						XMFLOAT4X4 worldMatrix2;
 						model2 = XMMatrixMultiply(model2, XMMatrixTranslationFromVector(XMLoadFloat3(&position)));
+
+						model2 = scaleMatrix * model2;
 
 						bool collision = false;
 						for (std::vector<CollisionSphere>::iterator k = collision1->spheres.begin(); k != collision1->spheres.end() && !collision; ++k)
@@ -121,7 +133,13 @@ void EntityHandler::Render(ID3D11DeviceContext* deviceContext)
 			
 			ConstantBufferPerModel data;
 			XMMATRIX model = XMMatrixRotationQuaternion(rotationQuat);
+			//Här - Scaling
+			XMFLOAT3 scaling = (*i)->GetScale();
+			XMMATRIX scaleMatrix = XMMatrixScaling(scaling.x, scaling.y, scaling.z);
+
 			model = XMMatrixMultiply(model, XMMatrixTranslation(position.x, position.y, position.z));
+
+			model = scaleMatrix * model;
 
 			XMStoreFloat4x4(&data.worldMatrix, XMMatrixTranspose(model));
 			currentShader->UpdateConstantBufferPerModel(deviceContext, &data);

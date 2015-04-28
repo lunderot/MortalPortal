@@ -121,9 +121,10 @@ Application::Application(bool fullscreen, bool showCursor, int screenWidth, int 
 	// Create Background
 	entityHandler->Add(
 		new Background(
-			assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/test.bin"),
-			assetHandler->GetMaterial(d3dHandler->GetDevice(), "assets/textures/grass.dds"),
-			playerShader, XMFLOAT3(0, 0, 0), XMFLOAT3(30, 0, 0)
+			//assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/test.bin"),
+			assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/BackgroundPlane.bin"),
+			assetHandler->GetMaterial(d3dHandler->GetDevice(), "assets/textures/face.dds"),
+			playerShader, XMFLOAT3(0, 0, 10), XMFLOAT3(1, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(20, 20, 20)
 		)
 	);
 
