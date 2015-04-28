@@ -20,7 +20,7 @@ public:
 	ComboBar(ID3D11Device* device, Material* materialCombo);
 	~ComboBar();
 
-	void setMaterial(Material* materialCombo);
+	void setMaterial(Material* materialCombo[2]);
 
 	void SetPosition(DirectX::XMFLOAT2 point[4]);
 	void SetUV(DirectX::XMFLOAT2 UV[4]);
@@ -33,5 +33,5 @@ public:
 
 private:
 	ID3D11ShaderResourceView* SRV;
-	Material* materialUsing;
+	Material* materialUsing[2];
 };

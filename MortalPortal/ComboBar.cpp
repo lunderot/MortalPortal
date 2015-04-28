@@ -2,14 +2,8 @@
 
 ComboBar::ComboBar(ID3D11Device* device, Material* materialCombo)
 {
-	this->setMaterial(materialCombo);
-
-	/*posColor.pos[0] = DirectX::XMFLOAT2(0.15f, 1.0f);
-	posColor.pos[1] = DirectX::XMFLOAT2(0.15f, 0.8f);
-	posColor.pos[2] = DirectX::XMFLOAT2(0.0f, 1.0f);
-	posColor.pos[3] = DirectX::XMFLOAT2(0.0f, 0.8f);
-	posColor.color[0] = DirectX::XMFLOAT2(1.0f, 1.0f);
-	posColor.color[1] = DirectX::XMFLOAT2(1.0f, 0.0f);*/
+	Material* materialCombo_Array[2] = { materialCombo };
+	this->setMaterial(materialCombo_Array);
 
 	D3D11_BUFFER_DESC bufferDesc;
 	ZeroMemory(&bufferDesc, sizeof(bufferDesc));
@@ -20,19 +14,18 @@ ComboBar::ComboBar(ID3D11Device* device, Material* materialCombo)
 	bufferDesc.StructureByteStride = sizeof(ComboPoints);
 
 	D3D11_SUBRESOURCE_DATA data;
-
 	data.pSysMem = &comboPoints;
 	HRESULT hr = device->CreateBuffer(&bufferDesc, &data, &vertexBuffer);
-
 	if (FAILED(hr))
 	{
 		throw std::runtime_error("Failed to create vertex buffer in the PowerBar class.");
 	}
 }
 
-void ComboBar::setMaterial(Material* materialCombo)
+void ComboBar::setMaterial(Material* materialCombo[2])
 {
-	this->materialUsing = materialCombo;
+	this->materialUsing[0] = materialCombo[0];
+	this->materialUsing[1] = materialCombo[1];
 }
 
 void ComboBar::SetPosition(DirectX::XMFLOAT2 point[4])
@@ -75,13 +68,14 @@ void ComboBar::Render(ID3D11DeviceContext* deviceContext, Shader* shader)
 
 	memcpy(resource.pData, &comboPoints, sizeof(ComboPoints));
 	deviceContext->Unmap(vertexBuffer, 0);
-
 	deviceContext->IASetVertexBuffers(0, 1, &vertexBuffer, &test, &offset);
-	SRV = materialUsing->GetTexture();
+	
+	SRV = materialUsing[0]->GetTexture();
 	deviceContext->PSSetShaderResources(0, 1, &SRV);
 	deviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);
 
 	deviceContext->Draw(vertexCount, 0);
+
 
 }
 

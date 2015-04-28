@@ -98,7 +98,6 @@ Application::Application(bool fullscreen, bool showCursor, int screenWidth, int 
 		assetHandler->GetMaterial(d3dHandler->GetDevice(), "assets/textures/snow.dds"),
 		playerShader, XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(40, 0, 30));
 	entityHandler->Add(player1);
-	player1->comboBar->setMaterial(assetHandler->GetMaterial(d3dHandler->GetDevice(), "assets/textures/2ggr.dds"));
 
 	player2 = new Player(d3dHandler->GetDevice(),
 		assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/test.bin"),
@@ -106,7 +105,15 @@ Application::Application(bool fullscreen, bool showCursor, int screenWidth, int 
 		assetHandler->GetMaterial(d3dHandler->GetDevice(), "assets/textures/snow.dds"),
 		playerShader, XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(40, 0, 30));
 	entityHandler->Add(player2);
-	player2->comboBar->setMaterial(assetHandler->GetMaterial(d3dHandler->GetDevice(), "assets/textures/2ggr.dds"));
+	
+	// Create Combo-bar
+	player1->comboBar->setMaterial(new Material*[]{
+		assetHandler->GetMaterial(d3dHandler->GetDevice(), "assets/textures/2ggr.dds"), 
+		assetHandler->GetMaterial(d3dHandler->GetDevice(), "assets/textures/4ggr.dds")});
+
+	player2->comboBar->setMaterial(new Material*[]{
+		assetHandler->GetMaterial(d3dHandler->GetDevice(), "assets/textures/2ggr.dds"),
+		assetHandler->GetMaterial(d3dHandler->GetDevice(), "assets/textures/4ggr.dds")});
 
 	// Particles testing area
 	particle = new Particle(10, d3dHandler->GetDevice());

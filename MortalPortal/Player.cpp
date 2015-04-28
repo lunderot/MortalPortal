@@ -11,7 +11,7 @@ Player::Player(ID3D11Device* device, Geometry* geometry, Material* material, Mat
 
 { 
 	powerBar = new PowerBar(device);
-	comboBar = new ComboBar(device, switchMaterial);
+	comboBar = new ComboBar(device, material);
 	this->switchMaterial = switchMaterial;
 	colorState = 0;
 	previousButtonState = false;

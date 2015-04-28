@@ -118,7 +118,7 @@ void EntityHandler::Render(ID3D11DeviceContext* deviceContext)
 			XMFLOAT3 position = (*i)->GetPosition();
 			XMFLOAT3 rotation = (*i)->GetRotation();
 			XMVECTOR rotationQuat = XMQuaternionRotationRollPitchYawFromVector(XMLoadFloat3(&rotation));
-
+			
 			ConstantBufferPerModel data;
 			XMMATRIX model = XMMatrixRotationQuaternion(rotationQuat);
 			model = XMMatrixMultiply(model, XMMatrixTranslation(position.x, position.y, position.z));
