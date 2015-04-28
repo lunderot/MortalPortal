@@ -98,8 +98,7 @@ Application::Application(bool fullscreen, bool showCursor, int screenWidth, int 
 		assetHandler->GetMaterial(d3dHandler->GetDevice(), "assets/textures/snow.dds"),
 		playerShader, XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(40, 0, 30));
 	entityHandler->Add(player1);
-
-	player1->comboBar->setMaterial(assetHandler->GetMaterial(d3dHandler->GetDevice(), "assets/textures/grass.dds"));
+	player1->comboBar->setMaterial(assetHandler->GetMaterial(d3dHandler->GetDevice(), "assets/textures/2ggr.dds"));
 
 	player2 = new Player(d3dHandler->GetDevice(),
 		assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/test.bin"),
@@ -107,6 +106,7 @@ Application::Application(bool fullscreen, bool showCursor, int screenWidth, int 
 		assetHandler->GetMaterial(d3dHandler->GetDevice(), "assets/textures/snow.dds"),
 		playerShader, XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(40, 0, 30));
 	entityHandler->Add(player2);
+	player2->comboBar->setMaterial(assetHandler->GetMaterial(d3dHandler->GetDevice(), "assets/textures/2ggr.dds"));
 
 	// Particles testing area
 	particle = new Particle(10, d3dHandler->GetDevice());
@@ -116,21 +116,59 @@ Application::Application(bool fullscreen, bool showCursor, int screenWidth, int 
 
 	player2->powerBar->SetColor(DirectX::XMFLOAT2(1.0f, 1.0f));
 	DirectX::XMFLOAT2 player2BarPos[4];
-
 	player2BarPos[0] = DirectX::XMFLOAT2(-0.1f, -0.9f);
 	player2BarPos[1] = DirectX::XMFLOAT2(-0.1f, -1.0f);
 	player2BarPos[2] = DirectX::XMFLOAT2(-0.7f, -0.9f);
 	player2BarPos[3] = DirectX::XMFLOAT2(-0.7f, -1.0f);
 	player2->powerBar->SetPosition(player2BarPos);
 
+	// Combo bars, player1 & player2
+	DirectX::XMFLOAT2 player1ComboBarPos[4];
+	player1ComboBarPos[0] = DirectX::XMFLOAT2(0.15f, 1.0f); // längst upp - höger
+	player1ComboBarPos[1] = DirectX::XMFLOAT2(0.15f, 0.8f); // längst ner - höger
+	player1ComboBarPos[2] = DirectX::XMFLOAT2(0.0f, 1.0f); // längst upp - vänster
+	player1ComboBarPos[3] = DirectX::XMFLOAT2(0.0f, 0.8f); // längst ner - vänster
+	player1->comboBar->SetPosition(player1ComboBarPos);
+	DirectX::XMFLOAT2 player1ComboBarUV[4];
+	player1ComboBarUV[0] = DirectX::XMFLOAT2(1.0f, 0.0f);
+	player1ComboBarUV[2] = DirectX::XMFLOAT2(0.0f, 0.0f);
+	player1ComboBarUV[1] = DirectX::XMFLOAT2(1.0f, 1.0f);
+	player1ComboBarUV[3] = DirectX::XMFLOAT2(0.0f, 1.0f);
+	player1->comboBar->SetUV(player1ComboBarUV);
 
-	player2->comboBar->SetColor(DirectX::XMFLOAT2(1.0f, 1.0f));
 	DirectX::XMFLOAT2 player2ComboBarPos[4];
-	player2ComboBarPos[0] = DirectX::XMFLOAT2(0.0f, -1.0f);
-	player2ComboBarPos[1] = DirectX::XMFLOAT2(0.0f, -0.8f);
-	player2ComboBarPos[2] = DirectX::XMFLOAT2(0.15f, -1.0f);
-	player2ComboBarPos[3] = DirectX::XMFLOAT2(0.15f, -0.8f);
+	player2ComboBarPos[0] = DirectX::XMFLOAT2(0.15f, -0.8f); // längst upp - höger
+	player2ComboBarPos[1] = DirectX::XMFLOAT2(0.15f, -1.0f); // längst ner - höger
+	player2ComboBarPos[2] = DirectX::XMFLOAT2(0.0f, -0.8f); // längst upp - vänster
+	player2ComboBarPos[3] = DirectX::XMFLOAT2(0.0f, -1.0f); // längst ner - vänster
 	player2->comboBar->SetPosition(player2ComboBarPos);
+	DirectX::XMFLOAT2 player2ComboBarUV[4];
+	player2ComboBarUV[0] = DirectX::XMFLOAT2(1.0f, 0.0f);
+	player2ComboBarUV[1] = DirectX::XMFLOAT2(1.0f, 1.0f);
+	player2ComboBarUV[2] = DirectX::XMFLOAT2(0.0f, 0.0f);
+	player2ComboBarUV[3] = DirectX::XMFLOAT2(0.0f, 1.0f);
+	player2->comboBar->SetUV(player2ComboBarUV);
+
+	/*DirectX::XMFLOAT2 player2ComboBarPos[4];
+	player2ComboBarPos[0] = DirectX::XMFLOAT2(0.5f, 0.0f);
+	player2ComboBarPos[1] = DirectX::XMFLOAT2(0.5f, -0.9f);
+	player2ComboBarPos[2] = DirectX::XMFLOAT2(0.0f, 0.0f);
+	player2ComboBarPos[3] = DirectX::XMFLOAT2(0.0f, -0.9f);
+	player2->comboBar->SetPosition(player2ComboBarPos);
+	DirectX::XMFLOAT2 player2ComboBarColor[4];
+	player2ComboBarColor[0] = DirectX::XMFLOAT2(1.0f, 1.0f);
+	player2ComboBarColor[1] = DirectX::XMFLOAT2(1.0f, 0.0f);
+	player2ComboBarColor[2] = DirectX::XMFLOAT2(0.0f, -1.0f);
+	player2ComboBarColor[3] = DirectX::XMFLOAT2(0.0f, 0.0f);
+	player2->comboBar->SetUV(player2ComboBarColor);*/
+
+	//player2->comboBar->SetColor(DirectX::XMFLOAT2(1.0f, 1.0f));
+	//DirectX::XMFLOAT2 player2ComboBarPos[4];
+	//player2ComboBarPos[0] = DirectX::XMFLOAT2(0.0f, -1.0f);
+	//player2ComboBarPos[1] = DirectX::XMFLOAT2(0.0f, -0.8f);
+	//player2ComboBarPos[2] = DirectX::XMFLOAT2(0.15f, -1.0f);
+	//player2ComboBarPos[3] = DirectX::XMFLOAT2(0.15f, -0.8f);
+	//player2->comboBar->SetPosition(player2ComboBarPos);
 }
 
 Application::~Application()

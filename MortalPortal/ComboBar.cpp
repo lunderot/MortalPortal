@@ -4,23 +4,23 @@ ComboBar::ComboBar(ID3D11Device* device, Material* materialCombo)
 {
 	this->setMaterial(materialCombo);
 
-	posColor.pos[0] = DirectX::XMFLOAT2(0.15f, 1.0f);
+	/*posColor.pos[0] = DirectX::XMFLOAT2(0.15f, 1.0f);
 	posColor.pos[1] = DirectX::XMFLOAT2(0.15f, 0.8f);
 	posColor.pos[2] = DirectX::XMFLOAT2(0.0f, 1.0f);
 	posColor.pos[3] = DirectX::XMFLOAT2(0.0f, 0.8f);
-	posColor.color.x = 0.0f;
-	posColor.color.y = 0.0f;
+	posColor.color[0] = DirectX::XMFLOAT2(1.0f, 1.0f);
+	posColor.color[1] = DirectX::XMFLOAT2(1.0f, 0.0f);*/
 
 	D3D11_BUFFER_DESC bufferDesc;
 	ZeroMemory(&bufferDesc, sizeof(bufferDesc));
 	bufferDesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
 	bufferDesc.Usage = D3D11_USAGE_DYNAMIC;
 	bufferDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
-	bufferDesc.ByteWidth = sizeof(PosColorr);
-	bufferDesc.StructureByteStride = sizeof(PosColorr);
+	bufferDesc.ByteWidth = sizeof(ComboPoints);
+	bufferDesc.StructureByteStride = sizeof(ComboPoints);
 
 	D3D11_SUBRESOURCE_DATA data;
-	data.pSysMem = &posColor.pos[0];
+	data.pSysMem = &comboPoints;
 	HRESULT hr = device->CreateBuffer(&bufferDesc, &data, &vertexBuffer);
 	if (FAILED(hr))
 	{
@@ -35,21 +35,23 @@ void ComboBar::setMaterial(Material* materialCombo)
 
 void ComboBar::SetPosition(DirectX::XMFLOAT2 point[4])
 {
-	this->posColor.pos[0] = point[0];
-	this->posColor.pos[1] = point[1];
-	this->posColor.pos[2] = point[2];
-	this->posColor.pos[3] = point[3];
+	this->comboPoints.pos[0] = point[0];
+	this->comboPoints.pos[1] = point[1];
+	this->comboPoints.pos[2] = point[2];
+	this->comboPoints.pos[3] = point[3];
 }
 
-void ComboBar::SetColor(DirectX::XMFLOAT2 color)
+void ComboBar::SetUV(DirectX::XMFLOAT2 UV[4])
 {
-	this->posColor.color.x = color.x;
-	this->posColor.color.y = color.y;
+	this->comboPoints.uv[0] = UV[0];
+	this->comboPoints.uv[1] = UV[1];
+	this->comboPoints.uv[2] = UV[2];
+	this->comboPoints.uv[3] = UV[3];
 }
 
 const DirectX::XMFLOAT2* ComboBar::GetPosition()
 {
-	return posColor.pos;
+	return comboPoints.pos;
 }
 
 ID3D11Buffer* ComboBar::GetVertexBuffer()
@@ -59,8 +61,9 @@ ID3D11Buffer* ComboBar::GetVertexBuffer()
 
 void ComboBar::Render(ID3D11DeviceContext* deviceContext, Shader* shader)
 {
-	unsigned int vertexSize = sizeof(DirectX::XMFLOAT2);
-	unsigned int offset = 0;
+	unsigned int vertexSize = sizeof(DirectX::XMFLOAT4);
+	UINT test = sizeof(DirectX::XMFLOAT2);
+	UINT32 offset = 0;
 	unsigned int vertexCount = 4;
 
 	D3D11_MAPPED_SUBRESOURCE resource;
@@ -68,10 +71,12 @@ void ComboBar::Render(ID3D11DeviceContext* deviceContext, Shader* shader)
 	result = deviceContext->Map(vertexBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &resource);
 
 
-	memcpy(resource.pData, &posColor, sizeof(PosColorr));
+	memcpy(resource.pData, &comboPoints, sizeof(ComboPoints));
 	deviceContext->Unmap(vertexBuffer, 0);
 
-	deviceContext->IASetVertexBuffers(0, 1, &vertexBuffer, &vertexSize, &offset);
+	deviceContext->IASetVertexBuffers(0, 1, &vertexBuffer, &test, &offset);
+	SRV = materialUsing->GetTexture();
+	deviceContext->PSSetShaderResources(0, 1, &SRV);
 	deviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);
 
 	deviceContext->Draw(vertexCount, 0);
@@ -85,6 +90,11 @@ void ComboBar::Update(float deltaTime)
 
 ComboBar::~ComboBar()
 {
+	if (SRV)
+	{
+		SRV->Release();
+	}
+
 	if (vertexBuffer)
 	{
 		vertexBuffer->Release();
