@@ -1,7 +1,6 @@
 #pragma once
 
 #include <vector>
-#include <map>
 #include <iostream>
 
 #include "Entity.h"
@@ -12,7 +11,7 @@
 
 class EntityHandler
 {
-	std::map<Shader*, std::vector<Entity*>> entities;
+	std::vector<Entity*> entities;
 public:
 	EntityHandler();
 	~EntityHandler();
