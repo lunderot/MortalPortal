@@ -13,6 +13,7 @@ PowerBar::PowerBar(ID3D11Device* device)
 	maxMinValue.y = -0.7f;
 	powerAdd = 0.02f;
 	powerRemove = 0.04f;
+	dead = false;
 
 	D3D11_BUFFER_DESC bufferDesc;
 	ZeroMemory(&bufferDesc, sizeof(bufferDesc));
@@ -54,6 +55,10 @@ void PowerBar::SetMaxMinValue(DirectX::XMFLOAT2 value)
 {
 	this->maxMinValue.x = value.x;
 	this->maxMinValue.y = value.y;
+}
+const bool PowerBar::IsDead()
+{
+	return dead;
 }
 
 const float PowerBar::GetBarSpeed()
@@ -101,15 +106,18 @@ void PowerBar::Render(ID3D11DeviceContext* deviceContext, Shader* shader)
 
 void PowerBar::AddPower()
 {
-	if (posColor.pos[0].x + powerAdd > maxMinValue.x)
+	if (dead == false)
 	{
-		posColor.pos[0].x = maxMinValue.x;
-		posColor.pos[1].x = maxMinValue.x;
-	}
-	else
-	{
-		posColor.pos[0].x += powerAdd;
-		posColor.pos[1].x += powerAdd;
+		if (posColor.pos[0].x + powerAdd > maxMinValue.x)
+		{
+			posColor.pos[0].x = maxMinValue.x;
+			posColor.pos[1].x = maxMinValue.x;
+		}
+		else
+		{
+			posColor.pos[0].x += powerAdd;
+			posColor.pos[1].x += powerAdd;
+		}
 	}
 }
 
@@ -128,19 +136,20 @@ void PowerBar::RemovePower()
 }
 
 
-void PowerBar::Update(float deltaTime)
+void PowerBar::Update(float deltaTime, ID3D11DeviceContext* deviceContext)
 {
 
-	if (posColor.pos[0].x <= maxMinValue.y)
+	if (posColor.pos[0].x <= maxMinValue.y && dead == false)
 	{
 		posColor.pos[0].x = maxMinValue.y;
+		dead = true;
 	}
-	else if (posColor.pos[0].x > maxMinValue.x)
+	else if (posColor.pos[0].x > maxMinValue.x && dead == false)
 	{
 		posColor.pos[0].x = maxMinValue.x;
 		posColor.pos[1].x = maxMinValue.x;
 	}
-	else
+	else if (dead == false)
 	{
 		posColor.pos[0].x += barSpeed * deltaTime;
 		posColor.pos[1].x += barSpeed * deltaTime;
