@@ -19,6 +19,7 @@
 #include "ComboBarShader.h"
 #include "Particles.h"
 #include "GameOver.h"
+#include "Menu.h"
 #include "LevelGenerator.h"
 #include "MapItemShader.h"
 
@@ -66,6 +67,7 @@ private:
 
 	// Menu
 	GameOver* gameOver;
+	Menu* menu;
 
 public:
 	Application(bool fullscreen, bool showCursor, int screenWidth, int screenHeight, LPCWSTR windowTitle);

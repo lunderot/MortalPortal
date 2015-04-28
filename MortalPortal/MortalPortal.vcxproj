@@ -84,6 +84,7 @@
     <ClCompile Include="AssetHandler.cpp" />
     <ClCompile Include="Background.cpp" />
     <ClCompile Include="BackgroundShader.cpp" />
+    <ClCompile Include="Button.cpp" />
     <ClCompile Include="ComboBar.cpp" />
     <ClCompile Include="ComboBarShader.cpp" />
     <ClCompile Include="GameOver.cpp" />
@@ -112,6 +113,7 @@
     <ClCompile Include="PowerBar.cpp" />
     <ClCompile Include="PowerBarShader.cpp" />
     <ClCompile Include="Shader.cpp" />
+    <ClCompile Include="StartButton.cpp" />
     <ClCompile Include="System.cpp" />
     <ClCompile Include="TextureHandler.cpp" />
   </ItemGroup>
@@ -120,6 +122,7 @@
     <ClInclude Include="AssetHandler.h" />
     <ClInclude Include="Background.h" />
     <ClInclude Include="BackgroundShader.h" />
+    <ClInclude Include="Button.h" />
     <ClInclude Include="ComboBar.h" />
     <ClInclude Include="ComboBarShader.h" />
     <ClInclude Include="GameOver.h" />
@@ -147,6 +150,7 @@
     <ClInclude Include="PowerBar.h" />
     <ClInclude Include="PowerBarShader.h" />
     <ClInclude Include="Shader.h" />
+    <ClInclude Include="StartButton.h" />
     <ClInclude Include="System.h" />
     <ClInclude Include="TextureHandler.h" />
   </ItemGroup>

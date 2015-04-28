@@ -163,6 +163,14 @@ Application::Application(bool fullscreen, bool showCursor, int screenWidth, int 
 	player2->comboBar->SetUV(player2ComboBarUV);
 
 	// Menu
+	StartButton* tmp = new StartButton(
+		DirectX::XMFLOAT2(0, 0),
+		DirectX::XMFLOAT2(1, 1),
+		assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/test.bin"),
+		assetHandler->GetMaterial(d3dHandler->GetDevice(), "assets/textures/grass.dds"));
+	menu->AddButton(tmp);
+
+	// Game Over
 	Points gameOverRec;
 	gameOverRec.pos[0] = DirectX::XMFLOAT2(-0.5f, -0.5f);
 	gameOverRec.pos[1] = DirectX::XMFLOAT2(-0.5f, 0.5f);
@@ -199,6 +207,7 @@ Application::~Application()
 
 	delete particle;
 	delete gameOver;
+	delete menu;
 
 }
 
@@ -240,6 +249,9 @@ void Application::Render()
 	powerBarShader->Use(d3dHandler->GetDeviceContext());
 	player1->powerBar->Render(d3dHandler->GetDeviceContext(), powerBarShader);
 	player2->powerBar->Render(d3dHandler->GetDeviceContext(), powerBarShader);
+
+	// Menu
+	menu->Render(d3dHandler->GetDeviceContext());
 
 	if (player1->powerBar->IsDead() == true)
 		gameOver->RenderText(d3dHandler->GetDeviceContext());
