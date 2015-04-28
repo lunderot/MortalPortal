@@ -112,7 +112,13 @@ Application::Application(bool fullscreen, bool showCursor, int screenWidth, int 
 	particle = new Particle(10, d3dHandler->GetDevice());
 
 	// Create Background
-	background = new Background(d3dHandler->GetDevice());
+	entityHandler->Add(
+		new Background(
+			assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/test.bin"),
+			assetHandler->GetMaterial(d3dHandler->GetDevice(), "assets/textures/grass.dds"),
+			playerShader, XMFLOAT3(0, 0, 0), XMFLOAT3(30, 0, 0)
+		)
+	);
 
 	player2->powerBar->SetColor(DirectX::XMFLOAT2(1.0f, 1.0f));
 	DirectX::XMFLOAT2 player2BarPos[4];
@@ -168,7 +174,6 @@ Application::~Application()
 	delete levelGenerator;
 
 	delete particle;
-	delete background;
 	delete gameOver;
 
 }
