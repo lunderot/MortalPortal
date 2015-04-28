@@ -37,47 +37,52 @@ void EntityHandler::Update(float deltaTime)
 			}
 
 		}
-		for (std::vector<Entity*>::iterator i = ent->second.begin(); i != ent->second.end(); ++i)
+	}
+	for (std::map<Shader*, std::vector<Entity*>>::iterator ent = entities.begin(); ent != entities.end(); ++ent)
+	{
+		for (std::map<Shader*, std::vector<Entity*>>::iterator ent2 = entities.begin(); ent2 != entities.end(); ++ent2)
 		{
-			for (std::vector<Entity*>::iterator j = ent->second.begin(); j != ent->second.end(); ++j)
+			for (std::vector<Entity*>::iterator i = ent->second.begin(); i != ent->second.end(); ++i)
 			{
-				if ((*i) != (*j))
+				for (std::vector<Entity*>::iterator j = ent2->second.begin(); j != ent2->second.end(); ++j)
 				{
-					Collision* collision1 = (*i)->GetGeometry()->GetCollision();
-					Collision* collision2 = (*j)->GetGeometry()->GetCollision();
-
-
-					XMFLOAT3 position = (*i)->GetPosition();
-					XMFLOAT3 rotation = (*i)->GetRotation();
-					XMVECTOR rotationQuat = XMQuaternionRotationRollPitchYawFromVector(XMLoadFloat3(&rotation));
-
-					XMMATRIX model1 = XMMatrixRotationQuaternion(rotationQuat);
-					model1 = XMMatrixMultiply(model1, XMMatrixTranslationFromVector(XMLoadFloat3(&position)));
-
-
-					position = (*j)->GetPosition();
-					rotation = (*j)->GetRotation();
-					rotationQuat = XMQuaternionRotationRollPitchYawFromVector(XMLoadFloat3(&rotation));
-
-					XMMATRIX model2 = XMMatrixRotationQuaternion(rotationQuat);
-					XMFLOAT4X4 worldMatrix2;
-					model2 = XMMatrixMultiply(model2, XMMatrixTranslationFromVector(XMLoadFloat3(&position)));
-
-					bool collision = false;
-					for (std::vector<CollisionSphere>::iterator k = collision1->spheres.begin(); k != collision1->spheres.end() && !collision; ++k)
+					if ((*i) != (*j))
 					{
-						for (std::vector<CollisionSphere>::iterator l = collision2->spheres.begin(); l != collision2->spheres.end() && !collision; ++l)
+						Collision* collision1 = (*i)->GetGeometry()->GetCollision();
+						Collision* collision2 = (*j)->GetGeometry()->GetCollision();
+
+
+						XMFLOAT3 position = (*i)->GetPosition();
+						XMFLOAT3 rotation = (*i)->GetRotation();
+						XMVECTOR rotationQuat = XMQuaternionRotationRollPitchYawFromVector(XMLoadFloat3(&rotation));
+
+						XMMATRIX model1 = XMMatrixRotationQuaternion(rotationQuat);
+						model1 = XMMatrixMultiply(model1, XMMatrixTranslationFromVector(XMLoadFloat3(&position)));
+
+
+						position = (*j)->GetPosition();
+						rotation = (*j)->GetRotation();
+						rotationQuat = XMQuaternionRotationRollPitchYawFromVector(XMLoadFloat3(&rotation));
+
+						XMMATRIX model2 = XMMatrixRotationQuaternion(rotationQuat);
+						XMFLOAT4X4 worldMatrix2;
+						model2 = XMMatrixMultiply(model2, XMMatrixTranslationFromVector(XMLoadFloat3(&position)));
+
+						bool collision = false;
+						for (std::vector<CollisionSphere>::iterator k = collision1->spheres.begin(); k != collision1->spheres.end() && !collision; ++k)
 						{
-							if (IsSpheresColliding((*k), (*l), model1, model2))
+							for (std::vector<CollisionSphere>::iterator l = collision2->spheres.begin(); l != collision2->spheres.end() && !collision; ++l)
 							{
-								HandleCollision((*i), (*j));
-								collision = true;
+								if (IsSpheresColliding((*k), (*l), model1, model2))
+								{
+									HandleCollision((*i), (*j));
+									collision = true;
+								}
 							}
 						}
 					}
 				}
 			}
-
 		}
 	}
 }
@@ -86,9 +91,13 @@ void EntityHandler::Render(ID3D11DeviceContext* deviceContext)
 {
 	for (std::map<Shader*, std::vector<Entity*>>::iterator ent = entities.begin(); ent != entities.end(); ++ent)
 	{
+		//Use the current entity shader
+		Shader* currentShader = ent->first;
+		currentShader->Use(deviceContext);
+
 		for (std::vector<Entity*>::iterator i = ent->second.begin(); i != ent->second.end(); ++i)
 		{
-			Shader* currentShader = (*i)->GetShader();
+			
 			Geometry* geometry = (*i)->GetGeometry();
 			Material* material = (*i)->GetMaterial();
 
@@ -117,8 +126,7 @@ void EntityHandler::Render(ID3D11DeviceContext* deviceContext)
 			XMStoreFloat4x4(&data.worldMatrix, XMMatrixTranspose(model));
 			currentShader->UpdateConstantBufferPerModel(deviceContext, &data);
 
-			//Use the current entity shader
-			currentShader->Use(deviceContext);
+			
 
 			//Draw the mesh
 			unsigned int vertexSize = sizeof(VertexPositionTexCoordNormalBinormalTangent);
