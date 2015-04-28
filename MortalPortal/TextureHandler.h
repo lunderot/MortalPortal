@@ -3,14 +3,15 @@
 #include <vector>
 #include <map>
 #include <DirectXTex.h>
+
 class TextureHandler
 {
 protected:
-	std::map<LPCWSTR, ID3D11ShaderResourceView*> texture;
+	std::map<std::string, ID3D11ShaderResourceView*> texture;
 
 public:
 	TextureHandler();
 	~TextureHandler();
-	ID3D11ShaderResourceView* LoadTexture(LPCWSTR name, ID3D11Device* device);
+	ID3D11ShaderResourceView* LoadTexture(std::string name, ID3D11Device* device);
 
 };

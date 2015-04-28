@@ -5,7 +5,7 @@
 
 #include "Entity.h"
 #include "Shader.h"
-#include "Importer.h"
+#include "AssetHandler.h"
 #include "Player.h"
 #include "MapItem.h"
 

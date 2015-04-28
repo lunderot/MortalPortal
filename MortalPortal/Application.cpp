@@ -73,38 +73,38 @@ Application::Application(bool fullscreen, bool showCursor, int screenWidth, int 
 	levelGenerator = new LevelGenerator("assets/levelparts/", "LEVELPARTNAMES.txt");
 
 	levelGenerator->setPlayerOneCrystals(assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/Player1Crystal.bin"),
-		assetHandler->GetMaterial(d3dHandler->GetDevice(), "assets/textures/grass.dds"),
+		assetHandler->GetMaterial(d3dHandler->GetDevice(), "assets/Player1Crystal.bin", "Crystal1"),
 		mapItemShader,
 		assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/Player1Crystal.bin"),
-		assetHandler->GetMaterial(d3dHandler->GetDevice(), "assets/textures/snow.dds"),
+		assetHandler->GetMaterial(d3dHandler->GetDevice(), "assets/Player1Crystal.bin", "Crystal2"),
 		mapItemShader);
 
 	levelGenerator->setPlayerTwoCrystals(assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/Player2Crystal.bin"),
-		assetHandler->GetMaterial(d3dHandler->GetDevice(), "assets/textures/grass.dds"),
+		assetHandler->GetMaterial(d3dHandler->GetDevice(), "assets/Player2Crystal.bin", "Crystal1"),
 		mapItemShader,
 		assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/Player2Crystal.bin"),
-		assetHandler->GetMaterial(d3dHandler->GetDevice(), "assets/textures/snow.dds"),
+		assetHandler->GetMaterial(d3dHandler->GetDevice(), "assets/Player2Crystal.bin", "Crystal2"),
 		mapItemShader);
 
-	//Add avaible comets for LevelGenerator so choos from
-	levelGenerator->addComet(assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/test.bin"),
-		assetHandler->GetMaterial(d3dHandler->GetDevice(), "assets/textures/grass.dds"),
+	//Add available comets for LevelGenerator so choose from
+	levelGenerator->addComet(assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/Comet.bin"),
+		assetHandler->GetMaterial(d3dHandler->GetDevice(), "assets/Comet.bin", "lambert2"),
 		shader);
 
 	//Create player and add it to entity handler
 	player1 = new Player(d3dHandler->GetDevice(),
-		assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/test.bin"),
-		assetHandler->GetMaterial(d3dHandler->GetDevice(), "assets/textures/grass.dds"), 
-		assetHandler->GetMaterial(d3dHandler->GetDevice(), "assets/textures/snow.dds"),
+		assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/Player1.bin"),
+		assetHandler->GetMaterial(d3dHandler->GetDevice(), "assets/Player1.bin", "Portal1"),
+		assetHandler->GetMaterial(d3dHandler->GetDevice(), "assets/Player1.bin", "Portal2"),
 		playerShader, XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(40, 0, 30));
 	entityHandler->Add(player1);
 
-	player1->comboBar->setMaterial(assetHandler->GetMaterial(d3dHandler->GetDevice(), "assets/textures/grass.dds"));
+	player1->comboBar->setMaterial(assetHandler->GetMaterial(d3dHandler->GetDevice(), "assets/Player1.bin", "Portal1"));
 
 	player2 = new Player(d3dHandler->GetDevice(),
-		assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/test.bin"),
-		assetHandler->GetMaterial(d3dHandler->GetDevice(), "assets/textures/grass.dds"), 
-		assetHandler->GetMaterial(d3dHandler->GetDevice(), "assets/textures/snow.dds"),
+		assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/Player2.bin"),
+		assetHandler->GetMaterial(d3dHandler->GetDevice(), "assets/Player2.bin", "Portal1"),
+		assetHandler->GetMaterial(d3dHandler->GetDevice(), "assets/Player2.bin", "Portal2"),
 		playerShader, XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(40, 0, 30));
 	entityHandler->Add(player2);
 

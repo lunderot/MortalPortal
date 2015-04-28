@@ -5,8 +5,6 @@
 
 Importer::Importer()
 {
-	meshGeometry = nullptr;
-
 	transforms = nullptr;
 	meshes = nullptr;
 	cameras = nullptr;
@@ -17,10 +15,6 @@ Importer::Importer()
 
 Importer::~Importer()
 {
-	for (unsigned int i = 0; i < headers.mesh_count; i++)
-		delete[] meshGeometry[i];
-	delete[] meshGeometry;
-
 	delete[] transforms;
 	delete[] meshes;
 	delete[] cameras;
@@ -28,8 +22,8 @@ Importer::~Importer()
 	delete[] lights;
 	delete[] nurbs;
 
-	delete[] spheres;
-	delete[] models;
+	//delete[] spheres;
+	//delete[] models;
 	delete[] joints;
 };
 
@@ -65,11 +59,11 @@ bool Importer::importFile(string filePathAndName)
 
 	if (!extractNurb(offset, fileData, fileByteSize)) return false;
 
-	if (!constructVerticiesAndGeometry()) return false;
+	//if (!constructVerticiesAndGeometry()) return false;
 
-	if (!constructModels()) return false;
+	//if (!constructModels()) return false;
 
-	if (!constructSpere()) return false;
+	//if (!constructSpere()) return false;
 
 	delete fileData;
 
@@ -98,7 +92,7 @@ bool Importer::extractTransforms(unsigned int& offset, char* fileData, unsigned 
 		memcpy(&transforms[i], &fileData[offset], sizeof(Transform) - sizeof(char*));
 		offset += sizeof(Transform) - sizeof(char*) - 4;
 
-		if (transforms[i].name_Length> fileSize - offset)
+		if (transforms[i].name_Length > fileSize - offset)
 			return false;
 
 		char* node_name = new char[transforms[i].name_Length + 1];
@@ -360,170 +354,115 @@ bool Importer::extractNurb(unsigned int& offset, char* fileData, unsigned int& f
 	return true;
 }
 
-bool Importer::constructVerticiesAndGeometry()
+
+
+//bool Importer::constructModels()
+//{
+//	for (unsigned int i = 0; i < headers.mesh_count; i++)
+//		numModels += meshes[i].transform_count;
+//
+//	models = new ModelData[numModels];
+//
+//	int modelID = 0;
+//
+//	for (unsigned int i = 0; i < headers.mesh_count; i++)
+//	{
+//		for (unsigned int j = 0; j < meshes[i].transform_count; j++)
+//		{
+//			int parent = meshes[i].transform_Id[j];
+//
+//			while (parent != -1)
+//			{
+//				double pos[3];
+//				double rotD[4];
+//				double scale[3];
+//
+//				memcpy(pos, transforms[parent].position, sizeof(double) * 3);
+//				memcpy(rotD, transforms[parent].rotation, sizeof(double) * 4);
+//				memcpy(scale, transforms[parent].scale, sizeof(double) * 3);
+//
+//				float rot[4];
+//
+//				rot[0] = (float)rotD[0];
+//				rot[1] = (float)rotD[1];
+//				rot[2] = (float)rotD[2];
+//				rot[3] = (float)rotD[3];
+//
+//
+//				models[modelID].position[0] += pos[0];
+//				models[modelID].position[1] += pos[1];
+//				models[modelID].position[2] += pos[2];
+//
+//				DirectX::XMVECTOR Q1, Q2;
+//				Q1 = DirectX::XMVectorSet(rot[0], rot[1], rot[2], rot[3]);
+//				Q2 = DirectX::XMVectorSet(models[modelID].rotation[0], models[modelID].rotation[1], models[modelID].rotation[2], models[modelID].rotation[3]);
+//
+//				Q2 = DirectX::XMQuaternionMultiply(Q1, Q2);
+//
+//
+//				DirectX::XMFLOAT4 tmp;
+//				DirectX::XMStoreFloat4(&tmp, Q2);
+//				models[modelID].rotation[0] = tmp.x;
+//				models[modelID].rotation[1] = tmp.y;
+//				models[modelID].rotation[2] = tmp.z;
+//				models[modelID].rotation[3] = tmp.w;
+//
+//
+//				models[modelID].scale[0] *= scale[0];
+//				models[modelID].scale[1] *= scale[1];
+//				models[modelID].scale[2] *= scale[2];
+//
+//				parent = transforms[parent].parentID;
+//			}
+//
+//			models[modelID].MeshID = i;
+//			models[modelID].MaterialID = j;
+//
+//			modelID++;
+//		}
+//	}
+//
+//	return true;
+//}
+
+//bool Importer::constructSpere()
+//{
+//	for (unsigned int i = 0; i < headers.nurb_count; i++)
+//		numSpheres += nurbs[i].numberOfParent;
+//
+//	spheres = new BoundingSphere[numSpheres];
+//
+//	unsigned int sphereID = 0;
+//
+//	for (unsigned int i = 0; i < headers.nurb_count; i++)
+//	{
+//		for (unsigned int j = 0; j < nurbs[i].numberOfParent; j++)
+//		{
+//			int parent = nurbs[i].parentID[j];
+//
+//			while (parent != -1)
+//			{
+//				double pos[3];
+//
+//				memcpy(pos, transforms[parent].position, sizeof(double) * 3);
+//
+//				spheres[sphereID].position[0] += pos[0];
+//				spheres[sphereID].position[1] += pos[1];
+//				spheres[sphereID].position[2] += pos[2];
+//
+//				parent = transforms[parent].parentID;;
+//			}
+//			spheres[sphereID].radius = nurbs[i].radius;
+//			sphereID++;
+//		}
+//	}
+//
+//	return true;
+//}
+
+unsigned int Importer::getNumTransforms() const
 {
-	meshGeometry = new VertexPositionTexCoordNormalBinormalTangent*[headers.mesh_count];
-
-	for (unsigned int i = 0; i < headers.mesh_count; i++)
-	{
-		meshGeometry[i] = new VertexPositionTexCoordNormalBinormalTangent[meshes[i].indice_count];
-		for (unsigned int j = 0; j < meshes[i].indice_count; j++)
-		{
-			unsigned int positionID = meshes[i].vertices[j].position;
-			unsigned int uvID = meshes[i].vertices[j].uv;
-			unsigned int normalID = meshes[i].vertices[j].normal;
-			meshGeometry[i][j].position[0] = (float)meshes[i].position[positionID][0];
-			meshGeometry[i][j].position[1] = (float)meshes[i].position[positionID][1];
-			meshGeometry[i][j].position[2] = (float)meshes[i].position[positionID][2];
-			memcpy(meshGeometry[i][j].texCoord, meshes[i].uv[uvID], sizeof(float) * 2);
-			meshGeometry[i][j].normal[0] = (float)meshes[i].normal[normalID][0];
-			meshGeometry[i][j].normal[1] = (float)meshes[i].normal[normalID][1];
-			meshGeometry[i][j].normal[2] = (float)meshes[i].normal[normalID][2];
-			meshGeometry[i][j].biNormal[0] = (float)meshes[i].bi_tangent[normalID][0];
-			meshGeometry[i][j].biNormal[1] = (float)meshes[i].bi_tangent[normalID][1];
-			meshGeometry[i][j].biNormal[2] = (float)meshes[i].bi_tangent[normalID][2];
-			meshGeometry[i][j].tangent[0] = (float)meshes[i].tangent[normalID][0];
-			meshGeometry[i][j].tangent[1] = (float)meshes[i].tangent[normalID][1];
-			meshGeometry[i][j].tangent[2] = (float)meshes[i].tangent[normalID][2];
-		}
-	}
-
-	return true;
-}
-
-bool Importer::constructModels()
-{
-	for (unsigned int i = 0; i < headers.mesh_count; i++)
-		numModels += meshes[i].transform_count;
-
-	models = new Model[numModels];
-
-	int modelID = 0;
-
-	for (unsigned int i = 0; i < headers.mesh_count; i++)
-	{
-		for (unsigned int j = 0; j < meshes[i].transform_count; j++)
-		{
-			int parent = meshes[i].transform_Id[j];
-
-			while (parent != -1)
-			{
-				double pos[3];
-				double rotD[4];
-				double scale[3];
-
-				memcpy(pos, transforms[parent].position, sizeof(double) * 3);
-				memcpy(rotD, transforms[parent].rotation, sizeof(double) * 4);
-				memcpy(scale, transforms[parent].scale, sizeof(double) * 3);
-
-				float rot[4];
-
-				rot[0] = (float)rotD[0];
-				rot[1] = (float)rotD[1];
-				rot[2] = (float)rotD[2];
-				rot[3] = (float)rotD[3];
-
-
-				models[modelID].position[0] += pos[0];
-				models[modelID].position[1] += pos[1];
-				models[modelID].position[2] += pos[2];
-
-				DirectX::XMVECTOR Q1, Q2;
-				Q1 = DirectX::XMVectorSet(rot[0], rot[1], rot[2], rot[3]);
-				Q2 = DirectX::XMVectorSet(models[modelID].rotation[0], models[modelID].rotation[1], models[modelID].rotation[2], models[modelID].rotation[3]);
-
-				Q2 = DirectX::XMQuaternionMultiply(Q1, Q2);
-
-
-				DirectX::XMFLOAT4 tmp;
-				DirectX::XMStoreFloat4(&tmp, Q2);
-				models[modelID].rotation[0] = tmp.x;
-				models[modelID].rotation[1] = tmp.y;
-				models[modelID].rotation[2] = tmp.z;
-				models[modelID].rotation[3] = tmp.w;
-
-
-				models[modelID].scale[0] *= scale[0];
-				models[modelID].scale[1] *= scale[1];
-				models[modelID].scale[2] *= scale[2];
-
-				parent = transforms[parent].parentID;
-			}
-
-			models[modelID].MeshID = i;
-			models[modelID].MaterialID = j;
-
-			modelID++;
-		}
-	}
-
-	return true;
-}
-
-bool Importer::constructSpere()
-{
-	for (unsigned int i = 0; i < headers.nurb_count; i++)
-		numSpheres += nurbs[i].numberOfParent;
-
-	spheres = new BoundingSphere[numSpheres];
-
-	unsigned int sphereID = 0;
-
-	for (unsigned int i = 0; i < headers.nurb_count; i++)
-	{
-		for (unsigned int j = 0; j < nurbs[i].numberOfParent; j++)
-		{
-			int parent = nurbs[i].parentID[j];
-
-			while (parent != -1)
-			{
-				double pos[3];
-
-				memcpy(pos, transforms[parent].position, sizeof(double) * 3);
-
-				spheres[sphereID].position[0] += pos[0];
-				spheres[sphereID].position[1] += pos[1];
-				spheres[sphereID].position[2] += pos[2];
-
-				parent = transforms[parent].parentID;;
-			}
-			spheres[sphereID].radius = nurbs[i].radius;
-			sphereID++;
-		}
-	}
-
-	return true;
-}
-
-const MaterialData* Importer::getMatrials() const
-{
-	return materials;
-}
-
-const VertexPositionTexCoordNormalBinormalTangent* Importer::getMesh(unsigned int meshID) const
-{
-	if (0 <= meshID && meshID < headers.mesh_count)
-		return meshGeometry[meshID];
-	else
-		return nullptr;
-}
-
-unsigned int Importer::getNumBoundingSphere() const
-{
-	return numSpheres;
-}
-
-const BoundingSphere* Importer::getBoundingSphere() const
-{
-	if (numSpheres != 0)
-		return spheres;
-	else
-		return nullptr;
-}
-
-const Model* Importer::getModels() const
-{
-	return models;
+	return headers.group_count;
 }
 
 unsigned int Importer::getNumMaterials() const
@@ -531,20 +470,110 @@ unsigned int Importer::getNumMaterials() const
 	return headers.material_count;
 }
 
+unsigned int Importer::getNumCameras() const
+{
+	return headers.camera_count;
+}
+
+unsigned int Importer::getNumLights() const
+{
+	return headers.light_count;
+}
+
 unsigned int Importer::getNumMeshes() const
 {
 	return headers.mesh_count;
 }
 
-unsigned int Importer::getNumModels() const
+unsigned int Importer::getNumNurbs() const
 {
-	return numModels;
+	return headers.nurb_count;
 }
 
-unsigned int Importer::getMeshVertexCount(unsigned int meshID) const
+const Transform* Importer::getTransform(unsigned int ID) const
 {
-	if (0 <= meshID && meshID < headers.mesh_count)
-		return meshes[meshID].indice_count;
+	if (0 <= ID && ID < headers.group_count)
+	{
+		return &transforms[ID];
+	}
 	else
-		return 0;
+		return nullptr;
 }
+
+const meshStruct* Importer::getMesh(unsigned int ID) const
+{
+	if (0 <= ID && ID < headers.mesh_count)
+	{
+		return &meshes[ID];
+	}
+	else
+		return nullptr;
+}
+
+const camera* Importer::getCamera(unsigned int ID) const
+{
+	if (0 <= ID && ID < headers.camera_count)
+	{
+		return &cameras[ID];
+	}
+	else
+		return nullptr;
+}
+
+const MaterialData* Importer::getMaterial(unsigned int ID) const
+{
+	if (0 <= ID && ID < headers.material_count)
+	{
+		return &materials[ID];
+	}
+	else
+		return nullptr;
+}
+
+const Light* Importer::getLight(unsigned int ID) const
+{
+	if (0 <= ID && ID < headers.light_count)
+	{
+		return &lights[ID];
+	}
+	else
+		return nullptr;
+}
+
+const Joint* Importer::getJoint(unsigned int ID) const
+{
+	if (0 <= ID && ID < headers.joint_count)
+	{
+		return &joints[ID];
+	}
+	else
+		return nullptr;
+}
+
+const Nurb* Importer::getNurb(unsigned int ID) const
+{
+	if (0 <= ID && ID < headers.nurb_count)
+	{
+		return &nurbs[ID];
+	}
+	else
+		return nullptr;
+}
+
+//const BoundingSphere* Importer::getBoundingSphere() const
+//{
+//	if (numSpheres != 0)
+//		return spheres;
+//	else
+//		return nullptr;
+//}
+
+//const ModelData* Importer::getModels() const
+//{
+//	return models;
+//}
+
+//unsigned int Importer::getNumModels() const
+//{
+//	return numModels;
+//}
