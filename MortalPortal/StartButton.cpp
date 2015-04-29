@@ -1,14 +1,14 @@
 #include "StartButton.h"
-
-StartButton::StartButton(DirectX::XMFLOAT2 position, DirectX::XMFLOAT2 scale, Geometry* geometry, Material* material)
-	: Button(position, scale, geometry, material)
+#include <iostream>
+StartButton::StartButton(DirectX::XMFLOAT2 position, DirectX::XMFLOAT2 scale, Material* material)
+	: Button(position, scale, material)
 {
 
 }
 
 void StartButton::isClicked()
 {
-
+	std::cout << "START!" << std::endl;
 }
 
 StartButton::~StartButton()
