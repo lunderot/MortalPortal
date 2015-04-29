@@ -22,7 +22,7 @@ public:
 
 	const DirectX::XMFLOAT2* GetPosition();
 
-	void setMaterial(Material* materialCombo[2]);
+	void setMaterial(Material* materialCombo[3]);
 	void SetPosition(DirectX::XMFLOAT2 point[4]);
 	void SetUV(DirectX::XMFLOAT2 UV[4]);
 	void AddCombo();
@@ -35,7 +35,7 @@ public:
 
 private:
 	ID3D11ShaderResourceView* SRV;
-	Material* materialUsing[2];
+	Material* materialUsing[3];
 	bool comboText;
-	unsigned int changeCombo;
+	unsigned int comboNr;
 };

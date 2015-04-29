@@ -29,6 +29,8 @@ public:
 	void RemoveCombo();
 	ComboBar* comboBar;
 
+	void AddComboText();
+	void RemoveComboText();
 	ComboDisplayText* comboDisplayText[2];
 
 private:

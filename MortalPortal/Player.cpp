@@ -79,3 +79,13 @@ void Player::RemoveCombo()
 {
 	comboBar->RemoveCombo();
 }
+
+void Player::AddComboText()
+{
+	comboDisplayText[1]->AddCombo();
+}
+
+void Player::RemoveComboText()
+{
+	comboDisplayText[1]->RemoveCombo();
+}

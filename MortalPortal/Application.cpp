@@ -72,11 +72,11 @@ Application::Application(bool fullscreen, bool showCursor, int screenWidth, int 
 	//Setup levelGenerator
 	levelGenerator = new LevelGenerator("assets/levelparts/", "LEVELPARTNAMES.txt");
 
-	levelGenerator->setPlayerOneCrystals(assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/Player1Crystal.bin"),
-		assetHandler->GetMaterial(d3dHandler->GetDevice(), "assets/Player1Crystal.bin", "Crystal1"),
+	levelGenerator->setPlayerOneCrystals(assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/Player1.bin"),
+		assetHandler->GetMaterial(d3dHandler->GetDevice(), "assets/Player1.bin", "Portal1"),
 		mapItemShader,
-		assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/Player1Crystal.bin"),
-		assetHandler->GetMaterial(d3dHandler->GetDevice(), "assets/Player1Crystal.bin", "Crystal2"),
+		assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/Player1.bin"),
+		assetHandler->GetMaterial(d3dHandler->GetDevice(), "assets/Player1.bin", "Portal2"),
 		mapItemShader);
 
 	levelGenerator->setPlayerTwoCrystals(assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/Player2Crystal.bin"),
@@ -108,19 +108,35 @@ Application::Application(bool fullscreen, bool showCursor, int screenWidth, int 
 	
 	// Create Combo-bar
 	player1->comboBar->setMaterial(new Material*[]{
-		assetHandler->GetMaterial(d3dHandler->GetDevice(), "assets/Player2.bin", "Portal1"),
-		assetHandler->GetMaterial(d3dHandler->GetDevice(), "assets/Player2.bin", "Portal1")});
+		assetHandler->GetMaterial(d3dHandler->GetDevice(), "2ggr.dds"),
+		assetHandler->GetMaterial(d3dHandler->GetDevice(), "4ggr.dds")});
+
+	player2->comboBar->setMaterial(new Material*[]{
+		assetHandler->GetMaterial(d3dHandler->GetDevice(), "2ggr.dds"),
+		assetHandler->GetMaterial(d3dHandler->GetDevice(), "4ggr.dds")});
+	/*player1->comboBar->setMaterial(new Material*[]{
+		assetHandler->GetMaterial(d3dHandler->GetDevice(), "assets/Player1.bin", "Portal1"),
+		assetHandler->GetMaterial(d3dHandler->GetDevice(), "assets/Player1.bin", "Portal1")});
 
 	player2->comboBar->setMaterial(new Material*[]{
 		assetHandler->GetMaterial(d3dHandler->GetDevice(), "assets/Player2.bin", "Portal1"),
-		assetHandler->GetMaterial(d3dHandler->GetDevice(), "assets/Player2.bin", "Portal1")});
+		assetHandler->GetMaterial(d3dHandler->GetDevice(), "assets/Player2.bin", "Portal1")});*/
 
 	// Create Combo-Display text
 	for (unsigned int i = 0; i < 2; i++)
 	{
 		player1->comboDisplayText[i]->setMaterial(new Material*[]{
 			assetHandler->GetMaterial(d3dHandler->GetDevice(), "combo.dds"),
-			assetHandler->GetMaterial(d3dHandler->GetDevice(), "zero.dds")});
+			assetHandler->GetMaterial(d3dHandler->GetDevice(), "zero.dds"),
+			assetHandler->GetMaterial(d3dHandler->GetDevice(), "one.dds")/*,
+			assetHandler->GetMaterial(d3dHandler->GetDevice(), "two.dds"),
+			assetHandler->GetMaterial(d3dHandler->GetDevice(), "three.dds"),
+			assetHandler->GetMaterial(d3dHandler->GetDevice(), "four.dds"),
+			assetHandler->GetMaterial(d3dHandler->GetDevice(), "five.dds"),
+			assetHandler->GetMaterial(d3dHandler->GetDevice(), "six.dds"),
+			assetHandler->GetMaterial(d3dHandler->GetDevice(), "seven.dds"),
+			assetHandler->GetMaterial(d3dHandler->GetDevice(), "eight.dds"),
+			assetHandler->GetMaterial(d3dHandler->GetDevice(), "nine.dds")*/});
 	}
 
 	// Particles testing area
@@ -223,10 +239,10 @@ Application::Application(bool fullscreen, bool showCursor, int screenWidth, int 
 	player1->comboDisplayText[0]->SetUV(player1UV);
 	player1->comboDisplayText[0]->SetComboText(true);
 	// player 1 - "NUMBERS" text | FIRST
-	player1Pos[0] = DirectX::XMFLOAT2(-0.35f, 0.90f); // längst upp - höger
-	player1Pos[1] = DirectX::XMFLOAT2(-0.35f, 0.8f); // längst ner - höger
-	player1Pos[2] = DirectX::XMFLOAT2(-0.4f, 0.90f); // längst upp - vänster
-	player1Pos[3] = DirectX::XMFLOAT2(-0.4f, 0.8f); // längst ner - vänster
+	player1Pos[0] = DirectX::XMFLOAT2(-0.3f, 0.90f); // längst upp - höger
+	player1Pos[1] = DirectX::XMFLOAT2(-0.3f, 0.8f); // längst ner - höger
+	player1Pos[2] = DirectX::XMFLOAT2(-0.35f, 0.90f); // längst upp - vänster
+	player1Pos[3] = DirectX::XMFLOAT2(-0.35f, 0.8f); // längst ner - vänster
 	player1->comboDisplayText[1]->SetPosition(player1Pos);
 	player1->comboDisplayText[1]->SetUV(player1UV);
 	player1->comboDisplayText[1]->SetComboText(false);
@@ -329,7 +345,7 @@ void Application::Render()
 
 	if (menu->renderMenu == false)
 	{
-
+		entityHandler->Render(d3dHandler->GetDeviceContext());
 		// Combo - Display text
 		comboBarShader->Use(d3dHandler->GetDeviceContext());
 		player1->comboDisplayText[0]->Render(d3dHandler->GetDeviceContext(), comboBarShader);
@@ -344,12 +360,7 @@ void Application::Render()
 		if (player1->powerBar->IsDead() == true)
 			gameOver->RenderText(d3dHandler->GetDeviceContext());
 
-		entityHandler->Render(d3dHandler->GetDeviceContext());
 
-	// Ayu
-	//Avkommentera ifall bakgrunden ska synas (z ej klar)
-	//backgShader->Use(d3dHandler->GetDeviceContext());
-	//background->Render(d3dHandler->GetDeviceContext(), backgShader);
 		comboBarShader->Use(d3dHandler->GetDeviceContext());
 		player1->comboBar->Render(d3dHandler->GetDeviceContext(), comboBarShader);
 		player2->comboBar->Render(d3dHandler->GetDeviceContext(), comboBarShader);
