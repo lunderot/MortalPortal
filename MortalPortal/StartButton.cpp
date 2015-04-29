@@ -6,9 +6,10 @@ StartButton::StartButton(DirectX::XMFLOAT2 position, DirectX::XMFLOAT2 scale, Ma
 
 }
 
-void StartButton::isClicked()
+bool StartButton::isClicked()
 {
 	std::cout << "START!" << std::endl;
+	return true;
 }
 
 StartButton::~StartButton()

@@ -7,6 +7,6 @@ public:
 
 	QuitButton(DirectX::XMFLOAT2 position, DirectX::XMFLOAT2 scale, Material* material);
 	~QuitButton();
-	void isClicked();
+	bool isClicked();
 
 };

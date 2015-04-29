@@ -40,8 +40,10 @@ public:
 	
 	Menu(ID3D11Device* device);
 	~Menu();
+	bool renderMenu;
 
 	Geometry* GetButtonGeometry();
+	void CheckIfToPause();
 	void Update();
 	void Render(ID3D11DeviceContext* deviceContext);
 	void UpdateConstantBuffer(ID3D11DeviceContext* deviceContext, ButtonScale* buffer);

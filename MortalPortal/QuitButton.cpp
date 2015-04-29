@@ -6,10 +6,11 @@ QuitButton::QuitButton(DirectX::XMFLOAT2 position, DirectX::XMFLOAT2 scale, Mate
 
 }
 
-void QuitButton::isClicked()
+bool QuitButton::isClicked()
 {
 	std::cout << "QUIT!" << std::endl;
 	PostQuitMessage(0);
+	return true;
 }
 
 QuitButton::~QuitButton()

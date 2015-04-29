@@ -17,6 +17,6 @@ protected:
 
 public:
 	Button(DirectX::XMFLOAT2 pos, DirectX::XMFLOAT2 sc, Material* mat);
-	virtual void isClicked() = 0;
+	virtual bool isClicked() = 0;
 	~Button();
 };
