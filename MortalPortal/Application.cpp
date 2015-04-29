@@ -287,6 +287,12 @@ Application::~Application()
 
 bool Application::Update(float deltaTime)
 {
+	menu->CheckIfToPause();
+	if (menu->renderMenu == true)
+	{
+		menu->Update();
+		deltaTime = 0;
+	}
 	XMFLOAT2 dir = input->GetDirection(player1Test);
 	dir.x *= 10;
 	dir.y *= 10;
@@ -321,40 +327,51 @@ void Application::Render()
 {
 	d3dHandler->BeginScene(0.0f, 0.0f, 0.0f, 1.0f);
 
-	entityHandler->Render(d3dHandler->GetDeviceContext());
+	if (menu->renderMenu == false)
+	{
 
-	// Combo - Display text
-	comboBarShader->Use(d3dHandler->GetDeviceContext());
-	player1->comboDisplayText[0]->Render(d3dHandler->GetDeviceContext(), comboBarShader);
-	player1->comboDisplayText[1]->Render(d3dHandler->GetDeviceContext(), comboBarShader);
+		// Combo - Display text
+		comboBarShader->Use(d3dHandler->GetDeviceContext());
+		player1->comboDisplayText[0]->Render(d3dHandler->GetDeviceContext(), comboBarShader);
+		player1->comboDisplayText[1]->Render(d3dHandler->GetDeviceContext(), comboBarShader);
 
-	// Power Bars
-	powerBarShader->Use(d3dHandler->GetDeviceContext());
-	player1->powerBar->Render(d3dHandler->GetDeviceContext(), powerBarShader);
-	player2->powerBar->Render(d3dHandler->GetDeviceContext(), powerBarShader);
+		// Power Bars
+		powerBarShader->Use(d3dHandler->GetDeviceContext());
+		player1->powerBar->Render(d3dHandler->GetDeviceContext(), powerBarShader);
+		player2->powerBar->Render(d3dHandler->GetDeviceContext(), powerBarShader);
 
-	// Menu
-	buttonShader->Use(d3dHandler->GetDeviceContext());
-	menu->Render(d3dHandler->GetDeviceContext());
 
-	if (player1->powerBar->IsDead() == true)
-		gameOver->RenderText(d3dHandler->GetDeviceContext());
+		if (player1->powerBar->IsDead() == true)
+			gameOver->RenderText(d3dHandler->GetDeviceContext());
 
-	comboBarShader->Use(d3dHandler->GetDeviceContext());
-	player1->comboBar->Render(d3dHandler->GetDeviceContext(), comboBarShader);
-	player2->comboBar->Render(d3dHandler->GetDeviceContext(), comboBarShader);
-
-	
+		entityHandler->Render(d3dHandler->GetDeviceContext());
 
 	// Ayu
 	//Avkommentera ifall bakgrunden ska synas (z ej klar)
 	//backgShader->Use(d3dHandler->GetDeviceContext());
 	//background->Render(d3dHandler->GetDeviceContext(), backgShader);
+		comboBarShader->Use(d3dHandler->GetDeviceContext());
+		player1->comboBar->Render(d3dHandler->GetDeviceContext(), comboBarShader);
+		player2->comboBar->Render(d3dHandler->GetDeviceContext(), comboBarShader);
 
 
-	// Particles
-	particleShader->Use(d3dHandler->GetDeviceContext());
-	particle->Render(d3dHandler->GetDeviceContext(), particleShader, particleShader->GetComputeShader());
+		// Ayu
+		//Avkommentera ifall bakgrunden ska synas (z ej klar)
+		//backgShader->Use(d3dHandler->GetDeviceContext());
+		//background->Render(d3dHandler->GetDeviceContext(), backgShader);
+
+
+		// Particles
+		particleShader->Use(d3dHandler->GetDeviceContext());
+		particle->Render(d3dHandler->GetDeviceContext(), particleShader, particleShader->GetComputeShader());
+	}
+	// Menu
+	if (menu->renderMenu == true)
+	{
+		buttonShader->Use(d3dHandler->GetDeviceContext());
+		menu->Render(d3dHandler->GetDeviceContext());
+		
+	}
 
 	d3dHandler->EndScene();
 }

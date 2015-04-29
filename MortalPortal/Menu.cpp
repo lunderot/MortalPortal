@@ -3,6 +3,7 @@
 Menu::Menu(ID3D11Device* device)
 {
 	check = 0;
+	renderMenu = true;
 	currentSelect = 0;
 	scalingOrigin = DirectX::XMVectorSet(0.0f, 0.0f, 0.0f, 0.0f);
 	rotationOrigin = DirectX::XMVectorSet(0.0f, 0.0f, 0.0f, 0.0f);
@@ -72,6 +73,7 @@ void Menu::Update()
 	{
 		check = 1;
 		buttons[currentSelect]->isClicked();
+		renderMenu = false;
 	}
 	else if (GetAsyncKeyState(VK_RETURN) == 0)
 		check = 0;
@@ -107,6 +109,16 @@ void Menu::Render(ID3D11DeviceContext* deviceContext)
 Geometry* Menu::GetButtonGeometry()
 {
 	return buttonGeometry;
+}
+
+void Menu::CheckIfToPause()
+{
+	if (GetAsyncKeyState(VK_ESCAPE) && check == 0)
+	{
+		check = 1;
+		renderMenu = true;
+	}
+	check = 0;
 }
 
 void Menu::UpdateConstantBuffer(ID3D11DeviceContext* deviceContext, ButtonScale* buffer)

@@ -146,9 +146,12 @@
     </ClCompile>
     <ClCompile Include="PowerBar.cpp">
       <Filter>Source Files\Entities</Filter>
+<<<<<<< HEAD
     </ClCompile>
     <ClCompile Include="ComboDisplayText.cpp">
       <Filter>Source Files</Filter>
+=======
+>>>>>>> origin/master
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -262,9 +265,12 @@
     </ClInclude>
     <ClInclude Include="Shader.h">
       <Filter>Header Files\Shaders</Filter>
+<<<<<<< HEAD
     </ClInclude>
     <ClInclude Include="ComboDisplayText.h">
       <Filter>Header Files</Filter>
+=======
+>>>>>>> origin/master
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

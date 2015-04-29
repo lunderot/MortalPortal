@@ -25,7 +25,8 @@ Player::~Player()
 {
 	delete powerBar;
 	delete comboBar;
-	delete[] comboDisplayText;
+	delete comboDisplayText[0];
+	delete comboDisplayText[1];
 }
 
 void Player::ReactToInput(bool currentButtonState)
