@@ -26,6 +26,15 @@ struct Header
 
 struct Transform
 {
+	Transform()
+	{
+		name_Length = 0;
+		parentID = 0;
+		position[3] = { 0 };
+		rotation[4] = { 0 };
+		scale[3] = { 0 };
+		name = nullptr;
+	}
 #ifndef MAYA_EXPORT
 	~Transform()
 	{

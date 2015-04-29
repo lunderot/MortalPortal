@@ -19,6 +19,7 @@ protected:
 	DirectX::XMFLOAT3 velocity;
 	DirectX::XMFLOAT3 acceleration;
 	DirectX::XMFLOAT3 rotation;
+	DirectX::XMFLOAT3 scale;
 
 	bool alive;
 
@@ -27,7 +28,8 @@ public:
 		DirectX::XMFLOAT3 position = DirectX::XMFLOAT3(0, 0, 0),
 		DirectX::XMFLOAT3 velocity = DirectX::XMFLOAT3(0, 0, 0),
 		DirectX::XMFLOAT3 acceleration = DirectX::XMFLOAT3(0, 0, 0),
-		DirectX::XMFLOAT3 rotation = DirectX::XMFLOAT3(0, 0, 0)
+		DirectX::XMFLOAT3 rotation = DirectX::XMFLOAT3(0, 0, 0),
+		DirectX::XMFLOAT3 scale = DirectX::XMFLOAT3( 1, 1, 1)
 		);
 	virtual ~Entity();
 
@@ -41,12 +43,15 @@ public:
 	void SetVelocity(DirectX::XMFLOAT3 velocity);
 	void SetAcceleration(DirectX::XMFLOAT3 acceleration);
 	void SetRotation(DirectX::XMFLOAT3 rotation);
+	void SetScale(DirectX::XMFLOAT3 scale);
+
 	void SetAlive(bool alive);
 
 	DirectX::XMFLOAT3 GetPosition() const;
 	DirectX::XMFLOAT3 GetVelocity() const;
 	DirectX::XMFLOAT3 GetAcceleration() const;
 	DirectX::XMFLOAT3 GetRotation() const;
+	DirectX::XMFLOAT3 GetScale() const;
 	bool GetAlive() const;
 
 };

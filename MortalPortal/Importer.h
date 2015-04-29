@@ -3,50 +3,47 @@
 #include "CommonDeclaration.h"
 #include <string>
 
-struct VertexPositionTexCoordNormalBinormalTangent
-{
-	float position[3];
-	float texCoord[2];
-	float normal[3];
-	float biNormal[3];
-	float tangent[3];
-};
+//struct BoundingSphere
+//{
+//	BoundingSphere()
+//	{
+//		position[0] = 0.0;
+//		position[1] = 0.0;
+//		position[2] = 0.0;
+//		radius = 0.0f;
+//	};
+//	string name;
+//	double position[3];
+//	float radius;
+//};
 
-struct BoundingSphere
-{
-	BoundingSphere()
-	{
-		position[0] = 0.0;
-		position[1] = 0.0;
-		position[2] = 0.0;
-		radius = 0.0f;
-	};
-	double position[3];
-	float radius;
-};
+//struct ModelData
+//{
+//	ModelData()
+//	{
+//		MeshID = 0;
+//		MaterialID = 0;
+//		position[0] = 0.0;
+//		position[1] = 0.0;
+//		position[2] = 0.0;
+//		rotation[0] = 0.0f;
+//		rotation[1] = 0.0f;
+//		rotation[2] = 0.0f;
+//		rotation[3] = 1.0f;
+//		scale[0] = 1.0;
+//		scale[1] = 1.0;
+//		scale[2] = 1.0;
+//	};
+//	string name;
+//	unsigned int MeshID;
+//	double position[3];
+//	float rotation[4];
+//	double scale[3];
+//};
 
-struct Model
+struct group
 {
-	Model()
-	{
-		MeshID = 0;
-		MaterialID = 0;
-		position[0] = 0.0;
-		position[1] = 0.0;
-		position[2] = 0.0;
-		rotation[0] = 0.0f;
-		rotation[1] = 0.0f;
-		rotation[2] = 0.0f;
-		rotation[3] = 1.0f;
-		scale[0] = 1.0;
-		scale[1] = 1.0;
-		scale[2] = 1.0;
-	};
-	unsigned int MeshID;
-	unsigned int MaterialID;
-	double position[3];
-	float rotation[4];
-	double scale[3];
+
 };
 
 using namespace std;
@@ -59,19 +56,25 @@ public:
 
 	bool importFile(string);
 
+	unsigned int getNumTransforms() const;
 	unsigned int getNumMaterials() const;
-	//unsigned int numCameras();
-	//unsigned int numLights();
+	unsigned int getNumCameras() const;
+	unsigned int getNumLights() const;
 	unsigned int getNumMeshes() const;
-	unsigned int getNumModels() const;
-	unsigned int getMeshVertexCount(unsigned int meshID) const;
-	unsigned int getNumBoundingSphere() const;
-	const BoundingSphere* getBoundingSphere() const;
+	unsigned int getNumNurbs() const;
+
+	//const BoundingSphere* getBoundingSphere() const;
 
 	//unsigned int numGroups();
-	const Model* getModels() const;
-	const MaterialData* getMatrials() const;
-	const VertexPositionTexCoordNormalBinormalTangent* getMesh(unsigned int meshID) const;
+	//const ModelData* getModels() const;
+
+	const Transform* getTransform(unsigned int ID) const;
+	const meshStruct* getMesh(unsigned int ID) const;
+	const camera* getCamera(unsigned int ID) const;
+	const MaterialData* getMaterial(unsigned int ID) const;
+	const Light* getLight(unsigned int ID) const;
+	const Joint* getJoint(unsigned int ID) const;
+	const Nurb* getNurb(unsigned int ID) const;
 
 private:
 	//Allt här under lär bli private
@@ -85,14 +88,10 @@ private:
 	bool extractJoint(unsigned int& offset, char* fileData, unsigned int& fileSize);
 	bool extractNurb(unsigned int& offset, char* fileData, unsigned int& fileSize);
 
-	bool constructVerticiesAndGeometry();
-	bool constructModels();
-	bool constructSpere();
-	VertexPositionTexCoordNormalBinormalTangent** meshGeometry;
-	unsigned int numModels;
-	Model* models;
-	unsigned int numSpheres;
-	BoundingSphere* spheres;
+	//bool constructModels();
+	//bool constructSpere();
+	//ModelData* models;
+	//BoundingSphere* spheres;
 
 	Header headers;
 

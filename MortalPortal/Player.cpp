@@ -6,8 +6,9 @@ Player::Player(ID3D11Device* device, Geometry* geometry, Material* material, Mat
 	DirectX::XMFLOAT3 position,
 	DirectX::XMFLOAT3 velocity,
 	DirectX::XMFLOAT3 acceleration,
-	DirectX::XMFLOAT3 rotation
-	) : Entity(geometry, material, shader, position, velocity, acceleration, rotation)
+	DirectX::XMFLOAT3 rotation,
+	DirectX::XMFLOAT3 scale
+	) : Entity(geometry, material, shader, position, velocity, acceleration, rotation, scale)
 
 { 
 	powerBar = new PowerBar(device);

@@ -1,13 +1,15 @@
 #pragma once
 #include <DirectXMath.h>
+#include <string>
 
 class CollisionSphere
 {
 public:
 	DirectX::XMFLOAT3 position;
 	float radius;
+	std::string name;
 public:
-	CollisionSphere(DirectX::XMFLOAT3 position, float radius);
+	CollisionSphere(DirectX::XMFLOAT3 position, float radius, std::string name);
 	~CollisionSphere();
 };
 

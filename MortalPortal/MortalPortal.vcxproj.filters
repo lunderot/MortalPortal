@@ -13,6 +13,24 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Source Files\Buttons">
+      <UniqueIdentifier>{70d52d3a-9d84-4705-bbc2-786cc498c6c5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Shaders">
+      <UniqueIdentifier>{c7505a70-27d9-4f7e-9423-2655a21732de}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Entities">
+      <UniqueIdentifier>{0b004801-3d9a-4148-adef-fd373c9b90dd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Buttons">
+      <UniqueIdentifier>{ef5e5baf-eb17-4615-bda6-021253005840}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Entities">
+      <UniqueIdentifier>{80cec431-2c28-4283-88e6-8b2fcaf4f3a5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Shaders">
+      <UniqueIdentifier>{414dadb7-015d-4196-a5d8-a8fd3f60adab}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -33,9 +51,6 @@
     <ClCompile Include="Importer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Shader.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Input.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -45,43 +60,16 @@
     <ClCompile Include="KeyboardInput.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Entity.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="EntityHandler.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="PowerBar.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="DefaultShader.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Player.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="PowerBarShader.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Particles.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ParticleShader.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Background.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="BackgroundShader.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="AssetHandler.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Geometry.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="PlayerShader.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="LevelGenerator.cpp">
@@ -99,15 +87,6 @@
     <ClCompile Include="CollisionSphere.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="MapItem.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="MapItemShader.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="ComboBarShader.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="ComboBar.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -116,6 +95,57 @@
     </ClCompile>
     <ClCompile Include="Menu.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Button.cpp">
+      <Filter>Source Files\Buttons</Filter>
+    </ClCompile>
+    <ClCompile Include="QuitButton.cpp">
+      <Filter>Source Files\Buttons</Filter>
+    </ClCompile>
+    <ClCompile Include="StartButton.cpp">
+      <Filter>Source Files\Buttons</Filter>
+    </ClCompile>
+    <ClCompile Include="BackgroundShader.cpp">
+      <Filter>Source Files\Shaders</Filter>
+    </ClCompile>
+    <ClCompile Include="ButtonShader.cpp">
+      <Filter>Source Files\Shaders</Filter>
+    </ClCompile>
+    <ClCompile Include="ComboBarShader.cpp">
+      <Filter>Source Files\Shaders</Filter>
+    </ClCompile>
+    <ClCompile Include="DefaultShader.cpp">
+      <Filter>Source Files\Shaders</Filter>
+    </ClCompile>
+    <ClCompile Include="MapItemShader.cpp">
+      <Filter>Source Files\Shaders</Filter>
+    </ClCompile>
+    <ClCompile Include="ParticleShader.cpp">
+      <Filter>Source Files\Shaders</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerShader.cpp">
+      <Filter>Source Files\Shaders</Filter>
+    </ClCompile>
+    <ClCompile Include="PowerBarShader.cpp">
+      <Filter>Source Files\Shaders</Filter>
+    </ClCompile>
+    <ClCompile Include="Shader.cpp">
+      <Filter>Source Files\Shaders</Filter>
+    </ClCompile>
+    <ClCompile Include="EntityHandler.cpp">
+      <Filter>Source Files\Entities</Filter>
+    </ClCompile>
+    <ClCompile Include="Entity.cpp">
+      <Filter>Source Files\Entities</Filter>
+    </ClCompile>
+    <ClCompile Include="Player.cpp">
+      <Filter>Source Files\Entities</Filter>
+    </ClCompile>
+    <ClCompile Include="MapItem.cpp">
+      <Filter>Source Files\Entities</Filter>
+    </ClCompile>
+    <ClCompile Include="PowerBar.cpp">
+      <Filter>Source Files\Entities</Filter>
     </ClCompile>
     <ClCompile Include="ComboDisplayText.cpp">
       <Filter>Source Files</Filter>
@@ -137,9 +167,6 @@
     <ClInclude Include="Importer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Shader.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Input.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -149,43 +176,16 @@
     <ClInclude Include="KeyboardInput.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Entity.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="EntityHandler.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="PowerBar.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="DefaultShader.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Player.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="PowerBarShader.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Particles.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ParticleShader.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Background.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="BackgroundShader.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="AssetHandler.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Geometry.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="PlayerShader.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="LevelGenerator.h">
@@ -203,15 +203,6 @@
     <ClInclude Include="CollisionSphere.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="MapItem.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="MapItemShader.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ComboBarShader.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="ComboBar.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -220,6 +211,57 @@
     </ClInclude>
     <ClInclude Include="Menu.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Button.h">
+      <Filter>Header Files\Buttons</Filter>
+    </ClInclude>
+    <ClInclude Include="StartButton.h">
+      <Filter>Header Files\Buttons</Filter>
+    </ClInclude>
+    <ClInclude Include="QuitButton.h">
+      <Filter>Header Files\Buttons</Filter>
+    </ClInclude>
+    <ClInclude Include="Entity.h">
+      <Filter>Header Files\Entities</Filter>
+    </ClInclude>
+    <ClInclude Include="EntityHandler.h">
+      <Filter>Header Files\Entities</Filter>
+    </ClInclude>
+    <ClInclude Include="MapItem.h">
+      <Filter>Header Files\Entities</Filter>
+    </ClInclude>
+    <ClInclude Include="PowerBar.h">
+      <Filter>Header Files\Entities</Filter>
+    </ClInclude>
+    <ClInclude Include="Player.h">
+      <Filter>Header Files\Entities</Filter>
+    </ClInclude>
+    <ClInclude Include="BackgroundShader.h">
+      <Filter>Header Files\Shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="ButtonShader.h">
+      <Filter>Header Files\Shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="ComboBarShader.h">
+      <Filter>Header Files\Shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="DefaultShader.h">
+      <Filter>Header Files\Shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="MapItemShader.h">
+      <Filter>Header Files\Shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="ParticleShader.h">
+      <Filter>Header Files\Shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="PowerBarShader.h">
+      <Filter>Header Files\Shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerShader.h">
+      <Filter>Header Files\Shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="Shader.h">
+      <Filter>Header Files\Shaders</Filter>
     </ClInclude>
     <ClInclude Include="ComboDisplayText.h">
       <Filter>Header Files</Filter>

@@ -15,11 +15,13 @@
 #include "DefaultShader.h"
 #include "PowerBar.h"
 #include "PowerBarShader.h"
+#include "ButtonShader.h"
 #include "ComboBar.h"
 #include "ComboBarShader.h"
 #include "ComboDisplayText.h"
 #include "Particles.h"
 #include "GameOver.h"
+#include "Menu.h"
 #include "LevelGenerator.h"
 #include "MapItemShader.h"
 
@@ -44,6 +46,7 @@ private:
 	PlayerShader* playerShader;
 	BackgroundShader* backgShader;
 	MapItemShader* mapItemShader;
+	ButtonShader* buttonShader;
 
 	//Handlers
 	Input* input;
@@ -59,6 +62,7 @@ private:
 	Player* player2;
 	Particle* particle;
 
+
 	//Player data
 	char player1Keys[5];
 	char player2Keys[5];
@@ -67,6 +71,7 @@ private:
 
 	// Menu
 	GameOver* gameOver;
+	Menu* menu;
 
 public:
 	Application(bool fullscreen, bool showCursor, int screenWidth, int screenHeight, LPCWSTR windowTitle);

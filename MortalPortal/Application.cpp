@@ -17,7 +17,7 @@ Application::Application(bool fullscreen, bool showCursor, int screenWidth, int 
 	playerShader = new PlayerShader(d3dHandler->GetDevice(), L"assets/shaders/playerVS.hlsl", L"assets/shaders/playerPS.hlsl", screenWidth, screenHeight, screenNear, screenFar);
 
 	mapItemShader = new MapItemShader(d3dHandler->GetDevice(), L"assets/shaders/MapItemVS.hlsl", L"assets/shaders/MapItemPS.hlsl", screenWidth, screenHeight, screenNear, screenFar);
-
+	buttonShader = new ButtonShader(d3dHandler->GetDevice(), L"assets/shaders/buttonVS.hlsl", L"assets/shaders/buttonPS.hlsl", screenWidth, screenHeight, screenNear, screenFar);
 	// Ayu
 	backgShader = new BackgroundShader(d3dHandler->GetDevice(), L"assets/shaders/BackgroundVertexShader.hlsl", L"assets/shaders/BackgroundPixelShader.hlsl", screenWidth, screenHeight, screenNear, screenFar);
 
@@ -73,54 +73,54 @@ Application::Application(bool fullscreen, bool showCursor, int screenWidth, int 
 	levelGenerator = new LevelGenerator("assets/levelparts/", "LEVELPARTNAMES.txt");
 
 	levelGenerator->setPlayerOneCrystals(assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/Player1Crystal.bin"),
-		assetHandler->GetMaterial(d3dHandler->GetDevice(), "assets/textures/grass.dds"),
+		assetHandler->GetMaterial(d3dHandler->GetDevice(), "assets/Player1Crystal.bin", "Crystal1"),
 		mapItemShader,
 		assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/Player1Crystal.bin"),
-		assetHandler->GetMaterial(d3dHandler->GetDevice(), "assets/textures/snow.dds"),
+		assetHandler->GetMaterial(d3dHandler->GetDevice(), "assets/Player1Crystal.bin", "Crystal2"),
 		mapItemShader);
 
 	levelGenerator->setPlayerTwoCrystals(assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/Player2Crystal.bin"),
-		assetHandler->GetMaterial(d3dHandler->GetDevice(), "assets/textures/grass.dds"),
+		assetHandler->GetMaterial(d3dHandler->GetDevice(), "assets/Player2Crystal.bin", "Crystal1"),
 		mapItemShader,
 		assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/Player2Crystal.bin"),
-		assetHandler->GetMaterial(d3dHandler->GetDevice(), "assets/textures/snow.dds"),
+		assetHandler->GetMaterial(d3dHandler->GetDevice(), "assets/Player2Crystal.bin", "Crystal2"),
 		mapItemShader);
 
-	//Add avaible comets for LevelGenerator so choos from
-	levelGenerator->addComet(assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/test.bin"),
-		assetHandler->GetMaterial(d3dHandler->GetDevice(), "assets/textures/grass.dds"),
+	//Add available comets for LevelGenerator so choose from
+	levelGenerator->addComet(assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/Comet.bin"),
+		assetHandler->GetMaterial(d3dHandler->GetDevice(), "assets/Comet.bin", "lambert2"),
 		shader);
 
 	//Create player and add it to entity handler
 	player1 = new Player(d3dHandler->GetDevice(),
-		assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/test.bin"),
-		assetHandler->GetMaterial(d3dHandler->GetDevice(), "assets/textures/grass.dds"),
-		assetHandler->GetMaterial(d3dHandler->GetDevice(), "assets/textures/snow.dds"),
+		assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/Player1.bin"),
+		assetHandler->GetMaterial(d3dHandler->GetDevice(), "assets/Player1.bin", "Portal1"),
+		assetHandler->GetMaterial(d3dHandler->GetDevice(), "assets/Player1.bin", "Portal2"),
 		playerShader, XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(40, 0, 30));
 	entityHandler->Add(player1);
 
 	player2 = new Player(d3dHandler->GetDevice(),
-		assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/test.bin"),
-		assetHandler->GetMaterial(d3dHandler->GetDevice(), "assets/textures/grass.dds"),
-		assetHandler->GetMaterial(d3dHandler->GetDevice(), "assets/textures/snow.dds"),
+		assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/Player2.bin"),
+		assetHandler->GetMaterial(d3dHandler->GetDevice(), "assets/Player2.bin", "Portal1"),
+		assetHandler->GetMaterial(d3dHandler->GetDevice(), "assets/Player2.bin", "Portal2"),
 		playerShader, XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(40, 0, 30));
 	entityHandler->Add(player2);
 	
 	// Create Combo-bar
 	player1->comboBar->setMaterial(new Material*[]{
-		assetHandler->GetMaterial(d3dHandler->GetDevice(), "assets/textures/snow.dds"), 
-		assetHandler->GetMaterial(d3dHandler->GetDevice(), "assets/textures/4ggr.dds")});
+		assetHandler->GetMaterial(d3dHandler->GetDevice(), "assets/Player2.bin", "Portal1"),
+		assetHandler->GetMaterial(d3dHandler->GetDevice(), "assets/Player2.bin", "Portal1")});
 
 	player2->comboBar->setMaterial(new Material*[]{
-		assetHandler->GetMaterial(d3dHandler->GetDevice(), "assets/textures/2ggr.dds"),
-		assetHandler->GetMaterial(d3dHandler->GetDevice(), "assets/textures/4ggr.dds")});
+		assetHandler->GetMaterial(d3dHandler->GetDevice(), "assets/Player2.bin", "Portal1"),
+		assetHandler->GetMaterial(d3dHandler->GetDevice(), "assets/Player2.bin", "Portal1")});
 
 	// Create Combo-Display text
 	for (unsigned int i = 0; i < 2; i++)
 	{
 		player1->comboDisplayText[i]->setMaterial(new Material*[]{
-			assetHandler->GetMaterial(d3dHandler->GetDevice(), "assets/textures/combo.dds"),
-			assetHandler->GetMaterial(d3dHandler->GetDevice(), "assets/textures/zero.dds")});
+			assetHandler->GetMaterial(d3dHandler->GetDevice(), "combo.dds"),
+			assetHandler->GetMaterial(d3dHandler->GetDevice(), "zero.dds")});
 	}
 
 	// Particles testing area
@@ -129,11 +129,52 @@ Application::Application(bool fullscreen, bool showCursor, int screenWidth, int 
 	// Create Background
 	entityHandler->Add(
 		new Background(
-			assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/test.bin"),
-			assetHandler->GetMaterial(d3dHandler->GetDevice(), "assets/textures/grass.dds"),
-			playerShader, XMFLOAT3(0, 0, 0), XMFLOAT3(30, 0, 0)
+
+		//assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/test.bin"),
+		assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/BackgroundPlane.bin"),
+		assetHandler->GetMaterial(d3dHandler->GetDevice(), "face.dds"),
+		playerShader, XMFLOAT3(0, 0, 10), XMFLOAT3(10, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(46, 26, 1)
+
+			////assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/test.bin"),
+			//assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/BackgroundPlane.bin"),
+			//assetHandler->GetMaterial(d3dHandler->GetDevice(), "assets/Player2.bin", "Portal1"),
+			//playerShader, XMFLOAT3(0, 0, 10), XMFLOAT3(1, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(20, 20, 20)
+
 		)
-	);
+		);
+
+
+
+	//// create background
+	entityHandler->Add(
+		new Background(
+		//assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/test.bin"),
+		assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/BackgroundPlane.bin"),
+		assetHandler->GetMaterial(d3dHandler->GetDevice(), "face.dds"),
+		playerShader, XMFLOAT3(-91.5, 0, 10), XMFLOAT3(10, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(46, 26, 1)
+		)
+		);
+
+	//entityHandler->Add(
+	//	new Background(
+	//		//assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/test.bin"),
+	//		assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/BackgroundPlane.bin"),
+	//		assetHandler->GetMaterial(d3dHandler->GetDevice(), "assets/textures/face.dds"),
+	//		playerShader, XMFLOAT3(0, 0, 10), XMFLOAT3(10, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(46, 46, 1)
+	//	)
+	//);
+
+
+
+	//// create background
+	//entityHandler->Add(
+	//	new Background(
+	//	//assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/test.bin"),
+	//	assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/BackgroundPlane.bin"),
+	//	assetHandler->GetMaterial(d3dHandler->GetDevice(), "assets/textures/face.dds"),
+	//	playerShader, XMFLOAT3(-91, 0, 10), XMFLOAT3(10, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(46, 46, 1)
+	//	)
+	//	);
 
 	player2->powerBar->SetColor(DirectX::XMFLOAT2(1.0f, 1.0f));
 	DirectX::XMFLOAT2 player2BarPos[4];
@@ -192,6 +233,17 @@ Application::Application(bool fullscreen, bool showCursor, int screenWidth, int 
 
 
 	// Menu
+	menu = new Menu(d3dHandler->GetDevice());
+	menu->AddButton(new StartButton(
+		DirectX::XMFLOAT2(0, 0.4f),
+		DirectX::XMFLOAT2(0.3f, 0.3f),
+		assetHandler->GetMaterial(d3dHandler->GetDevice(), "start.dds")));
+	menu->AddButton(new QuitButton(
+		DirectX::XMFLOAT2(0, -0.1f),
+		DirectX::XMFLOAT2(0.3f, 0.3f),
+		assetHandler->GetMaterial(d3dHandler->GetDevice(), "quit.dds")));
+
+	// Game Over
 	Points gameOverRec;
 	gameOverRec.pos[0] = DirectX::XMFLOAT2(-0.5f, -0.5f);
 	gameOverRec.pos[1] = DirectX::XMFLOAT2(-0.5f, 0.5f);
@@ -217,6 +269,7 @@ Application::~Application()
 	delete playerShader;
 	delete backgShader;
 	delete mapItemShader;
+	delete buttonShader;
 
 	delete input;
 	delete input2;
@@ -228,6 +281,7 @@ Application::~Application()
 
 	delete particle;
 	delete gameOver;
+	delete menu;
 
 }
 
@@ -258,6 +312,7 @@ bool Application::Update(float deltaTime)
 	particle->UpdatePosition(player1->GetPosition());
 	particle->UpdateDeltaTime(deltaTime);
 	levelGenerator->Update(entityHandler, deltaTime);
+	menu->Update();
 
 	return false;
 }
@@ -277,6 +332,10 @@ void Application::Render()
 	powerBarShader->Use(d3dHandler->GetDeviceContext());
 	player1->powerBar->Render(d3dHandler->GetDeviceContext(), powerBarShader);
 	player2->powerBar->Render(d3dHandler->GetDeviceContext(), powerBarShader);
+
+	// Menu
+	buttonShader->Use(d3dHandler->GetDeviceContext());
+	menu->Render(d3dHandler->GetDeviceContext());
 
 	if (player1->powerBar->IsDead() == true)
 		gameOver->RenderText(d3dHandler->GetDeviceContext());

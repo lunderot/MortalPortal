@@ -1,10 +1,11 @@
 #include "CollisionSphere.h"
 
 
-CollisionSphere::CollisionSphere(DirectX::XMFLOAT3 position, float radius)
+CollisionSphere::CollisionSphere(DirectX::XMFLOAT3 position, float radius, std::string name)
 {
 	this->position = position;
 	this->radius = radius;
+	this->name = name;
 }
 
 

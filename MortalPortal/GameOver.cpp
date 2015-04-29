@@ -25,7 +25,7 @@ GameOver::GameOver(Points points, ID3D11Device* device)
 
 void GameOver::RenderText(ID3D11DeviceContext* deviceContext)
 {
-	unsigned int vertexSize = sizeof(DirectX::XMFLOAT2);
+	unsigned int vertexSize = sizeof(DirectX::XMFLOAT4);
 	unsigned int offset = 0;
 	unsigned int vertexCount = 4;
 

@@ -6,7 +6,8 @@ Entity::Entity(Geometry* geometry, Material* material, Shader* shader,
 	DirectX::XMFLOAT3 position,
 	DirectX::XMFLOAT3 velocity,
 	DirectX::XMFLOAT3 acceleration,
-	DirectX::XMFLOAT3 rotation)
+	DirectX::XMFLOAT3 rotation,
+	DirectX::XMFLOAT3 scale)
 {
 	this->geometry = geometry;
 	this->material = material;
@@ -16,6 +17,8 @@ Entity::Entity(Geometry* geometry, Material* material, Shader* shader,
 	this->velocity = velocity;
 	this->acceleration = acceleration;
 	this->rotation = rotation;
+
+	this->scale = scale;
 
 	this->alive = true;
 }	
@@ -73,6 +76,11 @@ void Entity::SetRotation(DirectX::XMFLOAT3 rotation)
 	this->rotation = rotation;
 }
 
+void Entity::SetScale(DirectX::XMFLOAT3 scale)
+{
+	this->scale = scale;
+}
+
 void Entity::SetAlive(bool alive)
 {
 	this->alive = alive;
@@ -96,6 +104,11 @@ XMFLOAT3 Entity::GetAcceleration() const
 XMFLOAT3 Entity::GetRotation() const
 {
 	return rotation;
+}
+
+XMFLOAT3 Entity::GetScale() const
+{
+	return scale;
 }
 
 bool Entity::GetAlive() const
