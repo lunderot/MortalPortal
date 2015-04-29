@@ -59,6 +59,7 @@ private:
 	Player* player2;
 	Particle* particle;
 
+
 	//Player data
 	char player1Keys[5];
 	char player2Keys[5];

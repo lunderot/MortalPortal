@@ -121,12 +121,45 @@ Application::Application(bool fullscreen, bool showCursor, int screenWidth, int 
 	// Create Background
 	entityHandler->Add(
 		new Background(
-			//assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/test.bin"),
-			assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/BackgroundPlane.bin"),
-			assetHandler->GetMaterial(d3dHandler->GetDevice(), "assets/textures/face.dds"),
-			playerShader, XMFLOAT3(0, 0, 10), XMFLOAT3(1, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(20, 20, 20)
+		//assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/test.bin"),
+		assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/BackgroundPlane.bin"),
+		assetHandler->GetMaterial(d3dHandler->GetDevice(), "assets/textures/face.dds"),
+		playerShader, XMFLOAT3(0, 0, 10), XMFLOAT3(10, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(46, 26, 1)
 		)
-	);
+		);
+
+
+
+	//// create background
+	entityHandler->Add(
+		new Background(
+		//assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/test.bin"),
+		assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/BackgroundPlane.bin"),
+		assetHandler->GetMaterial(d3dHandler->GetDevice(), "assets/textures/face.dds"),
+		playerShader, XMFLOAT3(-91.5, 0, 10), XMFLOAT3(10, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(46, 26, 1)
+		)
+		);
+
+	//entityHandler->Add(
+	//	new Background(
+	//		//assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/test.bin"),
+	//		assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/BackgroundPlane.bin"),
+	//		assetHandler->GetMaterial(d3dHandler->GetDevice(), "assets/textures/face.dds"),
+	//		playerShader, XMFLOAT3(0, 0, 10), XMFLOAT3(10, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(46, 46, 1)
+	//	)
+	//);
+
+
+
+	//// create background
+	//entityHandler->Add(
+	//	new Background(
+	//	//assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/test.bin"),
+	//	assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/BackgroundPlane.bin"),
+	//	assetHandler->GetMaterial(d3dHandler->GetDevice(), "assets/textures/face.dds"),
+	//	playerShader, XMFLOAT3(-91, 0, 10), XMFLOAT3(10, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(46, 46, 1)
+	//	)
+	//	);
 
 	player2->powerBar->SetColor(DirectX::XMFLOAT2(1.0f, 1.0f));
 	DirectX::XMFLOAT2 player2BarPos[4];

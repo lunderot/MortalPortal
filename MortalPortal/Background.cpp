@@ -21,8 +21,14 @@ Background::~Background()
 void Background::Update(float deltaTime)
 {
 	Entity::Update(deltaTime);
-	if (position.x > 35)
+
+	if (position.x > scale.x * 2)
 	{
-		position.x = -35;
+		position.x = -(scale.x * 2 - 1);
 	}
+
+	//if (position.x > scale.x * 2)
+	//{
+	//	position.x = -(scale.x * 2 - 2);
+	//}
 }
