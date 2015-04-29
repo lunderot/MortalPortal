@@ -101,3 +101,27 @@ bool ControllerInput::GetButtonState()
 	XInputGetState(id, &state);
 	return state.Gamepad.wButtons & XINPUT_GAMEPAD_A;
 }
+
+bool ControllerInput::GetButtonUpState()
+{
+	XInputGetState(id, &state);
+	return state.Gamepad.wButtons & XINPUT_GAMEPAD_DPAD_UP;
+}
+
+bool ControllerInput::GetButtonDownState()
+{
+	XInputGetState(id, &state);
+	return state.Gamepad.wButtons & XINPUT_GAMEPAD_DPAD_DOWN;
+}
+
+bool ControllerInput::GetButtonStartState()
+{
+	XInputGetState(id, &state);
+	return state.Gamepad.wButtons & XINPUT_GAMEPAD_START;
+}
+
+bool ControllerInput::GetButtonEnterState()
+{
+	XInputGetState(id, &state);
+	return state.Gamepad.wButtons & XINPUT_GAMEPAD_A;
+}
