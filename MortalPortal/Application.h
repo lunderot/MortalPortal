@@ -28,6 +28,9 @@
 #include "AssetHandler.h"
 #include "TextureHandler.h"
 
+#include "AudioHandler.h"
+#include "Audio.h"
+
 
 class Application : public System
 {
@@ -49,6 +52,9 @@ private:
 
 	EntityHandler* entityHandler;
 	AssetHandler* assetHandler;
+
+	AudioHandler* audioHandler;
+	Audio* pirate;
 
 	LevelGenerator* levelGenerator;
 

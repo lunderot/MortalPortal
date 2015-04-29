@@ -82,6 +82,8 @@
   <ItemGroup>
     <ClCompile Include="Application.cpp" />
     <ClCompile Include="AssetHandler.cpp" />
+    <ClCompile Include="Audio.cpp" />
+    <ClCompile Include="AudioHandler.cpp" />
     <ClCompile Include="Background.cpp" />
     <ClCompile Include="BackgroundShader.cpp" />
     <ClCompile Include="ComboBar.cpp" />
@@ -116,6 +118,8 @@
   <ItemGroup>
     <ClInclude Include="Application.h" />
     <ClInclude Include="AssetHandler.h" />
+    <ClInclude Include="Audio.h" />
+    <ClInclude Include="AudioHandler.h" />
     <ClInclude Include="Background.h" />
     <ClInclude Include="BackgroundShader.h" />
     <ClInclude Include="ComboBar.h" />
