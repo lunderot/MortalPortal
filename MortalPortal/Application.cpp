@@ -236,12 +236,21 @@ Application::Application(bool fullscreen, bool showCursor, int screenWidth, int 
 	menu = new Menu(d3dHandler->GetDevice());
 	menu->AddButton(new StartButton(
 		DirectX::XMFLOAT2(0, 0.4f),
-		DirectX::XMFLOAT2(0.3f, 0.3f),
+		DirectX::XMFLOAT2(0.1f, 0.1f),
 		assetHandler->GetMaterial(d3dHandler->GetDevice(), "start.dds")));
+
+	menu->AddButton(new OptionsButton(
+		DirectX::XMFLOAT2(0, 0.0f),
+		DirectX::XMFLOAT2(0.1f, 0.1f),
+		assetHandler->GetMaterial(d3dHandler->GetDevice(), "options.dds")));
+
 	menu->AddButton(new QuitButton(
-		DirectX::XMFLOAT2(0, -0.1f),
-		DirectX::XMFLOAT2(0.3f, 0.3f),
+		DirectX::XMFLOAT2(0, -0.4f),
+		DirectX::XMFLOAT2(0.1f, 0.1f),
 		assetHandler->GetMaterial(d3dHandler->GetDevice(), "quit.dds")));
+
+	// Skip the shitty menu
+	menu->renderMenu = false;
 
 	// Game Over
 	Points gameOverRec;
@@ -287,10 +296,10 @@ Application::~Application()
 
 bool Application::Update(float deltaTime)
 {
-	menu->CheckIfToPause();
+	menu->CheckIfToPause(input->GetButtonStartState());
 	if (menu->renderMenu == true)
 	{
-		menu->Update();
+		menu->Update(input->GetButtonUpState(), input->GetButtonDownState(), input->GetButtonEnterState());
 		deltaTime = 0;
 	}
 	XMFLOAT2 dir = input->GetDirection(player1Test);
@@ -305,7 +314,7 @@ bool Application::Update(float deltaTime)
 	player2->SetAcceleration(XMFLOAT3(dir2.x, dir2.y, 0.0f));
 	player2->ReactToInput(input2->GetButtonState());
 	
-	//player1->powerBar->Update(deltaTime, d3dHandler->GetDeviceContext());
+	player1->powerBar->Update(deltaTime, d3dHandler->GetDeviceContext());
 	player2->powerBar->Update(deltaTime, d3dHandler->GetDeviceContext());
 
 	player1->comboBar->Update(deltaTime);
@@ -318,7 +327,9 @@ bool Application::Update(float deltaTime)
 	particle->UpdatePosition(player1->GetPosition());
 	particle->UpdateDeltaTime(deltaTime);
 	levelGenerator->Update(entityHandler, deltaTime);
-	menu->Update();
+
+	menu->Update(input->GetButtonUpState(), input->GetButtonDownState(), input->GetButtonEnterState());
+
 
 	return false;
 }
@@ -329,7 +340,7 @@ void Application::Render()
 
 	if (menu->renderMenu == false)
 	{
-
+		entityHandler->Render(d3dHandler->GetDeviceContext());
 		// Combo - Display text
 		comboBarShader->Use(d3dHandler->GetDeviceContext());
 		player1->comboDisplayText[0]->Render(d3dHandler->GetDeviceContext(), comboBarShader);
@@ -340,26 +351,12 @@ void Application::Render()
 		player1->powerBar->Render(d3dHandler->GetDeviceContext(), powerBarShader);
 		player2->powerBar->Render(d3dHandler->GetDeviceContext(), powerBarShader);
 
-
 		if (player1->powerBar->IsDead() == true)
 			gameOver->RenderText(d3dHandler->GetDeviceContext());
 
-		entityHandler->Render(d3dHandler->GetDeviceContext());
-
-	// Ayu
-	//Avkommentera ifall bakgrunden ska synas (z ej klar)
-	//backgShader->Use(d3dHandler->GetDeviceContext());
-	//background->Render(d3dHandler->GetDeviceContext(), backgShader);
 		comboBarShader->Use(d3dHandler->GetDeviceContext());
 		player1->comboBar->Render(d3dHandler->GetDeviceContext(), comboBarShader);
 		player2->comboBar->Render(d3dHandler->GetDeviceContext(), comboBarShader);
-
-
-		// Ayu
-		//Avkommentera ifall bakgrunden ska synas (z ej klar)
-		//backgShader->Use(d3dHandler->GetDeviceContext());
-		//background->Render(d3dHandler->GetDeviceContext(), backgShader);
-
 
 		// Particles
 		particleShader->Use(d3dHandler->GetDeviceContext());
