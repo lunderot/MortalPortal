@@ -221,7 +221,7 @@ D3DHandler::D3DHandler(int screenWidth, int screenHeight, HWND hwnd, bool fullsc
 	ZeroMemory(&blendStateDescription, sizeof(D3D11_BLEND_DESC));
 
 	blendStateDescription.RenderTarget[0].BlendEnable = TRUE;
-	blendStateDescription.RenderTarget[0].SrcBlend = D3D11_BLEND_ONE;
+	blendStateDescription.RenderTarget[0].SrcBlend = D3D11_BLEND_SRC_ALPHA;
 	blendStateDescription.RenderTarget[0].DestBlend = D3D11_BLEND_INV_SRC_ALPHA;
 	blendStateDescription.RenderTarget[0].BlendOp = D3D11_BLEND_OP_ADD;
 	blendStateDescription.RenderTarget[0].SrcBlendAlpha = D3D11_BLEND_ONE;
@@ -230,6 +230,8 @@ D3DHandler::D3DHandler(int screenWidth, int screenHeight, HWND hwnd, bool fullsc
 	blendStateDescription.RenderTarget[0].RenderTargetWriteMask = 0x0f;
 
 	result = device->CreateBlendState(&blendStateDescription, &alphaEnableBlendingState);
+	// For transparency
+	deviceContext->OMSetBlendState(alphaEnableBlendingState, 0, 0xffffff);
 	if (FAILED(result))
 	{
 		throw std::runtime_error("Blend state error");

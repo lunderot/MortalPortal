@@ -1,17 +1,18 @@
 #pragma once
 
 #include <vector>
+#include <map>
 #include <iostream>
 
 #include "Entity.h"
 #include "Shader.h"
-#include "Importer.h"
+#include "AssetHandler.h"
 #include "Player.h"
 #include "MapItem.h"
 
 class EntityHandler
 {
-	std::vector<Entity*> entities;
+	std::map<Shader*, std::vector<Entity*>> entities;
 public:
 	EntityHandler();
 	~EntityHandler();
@@ -23,4 +24,3 @@ public:
 private:
 	void HandleCollision(Entity* entity1, Entity* entity2);
 };
-

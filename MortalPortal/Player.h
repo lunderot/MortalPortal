@@ -2,6 +2,7 @@
 #include "Entity.h"
 #include "PowerBar.h"
 #include "ComboBar.h"
+#include "ComboDisplayText.h"
 
 class Player :
 	public Entity
@@ -12,7 +13,8 @@ public:
 		DirectX::XMFLOAT3 position = DirectX::XMFLOAT3(0, 0, 0),
 		DirectX::XMFLOAT3 velocity = DirectX::XMFLOAT3(0, 0, 0),
 		DirectX::XMFLOAT3 acceleration = DirectX::XMFLOAT3(0, 0, 0),
-		DirectX::XMFLOAT3 rotation = DirectX::XMFLOAT3(0, 0, 0)
+		DirectX::XMFLOAT3 rotation = DirectX::XMFLOAT3(0, 0, 0),
+		DirectX::XMFLOAT3 scale = DirectX::XMFLOAT3(1, 1, 1)
 		);
 	~Player();
 
@@ -26,6 +28,10 @@ public:
 	void AddCombo();
 	void RemoveCombo();
 	ComboBar* comboBar;
+
+	void AddComboText();
+	void RemoveComboText();
+	ComboDisplayText* comboDisplayText[2];
 
 private:
 	unsigned int colorState;

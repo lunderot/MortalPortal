@@ -1,6 +1,6 @@
 #include "MapItem.h"
-MapItem::MapItem(Geometry* geometry, Material* material, Shader* shader, objectType type, DirectX::XMFLOAT3 position, DirectX::XMFLOAT3 velocity, DirectX::XMFLOAT3 acceleration, DirectX::XMFLOAT3 rotation)
-	: Entity(geometry, material, shader, position, velocity, acceleration, rotation)
+MapItem::MapItem(Geometry* geometry, Material* material, Shader* shader, objectType type, DirectX::XMFLOAT3 position, DirectX::XMFLOAT3 velocity, DirectX::XMFLOAT3 acceleration, DirectX::XMFLOAT3 rotation, DirectX::XMFLOAT3 scale)
+	: Entity(geometry, material, shader, position, velocity, acceleration, rotation, scale)
 {
 	this->type = type;
 };
