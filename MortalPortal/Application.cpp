@@ -166,9 +166,13 @@ Application::Application(bool fullscreen, bool showCursor, int screenWidth, int 
 	// Menu
 	menu = new Menu(d3dHandler->GetDevice());
 	menu->AddButton(new StartButton(
-		DirectX::XMFLOAT2(0.5, 0),
-		DirectX::XMFLOAT2(0.1f, 0.1f),
-		assetHandler->GetMaterial(d3dHandler->GetDevice(), "assets/Player2.bin", "Portal1")));
+		DirectX::XMFLOAT2(0, 0.4f),
+		DirectX::XMFLOAT2(0.3f, 0.3f),
+		assetHandler->GetMaterial(d3dHandler->GetDevice(), "start.dds")));
+	menu->AddButton(new QuitButton(
+		DirectX::XMFLOAT2(0, -0.1f),
+		DirectX::XMFLOAT2(0.3f, 0.3f),
+		assetHandler->GetMaterial(d3dHandler->GetDevice(), "quit.dds")));
 
 	// Game Over
 	Points gameOverRec;
@@ -236,6 +240,7 @@ bool Application::Update(float deltaTime)
 	particle->UpdatePosition(player1->GetPosition());
 	particle->UpdateDeltaTime(deltaTime);
 	levelGenerator->Update(entityHandler, deltaTime);
+	menu->Update();
 
 	return false;
 }

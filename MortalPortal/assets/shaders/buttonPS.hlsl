@@ -1,3 +1,5 @@
+texture2D tex;
+SamplerState samplState;
 struct VS_OUT
 {
 	float4 position : SV_POSITION;
@@ -6,5 +8,6 @@ struct VS_OUT
 
 float4 main(VS_OUT input) : SV_Target
 {
-	return float4(input.texCoord.x, input.texCoord.y, 1, 1);
+	float4 texColor = tex.Sample(samplState, input.texCoord);
+	return float4(texColor);
 }

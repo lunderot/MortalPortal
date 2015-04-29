@@ -113,6 +113,7 @@
     <ClCompile Include="PlayerShader.cpp" />
     <ClCompile Include="PowerBar.cpp" />
     <ClCompile Include="PowerBarShader.cpp" />
+    <ClCompile Include="QuitButton.cpp" />
     <ClCompile Include="Shader.cpp" />
     <ClCompile Include="StartButton.cpp" />
     <ClCompile Include="System.cpp" />
@@ -151,6 +152,7 @@
     <ClInclude Include="PlayerShader.h" />
     <ClInclude Include="PowerBar.h" />
     <ClInclude Include="PowerBarShader.h" />
+    <ClInclude Include="QuitButton.h" />
     <ClInclude Include="Shader.h" />
     <ClInclude Include="StartButton.h" />
     <ClInclude Include="System.h" />

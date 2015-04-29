@@ -32,6 +32,7 @@ public:
 
 	Geometry* GetGeometry(ID3D11Device* device, std::string filename);
 	Material* GetMaterial(ID3D11Device* device, std::string filename, std::string materilName);
+	Material* GetMaterial(ID3D11Device* device, std::string filename);
 
 private:
 	//Geometry* LoadGeometry(ID3D11Device* device, std::string filename);

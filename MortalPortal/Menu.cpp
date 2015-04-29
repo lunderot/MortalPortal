@@ -2,6 +2,8 @@
 #include <iostream>
 Menu::Menu(ID3D11Device* device)
 {
+	check = 0;
+	currentSelect = 0;
 	scalingOrigin = DirectX::XMVectorSet(0.0f, 0.0f, 0.0f, 0.0f);
 	rotationOrigin = DirectX::XMVectorSet(0.0f, 0.0f, 0.0f, 0.0f);
 
@@ -9,16 +11,16 @@ Menu::Menu(ID3D11Device* device)
 	buttonPoint points[4] =
 	{
 		DirectX::XMFLOAT2(-1.0f, -1.0f),
-		DirectX::XMFLOAT2(0.0f, 0.0f),
+		DirectX::XMFLOAT2(0.0f, 1.0f),
 
 		DirectX::XMFLOAT2(-1.0f, 1.0f),
-		DirectX::XMFLOAT2(1.0f, 0.0f),
+		DirectX::XMFLOAT2(0.0f, 0.0f),
 
 		DirectX::XMFLOAT2(1.0f, -1.0f),
 		DirectX::XMFLOAT2(1.0f, 1.0f),
 
 		DirectX::XMFLOAT2(1.0f, 1.0f),
-		DirectX::XMFLOAT2(0.0f, 1.0f)
+		DirectX::XMFLOAT2(1.0f, 0.0f)
 
 	};
 
@@ -52,8 +54,27 @@ Menu::Menu(ID3D11Device* device)
 
 }
 
-void Menu::Update(float deltaTime)
+void Menu::Update()
 {
+	// 0 = start & quit = 1
+	if (GetAsyncKeyState(VK_DOWN) && currentSelect >= 0 && currentSelect < buttons.size() - 1)
+	{
+		currentSelect++;
+		check = 1;
+	}
+	if (GetAsyncKeyState(VK_UP) && currentSelect > 0 && currentSelect < buttons.size())
+	{
+		check = 1;
+		currentSelect--;
+		std::cout << "UP" << std::endl;
+	}
+	if (GetAsyncKeyState(VK_RETURN) && check == 0)
+	{
+		check = 1;
+		buttons[currentSelect]->isClicked();
+	}
+	else if (GetAsyncKeyState(VK_RETURN) == 0)
+		check = 0;
 
 }
 
@@ -65,8 +86,10 @@ void Menu::Render(ID3D11DeviceContext* deviceContext)
 		unsigned int vertexSize = sizeof(float) * 4;
 		unsigned int offset = 0;
 		unsigned int vertexCount = 4;
-
-		scaling = DirectX::XMVectorSet(buttons[i]->scale.x, buttons[i]->scale.y, 1.0f, 1.0f);
+		if (currentSelect == i)
+			scaling = DirectX::XMVectorSet(buttons[i]->scale.x + 0.1, buttons[i]->scale.y + 0.1, 1.0f, 1.0f);
+		else
+			scaling = DirectX::XMVectorSet(buttons[i]->scale.x, buttons[i]->scale.y, 1.0f, 1.0f);
 		translation = DirectX::XMVectorSet(buttons[i]->position.x, buttons[i]->position.y, 1.0f, 1.0f);
 
 		buttonScale.scale = DirectX::XMMatrixTranspose(DirectX::XMMatrixTransformation2D(scalingOrigin, 0.0f, scaling, rotationOrigin, 0.0f, translation));
@@ -75,6 +98,8 @@ void Menu::Render(ID3D11DeviceContext* deviceContext)
 		deviceContext->IASetVertexBuffers(0, 1, &vertexBuffer, &vertexSize, &offset);
 		deviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);
 
+		SRV = buttons[i]->material->GetTexture();
+		deviceContext->PSSetShaderResources(0, 1, &SRV);
 		deviceContext->Draw(vertexCount, 0);
 	}
 }
@@ -101,7 +126,15 @@ void Menu::AddButton(Button* button)
 
 Menu::~Menu()
 {
+	for (unsigned int i = 0; i < buttons.size(); i++)
+	{
+		delete buttons[i];
+	}
+
 	if (buttonVertexBuffer)
 		buttonVertexBuffer->Release();
+
+	if (SRV)
+		SRV->Release();
 	delete buttonGeometry;
 }

@@ -55,6 +55,23 @@ Material* AssetHandler::GetMaterial(ID3D11Device* device, std::string filename, 
 	return returnValue;
 }
 
+Material* AssetHandler::GetMaterial(ID3D11Device* device, std::string filename)
+{
+	Material* returnValue = nullptr;
+
+
+	if (material.find(filename) != material.end()) //Material is found
+	{
+		returnValue = material[filename];
+	}
+	else
+	{
+		returnValue = new Material(textureHandler.LoadTexture(filename, device));
+		material[filename] = returnValue;
+	}
+	return returnValue;
+}
+
 void AssetHandler::LoadFile(ID3D11Device* device, std::string filename)
 {
 	Geometry* returnValue = nullptr;
