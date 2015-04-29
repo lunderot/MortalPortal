@@ -282,5 +282,13 @@
     <FxCompile Include="assets\shaders\BackgroundVertexShader.hlsl">
       <Filter>Resource Files</Filter>
     </FxCompile>
+    <ClCompile Include="OptionsButton.cpp">
+      <Filter>Source Files\Buttons</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="OptionsButton.h">
+      <Filter>Header Files\Buttons</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

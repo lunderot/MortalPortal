@@ -80,3 +80,18 @@ bool KeyboardInput::GetButtonState()
 	//return returnColorState;
 	return GetAsyncKeyState(keys[4]);
 }
+
+bool KeyboardInput::GetButtonUpState()
+{
+	return true;
+}
+
+bool KeyboardInput::GetButtonDownState()
+{
+	return true;
+}
+
+bool KeyboardInput::GetButtonStartState()
+{
+	return true;
+}
