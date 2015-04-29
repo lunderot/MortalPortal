@@ -12,6 +12,8 @@ Player::Player(ID3D11Device* device, Geometry* geometry, Material* material, Mat
 { 
 	powerBar = new PowerBar(device);
 	comboBar = new ComboBar(device, material);
+	comboDisplayText[0] = new ComboDisplayText(device, material);
+	comboDisplayText[1] = new ComboDisplayText(device, material);
 	this->switchMaterial = switchMaterial;
 	colorState = 0;
 	previousButtonState = false;
@@ -22,6 +24,7 @@ Player::~Player()
 {
 	delete powerBar;
 	delete comboBar;
+	delete[] comboDisplayText;
 }
 
 void Player::ReactToInput(bool currentButtonState)
@@ -63,4 +66,14 @@ void Player::AddPower()
 void Player::RemovePower()
 {
 	powerBar->RemovePower();
+}
+
+void Player::AddCombo()
+{
+	comboBar->AddCombo();
+}
+
+void Player::RemoveCombo()
+{
+	comboBar->RemoveCombo();
 }

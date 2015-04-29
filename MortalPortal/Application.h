@@ -17,6 +17,7 @@
 #include "PowerBarShader.h"
 #include "ComboBar.h"
 #include "ComboBarShader.h"
+#include "ComboDisplayText.h"
 #include "Particles.h"
 #include "GameOver.h"
 #include "LevelGenerator.h"

@@ -161,6 +161,7 @@ void EntityHandler::HandleCollision(Entity* entity1, Entity* entity2)
 			{
 				entity2->SetAlive(false);
 				dynamic_cast<Player*>(entity1)->AddPower();
+				dynamic_cast<Player*>(entity1)->AddCombo();
 			}
 		}
 	}
@@ -171,6 +172,7 @@ void EntityHandler::HandleCollision(Entity* entity1, Entity* entity2)
 		{
 			entity2->SetAlive(false);
 			dynamic_cast<Player*>(entity1)->RemovePower();
+			dynamic_cast<Player*>(entity1)->RemoveCombo();
 		}
 	}
 }

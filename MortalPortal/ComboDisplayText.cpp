@@ -1,9 +1,10 @@
-#include "ComboBar.h"
+#include "ComboDisplayText.h"
 
-ComboBar::ComboBar(ID3D11Device* device, Material* materialCombo)
+ComboDisplayText::ComboDisplayText(ID3D11Device* device, Material* materialCombo)
 {
 	Material* materialCombo_Array[2] = { materialCombo };
 	this->setMaterial(materialCombo_Array);
+	comboText = false;
 	changeCombo = 0;
 
 	D3D11_BUFFER_DESC bufferDesc;
@@ -11,11 +12,11 @@ ComboBar::ComboBar(ID3D11Device* device, Material* materialCombo)
 	bufferDesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
 	bufferDesc.Usage = D3D11_USAGE_DYNAMIC;
 	bufferDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
-	bufferDesc.ByteWidth = sizeof(ComboPoints);
-	bufferDesc.StructureByteStride = sizeof(ComboPoints);
+	bufferDesc.ByteWidth = sizeof(ComboDisplayTextPoints);
+	bufferDesc.StructureByteStride = sizeof(ComboDisplayTextPoints);
 
 	D3D11_SUBRESOURCE_DATA data;
-	data.pSysMem = &comboPoints;
+	data.pSysMem = &comboDTPoints;
 	HRESULT hr = device->CreateBuffer(&bufferDesc, &data, &vertexBuffer);
 	if (FAILED(hr))
 	{
@@ -23,49 +24,54 @@ ComboBar::ComboBar(ID3D11Device* device, Material* materialCombo)
 	}
 }
 
-void ComboBar::setMaterial(Material* materialCombo[2])
+void ComboDisplayText::setMaterial(Material* materialCombo[2])
 {
 	this->materialUsing[0] = materialCombo[0];
 	this->materialUsing[1] = materialCombo[1];
 }
 
-void ComboBar::SetPosition(DirectX::XMFLOAT2 point[4])
+void ComboDisplayText::SetPosition(DirectX::XMFLOAT2 point[4])
 {
-	this->comboPoints.pos[0] = point[0];
-	this->comboPoints.pos[1] = point[1];
-	this->comboPoints.pos[2] = point[2];
-	this->comboPoints.pos[3] = point[3];
+	this->comboDTPoints.pos[0] = point[0];
+	this->comboDTPoints.pos[1] = point[1];
+	this->comboDTPoints.pos[2] = point[2];
+	this->comboDTPoints.pos[3] = point[3];
 }
 
-void ComboBar::SetUV(DirectX::XMFLOAT2 UV[4])
+void ComboDisplayText::SetUV(DirectX::XMFLOAT2 UV[4])
 {
-	this->comboPoints.uv[0] = UV[0];
-	this->comboPoints.uv[1] = UV[1];
-	this->comboPoints.uv[2] = UV[2];
-	this->comboPoints.uv[3] = UV[3];
+	this->comboDTPoints.uv[0] = UV[0];
+	this->comboDTPoints.uv[1] = UV[1];
+	this->comboDTPoints.uv[2] = UV[2];
+	this->comboDTPoints.uv[3] = UV[3];
 }
 
-const DirectX::XMFLOAT2* ComboBar::GetPosition()
+void ComboDisplayText::SetComboText(bool comboTextState)
 {
-	return comboPoints.pos;
+	this->comboText = comboTextState;
 }
 
-ID3D11Buffer* ComboBar::GetVertexBuffer()
+const DirectX::XMFLOAT2* ComboDisplayText::GetPosition()
+{
+	return comboDTPoints.pos;
+}
+
+ID3D11Buffer* ComboDisplayText::GetVertexBuffer()
 {
 	return vertexBuffer;
 }
 
-void ComboBar::AddCombo()
+void ComboDisplayText::AddCombo()
 {
 	changeCombo++;
 }
 
-void ComboBar::RemoveCombo()
+void ComboDisplayText::RemoveCombo()
 {
 	changeCombo = 0;
 }
 
-void ComboBar::Render(ID3D11DeviceContext* deviceContext, Shader* shader)
+void ComboDisplayText::Render(ID3D11DeviceContext* deviceContext, Shader* shader)
 {
 	unsigned int vertexSize = sizeof(DirectX::XMFLOAT4);
 	UINT test = sizeof(DirectX::XMFLOAT2);
@@ -77,14 +83,14 @@ void ComboBar::Render(ID3D11DeviceContext* deviceContext, Shader* shader)
 	result = deviceContext->Map(vertexBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &resource);
 
 
-	memcpy(resource.pData, &comboPoints, sizeof(ComboPoints));
+	memcpy(resource.pData, &comboDTPoints, sizeof(ComboDisplayTextPoints));
 	deviceContext->Unmap(vertexBuffer, 0);
 	deviceContext->IASetVertexBuffers(0, 1, &vertexBuffer, &test, &offset);
-	if (changeCombo <= 0)
+	if (comboText == true)
 	{
 		SRV = materialUsing[0]->GetTexture();
 	}
-	else if (changeCombo > 0)
+	else if (comboText == false)
 	{
 		SRV = materialUsing[1]->GetTexture();
 	}
@@ -96,12 +102,12 @@ void ComboBar::Render(ID3D11DeviceContext* deviceContext, Shader* shader)
 
 }
 
-void ComboBar::Update(float deltaTime)
+void ComboDisplayText::Update(float deltaTime)
 {
 
 }
 
-ComboBar::~ComboBar()
+ComboDisplayText::~ComboDisplayText()
 {
 	if (SRV)
 	{

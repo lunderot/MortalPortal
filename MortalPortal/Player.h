@@ -2,6 +2,7 @@
 #include "Entity.h"
 #include "PowerBar.h"
 #include "ComboBar.h"
+#include "ComboDisplayText.h"
 
 class Player :
 	public Entity
@@ -26,6 +27,8 @@ public:
 	void AddCombo();
 	void RemoveCombo();
 	ComboBar* comboBar;
+
+	ComboDisplayText* comboDisplayText[2];
 
 private:
 	unsigned int colorState;

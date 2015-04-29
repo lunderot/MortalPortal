@@ -4,21 +4,21 @@
 #include "Shader.h"
 #include "Entity.h"
 
-struct ComboPoints
+struct ComboDisplayTextPoints
 {
 	DirectX::XMFLOAT2 pos[4];
 	DirectX::XMFLOAT2 uv[4];
 };
 
-class ComboBar
+class ComboDisplayText
 {
 protected:
 	ID3D11Buffer* vertexBuffer;
-	ComboPoints comboPoints;
+	ComboDisplayTextPoints comboDTPoints;
 
 public:
-	ComboBar(ID3D11Device* device, Material* materialCombo);
-	~ComboBar();
+	ComboDisplayText(ID3D11Device* device, Material* materialCombo);
+	~ComboDisplayText();
 
 	const DirectX::XMFLOAT2* GetPosition();
 
@@ -27,7 +27,8 @@ public:
 	void SetUV(DirectX::XMFLOAT2 UV[4]);
 	void AddCombo();
 	void RemoveCombo();
-	
+	void SetComboText(bool comboTextState);
+
 	void Update(float deltaTime);
 	void Render(ID3D11DeviceContext* deviceContext, Shader* shader);
 	ID3D11Buffer* GetVertexBuffer();
@@ -35,5 +36,6 @@ public:
 private:
 	ID3D11ShaderResourceView* SRV;
 	Material* materialUsing[2];
+	bool comboText;
 	unsigned int changeCombo;
 };

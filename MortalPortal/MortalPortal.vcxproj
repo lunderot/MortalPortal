@@ -86,6 +86,7 @@
     <ClCompile Include="BackgroundShader.cpp" />
     <ClCompile Include="ComboBar.cpp" />
     <ClCompile Include="ComboBarShader.cpp" />
+    <ClCompile Include="ComboDisplayText.cpp" />
     <ClCompile Include="GameOver.cpp" />
     <ClCompile Include="MapItemShader.cpp" />
     <ClCompile Include="MapItem.cpp" />
@@ -122,6 +123,7 @@
     <ClInclude Include="BackgroundShader.h" />
     <ClInclude Include="ComboBar.h" />
     <ClInclude Include="ComboBarShader.h" />
+    <ClInclude Include="ComboDisplayText.h" />
     <ClInclude Include="GameOver.h" />
     <ClInclude Include="MapItemShader.h" />
     <ClInclude Include="MapItem.h" />
