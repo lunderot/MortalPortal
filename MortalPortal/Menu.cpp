@@ -55,26 +55,27 @@ Menu::Menu(ID3D11Device* device)
 
 }
 
-void Menu::Update(bool gamepadUp, bool gamepadDown, bool aButton)
+void Menu::Update()
 {
 	// 0 = start & quit = 1
-	if (GetAsyncKeyState(VK_DOWN) || gamepadDown == true && currentSelect >= 0 && currentSelect < buttons.size() - 1)
+	if (GetAsyncKeyState(VK_DOWN) && currentSelect >= 0 && currentSelect < buttons.size() - 1)
 	{
 		currentSelect++;
 		check = 1;
 	}
-	if (GetAsyncKeyState(VK_UP) || gamepadUp == true && currentSelect > 0 && currentSelect < buttons.size())
+	if (GetAsyncKeyState(VK_UP) && currentSelect > 0 && currentSelect < buttons.size())
 	{
 		check = 1;
 		currentSelect--;
+		std::cout << "UP" << std::endl;
 	}
-	if (GetAsyncKeyState(VK_RETURN) || aButton == true && check == 0)
+	if (GetAsyncKeyState(VK_RETURN) && check == 0)
 	{
 		check = 1;
 		buttons[currentSelect]->isClicked();
 		renderMenu = false;
 	}
-	else if (GetAsyncKeyState(VK_RETURN) == 0 || aButton == false)
+	else if (GetAsyncKeyState(VK_RETURN) == 0)
 		check = 0;
 
 }
@@ -110,9 +111,9 @@ Geometry* Menu::GetButtonGeometry()
 	return buttonGeometry;
 }
 
-void Menu::CheckIfToPause(bool gamepadStart)
+void Menu::CheckIfToPause()
 {
-	if (GetAsyncKeyState(VK_ESCAPE) || gamepadStart == true && check == 0)
+	if (GetAsyncKeyState(VK_ESCAPE) && check == 0)
 	{
 		check = 1;
 		renderMenu = true;

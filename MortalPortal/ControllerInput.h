@@ -23,9 +23,5 @@ public:
 
 	DirectX::XMFLOAT2 GetDirection(unsigned int playerNr);
 	bool GetButtonState();
-	bool GetButtonUpState();
-	bool GetButtonDownState();
-	bool GetButtonStartState();
-
 };
 

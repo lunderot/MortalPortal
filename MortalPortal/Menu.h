@@ -1,6 +1,5 @@
 #pragma once
 #include "StartButton.h"
-#include "OptionsButton.h"
 #include "QuitButton.h"
 #include "Button.h"
 #include <d3d11.h>
@@ -44,8 +43,8 @@ public:
 	bool renderMenu;
 
 	Geometry* GetButtonGeometry();
-	void CheckIfToPause(bool gamepadStart);
-	void Update(bool gamepadUp, bool gamepadDown, bool aButton);
+	void CheckIfToPause();
+	void Update();
 	void Render(ID3D11DeviceContext* deviceContext);
 	void UpdateConstantBuffer(ID3D11DeviceContext* deviceContext, ButtonScale* buffer);
 
