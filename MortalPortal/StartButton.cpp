@@ -1,7 +1,7 @@
 #include "StartButton.h"
 
-StartButton::StartButton(DirectX::XMFLOAT2 position, DirectX::XMFLOAT2 scale, Geometry* geometry, Material* material)
-	: Button(position, scale, geometry, material)
+StartButton::StartButton(DirectX::XMFLOAT2 position, DirectX::XMFLOAT2 scale, Material* material)
+	: Button(position, scale, material)
 {
 
 }

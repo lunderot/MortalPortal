@@ -17,7 +17,7 @@ Application::Application(bool fullscreen, bool showCursor, int screenWidth, int 
 	playerShader = new PlayerShader(d3dHandler->GetDevice(), L"assets/shaders/playerVS.hlsl", L"assets/shaders/playerPS.hlsl", screenWidth, screenHeight, screenNear, screenFar);
 
 	mapItemShader = new MapItemShader(d3dHandler->GetDevice(), L"assets/shaders/MapItemVS.hlsl", L"assets/shaders/MapItemPS.hlsl", screenWidth, screenHeight, screenNear, screenFar);
-
+	buttonShader = new ButtonShader(d3dHandler->GetDevice(), L"assets/shaders/buttonVS.hlsl", L"assets/shaders/buttonPS.hlsl", screenWidth, screenHeight, screenNear, screenFar);
 	// Ayu
 	backgShader = new BackgroundShader(d3dHandler->GetDevice(), L"assets/shaders/BackgroundVertexShader.hlsl", L"assets/shaders/BackgroundPixelShader.hlsl", screenWidth, screenHeight, screenNear, screenFar);
 
@@ -164,12 +164,11 @@ Application::Application(bool fullscreen, bool showCursor, int screenWidth, int 
 	player2->comboBar->SetUV(player2ComboBarUV);
 
 	// Menu
-	StartButton* tmp = new StartButton(
-		DirectX::XMFLOAT2(0, 0),
-		DirectX::XMFLOAT2(1, 1),
-		assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/Player2.bin"),
-		assetHandler->GetMaterial(d3dHandler->GetDevice(), "assets/Player2.bin", "Portal1"));
-	menu->AddButton(tmp);
+	menu = new Menu(d3dHandler->GetDevice());
+	menu->AddButton(new StartButton(
+		DirectX::XMFLOAT2(0.5, 0),
+		DirectX::XMFLOAT2(0.1f, 0.1f),
+		assetHandler->GetMaterial(d3dHandler->GetDevice(), "assets/Player2.bin", "Portal1")));
 
 	// Game Over
 	Points gameOverRec;
@@ -197,6 +196,7 @@ Application::~Application()
 	delete playerShader;
 	delete backgShader;
 	delete mapItemShader;
+	delete buttonShader;
 
 	delete input;
 	delete input2;
@@ -252,6 +252,7 @@ void Application::Render()
 	player2->powerBar->Render(d3dHandler->GetDeviceContext(), powerBarShader);
 
 	// Menu
+	buttonShader->Use(d3dHandler->GetDeviceContext());
 	menu->Render(d3dHandler->GetDeviceContext());
 
 	if (player1->powerBar->IsDead() == true)

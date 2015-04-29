@@ -15,6 +15,7 @@
 #include "DefaultShader.h"
 #include "PowerBar.h"
 #include "PowerBarShader.h"
+#include "ButtonShader.h"
 #include "ComboBar.h"
 #include "ComboBarShader.h"
 #include "Particles.h"
@@ -44,6 +45,7 @@ private:
 	PlayerShader* playerShader;
 	BackgroundShader* backgShader;
 	MapItemShader* mapItemShader;
+	ButtonShader* buttonShader;
 
 	//Handlers
 	Input* input;
