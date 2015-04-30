@@ -375,7 +375,7 @@ void Application::Render()
 {
 	d3dHandler->BeginScene(0.0f, 0.0f, 0.0f, 1.0f);
 
-	if (startMenu->renderMenu == false && pauseMenu->renderMenu == false)
+	if (startMenu->renderMenu == false)
 	{
 		entityHandler->Render(d3dHandler->GetDeviceContext());
 		// Combo - Display text
@@ -388,8 +388,14 @@ void Application::Render()
 		player1->powerBar->Render(d3dHandler->GetDeviceContext(), powerBarShader);
 		player2->powerBar->Render(d3dHandler->GetDeviceContext(), powerBarShader);
 
-		if (player1->powerBar->IsDead() == true)
+		if (player1->powerBar->IsDead() == true || player2->powerBar->IsDead() == true)
+		{
+			//ID3D11ShaderResourceView* srv;
+			//Material* mat = assetHandler->GetMaterial(d3dHandler->GetDevice(), "start.dds");
+			//srv = mat->GetTexture();
+			//d3dHandler->GetDeviceContext()->PSSetShaderResources(0, 1, &srv);
 			gameOver->RenderText(d3dHandler->GetDeviceContext());
+		}
 
 		comboBarShader->Use(d3dHandler->GetDeviceContext());
 		player1->comboBar->Render(d3dHandler->GetDeviceContext(), comboBarShader);
