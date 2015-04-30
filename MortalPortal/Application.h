@@ -21,7 +21,8 @@
 #include "ComboDisplayText.h"
 #include "Particles.h"
 #include "GameOver.h"
-#include "Menu.h"
+#include "StartMenu.h"
+#include "PauseMenu.h"
 #include "LevelGenerator.h"
 #include "MapItemShader.h"
 
@@ -31,6 +32,9 @@
 #include "ParticleShader.h"
 #include "AssetHandler.h"
 #include "TextureHandler.h"
+
+#include "AudioHandler.h"
+#include "Audio.h"
 
 
 class Application : public System
@@ -55,6 +59,9 @@ private:
 	EntityHandler* entityHandler;
 	AssetHandler* assetHandler;
 
+	AudioHandler* audioHandler;
+	Audio* pirate;
+
 	LevelGenerator* levelGenerator;
 
 	//Entities
@@ -71,7 +78,8 @@ private:
 
 	// Menu
 	GameOver* gameOver;
-	Menu* menu;
+	StartMenu* startMenu;
+	PauseMenu* pauseMenu;
 
 public:
 	Application(bool fullscreen, bool showCursor, int screenWidth, int screenHeight, LPCWSTR windowTitle);

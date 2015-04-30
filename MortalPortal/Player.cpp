@@ -46,7 +46,39 @@ void Player::ReactToInput(bool currentButtonState)
 	previousButtonState = currentButtonState;
 }
 
+void Player::Update(float deltaTime)
+{
+	Entity::Update(deltaTime);
 
+	for (std::vector<CollisionSphere>::iterator Sphere = geometry->GetCollision()->spheres.begin(); Sphere != geometry->GetCollision()->spheres.end(); Sphere++)
+	{
+		for (int i = 0; i < 4; i++)
+		{
+			if (position.x + Sphere->position.x - Sphere->radius < -30)
+			{
+				position.x = -30 - Sphere->position.y + Sphere->radius;
+				velocity.x = 0;
+			}
+			else if (position.x + Sphere->position.x + Sphere->radius > 30)
+			{
+				position.x = 30 - Sphere->position.y - Sphere->radius;
+				velocity.x = 0;
+			}
+
+			if (position.y + Sphere->position.y - Sphere->radius < -14)
+			{
+				position.y = -14 - Sphere->position.y + Sphere->radius;
+				velocity.y = 0;
+			}
+			if (position.y + Sphere->position.y + Sphere->radius > 14)
+			{
+				position.y = 14 - Sphere->position.y - Sphere->radius;
+				velocity.y = 0;
+			}
+		}
+	}
+
+}
 
 Material* Player::GetMaterial() const
 {

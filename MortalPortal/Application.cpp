@@ -23,6 +23,12 @@ Application::Application(bool fullscreen, bool showCursor, int screenWidth, int 
 
 	particleShader = new ParticleShader(L"assets/shaders/particleCS.hlsl", L"assets/shaders/particleGS.hlsl", d3dHandler->GetDevice(), L"assets/shaders/particleVS.hlsl", L"assets/shaders/particlePS.hlsl", screenWidth, screenHeight, screenNear, screenFar);
 
+	//Create Audio instance
+	audioHandler = new AudioHandler();
+	pirate = new Audio(audioHandler, L"assets/audio/pirate.wav");
+	pirate->loadAudio();
+	//pirate->playAudio();
+
 	// Player 1 keys
 	player1Keys[0] = 'W';
 	player1Keys[1] = 'S';
@@ -239,25 +245,43 @@ Application::Application(bool fullscreen, bool showCursor, int screenWidth, int 
 	player1->comboDisplayText[1]->SetComboText(false);
 
 
-	// Menu
-	menu = new Menu(d3dHandler->GetDevice());
-	menu->AddButton(new StartButton(
+	// Start Menu
+	startMenu = new StartMenu(d3dHandler->GetDevice());
+	startMenu->AddButton(new StartButton(
 		DirectX::XMFLOAT2(0, 0.4f),
 		DirectX::XMFLOAT2(0.1f, 0.1f),
 		assetHandler->GetMaterial(d3dHandler->GetDevice(), "start.dds")));
 
-	menu->AddButton(new OptionsButton(
+	startMenu->AddButton(new OptionsButton(
 		DirectX::XMFLOAT2(0, 0.0f),
 		DirectX::XMFLOAT2(0.1f, 0.1f),
 		assetHandler->GetMaterial(d3dHandler->GetDevice(), "options.dds")));
 
-	menu->AddButton(new QuitButton(
+	startMenu->AddButton(new QuitButton(
+		DirectX::XMFLOAT2(0, -0.4f),
+		DirectX::XMFLOAT2(0.1f, 0.1f),
+		assetHandler->GetMaterial(d3dHandler->GetDevice(), "quit.dds")));
+
+	// Pause Menu
+	pauseMenu = new PauseMenu(d3dHandler->GetDevice());
+	pauseMenu->AddButton(new ContinueButton(
+		DirectX::XMFLOAT2(0, 0.4f),
+		DirectX::XMFLOAT2(0.1f, 0.1f),
+		assetHandler->GetMaterial(d3dHandler->GetDevice(), "continue.dds")));
+
+	pauseMenu->AddButton(new OptionsButton(
+		DirectX::XMFLOAT2(0, 0.0f),
+		DirectX::XMFLOAT2(0.1f, 0.1f),
+		assetHandler->GetMaterial(d3dHandler->GetDevice(), "options.dds")));
+
+	pauseMenu->AddButton(new QuitButton(
 		DirectX::XMFLOAT2(0, -0.4f),
 		DirectX::XMFLOAT2(0.1f, 0.1f),
 		assetHandler->GetMaterial(d3dHandler->GetDevice(), "quit.dds")));
 
 	// Skip the shitty menu
-	menu->renderMenu = true;
+	startMenu->renderMenu = false;
+	pauseMenu->renderMenu = false;
 
 	// Game Over
 	Points gameOverRec;
@@ -293,20 +317,23 @@ Application::~Application()
 	delete entityHandler;
 	delete assetHandler;
 
+	delete audioHandler;
+	delete pirate;
+
 	delete levelGenerator;
 
 	delete particle;
 	delete gameOver;
-	delete menu;
+	delete startMenu;
+	delete pauseMenu;
 
 }
 
 bool Application::Update(float deltaTime)
 {
-	menu->CheckIfToPause(input->GetButtonStartState());
-	if (menu->renderMenu == true)
+	pauseMenu->CheckIfToPause(input->GetButtonStartState());
+	if (pauseMenu->renderMenu == true && startMenu->renderMenu == false || startMenu->renderMenu == true)
 	{
-		menu->Update(input->GetButtonUpState(), input->GetButtonDownState(), input->GetButtonEnterState());
 		deltaTime = 0;
 	}
 	XMFLOAT2 dir = input->GetDirection(player1Test);
@@ -335,8 +362,11 @@ bool Application::Update(float deltaTime)
 	particle->UpdateDeltaTime(deltaTime);
 	levelGenerator->Update(entityHandler, deltaTime);
 
-	menu->Update(input->GetButtonUpState(), input->GetButtonDownState(), input->GetButtonEnterState());
+	if (startMenu->renderMenu == true)
+		startMenu->Update(input->GetButtonUpState(), input->GetButtonDownState(), input->GetButtonEnterState());
 
+	if (pauseMenu->renderMenu == true && startMenu->renderMenu == false)
+		pauseMenu->Update(input->GetButtonUpState(), input->GetButtonDownState(), input->GetButtonEnterState());
 
 	return false;
 }
@@ -345,7 +375,7 @@ void Application::Render()
 {
 	d3dHandler->BeginScene(0.0f, 0.0f, 0.0f, 1.0f);
 
-	if (menu->renderMenu == false)
+	if (startMenu->renderMenu == false && pauseMenu->renderMenu == false)
 	{
 		entityHandler->Render(d3dHandler->GetDeviceContext());
 		// Combo - Display text
@@ -370,11 +400,17 @@ void Application::Render()
 		particle->Render(d3dHandler->GetDeviceContext(), particleShader, particleShader->GetComputeShader());
 	}
 	// Menu
-	if (menu->renderMenu == true)
+	if (startMenu->renderMenu == true)
 	{
 		buttonShader->Use(d3dHandler->GetDeviceContext());
-		menu->Render(d3dHandler->GetDeviceContext());
+		startMenu->Render(d3dHandler->GetDeviceContext());
 		
+	}
+
+	if (pauseMenu->renderMenu == true && startMenu->renderMenu == false)
+	{
+		buttonShader->Use(d3dHandler->GetDeviceContext());
+		pauseMenu->Render(d3dHandler->GetDeviceContext());
 	}
 
 	d3dHandler->EndScene();

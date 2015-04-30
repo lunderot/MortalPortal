@@ -5,11 +5,22 @@
 #include "Geometry.h"
 #include "Material.h"
 
+struct buttonPoint
+{
+	DirectX::XMFLOAT2 position;
+	DirectX::XMFLOAT2 UV;
+};
+
+struct ButtonScale
+{
+	DirectX::XMMATRIX scale;
+};
 
 
 class Button
 {
-	friend class Menu;
+	friend class StartMenu;
+	friend class PauseMenu;
 protected:
 	DirectX::XMFLOAT2 position;
 	DirectX::XMFLOAT2 scale;
