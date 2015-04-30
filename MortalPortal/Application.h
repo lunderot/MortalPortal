@@ -34,8 +34,7 @@
 #include "AssetHandler.h"
 #include "TextureHandler.h"
 
-#include "AudioHandler.h"
-#include "Audio.h"
+#include "AudioMaster.h"
 
 
 class Application : public System

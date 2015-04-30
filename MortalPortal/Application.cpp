@@ -23,12 +23,6 @@ Application::Application(bool fullscreen, bool showCursor, int screenWidth, int 
 
 	particleShader = new ParticleShader(L"assets/shaders/particleCS.hlsl", L"assets/shaders/particleGS.hlsl", d3dHandler->GetDevice(), L"assets/shaders/particleVS.hlsl", L"assets/shaders/particlePS.hlsl", screenWidth, screenHeight, screenNear, screenFar);
 
-	//Create Audio instance
-	audioHandler = new AudioHandler();
-	pirate = new Audio(audioHandler, L"assets/audio/pirate.wav");
-	pirate->loadAudio();
-	//pirate->playAudio();
-
 	// Player 1 keys
 	player1Keys[0] = 'W';
 	player1Keys[1] = 'S';
