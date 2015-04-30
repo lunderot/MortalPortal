@@ -394,9 +394,6 @@ Application::~Application()
 	delete entityHandler;
 	delete assetHandler;
 
-	delete audioHandler;
-	delete pirate;
-
 	delete levelGenerator;
 
 	delete particle;
