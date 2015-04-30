@@ -19,6 +19,7 @@ public:
 	~Player();
 
 	void ReactToInput(bool currentButtonState);
+	void Update(float deltaTime);
 
 	Material* GetMaterial() const;
 	void AddPower();
