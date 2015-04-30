@@ -23,6 +23,11 @@ Application::Application(bool fullscreen, bool showCursor, int screenWidth, int 
 
 	particleShader = new ParticleShader(L"assets/shaders/particleCS.hlsl", L"assets/shaders/particleGS.hlsl", d3dHandler->GetDevice(), L"assets/shaders/particleVS.hlsl", L"assets/shaders/particlePS.hlsl", screenWidth, screenHeight, screenNear, screenFar);
 
+	//Audio loading
+	unsigned int pirate = aMaster.addNewSample(L"assets/audio/pirate.wav", "pirate");
+	aMaster.addNewSample(L"assets/audio/boing.wav", "boing");
+	//aMaster.playSample(pirate);
+
 	// Player 1 keys
 	player1Keys[0] = 'W';
 	player1Keys[1] = 'S';
@@ -439,7 +444,7 @@ bool Application::Update(float deltaTime)
 	player2->comboDisplayText[2]->Update(deltaTime);
 	player2->comboDisplayText[3]->Update(deltaTime);
 
-	entityHandler->Update(deltaTime);
+	entityHandler->Update(deltaTime, aMaster);
 	particle->UpdatePosition(player1->GetPosition());
 	particle->UpdateDeltaTime(deltaTime);
 	levelGenerator->Update(entityHandler, deltaTime);

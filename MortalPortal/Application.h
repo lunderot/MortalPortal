@@ -59,6 +59,8 @@ private:
 	EntityHandler* entityHandler;
 	AssetHandler* assetHandler;
 
+	AudioMaster aMaster;
+
 	LevelGenerator* levelGenerator;
 
 	//Entities
