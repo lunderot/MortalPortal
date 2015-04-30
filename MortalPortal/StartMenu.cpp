@@ -1,6 +1,6 @@
-#include "Menu.h"
+#include "StartMenu.h"
 #include <iostream>
-Menu::Menu(ID3D11Device* device)
+StartMenu::StartMenu(ID3D11Device* device)
 {
 	check = 0;
 	renderMenu = true;
@@ -50,36 +50,37 @@ Menu::Menu(ID3D11Device* device)
 	hr = device->CreateBuffer(&bufferDesc, 0, &constantBuffer);
 	if (FAILED(hr))
 	{
-		throw std::runtime_error("Failed to create constant buffer in menu");
+		throw std::runtime_error("Failed to create constant buffer in startMenu");
 	}
 
 }
 
-void Menu::Update(bool gamepadUp, bool gamepadDown, bool aButton)
+void StartMenu::Update(bool up, bool down, bool enter)
 {
 	// 0 = start & quit = 1
-	if (gamepadDown == true && currentSelect >= 0 && currentSelect < buttons.size() - 1)
+	if (down == true && currentSelect >= 0 && currentSelect < buttons.size() - 1 && check == 0)
 	{
 		currentSelect++;
 		check = 1;
+		std::cout << "DOWN" << std::endl;
 	}
-	if (gamepadUp == true && currentSelect > 0 && currentSelect < buttons.size())
+	if (up == true && currentSelect > 0 && currentSelect < buttons.size() && check == 0)
 	{
 		check = 1;
 		currentSelect--;
+		std::cout << "UP" << std::endl;
 	}
-	if (aButton == true && check == 0)
+	if (enter == true && check == 0)
 	{
 		check = 1;
-		buttons[currentSelect]->isClicked();
-		renderMenu = false;
+		renderMenu = buttons[currentSelect]->isClicked();
 	}
-	else if (aButton == false)
+	if (enter == false && up == false && down == false)
 		check = 0;
 
 }
 
-void Menu::Render(ID3D11DeviceContext* deviceContext)
+void StartMenu::Render(ID3D11DeviceContext* deviceContext)
 {
 	ID3D11Buffer* vertexBuffer = buttonGeometry->GetVertexBuffer();
 	for (unsigned int i = 0; i < buttons.size(); i++)
@@ -105,22 +106,12 @@ void Menu::Render(ID3D11DeviceContext* deviceContext)
 	}
 }
 
-Geometry* Menu::GetButtonGeometry()
+Geometry* StartMenu::GetButtonGeometry()
 {
 	return buttonGeometry;
 }
 
-void Menu::CheckIfToPause(bool gamepadStart)
-{
-	if (GetAsyncKeyState(VK_ESCAPE) || gamepadStart == true && check == 0)
-	{
-		check = 1;
-		renderMenu = true;
-	}
-	check = 0;
-}
-
-void Menu::UpdateConstantBuffer(ID3D11DeviceContext* deviceContext, ButtonScale* buffer)
+void StartMenu::UpdateConstantBuffer(ID3D11DeviceContext* deviceContext, ButtonScale* buffer)
 {
 	D3D11_MAPPED_SUBRESOURCE mappedResource;
 	deviceContext->Map(constantBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
@@ -128,14 +119,14 @@ void Menu::UpdateConstantBuffer(ID3D11DeviceContext* deviceContext, ButtonScale*
 	deviceContext->Unmap(constantBuffer, 0);
 }
 
-void Menu::AddButton(Button* button)
+void StartMenu::AddButton(Button* button)
 {
 	//battons = button;
 	std::cout << button->position.x << button->position.y << std::endl;
 	buttons.push_back(button);
 }
 
-Menu::~Menu()
+StartMenu::~StartMenu()
 {
 	for (unsigned int i = 0; i < buttons.size(); i++)
 	{

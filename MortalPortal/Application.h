@@ -21,7 +21,8 @@
 #include "ComboDisplayText.h"
 #include "Particles.h"
 #include "GameOver.h"
-#include "Menu.h"
+#include "StartMenu.h"
+#include "PauseMenu.h"
 #include "LevelGenerator.h"
 #include "MapItemShader.h"
 
@@ -77,7 +78,8 @@ private:
 
 	// Menu
 	GameOver* gameOver;
-	Menu* menu;
+	StartMenu* startMenu;
+	PauseMenu* pauseMenu;
 
 public:
 	Application(bool fullscreen, bool showCursor, int screenWidth, int screenHeight, LPCWSTR windowTitle);

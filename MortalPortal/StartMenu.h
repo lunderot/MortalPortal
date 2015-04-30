@@ -8,18 +8,7 @@
 #include <vector>
 #include <string>
 
-struct buttonPoint
-{
-	DirectX::XMFLOAT2 position;
-	DirectX::XMFLOAT2 UV;
-};
-
-struct ButtonScale
-{
-	DirectX::XMMATRIX scale;
-};
-
-class Menu
+class StartMenu
 {
 protected:
 	unsigned int currentSelect;
@@ -39,12 +28,12 @@ protected:
 
 public:
 	
-	Menu(ID3D11Device* device);
-	~Menu();
+	StartMenu(ID3D11Device* device);
+	~StartMenu();
 	bool renderMenu;
 
 	Geometry* GetButtonGeometry();
-	void CheckIfToPause(bool gamepadStart);
+
 	void Update(bool gamepadUp, bool gamepadDown, bool aButton);
 	void Render(ID3D11DeviceContext* deviceContext);
 	void UpdateConstantBuffer(ID3D11DeviceContext* deviceContext, ButtonScale* buffer);
