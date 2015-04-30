@@ -117,6 +117,13 @@ void Player::AddCombo()
 	comboBar->AddCombo();
 }
 
+void Player::Reset()
+{
+	this->powerBar->Reset();
+	this->alive = true;
+	this->SetPosition(DirectX::XMFLOAT3(0, 0, 0));
+}
+
 void Player::RemoveCombo()
 {
 	comboBar->RemoveCombo();

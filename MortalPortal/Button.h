@@ -21,6 +21,7 @@ class Button
 {
 	friend class StartMenu;
 	friend class PauseMenu;
+	friend class RestartMenu;
 protected:
 	DirectX::XMFLOAT2 position;
 	DirectX::XMFLOAT2 scale;

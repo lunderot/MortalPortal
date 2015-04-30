@@ -196,3 +196,15 @@ void EntityHandler::HandleCollision(Entity* entity1, Entity* entity2)
 		}
 	}
 }
+
+void EntityHandler::KillAllMapItems()
+{
+	for (std::map<Shader*, std::vector<Entity*>>::iterator ent = entities.begin(); ent != entities.end(); ++ent)
+	{
+		for (std::vector<Entity*>::iterator i = ent->second.begin(); i != ent->second.end(); ++i)
+		{
+			if (dynamic_cast<MapItem*> (*i))
+				(*i)->SetAlive(false);
+		}
+	}
+}

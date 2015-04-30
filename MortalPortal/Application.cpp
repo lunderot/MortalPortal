@@ -312,7 +312,9 @@ Application::Application(bool fullscreen, bool showCursor, int screenWidth, int 
 
 	// Start Menu
 	startMenu = new StartMenu(d3dHandler->GetDevice());
-	startMenu->AddButton(new StartButton(
+
+	startMenu->AddButton(new StartButton(entityHandler,
+		player1, player2,
 		DirectX::XMFLOAT2(0, 0.4f),
 		DirectX::XMFLOAT2(0.1f, 0.1f),
 		assetHandler->GetMaterial(d3dHandler->GetDevice(), "start.dds")));
@@ -344,6 +346,22 @@ Application::Application(bool fullscreen, bool showCursor, int screenWidth, int 
 		DirectX::XMFLOAT2(0.1f, 0.1f),
 		assetHandler->GetMaterial(d3dHandler->GetDevice(), "quit.dds")));
 
+	// Restart Menu
+	restartMenu = new RestartMenu(d3dHandler->GetDevice());
+
+	restartMenu->AddButton(new StartButton(entityHandler,
+		player1, player2,
+		DirectX::XMFLOAT2(0, 0.4f),
+		DirectX::XMFLOAT2(0.1f, 0.1f),
+		assetHandler->GetMaterial(d3dHandler->GetDevice(), "restart.dds")));
+
+	restartMenu->AddButton(new QuitButton(
+		DirectX::XMFLOAT2(0, -0.4f),
+		DirectX::XMFLOAT2(0.1f, 0.1f),
+		assetHandler->GetMaterial(d3dHandler->GetDevice(), "quit.dds")));
+
+
+
 	// Skip the shitty menu
 	startMenu->renderMenu = false;
 	pauseMenu->renderMenu = false;
@@ -355,10 +373,10 @@ Application::Application(bool fullscreen, bool showCursor, int screenWidth, int 
 	gameOverRec.pos[2] = DirectX::XMFLOAT2(0.5f, -0.5f);
 	gameOverRec.pos[3] = DirectX::XMFLOAT2(0.5f, 0.5f);
 
-	gameOverRec.uv[0] = DirectX::XMFLOAT2(0.5f, 0.5f);
-	gameOverRec.uv[1] = DirectX::XMFLOAT2(0.5f, 0.5f);
-	gameOverRec.uv[2] = DirectX::XMFLOAT2(0.5f, 0.5f);
-	gameOverRec.uv[3] = DirectX::XMFLOAT2(0.5f, 0.5f);
+	gameOverRec.uv[0] = DirectX::XMFLOAT2(0.0f, 1.0f);
+	gameOverRec.uv[1] = DirectX::XMFLOAT2(0.0f, 0.0f);
+	gameOverRec.uv[2] = DirectX::XMFLOAT2(1.0f, 1.0f);
+	gameOverRec.uv[3] = DirectX::XMFLOAT2(1.0f, 0.0f);
 
 	gameOver = new GameOver(gameOverRec, d3dHandler->GetDevice());
 }
@@ -391,13 +409,14 @@ Application::~Application()
 	delete gameOver;
 	delete startMenu;
 	delete pauseMenu;
+	delete restartMenu;
 
 }
 
 bool Application::Update(float deltaTime)
 {
 	pauseMenu->CheckIfToPause(input->GetButtonStartState());
-	if (pauseMenu->renderMenu == true && startMenu->renderMenu == false || startMenu->renderMenu == true)
+	if (pauseMenu->renderMenu == true && startMenu->renderMenu == false || startMenu->renderMenu == true || restartMenu->renderMenu == true)
 	{
 		deltaTime = 0;
 	}
@@ -440,6 +459,8 @@ bool Application::Update(float deltaTime)
 	if (pauseMenu->renderMenu == true && startMenu->renderMenu == false)
 		pauseMenu->Update(input->GetButtonUpState(), input->GetButtonDownState(), input->GetButtonEnterState());
 
+	if (restartMenu->renderMenu == true)
+		restartMenu->Update(input->GetButtonUpState(), input->GetButtonDownState(), input->GetButtonEnterState());
 	return false;
 }
 
@@ -473,7 +494,11 @@ void Application::Render()
 			//Material* mat = assetHandler->GetMaterial(d3dHandler->GetDevice(), "start.dds");
 			//srv = mat->GetTexture();
 			//d3dHandler->GetDeviceContext()->PSSetShaderResources(0, 1, &srv);
-			gameOver->RenderText(d3dHandler->GetDeviceContext());
+			//startButton->isClicked();
+			buttonShader->Use(d3dHandler->GetDeviceContext());
+			restartMenu->renderMenu = true;
+			restartMenu->Render(d3dHandler->GetDeviceContext());
+			//gameOver->RenderText(d3dHandler->GetDeviceContext(), assetHandler->GetMaterial(d3dHandler->GetDevice(), "restart.dds"));
 		}
 
 		comboBarShader->Use(d3dHandler->GetDeviceContext());

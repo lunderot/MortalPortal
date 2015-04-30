@@ -34,6 +34,8 @@ public:
 	void RemoveComboText();
 	ComboDisplayText* comboDisplayText[4];
 
+	void Reset();
+
 private:
 	Material* switchMaterial;
 	unsigned int colorState;

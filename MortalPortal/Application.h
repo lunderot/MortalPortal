@@ -23,6 +23,7 @@
 #include "GameOver.h"
 #include "StartMenu.h"
 #include "PauseMenu.h"
+#include "RestartMenu.h"
 #include "LevelGenerator.h"
 #include "MapItemShader.h"
 
@@ -80,6 +81,8 @@ private:
 	GameOver* gameOver;
 	StartMenu* startMenu;
 	PauseMenu* pauseMenu;
+	RestartMenu* restartMenu;
+
 
 public:
 	Application(bool fullscreen, bool showCursor, int screenWidth, int screenHeight, LPCWSTR windowTitle);

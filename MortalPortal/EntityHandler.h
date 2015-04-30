@@ -19,6 +19,7 @@ public:
 
 	void Update(float deltaTime);
 	virtual void Render(ID3D11DeviceContext* deviceContext);
+	void KillAllMapItems();
 
 	void Add(Entity* entity);
 private:
