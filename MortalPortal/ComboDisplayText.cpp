@@ -2,10 +2,10 @@
 
 ComboDisplayText::ComboDisplayText(ID3D11Device* device, Material* materialCombo)
 {
-	Material* materialCombo_Array[3] = { materialCombo };
+	Material* materialCombo_Array[5] = { materialCombo };
 	this->setMaterial(materialCombo_Array);
 	comboText = false;
-	comboNr = 0;
+	comboNr = 1;
 
 	D3D11_BUFFER_DESC bufferDesc;
 	ZeroMemory(&bufferDesc, sizeof(bufferDesc));
@@ -24,19 +24,20 @@ ComboDisplayText::ComboDisplayText(ID3D11Device* device, Material* materialCombo
 	}
 }
 
-void ComboDisplayText::setMaterial(Material* materialCombo[3])
+void ComboDisplayText::setMaterial(Material* materialCombo[5])
 {
+	/*for (unsigned int i = 0; i < 4; i++)
+	{
+		this->materialUsing[i] = materialCombo[i];
+	}*/
 	this->materialUsing[0] = materialCombo[0];
 	this->materialUsing[1] = materialCombo[1];
 	this->materialUsing[2] = materialCombo[2];
-	//this->materialUsing[3] = materialCombo[3];
-	//this->materialUsing[4] = materialCombo[4];
+	this->materialUsing[3] = materialCombo[3];
+	this->materialUsing[4] = materialCombo[4];
 	//this->materialUsing[5] = materialCombo[5];
 	//this->materialUsing[6] = materialCombo[6];
 	//this->materialUsing[7] = materialCombo[7];
-	//this->materialUsing[8] = materialCombo[8];
-	//this->materialUsing[9] = materialCombo[9];
-	//this->materialUsing[10] = materialCombo[10];
 }
 
 void ComboDisplayText::SetPosition(DirectX::XMFLOAT2 point[4])
@@ -72,12 +73,15 @@ ID3D11Buffer* ComboDisplayText::GetVertexBuffer()
 
 void ComboDisplayText::AddCombo()
 {
-	comboNr++;
+	if (comboNr != 4)
+	{
+		comboNr++;
+	}
 }
 
 void ComboDisplayText::RemoveCombo()
 {
-	comboNr = 0;
+	comboNr = 1;
 }
 
 void ComboDisplayText::Render(ID3D11DeviceContext* deviceContext, Shader* shader)
@@ -100,56 +104,12 @@ void ComboDisplayText::Render(ID3D11DeviceContext* deviceContext, Shader* shader
 		// "COMBO" - text
 		SRV = materialUsing[0]->GetTexture();
 	}
-	else if (comboText == false && comboNr == 0)
+	else if (comboText == false)
 	{
-		// 0
-		SRV = materialUsing[1]->GetTexture();
+		// 0 = combo text
+		// 1 - 10 = siffror
+		SRV = materialUsing[comboNr]->GetTexture();
 	}
-	else if (comboText == false && comboNr == 1)
-	{
-		// 1
-		SRV = materialUsing[2]->GetTexture();
-	}
-	//else if (comboText == false && comboNr == 2)
-	//{
-	//	// 2
-	//	SRV = materialUsing[3]->GetTexture();
-	//}
-	//else if (comboText == false && comboNr == 3)
-	//{
-	//	// 3
-	//	SRV = materialUsing[4]->GetTexture();
-	//}
-	//else if (comboText == false && comboNr == 4)
-	//{
-	//	// 4
-	//	SRV = materialUsing[5]->GetTexture();
-	//}
-	//else if (comboText == false && comboNr == 5)
-	//{
-	//	// 5
-	//	SRV = materialUsing[6]->GetTexture();
-	//}
-	//else if (comboText == false && comboNr == 6)
-	//{
-	//	// 6
-	//	SRV = materialUsing[7]->GetTexture();
-	//}
-	//else if (comboText == false && comboNr == 7)
-	//{
-	//	// 7
-	//	SRV = materialUsing[8]->GetTexture();
-	//}
-	//else if (comboText == false && comboNr == 8)
-	//{
-	//	// 8
-	//	SRV = materialUsing[9]->GetTexture();
-	//}
-	//else if (comboText == false && comboNr == 9)
-	//{
-	//	// 9
-	//	SRV = materialUsing[10]->GetTexture();
-	//}
 
 	deviceContext->PSSetShaderResources(0, 1, &SRV);
 	deviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);

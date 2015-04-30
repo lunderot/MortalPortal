@@ -106,38 +106,29 @@ Application::Application(bool fullscreen, bool showCursor, int screenWidth, int 
 		playerShader, XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(40, 0, 30));
 	entityHandler->Add(player2);
 	
-	// Create Combo-bar
-	player1->comboBar->setMaterial(new Material*[]{
-		assetHandler->GetMaterial(d3dHandler->GetDevice(), "2ggr.dds"),
-		assetHandler->GetMaterial(d3dHandler->GetDevice(), "4ggr.dds")});
 
-	player2->comboBar->setMaterial(new Material*[]{
-		assetHandler->GetMaterial(d3dHandler->GetDevice(), "2ggr.dds"),
-		assetHandler->GetMaterial(d3dHandler->GetDevice(), "4ggr.dds")});
-	/*player1->comboBar->setMaterial(new Material*[]{
-		assetHandler->GetMaterial(d3dHandler->GetDevice(), "assets/Player1.bin", "Portal1"),
-		assetHandler->GetMaterial(d3dHandler->GetDevice(), "assets/Player1.bin", "Portal1")});
+	// Create Combo-bar player1 & player2
+	// player1
+	Material* playerComboMat[2];
+	playerComboMat[0] = assetHandler->GetMaterial(d3dHandler->GetDevice(), "2ggr.dds");
+	playerComboMat[1] = assetHandler->GetMaterial(d3dHandler->GetDevice(), "4ggr.dds");
+	player1->comboBar->setMaterial(playerComboMat);
 
-	player2->comboBar->setMaterial(new Material*[]{
-		assetHandler->GetMaterial(d3dHandler->GetDevice(), "assets/Player2.bin", "Portal1"),
-		assetHandler->GetMaterial(d3dHandler->GetDevice(), "assets/Player2.bin", "Portal1")});*/
+	// player2
+	playerComboMat[0] = assetHandler->GetMaterial(d3dHandler->GetDevice(), "2ggr.dds");
+	playerComboMat[1] = assetHandler->GetMaterial(d3dHandler->GetDevice(), "4ggr.dds");
+	player2->comboBar->setMaterial(playerComboMat);
 
-	// Create Combo-Display text
-	for (unsigned int i = 0; i < 2; i++)
-	{
-		player1->comboDisplayText[i]->setMaterial(new Material*[]{
-			assetHandler->GetMaterial(d3dHandler->GetDevice(), "combo.dds"),
-			assetHandler->GetMaterial(d3dHandler->GetDevice(), "zero.dds"),
-			assetHandler->GetMaterial(d3dHandler->GetDevice(), "one.dds")/*,
-			assetHandler->GetMaterial(d3dHandler->GetDevice(), "two.dds"),
-			assetHandler->GetMaterial(d3dHandler->GetDevice(), "three.dds"),
-			assetHandler->GetMaterial(d3dHandler->GetDevice(), "four.dds"),
-			assetHandler->GetMaterial(d3dHandler->GetDevice(), "five.dds"),
-			assetHandler->GetMaterial(d3dHandler->GetDevice(), "six.dds"),
-			assetHandler->GetMaterial(d3dHandler->GetDevice(), "seven.dds"),
-			assetHandler->GetMaterial(d3dHandler->GetDevice(), "eight.dds"),
-			assetHandler->GetMaterial(d3dHandler->GetDevice(), "nine.dds")*/});
-	}
+	// Create Combo-bar Display text player1 & player2
+	// player1
+	Material* playerComboDTMat[5];
+	playerComboDTMat[0] = assetHandler->GetMaterial(d3dHandler->GetDevice(), "combo.dds");
+	playerComboDTMat[1] = assetHandler->GetMaterial(d3dHandler->GetDevice(), "zero.dds");
+	playerComboDTMat[2] = assetHandler->GetMaterial(d3dHandler->GetDevice(), "one.dds");
+	playerComboDTMat[3] = assetHandler->GetMaterial(d3dHandler->GetDevice(), "two.dds");
+	playerComboDTMat[4] = assetHandler->GetMaterial(d3dHandler->GetDevice(), "three.dds");
+	player1->comboDisplayText[0]->setMaterial(playerComboDTMat);
+	player1->comboDisplayText[1]->setMaterial(playerComboDTMat);
 
 	// Particles testing area
 	particle = new Particle(10, d3dHandler->GetDevice());
@@ -266,7 +257,7 @@ Application::Application(bool fullscreen, bool showCursor, int screenWidth, int 
 		assetHandler->GetMaterial(d3dHandler->GetDevice(), "quit.dds")));
 
 	// Skip the shitty menu
-	menu->renderMenu = false;
+	menu->renderMenu = true;
 
 	// Game Over
 	Points gameOverRec;
@@ -286,7 +277,7 @@ Application::Application(bool fullscreen, bool showCursor, int screenWidth, int 
 Application::~Application()
 {
 	delete d3dHandler;
-
+	
 	delete shader;
 	delete powerBarShader;
 	delete comboBarShader;

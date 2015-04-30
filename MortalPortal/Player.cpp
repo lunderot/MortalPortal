@@ -54,7 +54,7 @@ Material* Player::GetMaterial() const
 	{
 		return material;
 	}
-	else if (colorState == 1)
+	else
 	{
 		return switchMaterial;
 	}
