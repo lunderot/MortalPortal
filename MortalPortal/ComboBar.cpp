@@ -2,7 +2,7 @@
 
 ComboBar::ComboBar(ID3D11Device* device, Material* materialCombo)
 {
-	Material* materialCombo_Array[2] = { materialCombo };
+	Material* materialCombo_Array[9] = { materialCombo };
 	this->setMaterial(materialCombo_Array);
 	changeCombo = 0;
 
@@ -23,10 +23,12 @@ ComboBar::ComboBar(ID3D11Device* device, Material* materialCombo)
 	}
 }
 
-void ComboBar::setMaterial(Material* materialCombo[2])
+void ComboBar::setMaterial(Material* materialCombo[9])
 {
-	this->materialUsing[0] = materialCombo[0];
-	this->materialUsing[1] = materialCombo[1];
+	for (unsigned int i = 0; i < 9; i++)
+	{
+		this->materialUsing[i] = materialCombo[i];
+	}
 }
 
 void ComboBar::SetPosition(DirectX::XMFLOAT2 point[4])
@@ -57,7 +59,10 @@ ID3D11Buffer* ComboBar::GetVertexBuffer()
 
 void ComboBar::AddCombo()
 {
-	changeCombo++;
+	if (changeCombo != 8)
+	{
+		changeCombo++;
+	}
 }
 
 void ComboBar::RemoveCombo()
@@ -80,14 +85,9 @@ void ComboBar::Render(ID3D11DeviceContext* deviceContext, Shader* shader)
 	memcpy(resource.pData, &comboPoints, sizeof(ComboPoints));
 	deviceContext->Unmap(vertexBuffer, 0);
 	deviceContext->IASetVertexBuffers(0, 1, &vertexBuffer, &test, &offset);
-	if (changeCombo <= 0)
-	{
-		SRV = materialUsing[0]->GetTexture();
-	}
-	else if (changeCombo > 0)
-	{
-		SRV = materialUsing[1]->GetTexture();
-	}
+
+	SRV = materialUsing[changeCombo]->GetTexture();
+
 	deviceContext->PSSetShaderResources(0, 1, &SRV);
 	deviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);
 

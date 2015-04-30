@@ -2,7 +2,7 @@
 
 ComboDisplayText::ComboDisplayText(ID3D11Device* device, Material* materialCombo)
 {
-	Material* materialCombo_Array[5] = { materialCombo };
+	Material* materialCombo_Array[11] = { materialCombo };
 	this->setMaterial(materialCombo_Array);
 	comboText = false;
 	comboNr = 1;
@@ -24,7 +24,7 @@ ComboDisplayText::ComboDisplayText(ID3D11Device* device, Material* materialCombo
 	}
 }
 
-void ComboDisplayText::setMaterial(Material* materialCombo[5])
+void ComboDisplayText::setMaterial(Material* materialCombo[11])
 {
 	/*for (unsigned int i = 0; i < 4; i++)
 	{
@@ -35,9 +35,12 @@ void ComboDisplayText::setMaterial(Material* materialCombo[5])
 	this->materialUsing[2] = materialCombo[2];
 	this->materialUsing[3] = materialCombo[3];
 	this->materialUsing[4] = materialCombo[4];
-	//this->materialUsing[5] = materialCombo[5];
-	//this->materialUsing[6] = materialCombo[6];
-	//this->materialUsing[7] = materialCombo[7];
+	this->materialUsing[5] = materialCombo[5];
+	this->materialUsing[6] = materialCombo[6];
+	this->materialUsing[7] = materialCombo[7];
+	this->materialUsing[8] = materialCombo[8];
+	this->materialUsing[9] = materialCombo[9];
+	this->materialUsing[10] = materialCombo[10];
 }
 
 void ComboDisplayText::SetPosition(DirectX::XMFLOAT2 point[4])
@@ -73,9 +76,13 @@ ID3D11Buffer* ComboDisplayText::GetVertexBuffer()
 
 void ComboDisplayText::AddCombo()
 {
-	if (comboNr != 4)
+	if (comboNr != 10)
 	{
 		comboNr++;
+	}
+	else if (comboNr == 10)
+	{
+		comboNr = 1;
 	}
 }
 
@@ -106,8 +113,8 @@ void ComboDisplayText::Render(ID3D11DeviceContext* deviceContext, Shader* shader
 	}
 	else if (comboText == false)
 	{
-		// 0 = combo text
-		// 1 - 10 = siffror
+		// comboNr | 0 = combo text
+		// comboNr | 1 - 10 = siffror : 0, 1, 2, 3, 4, 5, 6, 7, 8, 9
 		SRV = materialUsing[comboNr]->GetTexture();
 	}
 

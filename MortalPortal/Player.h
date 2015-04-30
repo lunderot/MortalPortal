@@ -32,11 +32,15 @@ public:
 
 	void AddComboText();
 	void RemoveComboText();
-	ComboDisplayText* comboDisplayText[2];
+	ComboDisplayText* comboDisplayText[4];
 
 private:
-	unsigned int colorState;
 	Material* switchMaterial;
+	unsigned int colorState;
+	unsigned int comboCounter;
+	unsigned int comboCounterChange_10;
+	unsigned int comboCounterChange_100;
+	bool comboMax;
 	bool previousButtonState;
 };
 

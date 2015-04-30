@@ -11,12 +11,20 @@ Player::Player(ID3D11Device* device, Geometry* geometry, Material* material, Mat
 	) : Entity(geometry, material, shader, position, velocity, acceleration, rotation, scale)
 
 { 
+	this->switchMaterial = switchMaterial;
+	
 	powerBar = new PowerBar(device);
 	comboBar = new ComboBar(device, material);
 	comboDisplayText[0] = new ComboDisplayText(device, material);
 	comboDisplayText[1] = new ComboDisplayText(device, material);
-	this->switchMaterial = switchMaterial;
+	comboDisplayText[2] = new ComboDisplayText(device, material);
+	comboDisplayText[3] = new ComboDisplayText(device, material);
+	
 	colorState = 0;
+	comboCounter = 0;
+	comboCounterChange_10 = 0;
+	comboCounterChange_100 = 0;
+	comboMax = false;
 	previousButtonState = false;
 }
 
@@ -27,6 +35,8 @@ Player::~Player()
 	delete comboBar;
 	delete comboDisplayText[0];
 	delete comboDisplayText[1];
+	delete comboDisplayText[2];
+	delete comboDisplayText[3];
 }
 
 void Player::ReactToInput(bool currentButtonState)
@@ -114,10 +124,41 @@ void Player::RemoveCombo()
 
 void Player::AddComboText()
 {
-	comboDisplayText[1]->AddCombo();
+	comboCounter++;
+	comboCounterChange_10++;
+	comboCounterChange_100++;
+
+	std::cout << "ComboCounter: " << comboCounter << std::endl;
+	std::cout << "ComboCounterChange: " << comboCounter << std::endl;
+	
+	if (comboCounter == 999)
+	{
+		comboMax = true;
+	}
+
+	if (comboMax != true)
+	{
+		comboDisplayText[1]->AddCombo();
+		if (comboCounterChange_10 == 10)
+		{
+			comboDisplayText[2]->AddCombo();
+			comboCounterChange_10 = 0;
+		}
+		if (comboCounterChange_100 == 100)
+		{
+			comboDisplayText[3]->AddCombo();
+			comboCounterChange_100 = 0;
+		}
+	}
 }
 
 void Player::RemoveComboText()
 {
+	comboMax = false;
+	comboCounter = 0;
+	comboCounterChange_10 = 0;
+	comboCounterChange_100 = 0;
 	comboDisplayText[1]->RemoveCombo();
+	comboDisplayText[2]->RemoveCombo();
+	comboDisplayText[3]->RemoveCombo();
 }
