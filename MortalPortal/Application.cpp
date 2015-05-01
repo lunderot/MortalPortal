@@ -24,8 +24,8 @@ Application::Application(bool fullscreen, bool showCursor, int screenWidth, int 
 	particleShader = new ParticleShader(L"assets/shaders/particleCS.hlsl", L"assets/shaders/particleGS.hlsl", d3dHandler->GetDevice(), L"assets/shaders/particleVS.hlsl", L"assets/shaders/particlePS.hlsl", screenWidth, screenHeight, screenNear, screenFar);
 
 	//Audio loading
-	unsigned int pirate = aMaster.addNewSample(L"assets/audio/pirate.wav", "pirate");
-	aMaster.addNewSample(L"assets/audio/boing.wav", "boing");
+	unsigned int pirate = aMaster.addNewSample(L"assets/audio/pirate.wav", "pirate", true);
+	aMaster.addNewSample(L"assets/audio/boing.wav", "boing", false);
 	//aMaster.playSample(pirate);
 
 	// Player 1 keys

@@ -17,11 +17,11 @@ AudioMaster::~AudioMaster()
 	delete this->audioHandler;
 }
 
-unsigned int AudioMaster::addNewSample(TCHAR file[], std::string name)
+unsigned int AudioMaster::addNewSample(TCHAR file[], std::string name, bool loop)
 {
 	Audio* temp = new Audio(this->audioHandler, file);
 
-	temp->loadAudio();
+	temp->loadAudio(loop);
 
 	this->audioSamples.push_back(temp);
 
@@ -41,5 +41,19 @@ void AudioMaster::playSample(std::string name)
 	if (it != this->audioMap.end())
 	{
 		this->audioSamples[it->second]->playAudio();
+	}
+}
+
+void AudioMaster::stopSample(unsigned int index)
+{
+	this->audioSamples[index]->stopAudio();
+}
+
+void AudioMaster::stopSample(std::string name)
+{
+	auto it = this->audioMap.find(name);
+	if (it != this->audioMap.end())
+	{
+		this->audioSamples[it->second]->stopAudio();
 	}
 }

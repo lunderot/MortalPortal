@@ -25,7 +25,7 @@ Audio::~Audio()
 	delete[] this->pDataBuffer;
 }
 
-HRESULT Audio::loadAudio()
+HRESULT Audio::loadAudio(bool loop)
 {
 	HANDLE hFile = CreateFile(
 		this->file,
@@ -70,15 +70,19 @@ HRESULT Audio::loadAudio()
 	this->buffer.AudioBytes = dwChunkSize;
 	this->buffer.pAudioData = pDataBuffer;
 	this->buffer.Flags = XAUDIO2_END_OF_STREAM;
+	if (loop == true)
+	{
+		this->buffer.LoopCount = XAUDIO2_LOOP_INFINITE;
+	}
 
 	return S_OK;
 }
 
-HRESULT Audio::loadAudio(TCHAR file[])
+HRESULT Audio::loadAudio(TCHAR file[], bool loop)
 {
 	this->file = file;
 
-	return this->loadAudio();
+	return this->loadAudio(loop);
 }
 
 HRESULT Audio::playAudio()
@@ -117,4 +121,11 @@ TCHAR* Audio::getFile()
 void Audio::setHandler(AudioHandler* handle)
 {
 	this->Handle = handle;
+}
+
+HRESULT Audio::stopAudio()
+{
+	this->Source->Stop(0);
+
+	return S_OK;
 }
