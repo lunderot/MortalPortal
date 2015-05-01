@@ -27,6 +27,7 @@ public:
 		ID3D11Device* device,
 		DirectX::XMFLOAT3 position = DirectX::XMFLOAT3(0, 0, 0),
 		DirectX::XMFLOAT3 velocity = DirectX::XMFLOAT3(0, 0, 0),
+		DirectX::XMFLOAT3 angleVelocity = DirectX::XMFLOAT3(0, 0, 0),
 		DirectX::XMFLOAT3 acceleration = DirectX::XMFLOAT3(0, 0, 0),
 		DirectX::XMFLOAT3 scale = DirectX::XMFLOAT3(1, 1, 1));
 
