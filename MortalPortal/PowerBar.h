@@ -43,4 +43,5 @@ public:
 
 	void Update(float deltaTime, ID3D11DeviceContext* deviceContext);
 	void Render(ID3D11DeviceContext* deviceContext, Shader* shader);
+	void Reset();
 };

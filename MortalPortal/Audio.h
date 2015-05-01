@@ -14,9 +14,10 @@ public:
 	Audio(AudioHandler* handle, TCHAR file[]);
 	~Audio();
 
-	HRESULT loadAudio();
-	HRESULT loadAudio(TCHAR file[]);
+	HRESULT loadAudio(bool loop);
+	HRESULT loadAudio(TCHAR file[], bool loop);
 	HRESULT playAudio();
+	HRESULT stopAudio();
 	
 	void setFile(TCHAR file[]);
 	TCHAR* getFile();

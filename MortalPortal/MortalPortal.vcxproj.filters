@@ -162,6 +162,12 @@
     <ClCompile Include="ContinueButton.cpp">
       <Filter>Source Files\Buttons</Filter>
     </ClCompile>
+    <ClCompile Include="RestartMenu.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="AudioMaster.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="System.h">
@@ -289,6 +295,12 @@
     </ClInclude>
     <ClInclude Include="ContinueButton.h">
       <Filter>Header Files\Buttons</Filter>
+    </ClInclude>
+    <ClInclude Include="RestartMenu.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="AudioMaster.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

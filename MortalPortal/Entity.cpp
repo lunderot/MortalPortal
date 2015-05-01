@@ -5,6 +5,7 @@ using namespace DirectX;
 Entity::Entity(Geometry* geometry, Material* material, Shader* shader,
 	DirectX::XMFLOAT3 position,
 	DirectX::XMFLOAT3 velocity,
+	DirectX::XMFLOAT3 angleVelocity,
 	DirectX::XMFLOAT3 acceleration,
 	DirectX::XMFLOAT3 rotation,
 	DirectX::XMFLOAT3 scale)
@@ -15,6 +16,7 @@ Entity::Entity(Geometry* geometry, Material* material, Shader* shader,
 
 	this->position = position;
 	this->velocity = velocity;
+	this->angleVelocity = angleVelocity;
 	this->acceleration = acceleration;
 	this->rotation = rotation;
 
@@ -38,6 +40,10 @@ void Entity::Update(float deltaTime)
 	position.x += velocity.x * deltaTime;
 	position.y += velocity.y * deltaTime;
 	position.z += velocity.z * deltaTime;
+
+	rotation.x += angleVelocity.x * deltaTime;
+	rotation.y += angleVelocity.y * deltaTime;
+	rotation.z += angleVelocity.z * deltaTime;
 }
 
 Geometry* Entity::GetGeometry() const
@@ -64,6 +70,11 @@ void Entity::SetPosition(XMFLOAT3 position)
 void Entity::SetVelocity(XMFLOAT3 velocity)
 {
 	this->velocity = velocity;
+}
+
+void Entity::SetAngleVelocity(XMFLOAT3 angleVelocity)
+{
+	this->angleVelocity = angleVelocity;
 }
 
 void Entity::SetAcceleration(XMFLOAT3 acceleration)
@@ -94,6 +105,11 @@ XMFLOAT3 Entity::GetPosition() const
 XMFLOAT3 Entity::GetVelocity() const
 {
 	return velocity;
+}
+
+XMFLOAT3 Entity::GetAngleVelocity() const
+{
+	return angleVelocity;
 }
 
 XMFLOAT3 Entity::GetAcceleration() const

@@ -12,6 +12,7 @@ public:
 	Player(ID3D11Device* device, Geometry* geometry, Material* material, Material* switchMaterial, Shader* shader,
 		DirectX::XMFLOAT3 position = DirectX::XMFLOAT3(0, 0, 0),
 		DirectX::XMFLOAT3 velocity = DirectX::XMFLOAT3(0, 0, 0),
+		DirectX::XMFLOAT3 angleVelocity = DirectX::XMFLOAT3(0, 0, 0),
 		DirectX::XMFLOAT3 acceleration = DirectX::XMFLOAT3(0, 0, 0),
 		DirectX::XMFLOAT3 rotation = DirectX::XMFLOAT3(0, 0, 0),
 		DirectX::XMFLOAT3 scale = DirectX::XMFLOAT3(1, 1, 1)
@@ -36,7 +37,10 @@ public:
 	void AddComboText();
 	void RemoveComboText();
 	ComboDisplayText* comboDisplayText[4];
+	
 	unsigned int playerNumber;
+	void Reset();
+
 private:
 	Material* switchMaterial;
 	

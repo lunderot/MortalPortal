@@ -95,7 +95,7 @@ void LevelGenerator::Update(EntityHandler* entityHandler, float deltaTime)
 		if (lastLine.type == "c")
 		{
 			unsigned int rnd = rand() % cometsGeometry.size();
-			Entity* comet = new MapItem(cometsGeometry[rnd], cometsMaterial[rnd], cometsShader[rnd], MapItem::Comet, DirectX::XMFLOAT3(XSpawnPos, lastLine.position, 0), DirectX::XMFLOAT3(-lastLine.velocity, 0, 0), DirectX::XMFLOAT3(0, 0, 0), DirectX::XMFLOAT3(rand() % 360, rand() % 360, rand() % 360));
+			Entity* comet = new MapItem(cometsGeometry[rnd], cometsMaterial[rnd], cometsShader[rnd], MapItem::Comet, DirectX::XMFLOAT3(XSpawnPos, lastLine.position, 0), DirectX::XMFLOAT3(-lastLine.velocity, 0, 0), DirectX::XMFLOAT3(0, 0, 0), DirectX::XMFLOAT3(0, 0, 0), DirectX::XMFLOAT3(rand() % 360, rand() % 360, rand() % 360));
 			entityHandler->Add(comet);
 		}
 		else if (lastLine.type == "p11")

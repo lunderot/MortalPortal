@@ -5,6 +5,7 @@
 Player::Player(ID3D11Device* device, Geometry* geometry, Material* material, Material* switchMaterial, Shader* shader,
 	DirectX::XMFLOAT3 position,
 	DirectX::XMFLOAT3 velocity,
+	DirectX::XMFLOAT3 angleVelocity,
 	DirectX::XMFLOAT3 acceleration,
 	DirectX::XMFLOAT3 rotation,
 	DirectX::XMFLOAT3 scale
@@ -126,6 +127,24 @@ void Player::RemovePower()
 void Player::AddCombo()
 {
 	comboBar->AddCombo();
+}
+
+void Player::Reset()
+{
+	this->powerBar->Reset();
+	this->alive = true;
+	this->SetPosition(DirectX::XMFLOAT3(0, 0, 0));
+	this->colorState = 0;
+	this->comboCounter = 0;
+	this->comboCounterChange_10 = 0;
+	this->comboCounterChange_100 = 0;
+	this->comboMax = false;
+	this->previousButtonState = false;
+
+	comboDisplayText[0]->RemoveCombo();
+	comboDisplayText[1]->RemoveCombo();
+	comboDisplayText[2]->RemoveCombo();
+	comboBar->RemoveCombo();
 }
 
 void Player::RemoveCombo()

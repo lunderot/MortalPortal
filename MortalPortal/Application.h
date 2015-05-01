@@ -23,6 +23,7 @@
 #include "GameOver.h"
 #include "StartMenu.h"
 #include "PauseMenu.h"
+#include "RestartMenu.h"
 #include "LevelGenerator.h"
 #include "MapItemShader.h"
 
@@ -33,8 +34,7 @@
 #include "AssetHandler.h"
 #include "TextureHandler.h"
 
-#include "AudioHandler.h"
-#include "Audio.h"
+#include "AudioMaster.h"
 
 
 class Application : public System
@@ -59,8 +59,7 @@ private:
 	EntityHandler* entityHandler;
 	AssetHandler* assetHandler;
 
-	AudioHandler* audioHandler;
-	Audio* pirate;
+	AudioMaster aMaster;
 
 	LevelGenerator* levelGenerator;
 
@@ -80,6 +79,8 @@ private:
 	GameOver* gameOver;
 	StartMenu* startMenu;
 	PauseMenu* pauseMenu;
+	RestartMenu* restartMenu;
+
 
 public:
 	Application(bool fullscreen, bool showCursor, int screenWidth, int screenHeight, LPCWSTR windowTitle);

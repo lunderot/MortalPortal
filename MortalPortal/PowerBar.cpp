@@ -157,6 +157,13 @@ void PowerBar::Update(float deltaTime, ID3D11DeviceContext* deviceContext)
 
 }
 
+void PowerBar::Reset()
+{
+	this->posColor.pos[0].x = maxMinValue.x;
+	this->posColor.pos[1].x = maxMinValue.x;
+	this->dead = false;
+}
+
 PowerBar::~PowerBar()
 {
 	if (vertexBuffer)

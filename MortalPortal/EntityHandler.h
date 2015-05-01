@@ -9,6 +9,7 @@
 #include "AssetHandler.h"
 #include "Player.h"
 #include "MapItem.h"
+#include "AudioMaster.h"
 
 class EntityHandler
 {
@@ -17,10 +18,11 @@ public:
 	EntityHandler();
 	~EntityHandler();
 
-	void Update(float deltaTime);
+	void Update(float deltaTime, AudioMaster &aMaster);
 	virtual void Render(ID3D11DeviceContext* deviceContext);
+	void KillAllMapItems();
 
 	void Add(Entity* entity);
 private:
-	void HandleCollision(Entity* entity1, Entity* entity2);
+	void HandleCollision(Entity* entity1, Entity* entity2, AudioMaster &aMaster);
 };

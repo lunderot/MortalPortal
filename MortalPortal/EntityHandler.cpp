@@ -19,7 +19,7 @@ EntityHandler::~EntityHandler()
 	}
 }
 
-void EntityHandler::Update(float deltaTime)
+void EntityHandler::Update(float deltaTime, AudioMaster &aMaster)
 {
 	bool PlayerComboReset[2] = { false };
 	for (std::map<Shader*, std::vector<Entity*>>::iterator ent = entities.begin(); ent != entities.end(); ++ent)
@@ -123,7 +123,7 @@ void EntityHandler::Update(float deltaTime)
 							{
 								if (IsSpheresColliding((*k), (*l), model1, model2))
 								{
-									HandleCollision((*i), (*j));
+									HandleCollision((*i), (*j), aMaster);
 									collision = true;
 								}
 							}
@@ -205,7 +205,7 @@ void EntityHandler::Add(Entity* entity)
 	entities[entity->GetShader()].push_back(entity);
 }
 
-void EntityHandler::HandleCollision(Entity* entity1, Entity* entity2)
+void EntityHandler::HandleCollision(Entity* entity1, Entity* entity2, AudioMaster &aMaster)
 {
 	if (entity1->GetMaterial() == entity2->GetMaterial())
 	{
@@ -217,6 +217,7 @@ void EntityHandler::HandleCollision(Entity* entity1, Entity* entity2)
 				dynamic_cast<Player*>(entity1)->AddPower();
 				dynamic_cast<Player*>(entity1)->AddCombo();
 				dynamic_cast<Player*>(entity1)->AddComboText();
+				aMaster.playSample("boing");
 			}
 		}
 	}
@@ -229,6 +230,18 @@ void EntityHandler::HandleCollision(Entity* entity1, Entity* entity2)
 			dynamic_cast<Player*>(entity1)->RemovePower();
 			dynamic_cast<Player*>(entity1)->RemoveCombo();
 			dynamic_cast<Player*>(entity1)->RemoveComboText();
+		}
+	}
+}
+
+void EntityHandler::KillAllMapItems()
+{
+	for (std::map<Shader*, std::vector<Entity*>>::iterator ent = entities.begin(); ent != entities.end(); ++ent)
+	{
+		for (std::vector<Entity*>::iterator i = ent->second.begin(); i != ent->second.end(); ++i)
+		{
+			if (dynamic_cast<MapItem*> (*i))
+				(*i)->SetAlive(false);
 		}
 	}
 }

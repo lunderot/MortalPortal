@@ -23,7 +23,7 @@ ID3D11ShaderResourceView* TextureHandler::LoadTexture(std::string name, ID3D11De
 	LPCWSTR filePathAndNAme = tmp.c_str();
 	hr = DirectX::LoadFromDDSFile(filePathAndNAme, DirectX::DDS_FLAGS_NONE, &texMetadata, image);
 	if (FAILED(hr))
-		throw std::runtime_error("Failed to LoadFromDDSFile in TextureHandler");
+		throw std::runtime_error("Failed to LoadFromDDSFile in TextureHandler: " + name);
 
 	hr = DirectX::CreateShaderResourceView(device, image.GetImages(), image.GetImageCount(), texMetadata, &DDSTexture);
 	if (FAILED(hr))
