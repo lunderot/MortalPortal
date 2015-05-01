@@ -1,11 +1,14 @@
 #pragma once
 
-#include <xaudio2.h>
 #include <fstream>
 
 #include "AudioHandler.h"
 
+#ifndef __DISABLE_AUDIO__
 #pragma comment (lib, "xaudio2.lib")
+#else
+#include "Bullshit.h"
+#endif
 
 class Audio
 {

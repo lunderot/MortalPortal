@@ -135,12 +135,14 @@
     <ClInclude Include="AudioMaster.h" />
     <ClInclude Include="Background.h" />
     <ClInclude Include="BackgroundShader.h" />
+    <ClInclude Include="Bullshit.h" />
     <ClInclude Include="Button.h" />
     <ClInclude Include="ButtonShader.h" />
     <ClInclude Include="ComboBar.h" />
     <ClInclude Include="ComboBarShader.h" />
     <ClInclude Include="ComboDisplayText.h" />
     <ClInclude Include="ContinueButton.h" />
+    <ClInclude Include="DisableAudio.h" />
     <ClInclude Include="GameOver.h" />
     <ClInclude Include="MapItemShader.h" />
     <ClInclude Include="MapItem.h" />

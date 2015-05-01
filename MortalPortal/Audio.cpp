@@ -2,31 +2,41 @@
 
 Audio::Audio(AudioHandler* handle)
 {
+#ifndef __DISABLE_AUDIO__
 	this->Handle = handle;
 	this->Source = nullptr;
 	this->file = nullptr;
 
 	this->buffer = { 0 };
 	ZeroMemory(&this->wfx, sizeof(this->wfx));
+#else
+#endif
 }
 
 Audio::Audio(AudioHandler* handle, TCHAR file[])
 {
+#ifndef __DISABLE_AUDIO__
 	this->Handle = handle;
 	this->Source = nullptr;
 	this->file = file;
 
 	this->buffer = { 0 };
 	ZeroMemory(&this->wfx, sizeof(this->wfx));
+#else
+#endif
 }
 
 Audio::~Audio()
 {
+#ifndef __DISABLE_AUDIO__
 	delete[] this->pDataBuffer;
+#else
+#endif
 }
 
 HRESULT Audio::loadAudio(bool loop)
 {
+#ifndef __DISABLE_AUDIO__
 	HANDLE hFile = CreateFile(
 		this->file,
 		GENERIC_READ,
@@ -76,17 +86,25 @@ HRESULT Audio::loadAudio(bool loop)
 	}
 
 	return S_OK;
+#else
+	return S_OK;
+#endif
 }
 
 HRESULT Audio::loadAudio(TCHAR file[], bool loop)
 {
+#ifndef __DISABLE_AUDIO__
 	this->file = file;
 
 	return this->loadAudio(loop);
+#else
+	return S_OK;
+#endif
 }
 
 HRESULT Audio::playAudio()
 {
+#ifndef __DISABLE_AUDIO__
 	HRESULT hr;
 
 	hr = Handle->createSource(this->Source, this->wfx);
@@ -106,26 +124,43 @@ HRESULT Audio::playAudio()
 	hr = Source->Start(0);
 
 	return hr;
+#else
+	return S_OK;
+#endif
 }
 
 void Audio::setFile(TCHAR file[])
 {
+#ifndef __DISABLE_AUDIO__
 	this->file = file;
+#else
+#endif
 }
 
 TCHAR* Audio::getFile()
 {
+#ifndef __DISABLE_AUDIO__
 	return this->file;
+#else
+	return this->file;
+#endif
 }
 
 void Audio::setHandler(AudioHandler* handle)
 {
+#ifndef __DISABLE_AUDIO__
 	this->Handle = handle;
+#else
+#endif
 }
 
 HRESULT Audio::stopAudio()
 {
+#ifndef __DISABLE_AUDIO__
 	this->Source->Stop(0);
 
 	return S_OK;
+#else
+	return S_OK;
+#endif
 }

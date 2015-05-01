@@ -2,19 +2,26 @@
 
 AudioHandler::AudioHandler()
 {
+#ifndef __DISABLE_AUDIO__
 	this->Engine = nullptr;
 	this->Master = nullptr;
 
 	this->initialize();
+#else
+#endif
 }
 
 AudioHandler::~AudioHandler()
 {
+#ifndef __DISABLE_AUDIO__
 	this->Engine->Release();
+#else
+#endif
 }
 
 HRESULT AudioHandler::initialize()
 {
+#ifndef __DISABLE_AUDIO__
 	HRESULT hr;
 
 	hr = XAudio2Create(&this->Engine, 0, XAUDIO2_DEFAULT_PROCESSOR);
@@ -32,10 +39,14 @@ HRESULT AudioHandler::initialize()
 	}
 
 	return hr;
+#else
+	return S_OK;
+#endif
 }
 
 HRESULT AudioHandler::findChunk(HANDLE hFile, DWORD fourcc, DWORD &dwChunkSize, DWORD &dwChunkDataPosition)
 {
+#ifndef __DISABLE_AUDIO__
 	HRESULT hr = S_OK;
 
 	if (INVALID_SET_FILE_POINTER == SetFilePointer(hFile, 0, NULL, FILE_BEGIN))
@@ -102,10 +113,14 @@ HRESULT AudioHandler::findChunk(HANDLE hFile, DWORD fourcc, DWORD &dwChunkSize, 
 	}
 
 	return S_OK;
+#else
+return S_OK;
+#endif
 }
 
 HRESULT AudioHandler::readChunkData(HANDLE hFile, void* buffer, DWORD bufferSize, DWORD bufferOffset)
 {
+#ifndef __DISABLE_AUDIO__
 	HRESULT hr = S_OK;
 
 	if (INVALID_SET_FILE_POINTER == SetFilePointer(hFile, bufferOffset, NULL, FILE_BEGIN))
@@ -121,13 +136,20 @@ HRESULT AudioHandler::readChunkData(HANDLE hFile, void* buffer, DWORD bufferSize
 	}
 
 	return hr;
+#else
+	return S_OK;
+#endif
 }
 
 HRESULT AudioHandler::createSource(IXAudio2SourceVoice* &source, WAVEFORMATEXTENSIBLE &wfx)
 {
+#ifndef __DISABLE_AUDIO__
 	HRESULT hr;
 
 	hr = this->Engine->CreateSourceVoice(&source, (WAVEFORMATEX*)&wfx);
 
 	return hr;
+#else
+	return S_OK;
+#endif
 }

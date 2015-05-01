@@ -8,10 +8,16 @@
 #define fourccXWMA 'AMWX'
 #define fourccDPDS 'sdpd'
 
-#include <xaudio2.h>
-#include <fstream>
+#include "DisableAudio.h"
 
-#pragma comment (lib, "xaudio2.lib")
+#ifndef __DISABLE_AUDIO__
+#include <xaudio2.h>
+#else
+#include "Bullshit.h"
+#endif
+
+#include <fstream>
+#include <Windows.h>
 
 class AudioHandler
 {

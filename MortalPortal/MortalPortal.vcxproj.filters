@@ -302,6 +302,12 @@
     <ClInclude Include="AudioMaster.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="DisableAudio.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Bullshit.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="assets\shaders\powerBarPS.hlsl">

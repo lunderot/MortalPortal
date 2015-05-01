@@ -1,5 +1,3 @@
-#define WINVER 0x0602
-
 #include <iostream>
 #include <windows.h>
 
