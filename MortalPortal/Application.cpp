@@ -27,7 +27,7 @@ Application::Application(bool fullscreen, bool showCursor, int screenWidth, int 
 	unsigned int pirate = aMaster.addNewSample(L"assets/audio/pirate.wav", "pirate", true);
 	aMaster.addNewSample(L"assets/audio/boing.wav", "boing", false);
 	//aMaster.playSample(pirate);
-
+	
 	// Player 1 keys
 	player1Keys[0] = 'W';
 	player1Keys[1] = 'S';
@@ -420,13 +420,13 @@ bool Application::Update(float deltaTime)
 	dir.x *= 10;
 	dir.y *= 10;
 	player1->SetAcceleration(XMFLOAT3(dir.x, dir.y, 0.0f));
-	player1->ReactToInput(input->GetButtonState());
+	player1->ReactToInput(input->GetButtonState(), aMaster);
 
 	XMFLOAT2 dir2 = input2->GetDirection(player2Test);
 	dir2.x *= 5;
 	dir2.y *= 5;
 	player2->SetAcceleration(XMFLOAT3(dir2.x, dir2.y, 0.0f));
-	player2->ReactToInput(input2->GetButtonState());
+	player2->ReactToInput(input2->GetButtonState(), aMaster);
 	
 	player1->powerBar->Update(deltaTime, d3dHandler->GetDeviceContext());
 	player2->powerBar->Update(deltaTime, d3dHandler->GetDeviceContext());

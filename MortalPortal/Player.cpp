@@ -41,7 +41,7 @@ Player::~Player()
 	delete comboDisplayText[3];
 }
 
-void Player::ReactToInput(bool currentButtonState)
+void Player::ReactToInput(bool currentButtonState, AudioMaster &aMaster)
 {
 	if (currentButtonState != previousButtonState)
 	{
@@ -50,9 +50,13 @@ void Player::ReactToInput(bool currentButtonState)
 			if (colorState == 0)
 			{
 				colorState = 1;
+				aMaster.playSample("boing");
 			}
 			else
+			{
 				colorState = 0;
+				aMaster.playSample("boing");
+			}
 		}
 	}
 	previousButtonState = currentButtonState;

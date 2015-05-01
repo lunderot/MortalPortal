@@ -3,6 +3,7 @@
 #include "PowerBar.h"
 #include "ComboBar.h"
 #include "ComboDisplayText.h"
+#include "AudioMaster.h"
 
 class Player :
 	public Entity
@@ -19,7 +20,7 @@ public:
 		);
 	~Player();
 
-	void ReactToInput(bool currentButtonState);
+	void ReactToInput(bool currentButtonState, AudioMaster &aMaster);
 	void Update(float deltaTime);
 	
 	unsigned int GetPlayerNumber() const;
