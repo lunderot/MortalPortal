@@ -104,6 +104,7 @@ Application::Application(bool fullscreen, bool showCursor, int screenWidth, int 
 		assetHandler->GetMaterial(d3dHandler->GetDevice(), "assets/Player1.bin", "Portal2"),
 		playerShader, XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(40, 0, 30));
 	entityHandler->Add(player1);
+	player1->SetPlayerNumber(1);
 
 	player2 = new Player(d3dHandler->GetDevice(),
 		assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/Player2.bin"),
@@ -111,7 +112,7 @@ Application::Application(bool fullscreen, bool showCursor, int screenWidth, int 
 		assetHandler->GetMaterial(d3dHandler->GetDevice(), "assets/Player2.bin", "Portal2"),
 		playerShader, XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(40, 0, 30));
 	entityHandler->Add(player2);
-	
+	player2->SetPlayerNumber(2);
 
 	// Create Combo-bar player1 & player2
 	Material* playerComboMat[9];

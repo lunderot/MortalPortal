@@ -20,6 +20,9 @@ public:
 
 	void ReactToInput(bool currentButtonState);
 	void Update(float deltaTime);
+	
+	unsigned int GetPlayerNumber() const;
+	void SetPlayerNumber(unsigned int playerNr);
 
 	Material* GetMaterial() const;
 	void AddPower();
@@ -33,9 +36,10 @@ public:
 	void AddComboText();
 	void RemoveComboText();
 	ComboDisplayText* comboDisplayText[4];
-
+	unsigned int playerNumber;
 private:
 	Material* switchMaterial;
+	
 	unsigned int colorState;
 	unsigned int comboCounter;
 	unsigned int comboCounterChange_10;

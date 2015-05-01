@@ -142,7 +142,7 @@ void PowerBar::Update(float deltaTime, ID3D11DeviceContext* deviceContext)
 	if (posColor.pos[0].x <= maxMinValue.y && dead == false)
 	{
 		posColor.pos[0].x = maxMinValue.y;
-		dead = true;
+		//dead = true;
 	}
 	else if (posColor.pos[0].x > maxMinValue.x && dead == false)
 	{

@@ -21,20 +21,41 @@ EntityHandler::~EntityHandler()
 
 void EntityHandler::Update(float deltaTime)
 {
+	bool PlayerComboReset[2] = { false };
 	for (std::map<Shader*, std::vector<Entity*>>::iterator ent = entities.begin(); ent != entities.end(); ++ent)
 	{
 		for (std::vector<Entity*>::iterator i = ent->second.begin(); i != ent->second.end();)
 		{
 			if (!(*i)->GetAlive())
 			{
+				if (dynamic_cast<MapItem*>(*i))
+				{
+					if (dynamic_cast<MapItem*> (*i)->type != MapItem::objectType::BackgroundAsset && (*i)->position.x < -30)
+					{
+						if (dynamic_cast<MapItem*> (*i)->type == MapItem::objectType::Player1_Crystal1)
+						{
+
+							PlayerComboReset[0] = true;
+							std::cout << "PLAYER 1 - FAILED!" << std::endl;
+						}
+						if (dynamic_cast<MapItem*> (*i)->type == MapItem::objectType::Player2_Crystal1)
+						{
+
+							PlayerComboReset[1] = true;
+							std::cout << "PLAYER 2 - FAILED!" << std::endl;
+						}
+					}
+				}
 				delete (*i);
 				i = ent->second.erase(i);
 			}
 			else
 			{
+				//if (dynamic_cast<Player*>(*i)->GetPlayerNumber())
 				(*i)->Update(deltaTime);
 				++i;
 			}
+
 
 		}
 	}
@@ -43,14 +64,30 @@ void EntityHandler::Update(float deltaTime)
 		for (std::map<Shader*, std::vector<Entity*>>::iterator ent2 = entities.begin(); ent2 != entities.end(); ++ent2)
 		{
 			for (std::vector<Entity*>::iterator i = ent->second.begin(); i != ent->second.end(); ++i)
-			{
+			{	
+				if (dynamic_cast<Player*>(*i))
+				{
+					if (dynamic_cast<Player*>(*i)->playerNumber == 1 && PlayerComboReset[0] == true)
+					{
+						dynamic_cast<Player*>(*i)->RemoveComboText();
+						dynamic_cast<Player*>(*i)->RemoveCombo();
+					}
+					if (dynamic_cast<Player*>(*i)->playerNumber == 2 && PlayerComboReset[1] == true)
+					{
+						dynamic_cast<Player*>(*i)->RemoveComboText();
+						dynamic_cast<Player*>(*i)->RemoveCombo();
+					}
+				}
+
 				for (std::vector<Entity*>::iterator j = ent2->second.begin(); j != ent2->second.end(); ++j)
 				{
+				
+
 					if ((*i) != (*j))
 					{
 						Collision* collision1 = (*i)->GetGeometry()->GetCollision();
 						Collision* collision2 = (*j)->GetGeometry()->GetCollision();
-
+						
 
 						XMFLOAT3 position = (*i)->GetPosition();
 						XMFLOAT3 rotation = (*i)->GetRotation();
@@ -64,7 +101,6 @@ void EntityHandler::Update(float deltaTime)
 
 						// --
 						model1 = scaleMatrix * model1;
-
 						
 						position = (*j)->GetPosition();
 						rotation = (*j)->GetRotation();

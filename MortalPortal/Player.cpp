@@ -20,6 +20,7 @@ Player::Player(ID3D11Device* device, Geometry* geometry, Material* material, Mat
 	comboDisplayText[2] = new ComboDisplayText(device, material);
 	comboDisplayText[3] = new ComboDisplayText(device, material);
 	
+	playerNumber = 0;
 	colorState = 0;
 	comboCounter = 0;
 	comboCounterChange_10 = 0;
@@ -100,6 +101,16 @@ Material* Player::GetMaterial() const
 	{
 		return switchMaterial;
 	}
+}
+
+void Player::SetPlayerNumber(unsigned int playerNr)
+{
+	this->playerNumber = playerNr;
+}
+
+unsigned int Player::GetPlayerNumber() const
+{
+	return this->playerNumber;
 }
 
 void Player::AddPower()

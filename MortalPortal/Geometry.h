@@ -8,7 +8,7 @@ class Geometry
 private:
 	ID3D11Buffer* vertexBuffer;
 	unsigned int vertexCount;
-
+	
 	Collision* collision;
 public:
 	Geometry(ID3D11Buffer* vertexBuffer, unsigned int vertexCount, Collision* collision);
