@@ -14,13 +14,13 @@ Particle::Particle(const unsigned int nrOfParticles,
 	{
 		Particles p;
 		p.type = 1;
-		p.lifeTime = rand() % 90 + 10;
+		p.lifeTime = rand() % 3 + 7;
 		p.pos.x = 0;
 		p.pos.y = 0;
 		p.pos.z = 0;
 
-		p.velocity.x = rand() % 50 - 25;
-		p.velocity.y = rand() % 50 - 25;
+		p.velocity.x = rand() % 50 - 50;
+		p.velocity.y = rand() %  90 - 50;
 		p.acceleration.x = 0;
 		p.acceleration.y = 0;
 		particle.push_back(p);

@@ -23,7 +23,7 @@ void main(uint3 dispatchThreadID : SV_DispatchThreadID)
 	pos.y += vel.y * deltaTime;
 	pos.z = 0;
 
-	life += 8.0f * deltaTime;
+	life += 20.0f * deltaTime;
 	//pos.y -= 0.3f * deltaTime;
 
 	if (life > lifeTime)

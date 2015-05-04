@@ -238,6 +238,7 @@ void EntityHandler::KillAllMapItems()
 	{
 		for (std::vector<Entity*>::iterator i = ent->second.begin(); i != ent->second.end(); ++i)
 		{
+		
 			if (dynamic_cast<MapItem*> (*i))
 				(*i)->SetAlive(false);
 		}

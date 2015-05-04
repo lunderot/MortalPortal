@@ -37,8 +37,8 @@ void main(point GS_IN input[1], inout TriangleStream<GS_OUT> triStream)
 	upVec = normalize(cross(rightVec, look));
 	float3 vert[4];
 	float2 texCoord[4];
-	rightVec = rightVec * 0.3;
-	upVec = upVec * 0.3;
+	rightVec = rightVec * 0.1;
+	upVec = upVec * 0.1;
 
 	vert[0] = (input[0].Pos - rightVec - upVec);
 	vert[1] = (input[0].Pos + rightVec - upVec);
