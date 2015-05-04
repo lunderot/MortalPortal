@@ -20,7 +20,6 @@
 #include "ComboBarShader.h"
 #include "ComboDisplayText.h"
 #include "Particles.h"
-#include "GameOver.h"
 #include "StartMenu.h"
 #include "PauseMenu.h"
 #include "RestartMenu.h"
@@ -76,7 +75,6 @@ private:
 	unsigned int player2Test = 1;
 
 	// Menu
-	GameOver* gameOver;
 	StartMenu* startMenu;
 	PauseMenu* pauseMenu;
 	RestartMenu* restartMenu;

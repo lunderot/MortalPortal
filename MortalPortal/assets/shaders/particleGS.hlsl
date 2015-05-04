@@ -12,7 +12,10 @@ cbuffer ConstantBufferPerModel : register(cb1)
 struct GS_IN
 {
 	float4 Pos : POSITION;
-	float2 texCoord : TEXCOORD0;
+	float type : TYPE;
+	float2 direction : DIRECTION;
+	float lifeTime : LIFETIME;
+	float speed : SPEED;
 };
 struct GS_OUT
 {
@@ -24,8 +27,8 @@ struct GS_OUT
 void main(point GS_IN input[1], inout TriangleStream<GS_OUT> triStream)
 {
 	GS_OUT output;
-	float3 camPos = float3(0, 10, -20);
-	float3 look = float3(0, -10, 20);//input[0].Pos - camPos;
+	float3 camPos = float3(0, 0, -20);
+	float3 look = float3(0, 0, 20);//input[0].Pos - camPos;
 
 	look = normalize(look);
 

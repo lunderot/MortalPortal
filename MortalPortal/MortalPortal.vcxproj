@@ -93,7 +93,6 @@
     <ClCompile Include="ComboBarShader.cpp" />
     <ClCompile Include="ComboDisplayText.cpp" />
     <ClCompile Include="ContinueButton.cpp" />
-    <ClCompile Include="GameOver.cpp" />
     <ClCompile Include="MapItemShader.cpp" />
     <ClCompile Include="MapItem.cpp" />
     <ClCompile Include="Collision.cpp" />
@@ -143,7 +142,6 @@
     <ClInclude Include="ComboDisplayText.h" />
     <ClInclude Include="ContinueButton.h" />
     <ClInclude Include="DisableAudio.h" />
-    <ClInclude Include="GameOver.h" />
     <ClInclude Include="MapItemShader.h" />
     <ClInclude Include="MapItem.h" />
     <ClInclude Include="Collision.h" />

@@ -1,6 +1,6 @@
 #include "Particles.h"
 
-Particle::Particle(unsigned int nrOfParticles,
+Particle::Particle(const unsigned int nrOfParticles,
 	ID3D11Device* device,
 	DirectX::XMFLOAT3 position,
 	DirectX::XMFLOAT3 velocity,
@@ -8,6 +8,23 @@ Particle::Particle(unsigned int nrOfParticles,
 	DirectX::XMFLOAT3 acceleration, DirectX::XMFLOAT3 scale) : Entity(nullptr, nullptr, nullptr, position, velocity, angleVelocity, acceleration, scale)
 {
 
+	std::vector<Particles> particle;
+
+	for (unsigned int i = 0; i < nrOfParticles; i++)
+	{
+		Particles p;
+		p.type = 1;
+		p.lifeTime = rand() % 90 + 10;
+		p.pos.x = 0;
+		p.pos.y = 0;
+		p.pos.z = 0;
+
+		p.velocity.x = rand() % 50 - 25;
+		p.velocity.y = rand() % 50 - 25;
+		p.acceleration.x = 0;
+		p.acceleration.y = 0;
+		particle.push_back(p);
+	}
 
 	HRESULT hr;
 	this->nrOfParticles = nrOfParticles;
@@ -17,14 +34,14 @@ Particle::Particle(unsigned int nrOfParticles,
 	memset(&partbufferDesc, 0, sizeof(partbufferDesc));
 	partbufferDesc.BindFlags = D3D11_BIND_UNORDERED_ACCESS | D3D11_BIND_VERTEX_BUFFER;
 	partbufferDesc.Usage = D3D11_USAGE_DEFAULT;
-	partbufferDesc.ByteWidth = sizeof(float) * 5 * nrOfParticles;
-	partbufferDesc.StructureByteStride = sizeof(float) * 5;
+	partbufferDesc.ByteWidth = sizeof(Particles) * nrOfParticles;
+	partbufferDesc.StructureByteStride = sizeof(Particles);
 	partbufferDesc.MiscFlags = D3D11_RESOURCE_MISC_BUFFER_ALLOW_RAW_VIEWS;
 
-	/*D3D11_SUBRESOURCE_DATA datar;
-	datar.pSysMem = &partVertices;*/
+	D3D11_SUBRESOURCE_DATA vertexData;
+	vertexData.pSysMem = particle.data();
 
-	hr = device->CreateBuffer(&partbufferDesc, 0, &vertexBuffer);
+	hr = device->CreateBuffer(&partbufferDesc, &vertexData, &vertexBuffer);
 
 	//COMPUTE SHADER
 	D3D11_UNORDERED_ACCESS_VIEW_DESC uavDesc;
@@ -33,7 +50,7 @@ Particle::Particle(unsigned int nrOfParticles,
 	uavDesc.ViewDimension = D3D11_UAV_DIMENSION_BUFFER;
 	uavDesc.Buffer.FirstElement = 0;
 	uavDesc.Buffer.Flags = D3D11_BUFFER_UAV_FLAG_RAW;
-	uavDesc.Buffer.NumElements = nrOfParticles * sizeof(float) * 5 / 4;
+	uavDesc.Buffer.NumElements = nrOfParticles * sizeof(Particles) / 4;
 
 	hr = device->CreateUnorderedAccessView(vertexBuffer, &uavDesc, &particleUAV);
 	geometry = new Geometry(vertexBuffer, 0, nullptr);
@@ -43,12 +60,14 @@ Particle::Particle(unsigned int nrOfParticles,
 	ZeroMemory(&bufferDesc, sizeof(bufferDesc));
 
 	bufferDesc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
-	bufferDesc.Usage = D3D11_USAGE_DEFAULT;
+	bufferDesc.Usage = D3D11_USAGE_DYNAMIC;
 	bufferDesc.ByteWidth = sizeof(constantBufferData);
-	bufferDesc.CPUAccessFlags = 0;
-	bufferDesc.MiscFlags = 0;
+	bufferDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
 
-	hr = device->CreateBuffer(&bufferDesc, NULL, &constantBuffer);
+	D3D11_SUBRESOURCE_DATA data;
+	data.pSysMem = &constantBufferData;
+
+	hr = device->CreateBuffer(&bufferDesc, &data, &constantBuffer);
 	if (FAILED(hr))
 	{
 		throw std::runtime_error("Failed to create constant buffer in Particles");
@@ -71,23 +90,12 @@ void Particle::UpdatePosition(DirectX::XMFLOAT3 position)
 	constantBufferData.position = position;
 }
 
-void Particle::UpdateDeltaTime(float deltaTime)
+void Particle::UpdateParticle(float deltaTime, ID3D11DeviceContext* deviceContext, ID3D11ComputeShader* computeShader)
 {
-	constantBufferData.deltaTime = deltaTime;
-}
+	this->constantBufferData.deltaTime = deltaTime;
 
-void Particle::SetLifeTime(float time)
-{
-	constantBufferData.lifeTime = time;
-}
-
-void Particle::Render(ID3D11DeviceContext* deviceContext, Shader* shader, ID3D11ComputeShader* computeShader)
-{
-	ID3D11Buffer* vertexBuffer = geometry->GetVertexBuffer();
-	UINT stride = sizeof(float) * 5;
-	UINT offset = 0;
-
-	deviceContext->UpdateSubresource(constantBuffer, 0, NULL, &constantBufferData, 0, 0);
+	//deviceContext->UpdateSubresource(constantBuffer, 0, NULL, &this->constantBufferData, 0, 0);
+	UpdateConstantBuffer(deviceContext);
 	ID3D11UnorderedAccessView* pUAV[] = { particleUAV };
 	deviceContext->CSSetUnorderedAccessViews(0, 1, pUAV, 0);
 	deviceContext->CSSetShader(computeShader, nullptr, 0);
@@ -97,10 +105,33 @@ void Particle::Render(ID3D11DeviceContext* deviceContext, Shader* shader, ID3D11
 	pUAV[0] = nullptr;
 	deviceContext->CSSetUnorderedAccessViews(0, 1, pUAV, 0);
 	deviceContext->CSSetShader(nullptr, nullptr, 0);
+}
+
+void Particle::SetLifeTime(float time)
+{
+	constantBufferData.lifeTime = time;
+}
+
+void Particle::Render(ID3D11DeviceContext* deviceContext)
+{
+	ID3D11Buffer* vertexBuffer = geometry->GetVertexBuffer();
+	UINT stride = sizeof(Particles);
+	UINT offset = 0;
+
 	deviceContext->IASetVertexBuffers(0, 1, &vertexBuffer, &stride, &offset);
-	//deviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_POINTLIST);
+	deviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_POINTLIST);
 	deviceContext->Draw(nrOfParticles, 0);
 }
+
+void Particle::UpdateConstantBuffer(ID3D11DeviceContext* deviceContext)
+{
+	D3D11_MAPPED_SUBRESOURCE mappedResource;
+	deviceContext->Map(constantBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
+
+	memcpy(mappedResource.pData, &constantBufferData, sizeof(ConstantBufferData));
+	deviceContext->Unmap(constantBuffer, 0);
+}
+
 
 Particle::~Particle()
 {

@@ -11,6 +11,7 @@ class Player :
 public:
 
 	Player(ID3D11Device* device, Geometry* geometry, Material* material, Material* switchMaterial, Shader* shader,
+		Color color1, Color color2,
 		DirectX::XMFLOAT3 position = DirectX::XMFLOAT3(0, 0, 0),
 		DirectX::XMFLOAT3 velocity = DirectX::XMFLOAT3(0, 0, 0),
 		DirectX::XMFLOAT3 angleVelocity = DirectX::XMFLOAT3(0, 0, 0),
@@ -39,17 +40,24 @@ public:
 	void RemoveComboText();
 	ComboDisplayText* comboDisplayText[4];
 	
-	unsigned int playerNumber;
+	Color GetColor() const;
+	void SetColor(Color color);
+	bool HasColor(Color color) const;
+	
 	void Reset();
 
 private:
 	Material* switchMaterial;
 	
-	unsigned int colorState;
+	
 	unsigned int comboCounter;
 	unsigned int comboCounterChange_10;
 	unsigned int comboCounterChange_100;
 	bool comboMax;
 	bool previousButtonState;
+	unsigned int playerNumber;
+
+	Color colorState;
+	Color colors[2];
 };
 

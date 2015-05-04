@@ -101,7 +101,9 @@ Application::Application(bool fullscreen, bool showCursor, int screenWidth, int 
 		assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/Player1.bin"),
 		assetHandler->GetMaterial(d3dHandler->GetDevice(), "assets/Player1.bin", "Portal1"),
 		assetHandler->GetMaterial(d3dHandler->GetDevice(), "assets/Player1.bin", "Portal2"),
-		playerShader, XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(40, 0, 30));
+		playerShader,
+		Color::BLUE, Color::GREEN,
+		XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(40, 0, 30));
 	entityHandler->Add(player1);
 	player1->SetPlayerNumber(1);
 
@@ -109,7 +111,9 @@ Application::Application(bool fullscreen, bool showCursor, int screenWidth, int 
 		assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/Player2.bin"),
 		assetHandler->GetMaterial(d3dHandler->GetDevice(), "assets/Player2.bin", "Portal1"),
 		assetHandler->GetMaterial(d3dHandler->GetDevice(), "assets/Player2.bin", "Portal2"),
-		playerShader, XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(40, 0, 30));
+		playerShader,
+		Color::RED, Color::YELLOW,
+		XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(40, 0, 30));
 	entityHandler->Add(player2);
 	player2->SetPlayerNumber(2);
 
@@ -154,7 +158,7 @@ Application::Application(bool fullscreen, bool showCursor, int screenWidth, int 
 	player2->comboDisplayText[3]->setMaterial(playerComboDTMat);
 
 	// Particles testing area
-	particle = new Particle(10, d3dHandler->GetDevice());
+	particle = new Particle(20, d3dHandler->GetDevice());
 
 	// Create Background
 	entityHandler->Add(
@@ -218,7 +222,7 @@ Application::Application(bool fullscreen, bool showCursor, int screenWidth, int 
 		//assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/test.bin"),
 		assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/Earth.bin"),
 		assetHandler->GetMaterial(d3dHandler->GetDevice(), "b.dds"),
-		playerShader, MapItem::BackgroundAsset, XMFLOAT3(0, 0, 5), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0.05, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(1, 1, 1))
+		playerShader, MapItem::BackgroundAsset, Color::BLUE, XMFLOAT3(0, 0, 5), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0.05, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(1, 1, 1))
 		);
 
 	player2->powerBar->SetColor(DirectX::XMFLOAT2(1.0f, 1.0f));
@@ -351,10 +355,11 @@ Application::Application(bool fullscreen, bool showCursor, int screenWidth, int 
 		DirectX::XMFLOAT2(0.1f, 0.1f),
 		assetHandler->GetMaterial(d3dHandler->GetDevice(), "continue.dds")));
 
-	pauseMenu->AddButton(new OptionsButton(
+	pauseMenu->AddButton(new StartButton(entityHandler,
+		player1, player2,
 		DirectX::XMFLOAT2(0, 0.0f),
 		DirectX::XMFLOAT2(0.1f, 0.1f),
-		assetHandler->GetMaterial(d3dHandler->GetDevice(), "options.dds")));
+		assetHandler->GetMaterial(d3dHandler->GetDevice(), "restart.dds")));
 
 	pauseMenu->AddButton(new QuitButton(
 		DirectX::XMFLOAT2(0, -0.4f),
@@ -366,12 +371,12 @@ Application::Application(bool fullscreen, bool showCursor, int screenWidth, int 
 
 	restartMenu->AddButton(new StartButton(entityHandler,
 		player1, player2,
-		DirectX::XMFLOAT2(0, 0.4f),
+		DirectX::XMFLOAT2(0, 0.2f),
 		DirectX::XMFLOAT2(0.1f, 0.1f),
 		assetHandler->GetMaterial(d3dHandler->GetDevice(), "restart.dds")));
 
 	restartMenu->AddButton(new QuitButton(
-		DirectX::XMFLOAT2(0, -0.4f),
+		DirectX::XMFLOAT2(0, -0.2f),
 		DirectX::XMFLOAT2(0.1f, 0.1f),
 		assetHandler->GetMaterial(d3dHandler->GetDevice(), "quit.dds")));
 
@@ -380,20 +385,6 @@ Application::Application(bool fullscreen, bool showCursor, int screenWidth, int 
 	// Skip the shitty menu
 	startMenu->renderMenu = false;
 	pauseMenu->renderMenu = false;
-
-	// Game Over
-	Points gameOverRec;
-	gameOverRec.pos[0] = DirectX::XMFLOAT2(-0.5f, -0.5f);
-	gameOverRec.pos[1] = DirectX::XMFLOAT2(-0.5f, 0.5f);
-	gameOverRec.pos[2] = DirectX::XMFLOAT2(0.5f, -0.5f);
-	gameOverRec.pos[3] = DirectX::XMFLOAT2(0.5f, 0.5f);
-
-	gameOverRec.uv[0] = DirectX::XMFLOAT2(0.0f, 1.0f);
-	gameOverRec.uv[1] = DirectX::XMFLOAT2(0.0f, 0.0f);
-	gameOverRec.uv[2] = DirectX::XMFLOAT2(1.0f, 1.0f);
-	gameOverRec.uv[3] = DirectX::XMFLOAT2(1.0f, 0.0f);
-
-	gameOver = new GameOver(gameOverRec, d3dHandler->GetDevice());
 }
 
 Application::~Application()
@@ -418,7 +409,6 @@ Application::~Application()
 	delete levelGenerator;
 
 	delete particle;
-	delete gameOver;
 	delete startMenu;
 	delete pauseMenu;
 	delete restartMenu;
@@ -462,7 +452,7 @@ bool Application::Update(float deltaTime)
 
 	entityHandler->Update(deltaTime, aMaster);
 	particle->UpdatePosition(player1->GetPosition());
-	particle->UpdateDeltaTime(deltaTime);
+	particle->UpdateParticle(deltaTime, d3dHandler->GetDeviceContext(), particleShader->GetComputeShader());
 	levelGenerator->Update(entityHandler, deltaTime);
 
 	if (startMenu->renderMenu == true)
@@ -502,15 +492,9 @@ void Application::Render()
 
 		if (player1->powerBar->IsDead() == true || player2->powerBar->IsDead() == true)
 		{
-			//ID3D11ShaderResourceView* srv;
-			//Material* mat = assetHandler->GetMaterial(d3dHandler->GetDevice(), "start.dds");
-			//srv = mat->GetTexture();
-			//d3dHandler->GetDeviceContext()->PSSetShaderResources(0, 1, &srv);
-			//startButton->isClicked();
 			buttonShader->Use(d3dHandler->GetDeviceContext());
 			restartMenu->renderMenu = true;
 			restartMenu->Render(d3dHandler->GetDeviceContext());
-			//gameOver->RenderText(d3dHandler->GetDeviceContext(), assetHandler->GetMaterial(d3dHandler->GetDevice(), "restart.dds"));
 		}
 
 		comboBarShader->Use(d3dHandler->GetDeviceContext());
@@ -519,7 +503,7 @@ void Application::Render()
 
 		// Particles
 		particleShader->Use(d3dHandler->GetDeviceContext());
-		particle->Render(d3dHandler->GetDeviceContext(), particleShader, particleShader->GetComputeShader());
+		particle->Render(d3dHandler->GetDeviceContext());
 	}
 	// Menu
 	if (startMenu->renderMenu == true)
