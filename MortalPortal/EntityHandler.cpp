@@ -21,28 +21,36 @@ EntityHandler::~EntityHandler()
 
 void EntityHandler::Update(float deltaTime, AudioMaster &aMaster)
 {
-	bool PlayerComboReset[2] = { false };
+	std::vector<Player*> player;
+	for (std::map<Shader*, std::vector<Entity*>>::iterator ent = entities.begin(); ent != entities.end(); ++ent)
+	{
+		for (std::vector<Entity*>::iterator i = ent->second.begin(); i != ent->second.end();++i)
+		{
+			Player* tempPlayer = dynamic_cast<Player*>(*i);
+			if (tempPlayer)
+			{
+				player.push_back(tempPlayer);
+			}
+		}
+	}
 	for (std::map<Shader*, std::vector<Entity*>>::iterator ent = entities.begin(); ent != entities.end(); ++ent)
 	{
 		for (std::vector<Entity*>::iterator i = ent->second.begin(); i != ent->second.end();)
 		{
-			if (!(*i)->GetAlive())
+			MapItem* item = dynamic_cast<MapItem*>(*i);
+			if (item && !item->GetAlive())
 			{
-				if (dynamic_cast<MapItem*>(*i))
+				//If item is a crystal and outside the screen
+				if (item->type == MapItem::objectType::Crystal && item->GetPosition().x < -30)
 				{
-					if (dynamic_cast<MapItem*> (*i)->type != MapItem::objectType::BackgroundAsset && (*i)->position.x < -30)
+					//Check players who has the color of the crystal
+					for (int i = 0; i < 2; i++)
 					{
-						if (dynamic_cast<MapItem*> (*i)->type == MapItem::objectType::Player1_Crystal1)
+						//Remove combo if it was the player's color
+						if (player[i]->HasColor(item->GetColor()))
 						{
-
-							PlayerComboReset[0] = true;
-							std::cout << "PLAYER 1 - FAILED!" << std::endl;
-						}
-						if (dynamic_cast<MapItem*> (*i)->type == MapItem::objectType::Player2_Crystal1)
-						{
-
-							PlayerComboReset[1] = true;
-							std::cout << "PLAYER 2 - FAILED!" << std::endl;
+							player[i]->RemoveComboText();
+							player[i]->RemoveCombo();
 						}
 					}
 				}
@@ -51,12 +59,9 @@ void EntityHandler::Update(float deltaTime, AudioMaster &aMaster)
 			}
 			else
 			{
-				//if (dynamic_cast<Player*>(*i)->GetPlayerNumber())
 				(*i)->Update(deltaTime);
 				++i;
 			}
-
-
 		}
 	}
 	for (std::map<Shader*, std::vector<Entity*>>::iterator ent = entities.begin(); ent != entities.end(); ++ent)
@@ -64,30 +69,13 @@ void EntityHandler::Update(float deltaTime, AudioMaster &aMaster)
 		for (std::map<Shader*, std::vector<Entity*>>::iterator ent2 = entities.begin(); ent2 != entities.end(); ++ent2)
 		{
 			for (std::vector<Entity*>::iterator i = ent->second.begin(); i != ent->second.end(); ++i)
-			{	
-				if (dynamic_cast<Player*>(*i))
-				{
-					if (dynamic_cast<Player*>(*i)->playerNumber == 1 && PlayerComboReset[0] == true)
-					{
-						dynamic_cast<Player*>(*i)->RemoveComboText();
-						dynamic_cast<Player*>(*i)->RemoveCombo();
-					}
-					if (dynamic_cast<Player*>(*i)->playerNumber == 2 && PlayerComboReset[1] == true)
-					{
-						dynamic_cast<Player*>(*i)->RemoveComboText();
-						dynamic_cast<Player*>(*i)->RemoveCombo();
-					}
-				}
-
+			{
 				for (std::vector<Entity*>::iterator j = ent2->second.begin(); j != ent2->second.end(); ++j)
 				{
-				
-
 					if ((*i) != (*j))
 					{
 						Collision* collision1 = (*i)->GetGeometry()->GetCollision();
-						Collision* collision2 = (*j)->GetGeometry()->GetCollision();
-						
+						Collision* collision2 = (*j)->GetGeometry()->GetCollision();		
 
 						XMFLOAT3 position = (*i)->GetPosition();
 						XMFLOAT3 rotation = (*i)->GetRotation();
@@ -98,15 +86,12 @@ void EntityHandler::Update(float deltaTime, AudioMaster &aMaster)
 
 						XMMATRIX model1 = XMMatrixRotationQuaternion(rotationQuat);
 						model1 = XMMatrixMultiply(model1, XMMatrixTranslationFromVector(XMLoadFloat3(&position)));
-
-						// --
 						model1 = scaleMatrix * model1;
 						
 						position = (*j)->GetPosition();
 						rotation = (*j)->GetRotation();
 						rotationQuat = XMQuaternionRotationRollPitchYawFromVector(XMLoadFloat3(&rotation));
 
-						// scaling
 						scaling = (*j)->GetScale();
 						scaleMatrix = XMMatrixScaling(scaling.x, scaling.y, scaling.z);
 
@@ -191,7 +176,6 @@ void EntityHandler::Render(ID3D11DeviceContext* deviceContext)
 			deviceContext->IASetVertexBuffers(0, 1, &vb, &vertexSize, &offset);
 			deviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
-			//TODO: Use material to set texture
 			ID3D11ShaderResourceView* texure = material->GetTexture();
 			deviceContext->PSSetShaderResources(0, 1, &texure);
 
@@ -207,29 +191,43 @@ void EntityHandler::Add(Entity* entity)
 
 void EntityHandler::HandleCollision(Entity* entity1, Entity* entity2, AudioMaster &aMaster)
 {
-	if (entity1->GetMaterial() == entity2->GetMaterial())
+	Player* player = dynamic_cast<Player*>(entity1);
+	if (player)
 	{
-		if (dynamic_cast<Player*>(entity1))
+		MapItem* item = dynamic_cast<MapItem*>(entity2);
+		if (item)
 		{
-			if (dynamic_cast<MapItem*>(entity2))
+			switch (item->type)
 			{
-				entity2->SetAlive(false);
-				dynamic_cast<Player*>(entity1)->AddPower();
-				dynamic_cast<Player*>(entity1)->AddCombo();
-				dynamic_cast<Player*>(entity1)->AddComboText();
-				aMaster.playSample("boing");
+				case MapItem::objectType::Comet:
+				{
+					player->RemovePower();
+					player->RemoveCombo();
+					player->RemoveComboText();
+					break;
+				}	
+				case MapItem::objectType::Crystal:
+				{
+					if (player->GetColor() == item->GetColor())
+					{
+						player->AddPower();
+						player->AddCombo();
+						player->AddComboText();
+						aMaster.playSample("boing");
+					}
+					else
+					{
+						player->RemovePower();
+						player->RemoveCombo();
+						player->RemoveComboText();
+						//TODO: Add sound effect for pick up the wrong color
+					}
+					break;
+				}
+				default:
+					break;
 			}
-		}
-	}
-	else if (entity1->GetMaterial() != entity2->GetMaterial())
-	if (dynamic_cast<Player*>(entity1))
-	{
-		if (dynamic_cast<MapItem*>(entity2))
-		{
-			entity2->SetAlive(false);
-			dynamic_cast<Player*>(entity1)->RemovePower();
-			dynamic_cast<Player*>(entity1)->RemoveCombo();
-			dynamic_cast<Player*>(entity1)->RemoveComboText();
+			item->SetAlive(false);
 		}
 	}
 }

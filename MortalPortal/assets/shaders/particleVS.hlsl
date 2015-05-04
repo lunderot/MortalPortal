@@ -1,13 +1,17 @@
 struct VS_IN
 {
 	float3 position : POSITION;
-	float2 texCoord : TEXCOORD;
+	float type : TYPE;
+	float lifeTime : LIFETIME;
+	float speed : SPEED;
 };
 
 struct VS_OUT
 {
 	float4 position : POSITION;
-	float2 texCoord : TEXCOORD0;
+	float type : TYPE;
+	float lifeTime : LIFETIME;
+	float speed : SPEED;
 };
 
 VS_OUT main(VS_IN input)
@@ -16,7 +20,9 @@ VS_OUT main(VS_IN input)
 
 	output.position = float4(input.position, 1.0f);
 
-	output.texCoord = input.texCoord;
+	output.type = input.type;
+	output.lifeTime = input.lifeTime;
+	output.speed = input.speed;
 
 	return output;
 }

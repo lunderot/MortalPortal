@@ -1,6 +1,7 @@
 #pragma once
 #include "Entity.h"
 #include "Shader.h"
+#include <vector>
 
 struct ConstantBufferData
 {
@@ -10,6 +11,15 @@ struct ConstantBufferData
 	DirectX::XMFLOAT2 acceleration;
 	float deltaTime;
 	DirectX::XMFLOAT3 pad;
+};
+
+struct Particles
+{
+	DirectX::XMFLOAT3 pos;
+	unsigned int type;
+	float lifeTime;
+	float speed;
+
 };
 
 class Particle :
@@ -23,7 +33,7 @@ protected:
 	unsigned int nrOfParticles;
 public:
 
-	Particle(unsigned int nrOfParticles,
+	Particle(const unsigned int nrOfParticles,
 		ID3D11Device* device,
 		DirectX::XMFLOAT3 position = DirectX::XMFLOAT3(0, 0, 0),
 		DirectX::XMFLOAT3 velocity = DirectX::XMFLOAT3(0, 0, 0),

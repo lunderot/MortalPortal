@@ -12,7 +12,9 @@ cbuffer ConstantBufferPerModel : register(cb1)
 struct GS_IN
 {
 	float4 Pos : POSITION;
-	float2 texCoord : TEXCOORD0;
+	float type : TYPE;
+	float lifeTime : LIFETIME;
+	float speed : SPEED;
 };
 struct GS_OUT
 {

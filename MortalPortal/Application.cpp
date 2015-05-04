@@ -101,7 +101,9 @@ Application::Application(bool fullscreen, bool showCursor, int screenWidth, int 
 		assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/Player1.bin"),
 		assetHandler->GetMaterial(d3dHandler->GetDevice(), "assets/Player1.bin", "Portal1"),
 		assetHandler->GetMaterial(d3dHandler->GetDevice(), "assets/Player1.bin", "Portal2"),
-		playerShader, XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(40, 0, 30));
+		playerShader,
+		Color::BLUE, Color::GREEN,
+		XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(40, 0, 30));
 	entityHandler->Add(player1);
 	player1->SetPlayerNumber(1);
 
@@ -109,7 +111,9 @@ Application::Application(bool fullscreen, bool showCursor, int screenWidth, int 
 		assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/Player2.bin"),
 		assetHandler->GetMaterial(d3dHandler->GetDevice(), "assets/Player2.bin", "Portal1"),
 		assetHandler->GetMaterial(d3dHandler->GetDevice(), "assets/Player2.bin", "Portal2"),
-		playerShader, XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(40, 0, 30));
+		playerShader,
+		Color::RED, Color::YELLOW,
+		XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(40, 0, 30));
 	entityHandler->Add(player2);
 	player2->SetPlayerNumber(2);
 
@@ -202,7 +206,7 @@ Application::Application(bool fullscreen, bool showCursor, int screenWidth, int 
 		//assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/test.bin"),
 		assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/Earth.bin"),
 		assetHandler->GetMaterial(d3dHandler->GetDevice(), "b.dds"),
-		playerShader, MapItem::BackgroundAsset, XMFLOAT3(20, 0, 5), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0.5, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(1, 1, 1))
+		playerShader, MapItem::BackgroundAsset, Color::BLUE ,XMFLOAT3(20, 0, 5), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0.5, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(1, 1, 1))
 		);
 
 	player2->powerBar->SetColor(DirectX::XMFLOAT2(1.0f, 1.0f));
@@ -502,8 +506,8 @@ void Application::Render()
 		player2->comboBar->Render(d3dHandler->GetDeviceContext(), comboBarShader);
 
 		// Particles
-		particleShader->Use(d3dHandler->GetDeviceContext());
-		particle->Render(d3dHandler->GetDeviceContext(), particleShader, particleShader->GetComputeShader());
+		//particleShader->Use(d3dHandler->GetDeviceContext());
+		//particle->Render(d3dHandler->GetDeviceContext(), particleShader, particleShader->GetComputeShader());
 	}
 	// Menu
 	if (startMenu->renderMenu == true)

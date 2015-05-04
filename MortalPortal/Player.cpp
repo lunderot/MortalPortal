@@ -3,6 +3,7 @@
 #include <iostream>
 
 Player::Player(ID3D11Device* device, Geometry* geometry, Material* material, Material* switchMaterial, Shader* shader,
+	Color color1, Color color2,
 	DirectX::XMFLOAT3 position,
 	DirectX::XMFLOAT3 velocity,
 	DirectX::XMFLOAT3 angleVelocity,
@@ -22,12 +23,15 @@ Player::Player(ID3D11Device* device, Geometry* geometry, Material* material, Mat
 	comboDisplayText[3] = new ComboDisplayText(device, material);
 	
 	playerNumber = 0;
-	colorState = 0;
+	
 	comboCounter = 0;
 	comboCounterChange_10 = 0;
 	comboCounterChange_100 = 0;
 	comboMax = false;
 	previousButtonState = false;
+	colorState = color1;
+	colors[0] = color1;
+	colors[1] = color2;
 }
 
 
@@ -47,14 +51,14 @@ void Player::ReactToInput(bool currentButtonState, AudioMaster &aMaster)
 	{
 		if (currentButtonState)
 		{
-			if (colorState == 0)
+			if (colorState == colors[0])
 			{
-				colorState = 1;
+				colorState = colors[1];
 				aMaster.playSample("boing");
 			}
 			else
 			{
-				colorState = 0;
+				colorState = colors[0];
 				aMaster.playSample("boing");
 			}
 		}
@@ -98,7 +102,7 @@ void Player::Update(float deltaTime)
 
 Material* Player::GetMaterial() const
 {
-	if (colorState == 0)
+	if (colorState == colors[0])
 	{
 		return material;
 	}
@@ -133,12 +137,33 @@ void Player::AddCombo()
 	comboBar->AddCombo();
 }
 
+Color Player::GetColor() const
+{
+	return colorState;
+}
+void Player::SetColor(Color color)
+{
+	colorState = color;
+}
+
+bool Player::HasColor(Color color) const
+{
+	for (int i = 0; i < 2; i++)
+	{
+		if (colors[i] == color)
+		{
+			return true;
+		}
+	}
+	return false;
+}
+
 void Player::Reset()
 {
 	this->powerBar->Reset();
 	this->alive = true;
 	this->SetPosition(DirectX::XMFLOAT3(0, 0, 0));
-	this->colorState = 0;
+	this->colorState = colors[0];
 	this->comboCounter = 0;
 	this->comboCounterChange_10 = 0;
 	this->comboCounterChange_100 = 0;

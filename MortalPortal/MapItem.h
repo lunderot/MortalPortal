@@ -5,9 +5,10 @@ class MapItem : public Entity
 {
 public:
 
-	enum objectType{Comet, Player1_Crystal1, Player1_Crystal2, Player2_Crystal1, Player2_Crystal2, BackgroundAsset};
+	enum objectType{Comet, Crystal, BackgroundAsset};
 
 	MapItem(Geometry* geometry, Material* material, Shader* shader,	objectType type,
+		Color color,
 		DirectX::XMFLOAT3 position = DirectX::XMFLOAT3(0, 0, 0),
 		DirectX::XMFLOAT3 velocity = DirectX::XMFLOAT3(0, 0, 0),
 		DirectX::XMFLOAT3 angleVelocity = DirectX::XMFLOAT3(0, 0, 0),
@@ -18,7 +19,10 @@ public:
 
 	objectType type;
 
-	void killObject();
-
 	void Update(float deltaTime);
+
+	Color GetColor() const;
+	void SetColor(Color color);
+private:
+	Color colorState;
 };
