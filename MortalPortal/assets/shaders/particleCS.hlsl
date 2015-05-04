@@ -2,23 +2,27 @@ cbuffer particleBuffer : register (cb0)
 {
 	float lifeTime;
 	float3 position;
-	float2 velocity;
-	float2 accelaration;
 	float deltaTime;
 };
 
 RWByteAddressBuffer buffer : register (t0);
-[numthreads(10, 1, 1)]
+[numthreads(64, 1, 1)]
 void main(uint3 dispatchThreadID : SV_DispatchThreadID)
 {
-	float3 pos = asfloat(buffer.Load3(dispatchThreadID.x * 32));
-	float particleType = asfloat(buffer.Load(dispatchThreadID.x * 32 + 12));
-	float2 direction = asfloat(buffer.Load2(dispatchThreadID.x * 32 + 16));
-	float life = asfloat(buffer.Load(dispatchThreadID.x * 32 + 24));
-	float speed = asfloat(buffer.Load(dispatchThreadID.x * 32 + 28));
+	float3 pos = asfloat(buffer.Load3(dispatchThreadID.x * 36));
+	float particleType = asfloat(buffer.Load(dispatchThreadID.x * 36 + 12));
+	float2 acceleration = asfloat(buffer.Load2(dispatchThreadID.x * 36 + 16));
+	float2 velocity = asfloat(buffer.Load2(dispatchThreadID.x * 36 + 24));
+	float life = asfloat(buffer.Load(dispatchThreadID.x * 36 + 32));
 
-	//velocity.x += 0.3f * deltaTime;
-	pos.x -= 8.0f * deltaTime;
+
+	float2 vel = velocity;
+	vel.x += acceleration.x * deltaTime;
+	vel.y += acceleration.y * deltaTime;
+	pos.x += vel.x * deltaTime;
+	pos.y += vel.y * deltaTime;
+	pos.z = 0;
+
 	life += 8.0f * deltaTime;
 	//pos.y -= 0.3f * deltaTime;
 
@@ -29,11 +33,11 @@ void main(uint3 dispatchThreadID : SV_DispatchThreadID)
 		life -= lifeTime;
 	}
 
-	buffer.Store3(dispatchThreadID.x * 32, asuint(pos));
-	buffer.Store(dispatchThreadID.x * 32 + 12, asuint(particleType));
-	buffer.Store2(dispatchThreadID.x * 32 + 16, asuint(direction));
-	buffer.Store(dispatchThreadID.x * 32 + 24, asuint(life));
-	buffer.Store(dispatchThreadID.x * 32 + 28, asuint(speed));
+	buffer.Store3(dispatchThreadID.x * 36, asuint(pos));
+	buffer.Store(dispatchThreadID.x * 36 + 12, asuint(particleType));
+	buffer.Store2(dispatchThreadID.x * 36 + 16, asuint(acceleration));
+	buffer.Store2(dispatchThreadID.x * 36 + 24, asuint(vel));
+	buffer.Store(dispatchThreadID.x * 36 + 32, asuint(life));
 }
 
 

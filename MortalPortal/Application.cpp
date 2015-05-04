@@ -158,7 +158,7 @@ Application::Application(bool fullscreen, bool showCursor, int screenWidth, int 
 	player2->comboDisplayText[3]->setMaterial(playerComboDTMat);
 
 	// Particles testing area
-	particle = new Particle(10, d3dHandler->GetDevice());
+	particle = new Particle(1000, d3dHandler->GetDevice());
 
 	// Create Background
 	entityHandler->Add(

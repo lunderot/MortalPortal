@@ -14,12 +14,15 @@ Particle::Particle(const unsigned int nrOfParticles,
 	{
 		Particles p;
 		p.type = 1;
-		p.lifeTime = 10;
-		p.pos.x = rand() % 1 + 1;
+		p.lifeTime = rand() % 90 + 10;
+		p.pos.x = 0;
 		p.pos.y = 0;
 		p.pos.z = 0;
 
-		p.speed = rand() % 5 + 1;
+		p.velocity.x = rand() % 50 - 25;
+		p.velocity.y = rand() % 50 - 25;
+		p.acceleration.x = 0;
+		p.acceleration.y = 0;
 		particle.push_back(p);
 	}
 
@@ -35,8 +38,10 @@ Particle::Particle(const unsigned int nrOfParticles,
 	partbufferDesc.StructureByteStride = sizeof(Particles);
 	partbufferDesc.MiscFlags = D3D11_RESOURCE_MISC_BUFFER_ALLOW_RAW_VIEWS;
 
+	D3D11_SUBRESOURCE_DATA vertexData;
+	vertexData.pSysMem = particle.data();
 
-	hr = device->CreateBuffer(&partbufferDesc, 0, &vertexBuffer);
+	hr = device->CreateBuffer(&partbufferDesc, &vertexData, &vertexBuffer);
 
 	//COMPUTE SHADER
 	D3D11_UNORDERED_ACCESS_VIEW_DESC uavDesc;

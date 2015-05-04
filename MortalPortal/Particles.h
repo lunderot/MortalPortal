@@ -7,8 +7,6 @@ struct ConstantBufferData
 {
 	float lifeTime;
 	DirectX::XMFLOAT3 position;
-	DirectX::XMFLOAT2 velocity;
-	DirectX::XMFLOAT2 acceleration;
 	float deltaTime;
 	DirectX::XMFLOAT3 pad;
 };
@@ -17,9 +15,9 @@ struct Particles
 {
 	DirectX::XMFLOAT3 pos;
 	unsigned int type;
-	DirectX::XMFLOAT2 direction;
+	DirectX::XMFLOAT2 acceleration;
+	DirectX::XMFLOAT2 velocity;
 	float lifeTime;
-	float speed;
 
 };
 
