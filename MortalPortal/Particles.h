@@ -17,6 +17,7 @@ struct Particles
 {
 	DirectX::XMFLOAT3 pos;
 	unsigned int type;
+	DirectX::XMFLOAT2 direction;
 	float lifeTime;
 	float speed;
 
@@ -47,8 +48,9 @@ public:
 	unsigned int GetNrOfParticles();
 
 	void UpdatePosition(DirectX::XMFLOAT3 pos);
-	void UpdateDeltaTime(float deltaTime);
+	void UpdateParticle(float deltaTime, ID3D11DeviceContext* deviceContext, ID3D11ComputeShader* computeShader);
 	void SetLifeTime(float time);
-	void Render(ID3D11DeviceContext* deviceContext, Shader* shader, ID3D11ComputeShader* computeShader);
+	void Render(ID3D11DeviceContext* deviceContext);
+	void UpdateConstantBuffer(ID3D11DeviceContext* deviceContext);
 
 };

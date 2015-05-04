@@ -6,37 +6,34 @@ cbuffer particleBuffer : register (cb0)
 	float2 accelaration;
 	float deltaTime;
 };
-struct Particle
-{
-	float3 Pos;
-	float type;
-	float lifeTime;
-	float speed;
-	float lifeTimeCount;
-};
 
 RWByteAddressBuffer buffer : register (t0);
-[numthreads(64, 1, 1)]
+[numthreads(10, 1, 1)]
 void main(uint3 dispatchThreadID : SV_DispatchThreadID)
 {
-	float3 pos = asfloat(buffer.Load3(dispatchThreadID.x * 12));
-	float particleType = asfloat(buffer.Load(dispatchThreadID.x * 4));
-	float life = asfloat(buffer.Load(dispatchThreadID.x * 4));
-	float speed = asfloat(buffer.Load(dispatchThreadID.x * 4));
+	float3 pos = asfloat(buffer.Load3(dispatchThreadID.x * 32));
+	float particleType = asfloat(buffer.Load(dispatchThreadID.x * 32 + 12));
+	float2 direction = asfloat(buffer.Load2(dispatchThreadID.x * 32 + 16));
+	float life = asfloat(buffer.Load(dispatchThreadID.x * 32 + 24));
+	float speed = asfloat(buffer.Load(dispatchThreadID.x * 32 + 28));
 
 	//velocity.x += 0.3f * deltaTime;
-	pos.x -= 0.3f * deltaTime;
+	pos.x -= 8.0f * deltaTime;
+	life += 8.0f * deltaTime;
+	//pos.y -= 0.3f * deltaTime;
 
-	if (velocity.x > lifeTime)
+	if (life > lifeTime)
 	{
 		pos.x = position.x;
 		pos.y = position.y;
+		life -= lifeTime;
 	}
 
-	buffer.Store3(dispatchThreadID.x * 12, asuint(pos));
-	buffer.Store(dispatchThreadID.x * 4, asuint(particleType));
-	buffer.Store(dispatchThreadID.x * 4, asuint(life));
-	buffer.Store(dispatchThreadID.x * 4, asuint(speed));
+	buffer.Store3(dispatchThreadID.x * 32, asuint(pos));
+	buffer.Store(dispatchThreadID.x * 32 + 12, asuint(particleType));
+	buffer.Store2(dispatchThreadID.x * 32 + 16, asuint(direction));
+	buffer.Store(dispatchThreadID.x * 32 + 24, asuint(life));
+	buffer.Store(dispatchThreadID.x * 32 + 28, asuint(speed));
 }
 
 

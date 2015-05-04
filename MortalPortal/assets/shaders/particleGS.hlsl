@@ -13,6 +13,7 @@ struct GS_IN
 {
 	float4 Pos : POSITION;
 	float type : TYPE;
+	float2 direction : DIRECTION;
 	float lifeTime : LIFETIME;
 	float speed : SPEED;
 };

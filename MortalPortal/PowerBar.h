@@ -2,7 +2,6 @@
 #include <d3d11.h>
 #include <DirectXMath.h>
 #include "Shader.h"
-#include "GameOver.h"
 
 struct PosColor
 {

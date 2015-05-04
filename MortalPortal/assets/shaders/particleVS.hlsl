@@ -2,6 +2,7 @@ struct VS_IN
 {
 	float3 position : POSITION;
 	float type : TYPE;
+	float2 direction : DIRECTION;
 	float lifeTime : LIFETIME;
 	float speed : SPEED;
 };
@@ -10,6 +11,7 @@ struct VS_OUT
 {
 	float4 position : POSITION;
 	float type : TYPE;
+	float2 direction : DIRECTION;
 	float lifeTime : LIFETIME;
 	float speed : SPEED;
 };
@@ -23,6 +25,7 @@ VS_OUT main(VS_IN input)
 	output.type = input.type;
 	output.lifeTime = input.lifeTime;
 	output.speed = input.speed;
+	output.direction = input.direction;
 
 	return output;
 }
