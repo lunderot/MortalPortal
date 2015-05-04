@@ -162,39 +162,55 @@ Application::Application(bool fullscreen, bool showCursor, int screenWidth, int 
 
 		//assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/test.bin"),
 		assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/BackgroundPlane.bin"),
-		assetHandler->GetMaterial(d3dHandler->GetDevice(), "face.dds"),
-		playerShader, XMFLOAT3(0, 0, 10), XMFLOAT3(10, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(46, 26, 1))
+		assetHandler->GetMaterial(d3dHandler->GetDevice(), "spaceTest.dds"),
+		playerShader, XMFLOAT3(0, 0, 10), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(46, 26, 1))
 		);
 
 
 
-	//// create background
-	entityHandler->Add(
-		new Background(
-		//assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/test.bin"),
-		assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/BackgroundPlane.bin"),
-		assetHandler->GetMaterial(d3dHandler->GetDevice(), "face.dds"),
-		playerShader, XMFLOAT3(-91.5, 0, 10), XMFLOAT3(10, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(46, 26, 1))
-		);
-
-	//entityHandler->Add(
-	//	new Background(
-	//		//assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/test.bin"),
-	//		assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/BackgroundPlane.bin"),
-	//		assetHandler->GetMaterial(d3dHandler->GetDevice(), "assets/textures/face.dds"),
-	//		playerShader, XMFLOAT3(0, 0, 10), XMFLOAT3(10, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(46, 46, 1)
-	//	)
-	//);
-
-	//// create background
+	////// create background
 	//entityHandler->Add(
 	//	new Background(
 	//	//assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/test.bin"),
 	//	assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/BackgroundPlane.bin"),
-	//	assetHandler->GetMaterial(d3dHandler->GetDevice(), "assets/textures/face.dds"),
-	//	playerShader, XMFLOAT3(-91, 0, 10), XMFLOAT3(10, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(46, 46, 1)
-	//	)
+	//	assetHandler->GetMaterial(d3dHandler->GetDevice(), "spaceTest.dds"),
+	//	playerShader, XMFLOAT3(-91.5, 0, 10), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(46, 26, 1))
 	//	);
+
+	//// ---------------- stars alpha
+
+	// Create Background
+	entityHandler->Add(
+		new Background(
+
+		assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/BackgroundPlane.bin"),
+		assetHandler->GetMaterial(d3dHandler->GetDevice(), "spaceAlphaTest.dds"),
+		playerShader, XMFLOAT3(0, 0, 9.9), XMFLOAT3(0.5, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(46, 26, 1))
+		);
+
+	entityHandler->Add(
+		new Background(
+		assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/BackgroundPlane.bin"),
+		assetHandler->GetMaterial(d3dHandler->GetDevice(), "spaceAlphaTest.dds"),
+		playerShader, XMFLOAT3(-91.5, 0, 9.9), XMFLOAT3(0.5, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(46, 26, 1))
+		);
+
+	entityHandler->Add(
+		new Background(
+		assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/BackgroundPlane.bin"),
+		assetHandler->GetMaterial(d3dHandler->GetDevice(), "test1.dds"),
+		playerShader, XMFLOAT3(-91.5, 0, 9.8), XMFLOAT3(0.4, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(46, 26, 1))
+		);
+
+	entityHandler->Add(
+		new Background(
+		assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/BackgroundPlane.bin"),
+		assetHandler->GetMaterial(d3dHandler->GetDevice(), "test1.dds"),
+		playerShader, XMFLOAT3(0, 0, 9.8), XMFLOAT3(0.4, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(46, 26, 1))
+		);
+
+	//// ----------------------- end
+
 
 	// create Earth
 	entityHandler->Add(
@@ -202,7 +218,7 @@ Application::Application(bool fullscreen, bool showCursor, int screenWidth, int 
 		//assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/test.bin"),
 		assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/Earth.bin"),
 		assetHandler->GetMaterial(d3dHandler->GetDevice(), "b.dds"),
-		playerShader, MapItem::BackgroundAsset, XMFLOAT3(20, 0, 5), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0.5, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(1, 1, 1))
+		playerShader, MapItem::BackgroundAsset, XMFLOAT3(0, 0, 5), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0.05, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(1, 1, 1))
 		);
 
 	player2->powerBar->SetColor(DirectX::XMFLOAT2(1.0f, 1.0f));

@@ -15,7 +15,7 @@ struct VS_OUT
 
 float4 main(VS_OUT input) : SV_Target
 {
-	float3 test3 = test.Sample(test1, input.texCoord);
+	float4 test3 = test.Sample(test1, input.texCoord);
 
 	if (colorState == 1)
 	{
@@ -23,7 +23,7 @@ float4 main(VS_OUT input) : SV_Target
 	}
 	else
 	{
-		return float4(test3, 1.0f);
+		return test3;
 		//return float4(input.texCoord, 1, 1);
 	}
 
