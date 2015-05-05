@@ -93,8 +93,13 @@ Application::Application(bool fullscreen, bool showCursor, int screenWidth, int 
 
 	//Add available comets for LevelGenerator so choose from
 	levelGenerator->addComet(assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/Comet.bin"),
-		assetHandler->GetMaterial(d3dHandler->GetDevice(), "assets/Comet.bin", "lambert2"),
+		assetHandler->GetMaterial(d3dHandler->GetDevice(), "2ggr.dds"/*"assets/Comet.bin", "lambert2"*/),
 		shader);
+
+	levelGenerator->addPowerUp(assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/Comet.bin"),
+		assetHandler->GetMaterial(d3dHandler->GetDevice(), "b.dds"),
+		mapItemShader);
+
 
 	//Create player and add it to entity handler
 	player1 = new Player(d3dHandler->GetDevice(),
@@ -424,15 +429,27 @@ bool Application::Update(float deltaTime)
 	{
 		deltaTime = 0;
 	}
+	// Player 1 - control
 	XMFLOAT2 dir = input->GetDirection(player1Test);
+	if (player2->getInvertControl() == true)
+	{
+		dir.x *= -1;
+		dir.y *= -1;
+	}
 	dir.x *= 10;
 	dir.y *= 10;
 	player1->SetAcceleration(XMFLOAT3(dir.x, dir.y, 0.0f));
 	player1->ReactToInput(input->GetButtonState(), aMaster);
 
+	// Player 2 - control
 	XMFLOAT2 dir2 = input2->GetDirection(player2Test);
-	dir2.x *= 5;
-	dir2.y *= 5;
+	if (player1->getInvertControl() == true)
+	{
+		dir2.x *= -1;
+		dir2.y *= -1;
+	}
+	dir2.x *= 10;
+	dir2.y *= 10;
 	player2->SetAcceleration(XMFLOAT3(dir2.x, dir2.y, 0.0f));
 	player2->ReactToInput(input2->GetButtonState(), aMaster);
 	

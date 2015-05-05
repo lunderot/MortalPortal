@@ -46,11 +46,16 @@ public:
 	bool renderParticles;
 	bool doubleUp;
 	
+	bool getInvertControl();
+	void setInvertControl(float powerUp_invertControl);
+
 	void Reset();
 
 private:
+	// Power ups
+	float inverControlTimer;
+
 	Material* switchMaterial;
-	
 	
 	unsigned int comboCounter;
 	unsigned int comboCounterChange_10;

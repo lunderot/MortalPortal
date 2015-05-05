@@ -14,6 +14,7 @@ public:
 	LevelGenerator(std::string pathToFiles, std::string pheaderFile);
 
 	void addComet(Geometry* cometsGeometry, Material* cometsMaterial, Shader* cometsShader);
+	void addPowerUp(Geometry* powerUpGeometry, Material* powerUpMaterial, Shader* powerUpShader);
 	void setPlayerOneCrystals(Geometry* Crystal1Geometry, Material* Crystal1Material, Shader* Crystal1Shader, Geometry* Crystal2Geometry, Material* Crystal2Material, Shader* Crystal2Shader);
 	void setPlayerTwoCrystals(Geometry* Crystal1Geometry, Material* Crystal1Material, Shader* Crystal1Shader, Geometry* Crystal2Geometry, Material* Crystal2Material, Shader* Crystal2Shader);
 
@@ -40,6 +41,9 @@ protected:
 	vector<Material*> cometsMaterial;
 	vector<Shader*>	cometsShader;
 
+	Geometry* powerUpGeometry;
+	Material* powerUpMaterial;
+	Shader* powerUpShader;
 
 	Shader* playerOneCrystalShader[2];
 	Geometry* playerOneCrystalGeometry[2];

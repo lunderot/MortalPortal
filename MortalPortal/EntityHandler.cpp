@@ -200,6 +200,11 @@ void EntityHandler::HandleCollision(Player* player, Entity* entity2, AudioMaster
 				player->RemoveComboText();
 				break;
 			}	
+			case MapItem::objectType::PowerUp_InvertControl:
+			{
+				player->setInvertControl(4.0f);
+				break;
+			}
 			case MapItem::objectType::Crystal:
 			{
 				if (player->GetColor() == item->GetColor())
@@ -216,7 +221,6 @@ void EntityHandler::HandleCollision(Player* player, Entity* entity2, AudioMaster
 					player->RemovePower();
 					player->RemoveCombo();
 					player->RemoveComboText();
-					//TODO: Add sound effect for pick up the wrong color
 				}
 				break;
 			}
