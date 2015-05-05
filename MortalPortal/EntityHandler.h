@@ -24,5 +24,5 @@ public:
 
 	void Add(Entity* entity);
 private:
-	void HandleCollision(Entity* entity1, Entity* entity2, AudioMaster &aMaster);
+	void HandleCollision(Player* player, Entity* entity2, AudioMaster &aMaster);
 };

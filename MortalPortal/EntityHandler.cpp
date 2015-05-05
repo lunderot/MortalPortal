@@ -66,51 +66,48 @@ void EntityHandler::Update(float deltaTime, AudioMaster &aMaster)
 	}
 	for (std::map<Shader*, std::vector<Entity*>>::iterator ent = entities.begin(); ent != entities.end(); ++ent)
 	{
-		for (std::map<Shader*, std::vector<Entity*>>::iterator ent2 = entities.begin(); ent2 != entities.end(); ++ent2)
+		for (std::vector<Player*>::iterator i = player.begin(); i != player.end(); ++i)
 		{
-			for (std::vector<Entity*>::iterator i = ent->second.begin(); i != ent->second.end(); ++i)
+			for (std::vector<Entity*>::iterator j = ent->second.begin(); j != ent->second.end(); ++j)
 			{
-				for (std::vector<Entity*>::iterator j = ent2->second.begin(); j != ent2->second.end(); ++j)
+				if ((*i) != (*j))
 				{
-					if ((*i) != (*j))
+					Collision* collision1 = (*i)->GetGeometry()->GetCollision();
+					Collision* collision2 = (*j)->GetGeometry()->GetCollision();		
+
+					XMFLOAT3 position = (*i)->GetPosition();
+					XMFLOAT3 rotation = (*i)->GetRotation();
+					XMVECTOR rotationQuat = XMQuaternionRotationRollPitchYawFromVector(XMLoadFloat3(&rotation));
+					//Här - Scaling
+					XMFLOAT3 scaling = (*i)->GetScale();
+					XMMATRIX scaleMatrix = XMMatrixScaling(scaling.x, scaling.y, scaling.z);
+
+					XMMATRIX model1 = XMMatrixRotationQuaternion(rotationQuat);
+					model1 = XMMatrixMultiply(model1, XMMatrixTranslationFromVector(XMLoadFloat3(&position)));
+					model1 = scaleMatrix * model1;
+					
+					position = (*j)->GetPosition();
+					rotation = (*j)->GetRotation();
+					rotationQuat = XMQuaternionRotationRollPitchYawFromVector(XMLoadFloat3(&rotation));
+
+					scaling = (*j)->GetScale();
+					scaleMatrix = XMMatrixScaling(scaling.x, scaling.y, scaling.z);
+
+					XMMATRIX model2 = XMMatrixRotationQuaternion(rotationQuat);
+					XMFLOAT4X4 worldMatrix2;
+					model2 = XMMatrixMultiply(model2, XMMatrixTranslationFromVector(XMLoadFloat3(&position)));
+
+					model2 = scaleMatrix * model2;
+
+					bool collision = false;
+					for (std::vector<CollisionSphere>::iterator k = collision1->spheres.begin(); k != collision1->spheres.end() && !collision; ++k)
 					{
-						Collision* collision1 = (*i)->GetGeometry()->GetCollision();
-						Collision* collision2 = (*j)->GetGeometry()->GetCollision();		
-
-						XMFLOAT3 position = (*i)->GetPosition();
-						XMFLOAT3 rotation = (*i)->GetRotation();
-						XMVECTOR rotationQuat = XMQuaternionRotationRollPitchYawFromVector(XMLoadFloat3(&rotation));
-						//Här - Scaling
-						XMFLOAT3 scaling = (*i)->GetScale();
-						XMMATRIX scaleMatrix = XMMatrixScaling(scaling.x, scaling.y, scaling.z);
-
-						XMMATRIX model1 = XMMatrixRotationQuaternion(rotationQuat);
-						model1 = XMMatrixMultiply(model1, XMMatrixTranslationFromVector(XMLoadFloat3(&position)));
-						model1 = scaleMatrix * model1;
-						
-						position = (*j)->GetPosition();
-						rotation = (*j)->GetRotation();
-						rotationQuat = XMQuaternionRotationRollPitchYawFromVector(XMLoadFloat3(&rotation));
-
-						scaling = (*j)->GetScale();
-						scaleMatrix = XMMatrixScaling(scaling.x, scaling.y, scaling.z);
-
-						XMMATRIX model2 = XMMatrixRotationQuaternion(rotationQuat);
-						XMFLOAT4X4 worldMatrix2;
-						model2 = XMMatrixMultiply(model2, XMMatrixTranslationFromVector(XMLoadFloat3(&position)));
-
-						model2 = scaleMatrix * model2;
-
-						bool collision = false;
-						for (std::vector<CollisionSphere>::iterator k = collision1->spheres.begin(); k != collision1->spheres.end() && !collision; ++k)
+						for (std::vector<CollisionSphere>::iterator l = collision2->spheres.begin(); l != collision2->spheres.end() && !collision; ++l)
 						{
-							for (std::vector<CollisionSphere>::iterator l = collision2->spheres.begin(); l != collision2->spheres.end() && !collision; ++l)
+							if (IsSpheresColliding((*k), (*l), model1, model2))
 							{
-								if (IsSpheresColliding((*k), (*l), model1, model2))
-								{
-									HandleCollision((*i), (*j), aMaster);
-									collision = true;
-								}
+								HandleCollision((*i), (*j), aMaster);
+								collision = true;
 							}
 						}
 					}
@@ -189,46 +186,42 @@ void EntityHandler::Add(Entity* entity)
 	entities[entity->GetShader()].push_back(entity);
 }
 
-void EntityHandler::HandleCollision(Entity* entity1, Entity* entity2, AudioMaster &aMaster)
+void EntityHandler::HandleCollision(Player* player, Entity* entity2, AudioMaster &aMaster)
 {
-	Player* player = dynamic_cast<Player*>(entity1);
-	if (player)
+	MapItem* item = dynamic_cast<MapItem*>(entity2);
+	if (item)
 	{
-		MapItem* item = dynamic_cast<MapItem*>(entity2);
-		if (item)
+		switch (item->type)
 		{
-			switch (item->type)
+			case MapItem::objectType::Comet:
 			{
-				case MapItem::objectType::Comet:
+				player->RemovePower();
+				player->RemoveCombo();
+				player->RemoveComboText();
+				break;
+			}	
+			case MapItem::objectType::Crystal:
+			{
+				if (player->GetColor() == item->GetColor())
+				{
+					player->AddPower();
+					player->AddCombo();
+					player->AddComboText();
+					aMaster.playSample("boing");
+				}
+				else
 				{
 					player->RemovePower();
 					player->RemoveCombo();
 					player->RemoveComboText();
-					break;
-				}	
-				case MapItem::objectType::Crystal:
-				{
-					if (player->GetColor() == item->GetColor())
-					{
-						player->AddPower();
-						player->AddCombo();
-						player->AddComboText();
-						aMaster.playSample("boing");
-					}
-					else
-					{
-						player->RemovePower();
-						player->RemoveCombo();
-						player->RemoveComboText();
-						//TODO: Add sound effect for pick up the wrong color
-					}
-					break;
+					//TODO: Add sound effect for pick up the wrong color
 				}
-				default:
-					break;
+				break;
 			}
-			item->SetAlive(false);
+			default:
+				break;
 		}
+		item->SetAlive(false);
 	}
 }
 
