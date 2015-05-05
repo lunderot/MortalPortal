@@ -206,6 +206,13 @@ void EntityHandler::HandleCollision(Entity* entity1, Entity* entity2, AudioMaste
 					player->RemoveComboText();
 					break;
 				}	
+				case MapItem::objectType::PowerUp:
+				{
+					player->AddPower();
+					player->AddCombo();
+					player->AddComboText();
+					break;
+				}
 				case MapItem::objectType::Crystal:
 				{
 					if (player->GetColor() == item->GetColor())

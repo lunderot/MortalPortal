@@ -93,8 +93,13 @@ Application::Application(bool fullscreen, bool showCursor, int screenWidth, int 
 
 	//Add available comets for LevelGenerator so choose from
 	levelGenerator->addComet(assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/Comet.bin"),
-		assetHandler->GetMaterial(d3dHandler->GetDevice(), "assets/Comet.bin", "lambert2"),
+		assetHandler->GetMaterial(d3dHandler->GetDevice(), "2ggr.dds"/*"assets/Comet.bin", "lambert2"*/),
 		shader);
+
+	levelGenerator->addPowerUp(assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/Comet.bin"),
+		assetHandler->GetMaterial(d3dHandler->GetDevice(), "b.dds"),
+		mapItemShader);
+
 
 	//Create player and add it to entity handler
 	player1 = new Player(d3dHandler->GetDevice(),
