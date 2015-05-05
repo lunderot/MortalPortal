@@ -79,6 +79,8 @@ private:
 	PauseMenu* pauseMenu;
 	RestartMenu* restartMenu;
 
+	bool crystalFrenzy;
+	bool crystalFrenzyControl;
 
 public:
 	Application(bool fullscreen, bool showCursor, int screenWidth, int screenHeight, LPCWSTR windowTitle);

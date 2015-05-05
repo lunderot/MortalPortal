@@ -44,14 +44,24 @@ public:
 	void SetColor(Color color);
 	bool HasColor(Color color) const;
 	
+	// power ups
+	// Invert Control
 	bool getInvertControl();
-	void setInvertControl(float powerUp_invertControl);
+	void setInvertControl(float powerUp_InvertControl);
+	// Slow Down Acceleration
+	bool getSlowDownAcceleration();
+	void setSlowDownAcceleration(float powerUp_SlowDownAcceleration);
+	// Crystal Frenzy
+	bool getCrystalFrenzy();
+	void setCrystalFrenzy(bool powerUp_CrystalFrenzy);
 
 	void Reset();
 
 private:
 	// Power ups
 	float inverControlTimer;
+	float slowDownAccelerationTimer;
+	bool crystalFrenzy;
 
 	Material* switchMaterial;
 	

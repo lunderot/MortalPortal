@@ -34,6 +34,8 @@ Player::Player(ID3D11Device* device, Geometry* geometry, Material* material, Mat
 
 	//power ups
 	inverControlTimer = 0.0f;
+	slowDownAccelerationTimer = 0.0f;
+	crystalFrenzy = false;
 }
 
 
@@ -52,9 +54,29 @@ bool Player::getInvertControl()
 	return inverControlTimer > 0.0f;
 }
 
-void Player::setInvertControl(float powerUp_invertControl)
+bool Player::getSlowDownAcceleration()
 {
-	this->inverControlTimer = powerUp_invertControl;
+	return slowDownAccelerationTimer > 0.0f;
+}
+
+bool Player::getCrystalFrenzy()
+{
+	return crystalFrenzy;
+}
+
+void Player::setInvertControl(float powerUp_InvertControl)
+{
+	this->inverControlTimer = powerUp_InvertControl;
+}
+
+void Player::setSlowDownAcceleration(float powerUp_SlowdownAcceleration)
+{
+	this->slowDownAccelerationTimer = powerUp_SlowdownAcceleration;
+}
+
+void Player::setCrystalFrenzy(bool powerUp_CrystalFrenzy)
+{
+	this->crystalFrenzy = powerUp_CrystalFrenzy;
 }
 
 void Player::ReactToInput(bool currentButtonState, AudioMaster &aMaster)
@@ -112,6 +134,7 @@ void Player::Update(float deltaTime)
 		}
 	}
 
+	slowDownAccelerationTimer -= deltaTime;
 	inverControlTimer -= deltaTime;
 }
 

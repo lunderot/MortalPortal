@@ -18,7 +18,7 @@ public:
 	void setPlayerOneCrystals(Geometry* Crystal1Geometry, Material* Crystal1Material, Shader* Crystal1Shader, Geometry* Crystal2Geometry, Material* Crystal2Material, Shader* Crystal2Shader);
 	void setPlayerTwoCrystals(Geometry* Crystal1Geometry, Material* Crystal1Material, Shader* Crystal1Shader, Geometry* Crystal2Geometry, Material* Crystal2Material, Shader* Crystal2Shader);
 
-	void Update(EntityHandler* entityHandler, float deltaTime);
+	void Update(EntityHandler* entityHandler, float deltaTime, bool &crystalFrenzy);
 
 protected:
 

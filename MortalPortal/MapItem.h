@@ -5,7 +5,7 @@ class MapItem : public Entity
 {
 public:
 
-	enum objectType{Comet, Crystal, BackgroundAsset, PowerUp_InvertControl, PowerUp_SlowDownAcceleration};
+	enum objectType{Comet, Crystal, BackgroundAsset, PowerUp};
 
 	MapItem(Geometry* geometry, Material* material, Shader* shader,	objectType type,
 		Color color,

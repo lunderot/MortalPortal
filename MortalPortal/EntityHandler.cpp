@@ -200,9 +200,25 @@ void EntityHandler::HandleCollision(Player* player, Entity* entity2, AudioMaster
 				player->RemoveComboText();
 				break;
 			}	
-			case MapItem::objectType::PowerUp_InvertControl:
+			case MapItem::objectType::PowerUp:
 			{
-				player->setInvertControl(4.0f);
+				unsigned int rnd = rand() % 4;
+				if (rnd == 0) // Invert Control
+				{
+					player->setInvertControl(4.0f);
+				}
+				else if (rnd == 1) // Slow Down Acceleration
+				{
+					player->setSlowDownAcceleration(6.0f);
+				}
+				else if (rnd == 2) // Add Combo Bonus
+				{
+					player->AddCombo();
+				}
+				else if (rnd == 3) // Crystal Frenzy
+				{
+					player->setCrystalFrenzy(true);
+				}
 				break;
 			}
 			case MapItem::objectType::Crystal:

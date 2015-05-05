@@ -390,6 +390,10 @@ Application::Application(bool fullscreen, bool showCursor, int screenWidth, int 
 	// Skip the shitty menu
 	startMenu->renderMenu = false;
 	pauseMenu->renderMenu = false;
+
+	// Power Up
+	crystalFrenzy = false;
+	crystalFrenzyControl = false;
 }
 
 Application::~Application()
@@ -429,28 +433,56 @@ bool Application::Update(float deltaTime)
 	}
 	// Player 1 - control
 	XMFLOAT2 dir = input->GetDirection(player1Test);
+	// PowerUp - Invert Control - effect on | Player2
 	if (player2->getInvertControl() == true)
 	{
 		dir.x *= -1;
 		dir.y *= -1;
 	}
-	dir.x *= 10;
-	dir.y *= 10;
+	// PowerUp - Slow Down Acceleration - effect on | Player2
+	if (player2->getSlowDownAcceleration() == true)
+	{
+		dir.x *= 3;
+		dir.y *= 3;
+	}
+	else
+	{
+		dir.x *= 10;
+		dir.y *= 10;
+	}
 	player1->SetAcceleration(XMFLOAT3(dir.x, dir.y, 0.0f));
 	player1->ReactToInput(input->GetButtonState(), aMaster);
 
 	// Player 2 - control
 	XMFLOAT2 dir2 = input2->GetDirection(player2Test);
+	// PowerUp - Invert Control - effect on | Player1
 	if (player1->getInvertControl() == true)
 	{
 		dir2.x *= -1;
 		dir2.y *= -1;
 	}
-	dir2.x *= 10;
-	dir2.y *= 10;
+	// PowerUp - Slow Down Acceleration - effect on | Player1
+	if (player1->getSlowDownAcceleration() == true)
+	{
+		dir2.x *= 3;
+		dir2.y *= 3;
+	}
+	else
+	{
+		dir2.x *= 10;
+		dir2.y *= 10;
+	}
 	player2->SetAcceleration(XMFLOAT3(dir2.x, dir2.y, 0.0f));
 	player2->ReactToInput(input2->GetButtonState(), aMaster);
 	
+	// Check if Crystal Frenzy is true for both Player1 & Player2wdawddsadsadwas
+	if (player1->getCrystalFrenzy() == true || player2->getCrystalFrenzy() == true)
+	{
+		player1->setCrystalFrenzy(false);
+		player2->setCrystalFrenzy(false);
+		crystalFrenzy = true;
+	}
+
 	player1->powerBar->Update(deltaTime, d3dHandler->GetDeviceContext());
 	player2->powerBar->Update(deltaTime, d3dHandler->GetDeviceContext());
 
@@ -470,7 +502,8 @@ bool Application::Update(float deltaTime)
 	entityHandler->Update(deltaTime, aMaster);
 	particle->UpdatePosition(player1->GetPosition());
 	particle->UpdateParticle(deltaTime, d3dHandler->GetDeviceContext(), particleShader->GetComputeShader());
-	levelGenerator->Update(entityHandler, deltaTime);
+	levelGenerator->Update(entityHandler, deltaTime, crystalFrenzy);
+	
 
 	if (startMenu->renderMenu == true)
 		startMenu->Update(input->GetButtonUpState(), input->GetButtonDownState(), input->GetButtonEnterState());

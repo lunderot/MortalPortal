@@ -74,7 +74,7 @@ void LevelGenerator::setPlayerTwoCrystals(Geometry* Crystal1Geometry, Material* 
 	playerTwoCrystalMaterial[1] = Crystal2Material;
 }
 
-void LevelGenerator::Update(EntityHandler* entityHandler, float deltaTime)
+void LevelGenerator::Update(EntityHandler* entityHandler, float deltaTime, bool &crystalFrenzy)
 {
 	while(timeSinceLastSpawn > lastLine.spawnNext)
 	{
@@ -84,9 +84,18 @@ void LevelGenerator::Update(EntityHandler* entityHandler, float deltaTime)
 		unsigned int tries = 0;
 		while(!partFile.is_open() && tries != 100)
 		{
-			unsigned int newPart = rand() % numFiles;
-			std::string tmp = pathToFiles + fileIndex[newPart];
-			partFile.open(tmp.c_str());
+			unsigned int newPart = rand() % numFiles - 1;
+			if (crystalFrenzy == true)
+			{
+				std::string tmp = "assets/levelparts/Frenzy1.txt";
+				partFile.open(tmp.c_str());
+				crystalFrenzy = false;
+			}
+			else
+			{
+				std::string tmp = pathToFiles + fileIndex[newPart];
+				partFile.open(tmp.c_str());
+			}
 			tries++;
 		}
 
@@ -109,14 +118,9 @@ void LevelGenerator::Update(EntityHandler* entityHandler, float deltaTime)
 				DirectX::XMFLOAT3(XSpawnPos, lastLine.position, 0), DirectX::XMFLOAT3(-lastLine.velocity, 0, 0), DirectX::XMFLOAT3(0, 0, 0), DirectX::XMFLOAT3(0, 0, 0), DirectX::XMFLOAT3(rand() % 360, rand() % 360, rand() % 360));
 			entityHandler->Add(comet);
 		}
-		else if (lastLine.type == "pu1") // invert control
+		else if (lastLine.type == "pu") // power up
 		{
-			/*unsigned int rnd = rand() % powerUpGeometry.size();
-			Entity* powerUp = new MapItem(powerUpGeometry[rnd], powerUpMaterial[rnd], powerUpShader[rnd], MapItem::PowerUp_InvertControl, Color::BLUE,
-				DirectX::XMFLOAT3(XSpawnPos, lastLine.position, 0), DirectX::XMFLOAT3(-lastLine.velocity, 0, 0), DirectX::XMFLOAT3(0, 0, 0), DirectX::XMFLOAT3(0, 0, 0), 
-				DirectX::XMFLOAT3(rand() % 360, rand() % 360, rand() % 360));
-			entityHandler->Add(powerUp);*/
-			Entity* PowerUp = new MapItem(powerUpGeometry, powerUpMaterial, powerUpShader, MapItem::PowerUp_InvertControl, Color::BLUE,
+			Entity* PowerUp = new MapItem(powerUpGeometry, powerUpMaterial, powerUpShader, MapItem::PowerUp, Color::BLUE,
 				DirectX::XMFLOAT3(XSpawnPos, lastLine.position, 0), DirectX::XMFLOAT3(-lastLine.velocity, 0, 0), DirectX::XMFLOAT3(0, 0, 0), DirectX::XMFLOAT3(0, 0, 0));
 			entityHandler->Add(PowerUp);
 		}
