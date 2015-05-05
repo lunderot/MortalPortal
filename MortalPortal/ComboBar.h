@@ -31,6 +31,7 @@ public:
 	void Update(float deltaTime);
 	void Render(ID3D11DeviceContext* deviceContext, Shader* shader);
 	ID3D11Buffer* GetVertexBuffer();
+	unsigned int GetComboCount();
 
 private:
 	ID3D11ShaderResourceView* SRV;

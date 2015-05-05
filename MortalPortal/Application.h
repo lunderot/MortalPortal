@@ -66,6 +66,7 @@ private:
 	Player* player1;
 	Player* player2;
 	Particle* particle;
+	Particle* particle2;
 
 
 	//Player data

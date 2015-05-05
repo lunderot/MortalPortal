@@ -204,9 +204,11 @@ void EntityHandler::HandleCollision(Player* player, Entity* entity2, AudioMaster
 			{
 				if (player->GetColor() == item->GetColor())
 				{
-					player->AddPower();
 					player->AddCombo();
 					player->AddComboText();
+					player->AddPower(player->comboBar->GetComboCount());
+					player->renderParticles = true;
+					player->doubleUp = true;
 					aMaster.playSample("boing");
 				}
 				else

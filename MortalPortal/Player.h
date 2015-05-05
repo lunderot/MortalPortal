@@ -28,7 +28,7 @@ public:
 	void SetPlayerNumber(unsigned int playerNr);
 
 	Material* GetMaterial() const;
-	void AddPower();
+	void AddPower(unsigned int bonusPower);
 	void RemovePower();
 	PowerBar* powerBar;
 
@@ -43,6 +43,8 @@ public:
 	Color GetColor() const;
 	void SetColor(Color color);
 	bool HasColor(Color color) const;
+	bool renderParticles;
+	bool doubleUp;
 	
 	void Reset();
 

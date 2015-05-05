@@ -2,29 +2,43 @@
 
 PowerBar::PowerBar(ID3D11Device* device)
 {
-	posColor.pos[0] = DirectX::XMFLOAT2(-0.1f, 1.0f);
-	posColor.pos[1] = DirectX::XMFLOAT2(-0.1f, 0.9f);
-	posColor.pos[2] = DirectX::XMFLOAT2(-0.7f, 1.0f);
-	posColor.pos[3] = DirectX::XMFLOAT2(-0.7f, 0.9f);
-	posColor.color.x = 0.0f;
-	posColor.color.y = 0.0f;
+	Points p[4] =
+	{
+		DirectX::XMFLOAT2(-0.1f, 1.0f),
+		DirectX::XMFLOAT2(0.0f, 1.0f),
+
+		DirectX::XMFLOAT2(-0.1f, 0.9f),
+		DirectX::XMFLOAT2(0.0f, 0.0f),
+
+		DirectX::XMFLOAT2(-0.7f, 1.0f),
+		DirectX::XMFLOAT2(1.0f, 1.0f),
+
+		DirectX::XMFLOAT2(-0.7f, 0.9f),
+		DirectX::XMFLOAT2(1.0f, 0.0f)
+	};
+
+	points[0] = p[0];
+	points[1] = p[1];
+	points[2] = p[2];
+	points[3] = p[3];
 
 	maxMinValue.x = -0.1f;
 	maxMinValue.y = -0.7f;
 	powerAdd = 0.02f;
 	powerRemove = 0.04f;
 	dead = false;
+	material = nullptr;
 
 	D3D11_BUFFER_DESC bufferDesc;
 	ZeroMemory(&bufferDesc, sizeof(bufferDesc));
 	bufferDesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
 	bufferDesc.Usage = D3D11_USAGE_DYNAMIC;
 	bufferDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
-	bufferDesc.ByteWidth = sizeof(PosColor);
-	bufferDesc.StructureByteStride = sizeof(PosColor);
+	bufferDesc.ByteWidth = sizeof(DirectX::XMFLOAT4) * 4;
+	bufferDesc.StructureByteStride = sizeof(DirectX::XMFLOAT4);
 
 	D3D11_SUBRESOURCE_DATA data;
-	data.pSysMem = &posColor.pos[0];
+	data.pSysMem = &points;
 	HRESULT hr = device->CreateBuffer(&bufferDesc, &data, &vertexBuffer);
 	if (FAILED(hr))
 	{
@@ -39,16 +53,10 @@ void PowerBar::SetBarSpeed(float speed)
 }
 void PowerBar::SetPosition(DirectX::XMFLOAT2 point[4])
 {
-	this->posColor.pos[0] = point[0];
-	this->posColor.pos[1] = point[1];
-	this->posColor.pos[2] = point[2];
-	this->posColor.pos[3] = point[3];
-}
-
-void PowerBar::SetColor(DirectX::XMFLOAT2 color)
-{
-	this->posColor.color.x = color.x;
-	this->posColor.color.y = color.y;
+	this->points[0].pos = point[0];
+	this->points[1].pos = point[1];
+	this->points[2].pos = point[2];
+	this->points[3].pos = point[3];
 }
 
 void PowerBar::SetMaxMinValue(DirectX::XMFLOAT2 value)
@@ -66,16 +74,15 @@ const float PowerBar::GetBarSpeed()
 	return barSpeed;
 }
 
-const DirectX::XMFLOAT2* PowerBar::GetPosition()
-{
-	return posColor.pos;
-}
-
 const DirectX::XMFLOAT2 PowerBar::GetMaxMinValue()
 {
 	return maxMinValue;
 }
 
+void PowerBar::SetMaterial(Material* material)
+{
+	this->material = material;
+}
 
 ID3D11Buffer* PowerBar::GetVertexBuffer()
 {
@@ -84,54 +91,56 @@ ID3D11Buffer* PowerBar::GetVertexBuffer()
 
 void PowerBar::Render(ID3D11DeviceContext* deviceContext, Shader* shader)
 {
-	unsigned int vertexSize = sizeof(DirectX::XMFLOAT2);
+	unsigned int vertexSize = sizeof(float) * 4;
 	unsigned int offset = 0;
 	unsigned int vertexCount = 4;
 	ID3D11Buffer* vb = vertexBuffer;
-
+	ID3D11ShaderResourceView* srv = material->GetTexture();
 	D3D11_MAPPED_SUBRESOURCE resource;
 	HRESULT result;
 	result = deviceContext->Map(vertexBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &resource);
 
 
-	memcpy(resource.pData, &posColor, sizeof(PosColor));
+	memcpy(resource.pData, &points, sizeof(points));
 	deviceContext->Unmap(vertexBuffer, 0);
 
 	deviceContext->IASetVertexBuffers(0, 1, &vb, &vertexSize, &offset);
 	deviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);
-
+	deviceContext->PSSetShaderResources(0, 1, &srv);
 	deviceContext->Draw(vertexCount, 0);
 
 }
 
-void PowerBar::AddPower()
+void PowerBar::AddPower(unsigned int bonusPower)
 {
+	if (bonusPower == 0)
+		bonusPower = 1;
 	if (dead == false)
 	{
-		if (posColor.pos[0].x + powerAdd > maxMinValue.x)
+		if (points[0].pos.x + powerAdd * (bonusPower + 1) > maxMinValue.x)
 		{
-			posColor.pos[0].x = maxMinValue.x;
-			posColor.pos[1].x = maxMinValue.x;
+			points[0].pos.x = maxMinValue.x;
+			points[1].pos.x = maxMinValue.x;
 		}
 		else
 		{
-			posColor.pos[0].x += powerAdd;
-			posColor.pos[1].x += powerAdd;
+			points[0].pos.x  += powerAdd * (bonusPower +1);
+			points[1].pos.x  += powerAdd * (bonusPower + 1);
 		}
 	}
 }
 
 void PowerBar::RemovePower()
 {
-	if (posColor.pos[0].x - powerRemove < maxMinValue.y)
+	if (points[0].pos.x - powerRemove < maxMinValue.y)
 	{
-		posColor.pos[0].x = maxMinValue.y;
-		posColor.pos[1].x = maxMinValue.y;
+		points[0].pos.x = maxMinValue.y;
+		points[1].pos.x = maxMinValue.y;
 	}
 	else
 	{
-		posColor.pos[0].x -= powerRemove;
-		posColor.pos[1].x -= powerRemove;
+		points[0].pos.x -= powerRemove;
+		points[1].pos.x -= powerRemove;
 	}
 }
 
@@ -139,28 +148,30 @@ void PowerBar::RemovePower()
 void PowerBar::Update(float deltaTime, ID3D11DeviceContext* deviceContext)
 {
 
-	if (posColor.pos[0].x <= maxMinValue.y && dead == false)
+	if (points[0].pos.x <= maxMinValue.y && dead == false)
 	{
-		posColor.pos[0].x = maxMinValue.y;
+		points[0].pos.x = maxMinValue.y;
 		dead = true;
 	}
-	else if (posColor.pos[0].x > maxMinValue.x && dead == false)
+	else if (points[0].pos.x  > maxMinValue.x && dead == false)
 	{
-		posColor.pos[0].x = maxMinValue.x;
-		posColor.pos[1].x = maxMinValue.x;
+		points[0].pos.x = maxMinValue.x;	
+		points[1].pos.x = maxMinValue.x;	
 	}
 	else if (dead == false)
 	{
-		posColor.pos[0].x += barSpeed * deltaTime;
-		posColor.pos[1].x += barSpeed * deltaTime;
+		points[0].pos.x += barSpeed * deltaTime;
+		points[0].uv.x = 1 / (maxMinValue.x - maxMinValue.y) * abs(points[0].pos.x);
+		points[1].pos.x += barSpeed * deltaTime;
+		points[1].uv.x = 1 / (maxMinValue.x - maxMinValue.y) * abs(points[1].pos.x);
 	}
 
 }
 
 void PowerBar::Reset()
 {
-	this->posColor.pos[0].x = maxMinValue.x;
-	this->posColor.pos[1].x = maxMinValue.x;
+	this->points[0].pos.x = maxMinValue.x;
+	this->points[1].pos.x = maxMinValue.x;
 	this->dead = false;
 }
 

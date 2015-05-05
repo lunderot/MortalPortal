@@ -70,6 +70,11 @@ void ComboBar::RemoveCombo()
 	changeCombo = 0;
 }
 
+unsigned int ComboBar::GetComboCount()
+{
+	return changeCombo;
+}
+
 void ComboBar::Render(ID3D11DeviceContext* deviceContext, Shader* shader)
 {
 	unsigned int vertexSize = sizeof(DirectX::XMFLOAT4);
