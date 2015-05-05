@@ -162,8 +162,8 @@ Application::Application(bool fullscreen, bool showCursor, int screenWidth, int 
 	player2->comboDisplayText[3]->setMaterial(playerComboDTMat);
 
 	// Particles testing area
-	particle = new Particle(1, 20, d3dHandler->GetDevice());
-	particle2 = new Particle(2, 20, d3dHandler->GetDevice());
+	particle = new Particle(1, 50, d3dHandler->GetDevice());
+	particle2 = new Particle(1, 20, d3dHandler->GetDevice());
 
 	// Create Background
 	entityHandler->Add(
@@ -513,23 +513,44 @@ bool Application::Update(float deltaTime)
 	// Particles for player 1
 	particle->UpdatePosition(player1->GetPosition());
 	particle->UpdateParticle(deltaTime, d3dHandler->GetDeviceContext(), particleShader->GetComputeShader());
-
 	if (player1->renderParticles == true && particle->particleCounter <= particle->constantBufferData.lifeTime)
 	{
+		particle->constantBufferData.reset = false;
 		if (player1->doubleUp == true)
 		{
+			particle->constantBufferData.reset = true;
 			particle->particleCounter = 0;
 			player1->doubleUp = false;
 		}
-		particle->particleCounter += deltaTime * 20.0f;
+		particle->particleCounter += deltaTime * 20;
 		if (particle->particleCounter >= particle->constantBufferData.lifeTime)
 		{
+			particle->constantBufferData.reset = true;
 			particle->particleCounter = 0;
 			player1->renderParticles = false;
 		}
 	}
+
+	// Particles for player 2
 	particle2->UpdatePosition(player2->GetPosition());
 	particle2->UpdateParticle(deltaTime, d3dHandler->GetDeviceContext(), particleShader->GetComputeShader());
+	if (player2->renderParticles == true && particle->particleCounter <= particle2->constantBufferData.lifeTime)
+	{
+		particle2->constantBufferData.reset = false;
+		if (player2->doubleUp == true)
+		{
+			particle2->constantBufferData.reset = true;
+			particle2->particleCounter = 0;
+			player2->doubleUp = false;
+		}
+		particle2->particleCounter += deltaTime * 20;
+		if (particle2->particleCounter >= particle2->constantBufferData.lifeTime)
+		{
+			particle2->constantBufferData.reset = true;
+			particle2->particleCounter = 0;
+			player2->renderParticles = false;
+		}
+	}
 
 	levelGenerator->Update(entityHandler, deltaTime, crystalFrenzy);
 
@@ -582,13 +603,18 @@ void Application::Render()
 		player2->comboBar->Render(d3dHandler->GetDeviceContext(), comboBarShader);
 
 		// Particles
-		if (player1->renderParticles == true)
+		if (particle->particleCounter > 0)
 		{
 			particleShader->Use(d3dHandler->GetDeviceContext());
 			particle->Render(d3dHandler->GetDeviceContext());
 
 		}
-		//particle2->Render(d3dHandler->GetDeviceContext());
+		if (player2->renderParticles == true)
+		{
+			particleShader->Use(d3dHandler->GetDeviceContext());
+			particle2->Render(d3dHandler->GetDeviceContext());
+
+		}
 	}
 	// Menu
 	if (startMenu->renderMenu == true)

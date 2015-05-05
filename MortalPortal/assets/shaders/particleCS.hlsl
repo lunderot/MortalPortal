@@ -3,6 +3,7 @@ cbuffer particleBuffer : register (cb0)
 	float lifeTime;
 	float3 position;
 	float deltaTime;
+	bool reset;
 };
 
 RWByteAddressBuffer buffer : register (t0);
@@ -14,29 +15,30 @@ void main(uint3 dispatchThreadID : SV_DispatchThreadID)
 	float2 acceleration = asfloat(buffer.Load2(dispatchThreadID.x * 36 + 16));
 	float2 velocity = asfloat(buffer.Load2(dispatchThreadID.x * 36 + 24));
 	float life = asfloat(buffer.Load(dispatchThreadID.x * 36 + 32));
+	//velocity = normalize(velocity);
 
-
-	float2 vel = velocity;
-	vel.x += acceleration.x * deltaTime;
-	vel.y += acceleration.y * deltaTime;
-	pos.x += vel.x * deltaTime;
-	pos.y += vel.y * deltaTime;
+	velocity.x += acceleration.x * deltaTime;
+	velocity.y += acceleration.y * deltaTime;
+	pos.x += velocity.x * deltaTime;
+	pos.y += velocity.y * deltaTime;
 	pos.z = 0;
 
-	life += 20.0f * deltaTime;
+	life += deltaTime * 20;
 	//pos.y -= 0.3f * deltaTime;
 
 	if (life > lifeTime)
 	{
-		pos.x = position.x;
-		pos.y = position.y;
 		life -= lifeTime;
 	}
-
+	if (reset == true)
+	{
+		pos.x = position.x;
+		pos.y = position.y;
+	}
 	buffer.Store3(dispatchThreadID.x * 36, asuint(pos));
 	buffer.Store(dispatchThreadID.x * 36 + 12, asuint(particleType));
 	buffer.Store2(dispatchThreadID.x * 36 + 16, asuint(acceleration));
-	buffer.Store2(dispatchThreadID.x * 36 + 24, asuint(vel));
+	buffer.Store2(dispatchThreadID.x * 36 + 24, asuint(velocity));
 	buffer.Store(dispatchThreadID.x * 36 + 32, asuint(life));
 }
 

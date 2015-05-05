@@ -21,6 +21,7 @@ struct GS_OUT
 {
 	float4 Pos : SV_POSITION;
 	float2 Tex : TEXCOORD0;
+	float lifeTime : LIFETIME;
 };
 
 [maxvertexcount(4)]
@@ -31,6 +32,7 @@ void main(point GS_IN input[1], inout TriangleStream<GS_OUT> triStream)
 	float3 look = float3(0, 0, 20);//input[0].Pos - camPos;
 
 	look = normalize(look);
+	output.lifeTime = input[0].lifeTime;
 
 	float3 upVec = float3(0, 1, 0);
 	float3 rightVec = normalize(cross(look, upVec));

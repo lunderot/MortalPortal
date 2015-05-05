@@ -9,21 +9,19 @@ Particle::Particle(unsigned int type,
 	DirectX::XMFLOAT3 acceleration, DirectX::XMFLOAT3 scale) : Entity(nullptr, nullptr, nullptr, position, velocity, angleVelocity, acceleration, scale)
 {
 
-	std::vector<Particles> particle;
-
 	if (type == 1)
 	{
 		for (unsigned int i = 0; i < nrOfParticles; i++)
 		{
 			Particles p;
 			p.type = 1;
-			p.lifeTime = rand() % 50 + 10;
+			p.lifeTime = rand() % 50 - 10;
 			p.pos.x = 0;
 			p.pos.y = 0;
 			p.pos.z = 0;
 
-			p.velocity.x = rand() % 50 - 50;
-			p.velocity.y = rand() % 90 - 50;
+			p.velocity.x = rand() % 100 - 100;
+			p.velocity.y = rand() % 100 - 50;
 			p.acceleration.x = 0;
 			p.acceleration.y = 0;
 			particle.push_back(p);
@@ -43,6 +41,25 @@ Particle::Particle(unsigned int type,
 
 			p.velocity.x = rand() % 50 + 50;
 			p.velocity.y = rand() % 90 + 50;
+			p.acceleration.x = 0;
+			p.acceleration.y = 0;
+			particle.push_back(p);
+		}
+	}
+
+	if (type == 3)
+	{
+		for (unsigned int i = 0; i < nrOfParticles; i++)
+		{
+			Particles p;
+			p.type = 1;
+			p.lifeTime = rand() % 3 + 7;
+			p.pos.x = 0;
+			p.pos.y = 0;
+			p.pos.z = 0;
+
+			p.velocity.x = rand() %  30 - 30;
+			p.velocity.y = rand() % 10;
 			p.acceleration.x = 0;
 			p.acceleration.y = 0;
 			particle.push_back(p);
@@ -96,7 +113,8 @@ Particle::Particle(unsigned int type,
 		throw std::runtime_error("Failed to create constant buffer in Particles");
 	}
 	// Ett stycke hård kod
-	constantBufferData.lifeTime = 20;
+	constantBufferData.lifeTime = 30;
+	constantBufferData.reset = true;
 	particleCounter = 0;
 }
 
@@ -112,6 +130,13 @@ ID3D11UnorderedAccessView* Particle::getUAV()
 void Particle::UpdatePosition(DirectX::XMFLOAT3 position)
 {
 	constantBufferData.position = position;
+}
+
+void Particle::Reset()
+{
+	this->constantBufferData.position.x = 0;
+	this->constantBufferData.position.y = 0;
+	this->constantBufferData.position.z = 0;
 }
 
 void Particle::UpdateParticle(float deltaTime, ID3D11DeviceContext* deviceContext, ID3D11ComputeShader* computeShader)

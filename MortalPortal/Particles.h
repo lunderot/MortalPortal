@@ -8,7 +8,8 @@ struct ConstantBufferData
 	float lifeTime;
 	DirectX::XMFLOAT3 position;
 	float deltaTime;
-	DirectX::XMFLOAT3 pad;
+	bool reset;
+	DirectX::XMFLOAT2 pad;
 };
 
 struct Particles
@@ -44,12 +45,14 @@ public:
 	ID3D11UnorderedAccessView* getUAV();
 	unsigned int GetNrOfParticles();
 	float particleCounter;
+	std::vector<Particles> particle;
 	ConstantBufferData constantBufferData;
 
 	void UpdatePosition(DirectX::XMFLOAT3 pos);
 	void UpdateParticle(float deltaTime, ID3D11DeviceContext* deviceContext, ID3D11ComputeShader* computeShader);
 	void SetLifeTime(float time);
 	void Render(ID3D11DeviceContext* deviceContext);
+	void Reset();
 	void UpdateConstantBuffer(ID3D11DeviceContext* deviceContext);
 
 };
