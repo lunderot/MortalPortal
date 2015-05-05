@@ -23,7 +23,6 @@ Player::Player(ID3D11Device* device, Geometry* geometry, Material* material, Mat
 	comboDisplayText[3] = new ComboDisplayText(device, material);
 	
 	playerNumber = 0;
-	
 	comboCounter = 0;
 	comboCounterChange_10 = 0;
 	comboCounterChange_100 = 0;
@@ -32,6 +31,9 @@ Player::Player(ID3D11Device* device, Geometry* geometry, Material* material, Mat
 	colorState = color1;
 	colors[0] = color1;
 	colors[1] = color2;
+
+	//power ups
+	inverControlTimer = 0.0f;
 }
 
 
@@ -43,6 +45,16 @@ Player::~Player()
 	delete comboDisplayText[1];
 	delete comboDisplayText[2];
 	delete comboDisplayText[3];
+}
+
+bool Player::getInvertControl()
+{
+	return inverControlTimer > 0.0f;
+}
+
+void Player::setInvertControl(float powerUp_invertControl)
+{
+	this->inverControlTimer = powerUp_invertControl;
 }
 
 void Player::ReactToInput(bool currentButtonState, AudioMaster &aMaster)
@@ -69,6 +81,8 @@ void Player::ReactToInput(bool currentButtonState, AudioMaster &aMaster)
 void Player::Update(float deltaTime)
 {
 	Entity::Update(deltaTime);
+
+
 
 	for (std::vector<CollisionSphere>::iterator Sphere = geometry->GetCollision()->spheres.begin(); Sphere != geometry->GetCollision()->spheres.end(); Sphere++)
 	{
@@ -98,6 +112,7 @@ void Player::Update(float deltaTime)
 		}
 	}
 
+	inverControlTimer -= deltaTime;
 }
 
 Material* Player::GetMaterial() const

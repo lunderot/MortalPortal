@@ -44,11 +44,16 @@ public:
 	void SetColor(Color color);
 	bool HasColor(Color color) const;
 	
+	bool getInvertControl();
+	void setInvertControl(float powerUp_invertControl);
+
 	void Reset();
 
 private:
+	// Power ups
+	float inverControlTimer;
+
 	Material* switchMaterial;
-	
 	
 	unsigned int comboCounter;
 	unsigned int comboCounterChange_10;

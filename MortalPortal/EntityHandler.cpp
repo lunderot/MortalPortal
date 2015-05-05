@@ -200,11 +200,9 @@ void EntityHandler::HandleCollision(Player* player, Entity* entity2, AudioMaster
 				player->RemoveComboText();
 				break;
 			}	
-			case MapItem::objectType::PowerUp:
+			case MapItem::objectType::PowerUp_InvertControl:
 			{
-				player->AddPower();
-				player->AddCombo();
-				player->AddComboText();
+				player->setInvertControl(4.0f);
 				break;
 			}
 			case MapItem::objectType::Crystal:

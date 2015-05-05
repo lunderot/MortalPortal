@@ -44,9 +44,12 @@ void LevelGenerator::addComet(Geometry* cometsGeometry, Material* cometsMaterial
 
 void LevelGenerator::addPowerUp(Geometry* powerUpGeometry, Material* powerUpMaterial, Shader* powerUpShader)
 {
-	this->powerUpGeometry.push_back(powerUpGeometry);
-	this->powerUpMaterial.push_back(powerUpMaterial);
-	this->powerUpShader.push_back(powerUpShader);
+	//this->powerUpGeometry.push_back(powerUpGeometry);
+	//this->powerUpMaterial.push_back(powerUpMaterial);
+	//this->powerUpShader.push_back(powerUpShader);
+	this->powerUpGeometry = powerUpGeometry;
+	this->powerUpMaterial = powerUpMaterial;
+	this->powerUpShader = powerUpShader;
 }
 
 void LevelGenerator::setPlayerOneCrystals(Geometry* Crystal1Geometry, Material* Crystal1Material, Shader* Crystal1Shader, Geometry* Crystal2Geometry, Material* Crystal2Material, Shader* Crystal2Shader)
@@ -106,13 +109,16 @@ void LevelGenerator::Update(EntityHandler* entityHandler, float deltaTime)
 				DirectX::XMFLOAT3(XSpawnPos, lastLine.position, 0), DirectX::XMFLOAT3(-lastLine.velocity, 0, 0), DirectX::XMFLOAT3(0, 0, 0), DirectX::XMFLOAT3(0, 0, 0), DirectX::XMFLOAT3(rand() % 360, rand() % 360, rand() % 360));
 			entityHandler->Add(comet);
 		}
-		else if (lastLine.type == "pu1")
+		else if (lastLine.type == "pu1") // invert control
 		{
-			unsigned int rnd = rand() % powerUpGeometry.size();
-			Entity* powerUp = new MapItem(powerUpGeometry[rnd], powerUpMaterial[rnd], powerUpShader[rnd], MapItem::PowerUp, Color::BLUE,
+			/*unsigned int rnd = rand() % powerUpGeometry.size();
+			Entity* powerUp = new MapItem(powerUpGeometry[rnd], powerUpMaterial[rnd], powerUpShader[rnd], MapItem::PowerUp_InvertControl, Color::BLUE,
 				DirectX::XMFLOAT3(XSpawnPos, lastLine.position, 0), DirectX::XMFLOAT3(-lastLine.velocity, 0, 0), DirectX::XMFLOAT3(0, 0, 0), DirectX::XMFLOAT3(0, 0, 0), 
 				DirectX::XMFLOAT3(rand() % 360, rand() % 360, rand() % 360));
-			entityHandler->Add(powerUp);
+			entityHandler->Add(powerUp);*/
+			Entity* PowerUp = new MapItem(powerUpGeometry, powerUpMaterial, powerUpShader, MapItem::PowerUp_InvertControl, Color::BLUE,
+				DirectX::XMFLOAT3(XSpawnPos, lastLine.position, 0), DirectX::XMFLOAT3(-lastLine.velocity, 0, 0), DirectX::XMFLOAT3(0, 0, 0), DirectX::XMFLOAT3(0, 0, 0));
+			entityHandler->Add(PowerUp);
 		}
 		else if (lastLine.type == "p11")
 		{

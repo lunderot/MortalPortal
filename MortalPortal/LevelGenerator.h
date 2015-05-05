@@ -41,9 +41,9 @@ protected:
 	vector<Material*> cometsMaterial;
 	vector<Shader*>	cometsShader;
 
-	vector<Geometry*> powerUpGeometry;
-	vector<Material*> powerUpMaterial;
-	vector<Shader*> powerUpShader;
+	Geometry* powerUpGeometry;
+	Material* powerUpMaterial;
+	Shader* powerUpShader;
 
 	Shader* playerOneCrystalShader[2];
 	Geometry* playerOneCrystalGeometry[2];
