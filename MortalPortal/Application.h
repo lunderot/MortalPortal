@@ -28,6 +28,7 @@
 
 #include "Background.h"
 #include "BackgroundShader.h"
+#include "Light.h"
 
 #include "ParticleShader.h"
 #include "AssetHandler.h"
@@ -79,6 +80,8 @@ private:
 	StartMenu* startMenu;
 	PauseMenu* pauseMenu;
 	RestartMenu* restartMenu;
+
+	LightL oneDirectionLightObject;
 
 
 public:
