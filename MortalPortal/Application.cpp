@@ -230,6 +230,15 @@ Application::Application(bool fullscreen, bool showCursor, int screenWidth, int 
 		playerShader, MapItem::BackgroundAsset, Color::BLUE, XMFLOAT3(0, 0, 5), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0.05, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(1, 1, 1))
 		);
 
+	//ljus
+	// ljus objekt
+	//LightL oneDirectionLightObject;
+	oneDirectionLightObject.CreateLight(d3dHandler->GetDevice(), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), float(0.0f) );
+
+
+
+	// ------------------ end
+
 	player2->powerBar->SetColor(DirectX::XMFLOAT2(1.0f, 1.0f));
 	DirectX::XMFLOAT2 player2BarPos[4];
 	player2BarPos[0] = DirectX::XMFLOAT2(-0.1f, -0.9f);
@@ -486,6 +495,8 @@ bool Application::Update(float deltaTime)
 void Application::Render()
 {
 	d3dHandler->BeginScene(0.0f, 0.0f, 0.0f, 1.0f);
+
+	d3dHandler->GetDeviceContext()->PSSetConstantBuffers(0, 1, &oneDirectionLightObject.pointerToBufferL);
 
 	if (startMenu->renderMenu == false)
 	{
