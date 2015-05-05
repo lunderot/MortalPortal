@@ -93,6 +93,7 @@
     <ClCompile Include="ComboBarShader.cpp" />
     <ClCompile Include="ComboDisplayText.cpp" />
     <ClCompile Include="ContinueButton.cpp" />
+    <ClCompile Include="Light.cpp" />
     <ClCompile Include="MapItemShader.cpp" />
     <ClCompile Include="MapItem.cpp" />
     <ClCompile Include="Collision.cpp" />
@@ -142,6 +143,7 @@
     <ClInclude Include="ComboDisplayText.h" />
     <ClInclude Include="ContinueButton.h" />
     <ClInclude Include="DisableAudio.h" />
+    <ClInclude Include="Light.h" />
     <ClInclude Include="MapItemShader.h" />
     <ClInclude Include="MapItem.h" />
     <ClInclude Include="Collision.h" />
@@ -179,6 +181,12 @@
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Pixel</ShaderType>
     </FxCompile>
     <FxCompile Include="assets\shaders\BackgroundVertexShader.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Vertex</ShaderType>
+    </FxCompile>
+    <FxCompile Include="assets\shaders\playerPS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Pixel</ShaderType>
+    </FxCompile>
+    <FxCompile Include="assets\shaders\playerVS.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Vertex</ShaderType>
     </FxCompile>
     <FxCompile Include="assets\shaders\powerBarPS.hlsl">

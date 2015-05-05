@@ -2,8 +2,7 @@
 
 using namespace DirectX;
 
-Application::Application(bool fullscreen, bool showCursor, int screenWidth, int screenHeight, LPCWSTR windowTitle)
-	: System(fullscreen, showCursor, screenWidth, screenHeight, windowTitle)
+Application::Application(bool fullscreen, bool showCursor, int screenWidth, int screenHeight, LPCWSTR windowTitle) : System(fullscreen, showCursor, screenWidth, screenHeight, windowTitle)
 {
 	//Setup DirectX
 	float screenFar = 1000.0f;
@@ -163,7 +162,8 @@ Application::Application(bool fullscreen, bool showCursor, int screenWidth, int 
 	player2->comboDisplayText[3]->setMaterial(playerComboDTMat);
 
 	// Particles testing area
-	particle = new Particle(20, d3dHandler->GetDevice());
+	particle = new Particle(1, 20, d3dHandler->GetDevice());
+	particle2 = new Particle(2, 20, d3dHandler->GetDevice());
 
 	// Create Background
 	entityHandler->Add(
@@ -229,15 +229,23 @@ Application::Application(bool fullscreen, bool showCursor, int screenWidth, int 
 		assetHandler->GetMaterial(d3dHandler->GetDevice(), "b.dds"),
 		playerShader, MapItem::BackgroundAsset, Color::BLUE, XMFLOAT3(0, 0, 5), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0.05, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(1, 1, 1))
 		);
+	//ljus
+	// ljus objekt
+	//LightL oneDirectionLightObject;
+	oneDirectionLightObject.CreateLight(d3dHandler->GetDevice(), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), float(0.0f) );
 
-	player2->powerBar->SetColor(DirectX::XMFLOAT2(1.0f, 1.0f));
+
+
+	// ------------------ end
+
 	DirectX::XMFLOAT2 player2BarPos[4];
 	player2BarPos[0] = DirectX::XMFLOAT2(-0.1f, -0.9f);
 	player2BarPos[1] = DirectX::XMFLOAT2(-0.1f, -1.0f);
 	player2BarPos[2] = DirectX::XMFLOAT2(-0.7f, -0.9f);
 	player2BarPos[3] = DirectX::XMFLOAT2(-0.7f, -1.0f);
 	player2->powerBar->SetPosition(player2BarPos);
-
+	player2->powerBar->SetMaterial(assetHandler->GetMaterial(d3dHandler->GetDevice(), "powerbar.dds"));
+	player1->powerBar->SetMaterial(assetHandler->GetMaterial(d3dHandler->GetDevice(), "powerbar.dds"));
 	// Combo bars, player1 & player2
 	// Player 1
 	DirectX::XMFLOAT2 player1Pos[4];
@@ -418,6 +426,7 @@ Application::~Application()
 	delete levelGenerator;
 
 	delete particle;
+	delete particle2;
 	delete startMenu;
 	delete pauseMenu;
 	delete restartMenu;
@@ -500,10 +509,29 @@ bool Application::Update(float deltaTime)
 	player2->comboDisplayText[3]->Update(deltaTime);
 
 	entityHandler->Update(deltaTime, aMaster);
+
+	// Particles for player 1
 	particle->UpdatePosition(player1->GetPosition());
 	particle->UpdateParticle(deltaTime, d3dHandler->GetDeviceContext(), particleShader->GetComputeShader());
+
+	if (player1->renderParticles == true && particle->particleCounter <= particle->constantBufferData.lifeTime)
+	{
+		if (player1->doubleUp == true)
+		{
+			particle->particleCounter = 0;
+			player1->doubleUp = false;
+		}
+		particle->particleCounter += deltaTime * 20.0f;
+		if (particle->particleCounter >= particle->constantBufferData.lifeTime)
+		{
+			particle->particleCounter = 0;
+			player1->renderParticles = false;
+		}
+	}
+	particle2->UpdatePosition(player2->GetPosition());
+	particle2->UpdateParticle(deltaTime, d3dHandler->GetDeviceContext(), particleShader->GetComputeShader());
+
 	levelGenerator->Update(entityHandler, deltaTime, crystalFrenzy);
-	
 
 	if (startMenu->renderMenu == true)
 		startMenu->Update(input->GetButtonUpState(), input->GetButtonDownState(), input->GetButtonEnterState());
@@ -519,6 +547,8 @@ bool Application::Update(float deltaTime)
 void Application::Render()
 {
 	d3dHandler->BeginScene(0.0f, 0.0f, 0.0f, 1.0f);
+
+	d3dHandler->GetDeviceContext()->PSSetConstantBuffers(0, 1, &oneDirectionLightObject.pointerToBufferL);
 
 	if (startMenu->renderMenu == false)
 	{
@@ -552,8 +582,13 @@ void Application::Render()
 		player2->comboBar->Render(d3dHandler->GetDeviceContext(), comboBarShader);
 
 		// Particles
-		particleShader->Use(d3dHandler->GetDeviceContext());
-		particle->Render(d3dHandler->GetDeviceContext());
+		if (player1->renderParticles == true)
+		{
+			particleShader->Use(d3dHandler->GetDeviceContext());
+			particle->Render(d3dHandler->GetDeviceContext());
+
+		}
+		//particle2->Render(d3dHandler->GetDeviceContext());
 	}
 	// Menu
 	if (startMenu->renderMenu == true)

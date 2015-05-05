@@ -2,11 +2,12 @@
 #include <d3d11.h>
 #include <DirectXMath.h>
 #include "Shader.h"
+#include "Material.h"
 
-struct PosColor
+struct Points
 {
-	DirectX::XMFLOAT2 pos[4];
-	DirectX::XMFLOAT2 color;
+	DirectX::XMFLOAT2 pos;
+	DirectX::XMFLOAT2 uv;
 };
 
 class PowerBar
@@ -17,10 +18,11 @@ protected:
 	float powerAdd;
 	float powerRemove;
 	bool dead;
+	Material* material;
 
 	DirectX::XMFLOAT2 maxMinValue;
 
-	PosColor posColor;
+	Points points[4];
 
 public:
 
@@ -29,14 +31,12 @@ public:
 
 	void SetBarSpeed(float speed);
 	void SetPosition(DirectX::XMFLOAT2 point[4]);
-	void SetColor(DirectX::XMFLOAT2 color);
 	void SetMaxMinValue(DirectX::XMFLOAT2 value);
-	void AddPower();
+	void AddPower(unsigned int bonusPower);
 	void RemovePower();
-
+	void SetMaterial(Material* mat);
 	const float GetBarSpeed();
 	const bool IsDead();
-	const DirectX::XMFLOAT2* GetPosition();
 	const DirectX::XMFLOAT2 GetMaxMinValue();
 	ID3D11Buffer* GetVertexBuffer();
 

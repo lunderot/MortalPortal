@@ -1,11 +1,13 @@
+texture2D tex;
+SamplerState samplState;
 struct VS_OUT
 {
 	float4 position : SV_POSITION;
-	float2 texCoord : TEXCOORD0;
+	float2 texCoord : TEXCOORD;
 };
 
 float4 main(VS_OUT input) : SV_Target
 {
-
-	return float4(input.position.x, input.position.y, 1, 1);
+	float4 texColor = tex.Sample(samplState, input.texCoord);
+	return float4(texColor);
 }

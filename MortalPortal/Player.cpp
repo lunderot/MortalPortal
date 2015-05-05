@@ -31,6 +31,8 @@ Player::Player(ID3D11Device* device, Geometry* geometry, Material* material, Mat
 	colorState = color1;
 	colors[0] = color1;
 	colors[1] = color2;
+	renderParticles = false;
+	doubleUp = false;
 
 	//power ups
 	inverControlTimer = 0.0f;
@@ -160,9 +162,9 @@ unsigned int Player::GetPlayerNumber() const
 	return this->playerNumber;
 }
 
-void Player::AddPower()
+void Player::AddPower(unsigned int bonusPower)
 {
-	powerBar->AddPower();
+	powerBar->AddPower(bonusPower);
 }
 
 void Player::RemovePower()
@@ -173,6 +175,7 @@ void Player::RemovePower()
 void Player::AddCombo()
 {
 	comboBar->AddCombo();
+	
 }
 
 Color Player::GetColor() const

@@ -28,11 +28,10 @@ protected:
 	ID3D11UnorderedAccessView* particleUAV;
 	ID3D11Buffer* constantBuffer;
 
-	ConstantBufferData constantBufferData;
 	unsigned int nrOfParticles;
 public:
 
-	Particle(const unsigned int nrOfParticles,
+	Particle(unsigned int type, const unsigned int nrOfParticles,
 		ID3D11Device* device,
 		DirectX::XMFLOAT3 position = DirectX::XMFLOAT3(0, 0, 0),
 		DirectX::XMFLOAT3 velocity = DirectX::XMFLOAT3(0, 0, 0),
@@ -44,6 +43,8 @@ public:
 
 	ID3D11UnorderedAccessView* getUAV();
 	unsigned int GetNrOfParticles();
+	float particleCounter;
+	ConstantBufferData constantBufferData;
 
 	void UpdatePosition(DirectX::XMFLOAT3 pos);
 	void UpdateParticle(float deltaTime, ID3D11DeviceContext* deviceContext, ID3D11ComputeShader* computeShader);

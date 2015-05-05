@@ -165,6 +165,9 @@
     <ClCompile Include="AudioMaster.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Light.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="System.h">
@@ -302,6 +305,9 @@
     <ClInclude Include="Bullshit.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Light.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="assets\shaders\powerBarPS.hlsl">
@@ -325,6 +331,12 @@
     <ClCompile Include="OptionsButton.cpp">
       <Filter>Source Files\Buttons</Filter>
     </ClCompile>
+    <FxCompile Include="assets\shaders\playerPS.hlsl">
+      <Filter>Resource Files</Filter>
+    </FxCompile>
+    <FxCompile Include="assets\shaders\playerVS.hlsl">
+      <Filter>Resource Files</Filter>
+    </FxCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="OptionsButton.h">

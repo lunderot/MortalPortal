@@ -1,6 +1,7 @@
 #include "Particles.h"
 
-Particle::Particle(const unsigned int nrOfParticles,
+Particle::Particle(unsigned int type,
+	const unsigned int nrOfParticles,
 	ID3D11Device* device,
 	DirectX::XMFLOAT3 position,
 	DirectX::XMFLOAT3 velocity,
@@ -10,20 +11,42 @@ Particle::Particle(const unsigned int nrOfParticles,
 
 	std::vector<Particles> particle;
 
-	for (unsigned int i = 0; i < nrOfParticles; i++)
+	if (type == 1)
 	{
-		Particles p;
-		p.type = 1;
-		p.lifeTime = rand() % 3 + 7;
-		p.pos.x = 0;
-		p.pos.y = 0;
-		p.pos.z = 0;
+		for (unsigned int i = 0; i < nrOfParticles; i++)
+		{
+			Particles p;
+			p.type = 1;
+			p.lifeTime = rand() % 50 + 10;
+			p.pos.x = 0;
+			p.pos.y = 0;
+			p.pos.z = 0;
 
-		p.velocity.x = rand() % 50 - 50;
-		p.velocity.y = rand() %  90 - 50;
-		p.acceleration.x = 0;
-		p.acceleration.y = 0;
-		particle.push_back(p);
+			p.velocity.x = rand() % 50 - 50;
+			p.velocity.y = rand() % 90 - 50;
+			p.acceleration.x = 0;
+			p.acceleration.y = 0;
+			particle.push_back(p);
+		}
+	}
+
+	if (type == 2)
+	{
+		for (unsigned int i = 0; i < nrOfParticles; i++)
+		{
+			Particles p;
+			p.type = 1;
+			p.lifeTime = rand() % 3 + 7;
+			p.pos.x = 0;
+			p.pos.y = 0;
+			p.pos.z = 0;
+
+			p.velocity.x = rand() % 50 + 50;
+			p.velocity.y = rand() % 90 + 50;
+			p.acceleration.x = 0;
+			p.acceleration.y = 0;
+			particle.push_back(p);
+		}
 	}
 
 	HRESULT hr;
@@ -74,6 +97,7 @@ Particle::Particle(const unsigned int nrOfParticles,
 	}
 	// Ett stycke hård kod
 	constantBufferData.lifeTime = 20;
+	particleCounter = 0;
 }
 
 unsigned int Particle::GetNrOfParticles()

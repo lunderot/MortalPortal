@@ -28,6 +28,7 @@
 
 #include "Background.h"
 #include "BackgroundShader.h"
+#include "Light.h"
 
 #include "ParticleShader.h"
 #include "AssetHandler.h"
@@ -66,6 +67,7 @@ private:
 	Player* player1;
 	Player* player2;
 	Particle* particle;
+	Particle* particle2;
 
 
 	//Player data
@@ -81,6 +83,8 @@ private:
 
 	bool crystalFrenzy;
 	bool crystalFrenzyControl;
+
+	LightL oneDirectionLightObject;
 
 public:
 	Application(bool fullscreen, bool showCursor, int screenWidth, int screenHeight, LPCWSTR windowTitle);
