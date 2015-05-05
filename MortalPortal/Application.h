@@ -19,6 +19,7 @@
 #include "ComboBar.h"
 #include "ComboBarShader.h"
 #include "ComboDisplayText.h"
+#include "PowerUpDisplay.h"
 #include "Particles.h"
 #include "StartMenu.h"
 #include "PauseMenu.h"

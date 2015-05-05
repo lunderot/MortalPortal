@@ -37,7 +37,7 @@ void LightL::CreateLight(ID3D11Device* device, DirectX::XMFLOAT3 position, Direc
 	this->specularPow = specularPow;
 
 	directionLInfo.Position = DirectX::XMFLOAT3( 0.5f, 0.5f, -1.0f );
-	directionLInfo.Ambient = DirectX::XMFLOAT3( 0.7f, 0.1f, 0.8f );
+	directionLInfo.Ambient = DirectX::XMFLOAT3( 0.39f, 0.65f, 0.92f );
 	directionLInfo.Diffuse = DirectX::XMFLOAT3( 0.9f, 0.9f, 0.9f );
 	directionLInfo.Specular = DirectX::XMFLOAT3(0.8f, 0.8f, 0.8f);
 

@@ -161,6 +161,15 @@ Application::Application(bool fullscreen, bool showCursor, int screenWidth, int 
 	player2->comboDisplayText[2]->setMaterial(playerComboDTMat);
 	player2->comboDisplayText[3]->setMaterial(playerComboDTMat);
 
+	// Power Ups - Display text player1 & player2
+	Material* playerPowerUpDisplayMat[2];
+	playerPowerUpDisplayMat[0] = assetHandler->GetMaterial(d3dHandler->GetDevice(), "invertcontrol.dds");
+	playerPowerUpDisplayMat[1] = assetHandler->GetMaterial(d3dHandler->GetDevice(), "invertcontrolfade.dds");
+	// player1
+	player1->powerUpDisplayText->setMaterial(playerPowerUpDisplayMat);
+	// player2
+	player2->powerUpDisplayText->setMaterial(playerPowerUpDisplayMat);
+
 	// Particles testing area
 	particle = new Particle(1, 50, d3dHandler->GetDevice());
 	particle2 = new Particle(1, 20, d3dHandler->GetDevice());
@@ -309,6 +318,17 @@ Application::Application(bool fullscreen, bool showCursor, int screenWidth, int 
 	player1->comboDisplayText[3]->SetUV(player1UV);
 	player1->comboDisplayText[3]->SetComboText(false);
 
+	// PowerUp-Display text, player1 & player2
+	// Player 1 - "INVERT CONTROL" text
+	player1Pos[0] = DirectX::XMFLOAT2(1.0f, 1.0f); // längst upp - höger
+	player1Pos[1] = DirectX::XMFLOAT2(1.0f, 0.9f); // längst ner - höger
+	player1Pos[2] = DirectX::XMFLOAT2(0.85f, 1.0f); // längst upp - vänster
+	player1Pos[3] = DirectX::XMFLOAT2(0.85f, 0.9f); // längst ner - vänster
+	player1->powerUpDisplayText->SetPosition(player1Pos);
+	player1->powerUpDisplayText->SetUV(player1UV);
+	player1->powerUpDisplayText->SetComboText(true);
+
+
 	// Player 2 - "COMBO" text
 	player2Pos[0] = DirectX::XMFLOAT2(-0.1f, -0.8f); // längst upp - höger
 	player2Pos[1] = DirectX::XMFLOAT2(-0.1f, -0.9f); // längst ner - höger
@@ -435,6 +455,8 @@ Application::~Application()
 
 bool Application::Update(float deltaTime)
 {
+	float test1 = 5.0f;
+	float test2 = 30.0f;
 	pauseMenu->CheckIfToPause(input->GetButtonStartState());
 	if (pauseMenu->renderMenu == true && startMenu->renderMenu == false || startMenu->renderMenu == true || restartMenu->renderMenu == true)
 	{
@@ -445,19 +467,19 @@ bool Application::Update(float deltaTime)
 	// PowerUp - Invert Control - effect on | Player2
 	if (player2->getInvertControl() == true)
 	{
-		dir.x *= -1;
-		dir.y *= -1;
+		dir.x *= -0.5f;
+		dir.y *= -0.5f;
 	}
 	// PowerUp - Slow Down Acceleration - effect on | Player2
 	if (player2->getSlowDownAcceleration() == true)
 	{
-		dir.x *= 3;
-		dir.y *= 3;
+		dir.x *= test1;
+		dir.y *= test1;
 	}
 	else
 	{
-		dir.x *= 10;
-		dir.y *= 10;
+		dir.x *= test2;
+		dir.y *= test2;
 	}
 	player1->SetAcceleration(XMFLOAT3(dir.x, dir.y, 0.0f));
 	player1->ReactToInput(input->GetButtonState(), aMaster);
@@ -467,19 +489,19 @@ bool Application::Update(float deltaTime)
 	// PowerUp - Invert Control - effect on | Player1
 	if (player1->getInvertControl() == true)
 	{
-		dir2.x *= -1;
-		dir2.y *= -1;
+		dir2.x *= -0.5f;
+		dir2.y *= -0.5f;
 	}
 	// PowerUp - Slow Down Acceleration - effect on | Player1
 	if (player1->getSlowDownAcceleration() == true)
 	{
-		dir2.x *= 3;
-		dir2.y *= 3;
+		dir2.x *= test1;
+		dir2.y *= test1;
 	}
 	else
 	{
-		dir2.x *= 10;
-		dir2.y *= 10;
+		dir2.x *= test2;
+		dir2.y *= test2;
 	}
 	player2->SetAcceleration(XMFLOAT3(dir2.x, dir2.y, 0.0f));
 	player2->ReactToInput(input2->GetButtonState(), aMaster);
@@ -502,6 +524,8 @@ bool Application::Update(float deltaTime)
 	player1->comboDisplayText[1]->Update(deltaTime);
 	player1->comboDisplayText[2]->Update(deltaTime);
 	player1->comboDisplayText[3]->Update(deltaTime);
+
+	player1->powerUpDisplayText->Update(deltaTime);
 
 	player2->comboDisplayText[0]->Update(deltaTime);
 	player2->comboDisplayText[1]->Update(deltaTime);
@@ -576,6 +600,8 @@ void Application::Render()
 		entityHandler->Render(d3dHandler->GetDeviceContext());
 		// Combo - Display text
 		comboBarShader->Use(d3dHandler->GetDeviceContext());
+		player1->powerUpDisplayText->Render(d3dHandler->GetDeviceContext(), comboBarShader);
+
 		player1->comboDisplayText[0]->Render(d3dHandler->GetDeviceContext(), comboBarShader);
 		player1->comboDisplayText[1]->Render(d3dHandler->GetDeviceContext(), comboBarShader);
 		player1->comboDisplayText[2]->Render(d3dHandler->GetDeviceContext(), comboBarShader);
@@ -601,6 +627,8 @@ void Application::Render()
 		comboBarShader->Use(d3dHandler->GetDeviceContext());
 		player1->comboBar->Render(d3dHandler->GetDeviceContext(), comboBarShader);
 		player2->comboBar->Render(d3dHandler->GetDeviceContext(), comboBarShader);
+
+	
 
 		// Particles
 		if (particle->particleCounter > 0)

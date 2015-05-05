@@ -21,6 +21,7 @@ Player::Player(ID3D11Device* device, Geometry* geometry, Material* material, Mat
 	comboDisplayText[1] = new ComboDisplayText(device, material);
 	comboDisplayText[2] = new ComboDisplayText(device, material);
 	comboDisplayText[3] = new ComboDisplayText(device, material);
+	powerUpDisplayText = new PowerUpDisplayText(device, material);
 	
 	playerNumber = 0;
 	comboCounter = 0;
@@ -34,10 +35,12 @@ Player::Player(ID3D11Device* device, Geometry* geometry, Material* material, Mat
 	renderParticles = false;
 	doubleUp = false;
 
-	//power ups
+	// Power ups
 	inverControlTimer = 0.0f;
 	slowDownAccelerationTimer = 0.0f;
 	crystalFrenzy = false;
+	// Power Ups - Display
+	invertControlerDisplay = false;
 }
 
 
@@ -49,10 +52,15 @@ Player::~Player()
 	delete comboDisplayText[1];
 	delete comboDisplayText[2];
 	delete comboDisplayText[3];
+	delete powerUpDisplayText;
 }
 
 bool Player::getInvertControl()
 {
+	if (inverControlTimer < 0.0f)
+	{
+		powerUpDisplayText->RemoveCombo();
+	}
 	return inverControlTimer > 0.0f;
 }
 
@@ -162,26 +170,61 @@ unsigned int Player::GetPlayerNumber() const
 	return this->playerNumber;
 }
 
+void Player::AddInvertControlDisplay()
+{
+	powerUpDisplayText->AddCombo();
+}
+
+void Player::RemoveInvertControlDisplay()
+{
+	invertControlerDisplay = false;
+}
+
 void Player::AddPower(unsigned int bonusPower)
 {
 	powerBar->AddPower(bonusPower);
 }
 
-void Player::RemovePower()
-{
-	powerBar->RemovePower();
-}
-
 void Player::AddCombo()
 {
 	comboBar->AddCombo();
-	
+}
+
+void Player::AddComboText()
+{
+	comboCounter++;
+	comboCounterChange_10++;
+	comboCounterChange_100++;
+
+	std::cout << "ComboCounter: " << comboCounter << std::endl;
+	std::cout << "ComboCounterChange: " << comboCounter << std::endl;
+
+	if (comboCounter == 999)
+	{
+		comboMax = true;
+	}
+
+	if (comboMax != true)
+	{
+		comboDisplayText[1]->AddCombo();
+		if (comboCounterChange_10 == 10)
+		{
+			comboDisplayText[2]->AddCombo();
+			comboCounterChange_10 = 0;
+		}
+		if (comboCounterChange_100 == 100)
+		{
+			comboDisplayText[3]->AddCombo();
+			comboCounterChange_100 = 0;
+		}
+	}
 }
 
 Color Player::GetColor() const
 {
 	return colorState;
 }
+
 void Player::SetColor(Color color)
 {
 	colorState = color;
@@ -222,34 +265,9 @@ void Player::RemoveCombo()
 	comboBar->RemoveCombo();
 }
 
-void Player::AddComboText()
+void Player::RemovePower()
 {
-	comboCounter++;
-	comboCounterChange_10++;
-	comboCounterChange_100++;
-
-	std::cout << "ComboCounter: " << comboCounter << std::endl;
-	std::cout << "ComboCounterChange: " << comboCounter << std::endl;
-	
-	if (comboCounter == 999)
-	{
-		comboMax = true;
-	}
-
-	if (comboMax != true)
-	{
-		comboDisplayText[1]->AddCombo();
-		if (comboCounterChange_10 == 10)
-		{
-			comboDisplayText[2]->AddCombo();
-			comboCounterChange_10 = 0;
-		}
-		if (comboCounterChange_100 == 100)
-		{
-			comboDisplayText[3]->AddCombo();
-			comboCounterChange_100 = 0;
-		}
-	}
+	powerBar->RemovePower();
 }
 
 void Player::RemoveComboText()

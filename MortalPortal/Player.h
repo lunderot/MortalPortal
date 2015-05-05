@@ -3,6 +3,7 @@
 #include "PowerBar.h"
 #include "ComboBar.h"
 #include "ComboDisplayText.h"
+#include "PowerUpDisplay.h"
 #include "AudioMaster.h"
 
 class Player :
@@ -46,7 +47,7 @@ public:
 	bool renderParticles;
 	bool doubleUp;
 	
-	// power ups
+	// Power ups
 	// Invert Control
 	bool getInvertControl();
 	void setInvertControl(float powerUp_InvertControl);
@@ -57,6 +58,11 @@ public:
 	bool getCrystalFrenzy();
 	void setCrystalFrenzy(bool powerUp_CrystalFrenzy);
 
+	// Power up - Display
+	void AddInvertControlDisplay();
+	void RemoveInvertControlDisplay();
+	PowerUpDisplayText* powerUpDisplayText;
+
 	void Reset();
 
 private:
@@ -64,6 +70,8 @@ private:
 	float inverControlTimer;
 	float slowDownAccelerationTimer;
 	bool crystalFrenzy;
+	// Power ups - Display
+	bool invertControlerDisplay;
 
 	Material* switchMaterial;
 	

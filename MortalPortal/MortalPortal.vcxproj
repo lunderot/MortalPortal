@@ -112,6 +112,7 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Material.cpp" />
     <ClCompile Include="PauseMenu.cpp" />
+    <ClCompile Include="PowerUpDisplay.cpp" />
     <ClCompile Include="RestartMenu.cpp" />
     <ClCompile Include="StartMenu.cpp" />
     <ClCompile Include="OptionsButton.cpp" />
@@ -161,6 +162,7 @@
     <ClInclude Include="LevelGenerator.h" />
     <ClInclude Include="Material.h" />
     <ClInclude Include="PauseMenu.h" />
+    <ClInclude Include="PowerUpDisplay.h" />
     <ClInclude Include="RestartMenu.h" />
     <ClInclude Include="StartMenu.h" />
     <ClInclude Include="OptionsButton.h" />

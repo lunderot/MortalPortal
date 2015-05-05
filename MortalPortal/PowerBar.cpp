@@ -45,7 +45,7 @@ PowerBar::PowerBar(ID3D11Device* device)
 		throw std::runtime_error("Failed to create vertex buffer in the PowerBar class.");
 	}
 
-	barSpeed = -0.01f;
+	barSpeed = -0.015f;
 }
 void PowerBar::SetBarSpeed(float speed)
 {
