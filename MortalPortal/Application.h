@@ -69,6 +69,8 @@ private:
 	Player* player2;
 	Particle* particle;
 	Particle* particle2;
+	Particle* particlePowerBar1;
+	Particle* particlePowerBar2;
 
 
 	//Player data

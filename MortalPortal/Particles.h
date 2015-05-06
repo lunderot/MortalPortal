@@ -28,11 +28,15 @@ class Particle :
 protected:
 	ID3D11UnorderedAccessView* particleUAV;
 	ID3D11Buffer* constantBuffer;
+	ID3D11ShaderResourceView* SRV;
+	Material* material;
 
 	unsigned int nrOfParticles;
 public:
 
-	Particle(unsigned int type, const unsigned int nrOfParticles,
+	Particle(unsigned int type,
+		const unsigned int nrOfParticles,
+		Material* material,
 		ID3D11Device* device,
 		DirectX::XMFLOAT3 position = DirectX::XMFLOAT3(0, 0, 0),
 		DirectX::XMFLOAT3 velocity = DirectX::XMFLOAT3(0, 0, 0),

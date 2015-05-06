@@ -59,6 +59,11 @@ void PowerBar::SetPosition(DirectX::XMFLOAT2 point[4])
 	this->points[3].pos = point[3];
 }
 
+DirectX::XMFLOAT2 PowerBar::GetCurrentMaxPosition()
+{
+	return points[0].pos;
+}
+
 void PowerBar::SetMaxMinValue(DirectX::XMFLOAT2 value)
 {
 	this->maxMinValue.x = value.x;

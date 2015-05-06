@@ -1,7 +1,7 @@
 struct VS_IN
 {
 	float3 position : POSITION;
-	float type : TYPE;
+	unsigned int type : TYPE;
 	float2 acceleration : ACCELERATION;
 	float2 velocity : VELOCITY;
 	float lifeTime : LIFETIME;
@@ -10,7 +10,7 @@ struct VS_IN
 struct VS_OUT
 {
 	float4 position : POSITION;
-	float type : TYPE;
+	unsigned int type : TYPE;
 	float2 velocity : VELOCITY;
 	float lifeTime : LIFETIME;
 	float speed : SPEED;
