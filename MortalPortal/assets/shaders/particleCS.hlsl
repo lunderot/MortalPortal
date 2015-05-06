@@ -29,11 +29,17 @@ void main(uint3 dispatchThreadID : SV_DispatchThreadID)
 		pos.x += velocity.x * deltaTime / 5;
 		pos.y += velocity.y * deltaTime / 5;
 	}
-	pos.z = 0;
 
 	life += deltaTime * 20;
 	//pos.y -= 0.3f * deltaTime;
 	if (life > lifeTime && particleType == 2)
+	{
+		pos.x = position.x;
+		pos.y = position.y;
+		life -= lifeTime;
+	}
+
+	if (pos.x < -40 && particleType == 3)
 	{
 		pos.x = position.x;
 		pos.y = position.y;

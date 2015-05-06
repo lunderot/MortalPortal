@@ -71,6 +71,7 @@ private:
 	Particle* particle2;
 	Particle* particlePowerBar1;
 	Particle* particlePowerBar2;
+	Particle* particleBackground;
 
 
 	//Player data

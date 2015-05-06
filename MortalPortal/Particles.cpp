@@ -16,7 +16,7 @@ Particle::Particle(unsigned int type,
 		for (unsigned int i = 0; i < nrOfParticles; i++)
 		{
 			Particles p;
-			p.type = 1;
+			p.type = type;
 			p.lifeTime = rand() % 50 - 10;
 			p.pos.x = 0;
 			p.pos.y = 0;
@@ -35,7 +35,7 @@ Particle::Particle(unsigned int type,
 		for (unsigned int i = 0; i < nrOfParticles; i++)
 		{
 			Particles p;
-			p.type = 2;
+			p.type = type;
 			p.lifeTime = rand() % 500 - 10;
 			p.pos.x = 0;
 			p.pos.y = 0;
@@ -54,14 +54,14 @@ Particle::Particle(unsigned int type,
 		for (unsigned int i = 0; i < nrOfParticles; i++)
 		{
 			Particles p;
-			p.type = 1;
+			p.type = type;
 			p.lifeTime = rand() % 3 + 7;
-			p.pos.x = 0;
-			p.pos.y = 0;
-			p.pos.z = 0;
+			p.pos.x = rand() % 60;
+			p.pos.y = rand() % 100;
+			p.pos.z = rand() % 20;
 
-			p.velocity.x = rand() %  30 - 30;
-			p.velocity.y = rand() % 10;
+			p.velocity.x = rand() %  50 - 100;
+			p.velocity.y = rand() % 100 - 50;
 			p.acceleration.x = 0;
 			p.acceleration.y = 0;
 			particle.push_back(p);

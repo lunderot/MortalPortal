@@ -172,7 +172,9 @@ Application::Application(bool fullscreen, bool showCursor, int screenWidth, int 
 
 	// Particles testing area
 	particle = new Particle(1, 50, assetHandler->GetMaterial(d3dHandler->GetDevice(), "powerbar.dds", "", 0.0f), d3dHandler->GetDevice());
+	particle->constantBufferData.lifeTime = 100;
 	particle2 = new Particle(1, 20, assetHandler->GetMaterial(d3dHandler->GetDevice(), "powerbar.dds", "", 0.0f), d3dHandler->GetDevice());
+	particle2->constantBufferData.lifeTime = 100;
 	particlePowerBar1 = new Particle(2, 300, assetHandler->GetMaterial(d3dHandler->GetDevice(), "powerbar.dds", "", 0.0f), d3dHandler->GetDevice());
 	particlePowerBar1->constantBufferData.reset = false;
 	particlePowerBar1->constantBufferData.lifeTime = 20;
@@ -180,6 +182,11 @@ Application::Application(bool fullscreen, bool showCursor, int screenWidth, int 
 	particlePowerBar2 = new Particle(2, 300, assetHandler->GetMaterial(d3dHandler->GetDevice(), "powerbar.dds", "", 0.0f), d3dHandler->GetDevice());
 	particlePowerBar2->constantBufferData.reset = false;
 	particlePowerBar2->constantBufferData.lifeTime = 20;
+
+	particleBackground = new Particle(3, 300, assetHandler->GetMaterial(d3dHandler->GetDevice(), "comboBonus.dds", "", 0.0f), d3dHandler->GetDevice());
+	particleBackground->constantBufferData.position = DirectX::XMFLOAT3(70, 0, 0);
+	particleBackground->constantBufferData.reset = false;
+	particleBackground->constantBufferData.lifeTime = 100;
 
 	// Create Background
 	entityHandler->Add(
@@ -457,6 +464,7 @@ Application::~Application()
 	delete particle2;
 	delete particlePowerBar1;
 	delete particlePowerBar2;
+	delete particleBackground;
 	delete startMenu;
 	delete pauseMenu;
 	delete restartMenu;
@@ -544,6 +552,7 @@ bool Application::Update(float deltaTime)
 
 	entityHandler->Update(deltaTime, aMaster);
 
+	particleBackground->UpdateParticle(deltaTime, d3dHandler->GetDeviceContext(), particleShader->GetComputeShader());
 	// Particles for player 1
 	particlePowerBar1->UpdateParticle(deltaTime, d3dHandler->GetDeviceContext(), particleShader->GetComputeShader());
 	particlePowerBar1->UpdatePosition(DirectX::XMFLOAT3(player1->powerBar->GetCurrentMaxPosition().x, player1->powerBar->GetCurrentMaxPosition().y, 0.0f));
@@ -615,6 +624,7 @@ void Application::Render()
 		particleShader->Use(d3dHandler->GetDeviceContext());
 		particlePowerBar1->Render(d3dHandler->GetDeviceContext());
 		particlePowerBar2->Render(d3dHandler->GetDeviceContext());
+		particleBackground->Render(d3dHandler->GetDeviceContext());
 		if (player1->renderParticles == true)
 		{
 			particle->Render(d3dHandler->GetDeviceContext());

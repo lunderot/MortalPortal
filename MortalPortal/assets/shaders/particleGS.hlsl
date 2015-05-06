@@ -23,6 +23,7 @@ struct GS_OUT
 	float4 particlePos : PARTICLEPOS;
 	float2 Tex : TEXCOORD0;
 	float lifeTime : LIFETIME;
+	unsigned int type : TYPE;
 };
 
 [maxvertexcount(4)]
@@ -32,6 +33,7 @@ void main(point GS_IN input[1], inout TriangleStream<GS_OUT> triStream)
 	float3 camPos = float3(0, 0, -20);
 	float3 look = float3(0, 0, 20);//input[0].Pos - camPos;
 	output.particlePos = input[0].Pos;
+	output.type = input[0].type;
 
 	look = normalize(look);
 	output.lifeTime = input[0].lifeTime;
@@ -45,6 +47,11 @@ void main(point GS_IN input[1], inout TriangleStream<GS_OUT> triStream)
 	{
 		rightVec = rightVec * 0.005;
 		upVec = upVec * 0.005;
+	}
+	else if (input[0].type == 3)
+	{
+		rightVec = rightVec * 0.05;
+		upVec = upVec * 0.05;
 	}
 	else
 	{
