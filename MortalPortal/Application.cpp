@@ -92,11 +92,11 @@ Application::Application(bool fullscreen, bool showCursor, int screenWidth, int 
 
 	//Add available comets for LevelGenerator so choose from
 	levelGenerator->addComet(assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/Comet.bin"),
-		assetHandler->GetMaterial(d3dHandler->GetDevice(), "2ggr.dds"/*"assets/Comet.bin", "lambert2"*/),
+		assetHandler->GetMaterial(d3dHandler->GetDevice(), "2ggr.dds", "", 0.0f/*"assets/Comet.bin", "lambert2"*/),
 		shader);
 
 	levelGenerator->addPowerUp(assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/Comet.bin"),
-		assetHandler->GetMaterial(d3dHandler->GetDevice(), "b.dds"),
+		assetHandler->GetMaterial(d3dHandler->GetDevice(), "b.dds", "", 0.0f),
 		mapItemShader);
 
 
@@ -123,15 +123,15 @@ Application::Application(bool fullscreen, bool showCursor, int screenWidth, int 
 
 	// Create Combo-bar player1 & player2
 	Material* playerComboMat[9];
-	playerComboMat[0] = assetHandler->GetMaterial(d3dHandler->GetDevice(), "comboBonus.dds");
-	playerComboMat[1] = assetHandler->GetMaterial(d3dHandler->GetDevice(), "2ggr.dds");
-	playerComboMat[2] = assetHandler->GetMaterial(d3dHandler->GetDevice(), "3ggr.dds");
-	playerComboMat[3] = assetHandler->GetMaterial(d3dHandler->GetDevice(), "4ggr.dds");
-	playerComboMat[4] = assetHandler->GetMaterial(d3dHandler->GetDevice(), "5ggr.dds");
-	playerComboMat[5] = assetHandler->GetMaterial(d3dHandler->GetDevice(), "6ggr.dds");
-	playerComboMat[6] = assetHandler->GetMaterial(d3dHandler->GetDevice(), "7ggr.dds");
-	playerComboMat[7] = assetHandler->GetMaterial(d3dHandler->GetDevice(), "8ggr.dds");
-	playerComboMat[8] = assetHandler->GetMaterial(d3dHandler->GetDevice(), "9ggr.dds");
+	playerComboMat[0] = assetHandler->GetMaterial(d3dHandler->GetDevice(), "comboBonus.dds", "", 0.0f);
+	playerComboMat[1] = assetHandler->GetMaterial(d3dHandler->GetDevice(), "2ggr.dds", "", 0.0f);
+	playerComboMat[2] = assetHandler->GetMaterial(d3dHandler->GetDevice(), "3ggr.dds", "", 0.0f);
+	playerComboMat[3] = assetHandler->GetMaterial(d3dHandler->GetDevice(), "4ggr.dds", "", 0.0f);
+	playerComboMat[4] = assetHandler->GetMaterial(d3dHandler->GetDevice(), "5ggr.dds", "", 0.0f);
+	playerComboMat[5] = assetHandler->GetMaterial(d3dHandler->GetDevice(), "6ggr.dds", "", 0.0f);
+	playerComboMat[6] = assetHandler->GetMaterial(d3dHandler->GetDevice(), "7ggr.dds", "", 0.0f);
+	playerComboMat[7] = assetHandler->GetMaterial(d3dHandler->GetDevice(), "8ggr.dds", "", 0.0f);
+	playerComboMat[8] = assetHandler->GetMaterial(d3dHandler->GetDevice(), "9ggr.dds", "", 0.0f);
 	// player1
 	player1->comboBar->setMaterial(playerComboMat);
 	// player2
@@ -139,17 +139,17 @@ Application::Application(bool fullscreen, bool showCursor, int screenWidth, int 
 
 	// Create Combo-bar Display text player1 & player2
 	Material* playerComboDTMat[11];
-	playerComboDTMat[0] = assetHandler->GetMaterial(d3dHandler->GetDevice(), "combo.dds");
-	playerComboDTMat[1] = assetHandler->GetMaterial(d3dHandler->GetDevice(), "zero.dds");
-	playerComboDTMat[2] = assetHandler->GetMaterial(d3dHandler->GetDevice(), "one.dds");
-	playerComboDTMat[3] = assetHandler->GetMaterial(d3dHandler->GetDevice(), "two.dds");
-	playerComboDTMat[4] = assetHandler->GetMaterial(d3dHandler->GetDevice(), "three.dds");
-	playerComboDTMat[5] = assetHandler->GetMaterial(d3dHandler->GetDevice(), "four.dds");
-	playerComboDTMat[6] = assetHandler->GetMaterial(d3dHandler->GetDevice(), "five.dds");
-	playerComboDTMat[7] = assetHandler->GetMaterial(d3dHandler->GetDevice(), "six.dds");
-	playerComboDTMat[8] = assetHandler->GetMaterial(d3dHandler->GetDevice(), "seven.dds");
-	playerComboDTMat[9] = assetHandler->GetMaterial(d3dHandler->GetDevice(), "eight.dds");
-	playerComboDTMat[10] = assetHandler->GetMaterial(d3dHandler->GetDevice(), "nine.dds");
+	playerComboDTMat[0] = assetHandler->GetMaterial(d3dHandler->GetDevice(), "combo.dds", "", 0.0f);
+	playerComboDTMat[1] = assetHandler->GetMaterial(d3dHandler->GetDevice(), "zero.dds", "", 0.0f);
+	playerComboDTMat[2] = assetHandler->GetMaterial(d3dHandler->GetDevice(), "one.dds", "", 0.0f);
+	playerComboDTMat[3] = assetHandler->GetMaterial(d3dHandler->GetDevice(), "two.dds", "", 0.0f);
+	playerComboDTMat[4] = assetHandler->GetMaterial(d3dHandler->GetDevice(), "three.dds", "", 0.0f);
+	playerComboDTMat[5] = assetHandler->GetMaterial(d3dHandler->GetDevice(), "four.dds", "", 0.0f);
+	playerComboDTMat[6] = assetHandler->GetMaterial(d3dHandler->GetDevice(), "five.dds", "", 0.0f);
+	playerComboDTMat[7] = assetHandler->GetMaterial(d3dHandler->GetDevice(), "six.dds", "", 0.0f);
+	playerComboDTMat[8] = assetHandler->GetMaterial(d3dHandler->GetDevice(), "seven.dds", "", 0.0f);
+	playerComboDTMat[9] = assetHandler->GetMaterial(d3dHandler->GetDevice(), "eight.dds", "", 0.0f);
+	playerComboDTMat[10] = assetHandler->GetMaterial(d3dHandler->GetDevice(), "nine.dds", "", 0.0f);
 	// player1
 	player1->comboDisplayText[0]->setMaterial(playerComboDTMat);
 	player1->comboDisplayText[1]->setMaterial(playerComboDTMat);
@@ -163,8 +163,8 @@ Application::Application(bool fullscreen, bool showCursor, int screenWidth, int 
 
 	// Power Ups - Display text player1 & player2
 	Material* playerPowerUpDisplayMat[2];
-	playerPowerUpDisplayMat[0] = assetHandler->GetMaterial(d3dHandler->GetDevice(), "invertcontrol.dds");
-	playerPowerUpDisplayMat[1] = assetHandler->GetMaterial(d3dHandler->GetDevice(), "invertcontrolfade.dds");
+	playerPowerUpDisplayMat[0] = assetHandler->GetMaterial(d3dHandler->GetDevice(), "invertcontrol.dds", "", 0.0f);
+	playerPowerUpDisplayMat[1] = assetHandler->GetMaterial(d3dHandler->GetDevice(), "invertcontrolfade.dds", "", 0.0f);
 	// player1
 	player1->powerUpDisplayText->setMaterial(playerPowerUpDisplayMat);
 	// player2
@@ -180,7 +180,7 @@ Application::Application(bool fullscreen, bool showCursor, int screenWidth, int 
 
 		//assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/test.bin"),
 		assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/BackgroundPlane.bin"),
-		assetHandler->GetMaterial(d3dHandler->GetDevice(), "spaceTest.dds"),
+		assetHandler->GetMaterial(d3dHandler->GetDevice(), "spaceTest.dds", "", 0.0f),
 		playerShader, XMFLOAT3(0, 0, 10), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(46, 26, 1))
 		);
 
@@ -202,28 +202,28 @@ Application::Application(bool fullscreen, bool showCursor, int screenWidth, int 
 		new Background(
 
 		assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/BackgroundPlane.bin"),
-		assetHandler->GetMaterial(d3dHandler->GetDevice(), "spaceAlphaTest.dds"),
+		assetHandler->GetMaterial(d3dHandler->GetDevice(), "spaceAlphaTest.dds", "", 0.0f),
 		playerShader, XMFLOAT3(0, 0, 9.9), XMFLOAT3(0.5, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(46, 26, 1))
 		);
 
 	entityHandler->Add(
 		new Background(
 		assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/BackgroundPlane.bin"),
-		assetHandler->GetMaterial(d3dHandler->GetDevice(), "spaceAlphaTest.dds"),
+		assetHandler->GetMaterial(d3dHandler->GetDevice(), "spaceAlphaTest.dds", "", 0.0f),
 		playerShader, XMFLOAT3(-91.5, 0, 9.9), XMFLOAT3(0.5, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(46, 26, 1))
 		);
 
 	entityHandler->Add(
 		new Background(
 		assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/BackgroundPlane.bin"),
-		assetHandler->GetMaterial(d3dHandler->GetDevice(), "test1.dds"),
+		assetHandler->GetMaterial(d3dHandler->GetDevice(), "test1.dds", "", 0.0f),
 		playerShader, XMFLOAT3(-91.5, 0, 9.8), XMFLOAT3(0.4, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(46, 26, 1))
 		);
 
 	entityHandler->Add(
 		new Background(
 		assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/BackgroundPlane.bin"),
-		assetHandler->GetMaterial(d3dHandler->GetDevice(), "test1.dds"),
+		assetHandler->GetMaterial(d3dHandler->GetDevice(), "test1.dds", "", 0.0f),
 		playerShader, XMFLOAT3(0, 0, 9.8), XMFLOAT3(0.4, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(46, 26, 1))
 		);
 
@@ -235,7 +235,7 @@ Application::Application(bool fullscreen, bool showCursor, int screenWidth, int 
 		new MapItem(
 		//assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/test.bin"),
 		assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/Earth.bin"),
-		assetHandler->GetMaterial(d3dHandler->GetDevice(), "b.dds"),
+		assetHandler->GetMaterial(d3dHandler->GetDevice(), "b.dds", "", 0.0f),
 		playerShader, MapItem::BackgroundAsset, Color::BLUE, XMFLOAT3(0, 0, 5), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0.05, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(1, 1, 1))
 		);
 	//ljus
@@ -253,8 +253,8 @@ Application::Application(bool fullscreen, bool showCursor, int screenWidth, int 
 	player2BarPos[2] = DirectX::XMFLOAT2(-0.7f, -0.9f);
 	player2BarPos[3] = DirectX::XMFLOAT2(-0.7f, -1.0f);
 	player2->powerBar->SetPosition(player2BarPos);
-	player2->powerBar->SetMaterial(assetHandler->GetMaterial(d3dHandler->GetDevice(), "powerbar.dds"));
-	player1->powerBar->SetMaterial(assetHandler->GetMaterial(d3dHandler->GetDevice(), "powerbar.dds"));
+	player2->powerBar->SetMaterial(assetHandler->GetMaterial(d3dHandler->GetDevice(), "powerbar.dds", "", 0.0f));
+	player1->powerBar->SetMaterial(assetHandler->GetMaterial(d3dHandler->GetDevice(), "powerbar.dds", "", 0.0f));
 	// Combo bars, player1 & player2
 	// Player 1
 	DirectX::XMFLOAT2 player1Pos[4];
@@ -369,35 +369,35 @@ Application::Application(bool fullscreen, bool showCursor, int screenWidth, int 
 		player1, player2,
 		DirectX::XMFLOAT2(0, 0.4f),
 		DirectX::XMFLOAT2(0.1f, 0.1f),
-		assetHandler->GetMaterial(d3dHandler->GetDevice(), "start.dds")));
+		assetHandler->GetMaterial(d3dHandler->GetDevice(), "start.dds", "", 0.0f)));
 
 	startMenu->AddButton(new OptionsButton(
 		DirectX::XMFLOAT2(0, 0.0f),
 		DirectX::XMFLOAT2(0.1f, 0.1f),
-		assetHandler->GetMaterial(d3dHandler->GetDevice(), "options.dds")));
+		assetHandler->GetMaterial(d3dHandler->GetDevice(), "options.dds", "", 0.0f)));
 
 	startMenu->AddButton(new QuitButton(
 		DirectX::XMFLOAT2(0, -0.4f),
 		DirectX::XMFLOAT2(0.1f, 0.1f),
-		assetHandler->GetMaterial(d3dHandler->GetDevice(), "quit.dds")));
+		assetHandler->GetMaterial(d3dHandler->GetDevice(), "quit.dds", "", 0.0f)));
 
 	// Pause Menu
 	pauseMenu = new PauseMenu(d3dHandler->GetDevice());
 	pauseMenu->AddButton(new ContinueButton(
 		DirectX::XMFLOAT2(0, 0.4f),
 		DirectX::XMFLOAT2(0.1f, 0.1f),
-		assetHandler->GetMaterial(d3dHandler->GetDevice(), "continue.dds")));
+		assetHandler->GetMaterial(d3dHandler->GetDevice(), "continue.dds", "", 0.0f)));
 
 	pauseMenu->AddButton(new StartButton(entityHandler,
 		player1, player2,
 		DirectX::XMFLOAT2(0, 0.0f),
 		DirectX::XMFLOAT2(0.1f, 0.1f),
-		assetHandler->GetMaterial(d3dHandler->GetDevice(), "restart.dds")));
+		assetHandler->GetMaterial(d3dHandler->GetDevice(), "restart.dds", "", 0.0f)));
 
 	pauseMenu->AddButton(new QuitButton(
 		DirectX::XMFLOAT2(0, -0.4f),
 		DirectX::XMFLOAT2(0.1f, 0.1f),
-		assetHandler->GetMaterial(d3dHandler->GetDevice(), "quit.dds")));
+		assetHandler->GetMaterial(d3dHandler->GetDevice(), "quit.dds", "", 0.0f)));
 
 	// Restart Menu
 	restartMenu = new RestartMenu(d3dHandler->GetDevice());
@@ -406,12 +406,12 @@ Application::Application(bool fullscreen, bool showCursor, int screenWidth, int 
 		player1, player2,
 		DirectX::XMFLOAT2(0, 0.2f),
 		DirectX::XMFLOAT2(0.1f, 0.1f),
-		assetHandler->GetMaterial(d3dHandler->GetDevice(), "restart.dds")));
+		assetHandler->GetMaterial(d3dHandler->GetDevice(), "restart.dds", "", 0.0f)));
 
 	restartMenu->AddButton(new QuitButton(
 		DirectX::XMFLOAT2(0, -0.2f),
 		DirectX::XMFLOAT2(0.1f, 0.1f),
-		assetHandler->GetMaterial(d3dHandler->GetDevice(), "quit.dds")));
+		assetHandler->GetMaterial(d3dHandler->GetDevice(), "quit.dds", "", 0.0f)));
 
 
 

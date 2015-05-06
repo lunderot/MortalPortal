@@ -1,7 +1,6 @@
 #include <DirectXMath.h>
 #include <d3d11.h>
 
-
 class LightL
 {
 private:
@@ -26,20 +25,23 @@ private:
 protected:
 
 public:
-	void CreateLight(ID3D11Device* device);
-	void CreateLight(ID3D11Device* device, 
-				     DirectX::XMFLOAT3 position,
-					 DirectX::XMFLOAT3 ambient,
-					 DirectX::XMFLOAT3 diffuse, 
-					 DirectX::XMFLOAT3 specular, 
-					 float specularPow);
-	ID3D11Buffer* pointerToBufferL = nullptr;
-	LightL();
-	LightL(DirectX::XMFLOAT3 position,
+		LightL();
+	LightL(
+		DirectX::XMFLOAT3 position,
 		DirectX::XMFLOAT3 ambient,
 		DirectX::XMFLOAT3 diffuse,
 		DirectX::XMFLOAT3 specular,
 		float specularPow);
 	~LightL();
+	
+	void CreateLight(ID3D11Device* device);
+	void CreateLight(
+		ID3D11Device* device, 
+		DirectX::XMFLOAT3 position,
+		DirectX::XMFLOAT3 ambient,
+		DirectX::XMFLOAT3 diffuse, 
+		DirectX::XMFLOAT3 specular, 
+		float specularPow);
 
+	ID3D11Buffer* pointerToBufferL = nullptr;
 };
