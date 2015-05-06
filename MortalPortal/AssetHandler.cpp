@@ -84,19 +84,21 @@ void AssetHandler::LoadFile(ID3D11Device* device, std::string filename)
 		throw std::runtime_error("Failed to import file: " + filename);
 	}
 
+	const ImporterMesh* mesh = importer.getMesh();
+
 	unsigned int numVerticies = 0;
 	vector<VertexPositionTexCoordNormalBinormalTangent> vertexVec;
 
 	for (unsigned int meshID = 0; meshID < importer.getNumMeshes(); meshID++)
 	{
-		numVerticies += importer.getMesh(meshID)->indice_count;
+		numVerticies += mesh[meshID].indice_count;
 	}
 
 	vertexVec.reserve(numVerticies);
 
 	for (unsigned int meshID = 0; meshID < importer.getNumMeshes(); meshID++)
 	{			
-		constructVerticies(importer, meshID, vertexVec);
+		constructVerticies(importer, mesh[meshID], vertexVec);
 	}
 
 	D3D11_BUFFER_DESC bufferDesc;
@@ -115,66 +117,73 @@ void AssetHandler::LoadFile(ID3D11Device* device, std::string filename)
 
 	//Copy collision data
 	Collision* objectCollision = new Collision();
-
+	const ImporterNurb* spheres = importer.getNurb();
+	const ImporterTransform* transforms = importer.getTransform();
 	for (unsigned int i = 0; i < importer.getNumNurbs(); i++)
 	{
 		DirectX::XMFLOAT3 position;
 		float radius;
-		const Nurb* spheres = importer.getNurb(i);
+		const ImporterNurb* spheres = importer.getNurb();
 
-		for (unsigned int j = 0; j < spheres->numberOfParent; j++)
+		for (unsigned int j = 0; j < importer.getNumNurbs(); j++)
 		{
-			int parentID = spheres->parentID[j];
+			const ImporterNurb& thisSphere = spheres[j];
+			for (unsigned int k = 0; k < thisSphere.numberOfParent; k++)
+			{
 
-			const Transform* ParentTarnsform = importer.getTransform(parentID);
+				int parentID = thisSphere.ParentID[k];
 
-			position.x = ParentTarnsform->position[1];
-			position.y = ParentTarnsform->position[1];
-			position.z = ParentTarnsform->position[1];
-			radius = spheres[i].radius;
+				const ImporterTransform& ParentTarnsform = transforms[parentID];
 
-			objectCollision->spheres.push_back(CollisionSphere(position, radius, ParentTarnsform->name));
+				position.x = (float)ParentTarnsform.position[0];
+				position.y = (float)ParentTarnsform.position[1];
+				position.z = (float)ParentTarnsform.position[2];
+				radius = spheres[i].radius;
+
+				objectCollision->spheres.push_back(CollisionSphere(position, radius, ParentTarnsform.name));
+			}
 		}
 	}
 
 	geometry[filename] = new Geometry(vertexBuffer, numVerticies, objectCollision);
 
-
+	const ImporterMaterial* materials = importer.getMaterial();
 	for (unsigned int i = 0; i < importer.getNumMaterials(); i++)
 	{
 
-		const MaterialData* thisMaterial = importer.getMaterial(i);
-		if (thisMaterial->duffuse_map_length > 0)
+		const ImporterMaterial& thisMaterial = materials[i];
+		if (thisMaterial.duffuse_map_length > 0)
 		{
 			//Convert char* to LPCWSTR
-			std::string tmp = thisMaterial->diffuse_map;
+			std::string tmp = thisMaterial.diffuse_map;
 
-			material[filename + importer.getMaterial(i)->node_name] = new Material(textureHandler.LoadTexture(tmp, device));
+			material[filename + thisMaterial.name] = new Material(textureHandler.LoadTexture(tmp, device));
 		}
 	}
 
 }
 
-void AssetHandler::constructVerticies(Importer& importer, unsigned int meshID, vector<VertexPositionTexCoordNormalBinormalTangent>& vertexBuffer)
+void AssetHandler::constructVerticies(Importer& importer,const ImporterMesh& mesh, vector<VertexPositionTexCoordNormalBinormalTangent>& vertexBuffer)
 {
 	VertexPositionTexCoordNormalBinormalTangent vertex;
-	int heh = importer.getMesh(meshID)->transform_count;
-	for (int i = 0; i < importer.getMesh(meshID)->transform_count; i++)
+	const ImporterTransform* transforms = importer.getTransform();
+
+	for (unsigned int i = 0; i < mesh.transform_count; i++)
 	{
 		//float rotation[4] = { 0.0f, 0.0f, 0.0f, 0.0f };
 		float scale[3] = { 1.0f, 1.0f, 1.0f };
 		float position[3] = { 0.0f, 0.0f, 0.0f };
 
-		int parent = importer.getMesh(meshID)->transform_Id[i];
+		int parent = mesh.transform_Id[i];
 		while (parent != -1)
 		{
 			double pos[3];
 			double rotD[4];
 			double scaleD[3];
 
-			memcpy(pos, importer.getTransform(parent)->position, sizeof(double) * 3);
-			memcpy(rotD, importer.getTransform(parent)->rotation, sizeof(double) * 4);
-			memcpy(scaleD, importer.getTransform(parent)->scale, sizeof(double) * 3);
+			memcpy(pos, transforms[parent].position, sizeof(double) * 3);
+			memcpy(rotD, transforms[parent].rotation, sizeof(double) * 4);
+			memcpy(scaleD, transforms[parent].scale, sizeof(double) * 3);
 
 			float rot[4];
 
@@ -187,48 +196,52 @@ void AssetHandler::constructVerticies(Importer& importer, unsigned int meshID, v
 			position[1] += (float)pos[1];
 			position[2] += (float)pos[2];
 
-			DirectX::XMVECTOR Q1, Q2;
+			position[0] *= (float)scaleD[0];
+			position[1] *= (float)scaleD[1];
+			position[2] *= (float)scaleD[2];
+
+			DirectX::XMVECTOR Q1;
 			Q1 = DirectX::XMVectorSet(rot[0], rot[1], rot[2], rot[3]);
 			//Q2 = DirectX::XMVectorSet(rotation[0], rotation[1], rotation[2], rotation[3]);
 
 			//Q2 = DirectX::XMQuaternionMultiply(Q1, Q2);
 
-			DirectX::XMVECTOR posVec = DirectX::XMVectorSet(position[0], position[0], position[0], 1.0f);
+			DirectX::XMVECTOR posVec = DirectX::XMVectorSet(position[0], position[1], position[2], 1.0f);
 			DirectX::XMQuaternionMultiply(DirectX::XMQuaternionInverse(Q1), posVec);
 
 			DirectX::XMFLOAT3 tmp3;
 			DirectX::XMStoreFloat3(&tmp3, posVec);
-			position[0] += tmp3.x;
-			position[1] += tmp3.y;
-			position[2] += tmp3.z;
+			position[0] = tmp3.x;
+			position[1] = tmp3.y;
+			position[2] = tmp3.z;
 
-			position[0] *= scaleD[0];
-			position[1] *= scaleD[1];
-			position[2] *= scaleD[2];
+			//position[0] *= (float)scaleD[0];
+			//position[1] *= (float)scaleD[1];
+			//position[2] *= (float)scaleD[2];
 
-			parent = importer.getTransform(parent)->parentID;
+			parent = transforms[parent].parentID;
 		}
 
-		for (unsigned int j = 0; j < importer.getMesh(meshID)->indice_count; j++)
+		for (unsigned int j = 0; j < mesh.indice_count; j++)
 		{
-			unsigned int positionID = importer.getMesh(meshID)->vertices[j].position;
-			unsigned int uvID = importer.getMesh(meshID)->vertices[j].uv;
-			unsigned int normalID = importer.getMesh(meshID)->vertices[j].normal;
+			unsigned int positionID = mesh.vertices[j].position;
+			unsigned int uvID = mesh.vertices[j].uv;
+			unsigned int normalID = mesh.vertices[j].normal;
 
-			vertex.position[0] = (float)importer.getMesh(meshID)->position[positionID][0] + (float)position[0];
-			vertex.position[1] = (float)importer.getMesh(meshID)->position[positionID][1] + (float)position[1];
-			vertex.position[2] = (float)importer.getMesh(meshID)->position[positionID][2] + (float)position[2];
-
-			memcpy(vertex.texCoord, importer.getMesh(meshID)->uv[uvID], sizeof(float) * 2);
-			vertex.normal[0] = (float)importer.getMesh(meshID)->normal[normalID][0];
-			vertex.normal[1] = (float)importer.getMesh(meshID)->normal[normalID][1];
-			vertex.normal[2] = (float)importer.getMesh(meshID)->normal[normalID][2];
-			vertex.biNormal[0] = (float)importer.getMesh(meshID)->bi_tangent[normalID][0];
-			vertex.biNormal[1] = (float)importer.getMesh(meshID)->bi_tangent[normalID][1];
-			vertex.biNormal[2] = (float)importer.getMesh(meshID)->bi_tangent[normalID][2];
-			vertex.tangent[0] = (float)importer.getMesh(meshID)->tangent[normalID][0];
-			vertex.tangent[1] = (float)importer.getMesh(meshID)->tangent[normalID][1];
-			vertex.tangent[2] = (float)importer.getMesh(meshID)->tangent[normalID][2];
+			vertex.position[0] = ((float)mesh.position[positionID * 3 + 0] + (float)position[0]);// *scale[0];
+			vertex.position[1] = ((float)mesh.position[positionID * 3 + 1] + (float)position[1]);// *scale[1];
+			vertex.position[2] = ((float)mesh.position[positionID * 3 + 2] + (float)position[2]);// *scale[2];
+			vertex.texCoord[0] = mesh.uv[uvID * 2];
+			vertex.texCoord[1] = mesh.uv[uvID * 2 + 1];
+			vertex.normal[0] = (float)mesh.normal[normalID * 3 + 0];
+			vertex.normal[1] = (float)mesh.normal[normalID * 3 + 1];
+			vertex.normal[2] = (float)mesh.normal[normalID * 3 + 2];
+			vertex.biNormal[0] = (float)mesh.bi_tangent[j * 3 + 0];
+			vertex.biNormal[1] = (float)mesh.bi_tangent[j * 3 + 1];
+			vertex.biNormal[2] = (float)mesh.bi_tangent[j * 3 + 2];
+			vertex.tangent[0] = (float)mesh.tangent[j * 3 + 0];
+			vertex.tangent[1] = (float)mesh.tangent[j * 3 + 1];
+			vertex.tangent[2] = (float)mesh.tangent[j * 3 + 2];
 			vertexBuffer.push_back(vertex);
 		}
 	}

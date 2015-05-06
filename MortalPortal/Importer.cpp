@@ -10,21 +10,85 @@ Importer::Importer()
 	cameras = nullptr;
 	materials = nullptr;
 	lights = nullptr;
-	nurbs = nullptr;
+	//nurbs = nullptr;
 };
 
 Importer::~Importer()
 {
+	for (unsigned int i = 0; i < headers.group_count; i++)
+		delete[] transforms[i].name;
+
+	for (unsigned int i = 0; i < headers.mesh_count; i++)
+	{ 
+		delete[] meshes[i].position;
+		delete[] meshes[i].uv;
+		delete[] meshes[i].normal;
+		delete[] meshes[i].tangent;
+		delete[] meshes[i].bi_tangent;
+		delete[] meshes[i].transform_Id;
+		delete[] meshes[i].material_Id;
+		delete[] meshes[i].vertices;
+		delete[] meshes[i].name;
+	}
+
+	for (unsigned int i = 0; i < headers.camera_count; i++)
+	{
+		delete[] cameras[i].parentID;
+		delete[] cameras[i].name;
+	}
+
+	for (unsigned int i = 0; i < headers.material_count; i++)
+	{
+		delete[] materials[i].name;
+		if (materials[i].diffuse_map != nullptr)
+			delete[] materials[i].diffuse_map;
+		if (materials[i].normal_map != nullptr)
+			delete[] materials[i].normal_map;
+		if (materials[i].specular_map != nullptr)
+			delete[] materials[i].specular_map;
+	}
+
+	for (unsigned int i = 0; i < headers.light_count; i++)
+		delete[] lights[i].name;
+
+	for (unsigned int i = 0; i < headers.joint_count; i++)
+		delete[] joints[i].transform.name;
+
+	for (unsigned int i = 0; i < headers.nurb_count; i++)
+	{
+		delete[] nurbs[i].ParentID;
+		delete[] nurbs[i].name;
+	}
+
+	for (unsigned int i = 0; i < headers.morph_count; i++)
+	{
+		delete[] morph[i].positions;
+		delete[] morph[i].name;
+	}
+
+	for (unsigned int i = 0; i < headers.skin_count; i++)
+	{
+		delete[] skins[i].influenceIndices;
+		delete[] skins[i].Weights;
+	}
+
+	for (unsigned int i = 0; i < headers.anim_curve_count; i++)
+	{
+		delete[] Curves[i].keys;
+		delete[] Curves[i].curvaName;
+		delete[] Curves[i].attachToName;
+	}
+
 	delete[] transforms;
 	delete[] meshes;
 	delete[] cameras;
 	delete[] materials;
 	delete[] lights;
-	delete[] nurbs;
-
-	//delete[] spheres;
-	//delete[] models;
 	delete[] joints;
+	delete[] nurbs;
+	delete[] morph;
+	delete[] skins;
+	delete[] Curves;
 };
 
 bool Importer::importFile(string filePathAndName)
@@ -53,17 +117,17 @@ bool Importer::importFile(string filePathAndName)
 
 	if (!extractCameras(offset, fileData, fileByteSize)) return false;
 
-	if (!extractMeshes(offset, fileData, fileByteSize)) return false;
-
 	if (!extractLights(offset, fileData, fileByteSize)) return false;
 
 	if (!extractNurb(offset, fileData, fileByteSize)) return false;
 
-	//if (!constructVerticiesAndGeometry()) return false;
+	if (!extractMeshes(offset, fileData, fileByteSize)) return false;
 
-	//if (!constructModels()) return false;
+	if (!extractMorphs(offset, fileData, fileByteSize)) return false;
 
-	//if (!constructSpere()) return false;
+	if (!extractSkinAnimations(offset, fileData, fileByteSize)) return false;
+
+	if (!extractKeys(offset, fileData, fileByteSize)) return false;
 
 	delete fileData;
 
@@ -83,25 +147,25 @@ bool Importer::extractMainHeader(unsigned int& offset, char* fileData, unsigned 
 
 bool Importer::extractTransforms(unsigned int& offset, char* fileData, unsigned int& fileSize)
 {
-	transforms = new Transform[headers.group_count];
+	transforms = new ImporterTransform[headers.group_count];
 	for (unsigned int i = 0; i < headers.group_count; i++)
 	{
-		if ((sizeof(Transform) - sizeof(char*)) > fileSize - offset)
+		if (sizeof(TransformData) > fileSize - offset)
 			return false;
 
-		memcpy(&transforms[i], &fileData[offset], sizeof(Transform) - sizeof(char*));
-		offset += sizeof(Transform) - sizeof(char*) - 4;
+		memcpy(&transforms[i], &fileData[offset], sizeof(TransformData));
+		offset += sizeof(TransformData);
 
 		if (transforms[i].name_Length > fileSize - offset)
 			return false;
 
 		char* node_name = new char[transforms[i].name_Length + 1];
 		node_name[transforms[i].name_Length] = '\0';
+	
+		memcpy((char*)node_name, &fileData[offset], transforms[i].name_Length);
 		transforms[i].name = node_name;
 
-		memcpy((char*)transforms[i].name, &fileData[offset], transforms[i].name_Length);
-
-		offset += transforms[i].name_Length;
+		offset += transforms[i].name_Length;	
 	}
 
 	return true;
@@ -109,70 +173,43 @@ bool Importer::extractTransforms(unsigned int& offset, char* fileData, unsigned 
 
 bool Importer::extractMeshes(unsigned int& offset, char* fileData, unsigned int& fileSize)
 {
-
-	unsigned int test1 = sizeof(meshStruct);
-	unsigned int test2 = sizeof(unsigned int);
-	unsigned int test3 = sizeof(bool);
-	unsigned int test4 = sizeof(double**);
-	unsigned int test5 = sizeof(float**);
-	unsigned int test6 = sizeof(int*);
-	unsigned int test7 = sizeof(Vertex*);
-	unsigned int test8 = sizeof(const char*);
-
-
-	meshes = new meshStruct[headers.mesh_count];
+	meshes = new ImporterMesh[headers.mesh_count];
 	for (unsigned int i = 0; i < headers.mesh_count; i++)
 	{
-		memcpy(&meshes[i], &fileData[offset], sizeof(meshStruct) - sizeof(char*) * 9 - 3);
-		offset += sizeof(meshStruct) - sizeof(char*) * 9 + 1;
+		if (sizeof(meshStructData) > fileSize - offset)
+			return false;
+		memcpy(&meshes[i], &fileData[offset], sizeof(meshStructData));
+		offset += sizeof(meshStructData);
 
-		meshes[i].position = new double*[meshes[i].position_count];
-		for (unsigned int j = 0; j < meshes[i].position_count; j++)
-		{
-			meshes[i].position[j] = new double[3];
-			double test[3];
-			memcpy((char*)test, &fileData[offset], 3 * sizeof(double));
-			meshes[i].position[j][0] = test[0];
-			meshes[i].position[j][1] = test[1];
-			meshes[i].position[j][2] = test[2];
-			offset += 3 * sizeof(double);
-		}
+		if (meshes[i].position_count * 3 * sizeof(double) > fileSize - offset)
+			return false;
+		meshes[i].position = new double[meshes[i].position_count * 3];
+		memcpy(meshes[i].position, &fileData[offset], meshes[i].position_count * 3 * sizeof(double));
+		offset += meshes[i].position_count * 3 * sizeof(double);
 
-		meshes[i].uv = new float*[meshes[i].uv_count];
-		for (unsigned int j = 0; j < meshes[i].uv_count; j++)
-		{
-			meshes[i].uv[j] = new float[2];
+		if (meshes[i].uv_count * 2 * sizeof(float) > fileSize - offset)
+			return false;
+		meshes[i].uv = new float[meshes[i].uv_count * 2];
+		memcpy(meshes[i].uv, &fileData[offset], meshes[i].uv_count * 2 * sizeof(float));
+		offset += meshes[i].uv_count * 2 * sizeof(float);
 
-			memcpy((char*)meshes[i].uv[j], &fileData[offset], 2 * sizeof(float));
-			offset += 2 * sizeof(float);
-		}
+		if (meshes[i].normal_count * 3 * sizeof(double) > fileSize - offset)
+			return false;
+		meshes[i].normal = new double[meshes[i].normal_count * 3];
+		memcpy(meshes[i].normal, &fileData[offset], meshes[i].normal_count * 3 * sizeof(double));
+		offset += meshes[i].normal_count * 3 * sizeof(double);
 
-		meshes[i].normal = new double*[meshes[i].normal_count];
-		for (unsigned int j = 0; j < meshes[i].normal_count; j++)
-		{
-			meshes[i].normal[j] = new double[3];
+		if (meshes[i].tangent_count * 3 * sizeof(double) > fileSize - offset)
+			return false;
+		meshes[i].tangent = new double[meshes[i].tangent_count * 3];
+		memcpy(meshes[i].tangent, &fileData[offset], meshes[i].tangent_count * 3 * sizeof(double));
+		offset += meshes[i].tangent_count * 3 * sizeof(double);
 
-			memcpy((char*)meshes[i].normal[j], &fileData[offset], 3 * sizeof(double));
-			offset += 3 * sizeof(double);
-		}
-
-		meshes[i].tangent = new double*[meshes[i].tangent_count];
-		for (unsigned int j = 0; j < meshes[i].tangent_count; j++)
-		{
-			meshes[i].tangent[j] = new double[3];
-
-			memcpy((char*)meshes[i].tangent[j], &fileData[offset], 3 * sizeof(double));
-			offset += 3 * sizeof(double);
-		}
-
-		meshes[i].bi_tangent = new double*[meshes[i].biTangent_count];
-		for (unsigned int j = 0; j < meshes[i].biTangent_count; j++)
-		{
-			meshes[i].bi_tangent[j] = new double[3];
-
-			memcpy((char*)meshes[i].bi_tangent[j], &fileData[offset], 3 * sizeof(double));
-			offset += 3 * sizeof(double);
-		}
+		if (meshes[i].biTangent_count * 3 * sizeof(double) > fileSize - offset)
+			return false;
+		meshes[i].bi_tangent = new double[meshes[i].biTangent_count * 3];
+		memcpy(meshes[i].bi_tangent, &fileData[offset], meshes[i].biTangent_count * 3 * sizeof(double));
+		offset += meshes[i].biTangent_count * 3 * sizeof(double);
 
 		meshes[i].vertices = new Vertex[meshes[i].indice_count];
 		meshes[i].material_Id = new int[meshes[i].material_count];
@@ -180,16 +217,22 @@ bool Importer::extractMeshes(unsigned int& offset, char* fileData, unsigned int&
 		char* name = new char[meshes[i].name_length + 1];
 		name[meshes[i].name_length] = '\0';
 
-		memcpy((char*)meshes[i].transform_Id, &fileData[offset], meshes[i].transform_count * sizeof(int));
+		if (meshes[i].transform_count * sizeof(int) > fileSize - offset)
+			return false;
+		memcpy(meshes[i].transform_Id, &fileData[offset], meshes[i].transform_count * sizeof(int));
 		offset += meshes[i].transform_count * sizeof(int);
 
-		memcpy((char*)meshes[i].material_Id, &fileData[offset], meshes[i].material_count * sizeof(int));
+		if (meshes[i].material_count * sizeof(int) > fileSize - offset)
+			return false;
+		memcpy(meshes[i].material_Id, &fileData[offset], meshes[i].material_count * sizeof(int));
 		offset += meshes[i].material_count * sizeof(int);
 
-		memcpy((char*)meshes[i].vertices, &fileData[offset], meshes[i].indice_count * sizeof(Vertex));
+		if (meshes[i].indice_count * sizeof(Vertex) > fileSize - offset)
+			return false;
+		memcpy(meshes[i].vertices, &fileData[offset], meshes[i].indice_count * sizeof(Vertex));
 		offset += meshes[i].indice_count * sizeof(Vertex);
 
-		memcpy((char*)name, &fileData[offset], meshes[i].name_length);
+		memcpy(name, &fileData[offset], meshes[i].name_length);
 		meshes[i].name = name;
 		offset += meshes[i].name_length;
 
@@ -200,25 +243,30 @@ bool Importer::extractMeshes(unsigned int& offset, char* fileData, unsigned int&
 
 bool Importer::extractCameras(unsigned int& offset, char* fileData, unsigned int& fileSize)
 {
-	cameras = new camera[headers.camera_count];
+	cameras = new ImporterCamera[headers.camera_count];
 	for (unsigned int i = 0; i < headers.camera_count; i++)
 	{
-		memcpy(&cameras[i], &fileData[offset], sizeof(camera) - sizeof(char*) - sizeof(unsigned int*));
-		offset += sizeof(camera) - sizeof(char*) - 4;
+		if (sizeof(cameraData) > fileSize - offset)
+			return false;
+		memcpy(&cameras[i], &fileData[offset], sizeof(cameraData));
+		offset += sizeof(cameraData);
 
+		if (sizeof(unsigned int) * cameras[i].nrOfParents > fileSize - offset)
+			return false;
 		cameras[i].parentID = new unsigned int[cameras[i].nrOfParents];
 		memcpy(cameras[i].parentID, &fileData[offset], sizeof(int) * cameras[i].nrOfParents);
 		offset += sizeof(unsigned int) * cameras[i].nrOfParents;
 
-		char* node_name = new char[cameras[i].name_length + 1];
-		node_name[cameras[i].name_length] = '\0';
-		cameras[i].name = node_name;
+		if (cameras[i].name_length > fileSize - offset)
+			return false;
+		char* name = new char[cameras[i].name_length + 1];
+		name[cameras[i].name_length] = '\0';
+		
+		memcpy(name, &fileData[offset], cameras[i].name_length);
 
-		memcpy((char*)cameras[i].name, &fileData[offset], cameras[i].name_length);
+		cameras[i].name = name;
 
 		offset += cameras[i].name_length;
-
-		cameras[i] = cameras[i];
 	}
 
 	return true;
@@ -226,22 +274,43 @@ bool Importer::extractCameras(unsigned int& offset, char* fileData, unsigned int
 
 bool Importer::extractMaterials(unsigned int& offset, char* fileData, unsigned int& fileSize)
 {
-	materials = new MaterialData[headers.material_count];
+	materials = new ImporterMaterial[headers.material_count];
+	
 	for (unsigned int i = 0; i < headers.material_count; i++)
 	{
-		memcpy(&materials[i], &fileData[offset], sizeof(MaterialData) - sizeof(const char*) * 4);
-		offset += sizeof(MaterialData) - sizeof(const char*) * 4;
-		char* node_name = new char[materials[i].name_length + 1];
-		node_name[materials[i].name_length] = '\0';
+		if (sizeof(MaterialData) > fileSize - offset)
+			return false;
+		memcpy(&materials[i], &fileData[offset], sizeof(MaterialData));
+		offset += sizeof(MaterialData);
 
-		materials[i].node_name = node_name;
+		if (materials[i].name_length > fileSize - offset)
+			return false;
+		char* name = new char[materials[i].name_length + 1];
+		name[materials[i].name_length] = '\0';
 
-		memcpy((char*)materials[i].node_name, &fileData[offset], materials[i].name_length);
+		memcpy(name, &fileData[offset], materials[i].name_length);
 		offset += materials[i].name_length;
+		materials[i].name = name;
 
+	/*	memcpy(materials[i].ambient, materials[i].ambient, sizeof(matData.ambient));
+		memcpy(materials[i].diffuse, materials[i].diffuse, sizeof(matData.diffuse));
+		memcpy(materials[i].incandescence, materials[i].incandescence, sizeof(matData.incandescence));
+		memcpy(materials[i].reflection, materials[i].reflection, sizeof(matData.reflection));
+		memcpy(materials[i].specular, matData.specular, sizeof(matData.specular));
+		memcpy(materials[i].transparency_color, matData.transparency_color, sizeof(matData.transparency_color));
+
+		materials[i].mtrl_type = matData.mtrl_type;	
+		materials[i].diffuse_factor = matData.diffuse_factor;
+		materials[i].shininess = matData.shininess;
+		materials[i].normal_depth = matData.normal_depth;
+		materials[i].reflection_factor = matData.reflection_factor;
+		materials[i].specular_factor = matData.specular_factor;*/
 
 		if (materials[i].duffuse_map_length != 0)
 		{
+			if (materials[i].duffuse_map_length > fileSize - offset)
+				return false;
+
 			char* diffuse_map = new char[materials[i].duffuse_map_length + 1];
 			diffuse_map[materials[i].duffuse_map_length] = '\0';
 
@@ -257,6 +326,9 @@ bool Importer::extractMaterials(unsigned int& offset, char* fileData, unsigned i
 
 		if (materials[i].normal_map_length != 0)
 		{
+			if (materials[i].normal_map_length > fileSize - offset)
+				return false;
+
 			char* normal_map = new char[materials[i].normal_map_length + 1];
 			normal_map[materials[i].normal_map_length] = '\0';
 
@@ -272,6 +344,9 @@ bool Importer::extractMaterials(unsigned int& offset, char* fileData, unsigned i
 
 		if (materials[i].specular_map_length != 0)
 		{
+			if (materials[i].specular_map_length > fileSize - offset)
+				return false;
+
 			char* specular_map = new char[materials[i].specular_map_length + 1];
 			specular_map[materials[i].specular_map_length] = '\0';
 
@@ -291,17 +366,21 @@ bool Importer::extractMaterials(unsigned int& offset, char* fileData, unsigned i
 
 bool Importer::extractLights(unsigned int& offset, char* fileData, unsigned int& fileSize)
 {
-	lights = new Light[headers.light_count];
+	lights = new ImporterLight[headers.light_count];
 	for (unsigned int i = 0; i < headers.light_count; i++)
 	{
-		memcpy(&lights[i], &fileData[offset], sizeof(Light) - sizeof(char*));
-		offset += sizeof(Light) - sizeof(char*) - 4;
+		if (sizeof(LightData) > fileSize - offset)
+			return false;
+		memcpy(&lights[i], &fileData[offset], sizeof(LightData));
+		offset += sizeof(LightData);
 
+		if (lights[i].name_Length > fileSize - offset)
+			return false;
 		char* name = new char[lights[i].name_Length + 1];
 		name[lights[i].name_Length] = '\0';
+		
+		memcpy(name, &fileData[offset], lights[i].name_Length);
 		lights[i].name = name;
-
-		memcpy((char*)lights[i].name, &fileData[offset], lights[i].name_Length);
 
 		offset += lights[i].name_Length;
 	}
@@ -311,18 +390,21 @@ bool Importer::extractLights(unsigned int& offset, char* fileData, unsigned int&
 
 bool Importer::extractJoint(unsigned int& offset, char* fileData, unsigned int& fileSize)
 {
-	joints = new Joint[headers.joint_count];
+	joints = new ImporterJoint[headers.joint_count];
 	for (unsigned int i = 0; i < headers.joint_count; i++)
 	{
-		memcpy(&joints[i], &fileData[offset], sizeof(Joint) - sizeof(char*));
-		offset += sizeof(Joint) - sizeof(char*) - 4;
+		if (sizeof(JointData)> fileSize - offset)
+			return false;
+		memcpy(&joints[i], &fileData[offset], sizeof(JointData));
+		offset += sizeof(JointData);
 
+		if (joints[i].transform.name_Length > fileSize - offset)
+			return false;
 		char* name = new char[joints[i].transform.name_Length + 1];
-		name[joints[i].transform.name_Length] = '\0';
+		name[joints[i].transform.name_Length] = '\0';	
+
+		memcpy(name, &fileData[offset], joints[i].transform.name_Length);
 		joints[i].transform.name = name;
-
-		memcpy((char*)joints[i].transform.name, &fileData[offset], joints[i].transform.name_Length);
-
 		offset += joints[i].transform.name_Length;
 	}
 
@@ -331,22 +413,27 @@ bool Importer::extractJoint(unsigned int& offset, char* fileData, unsigned int& 
 
 bool Importer::extractNurb(unsigned int& offset, char* fileData, unsigned int& fileSize)
 {
-	unsigned int test = sizeof(Nurb);
-	nurbs = new Nurb[headers.nurb_count];
+	nurbs = new ImporterNurb[headers.nurb_count];
 	for (unsigned int i = 0; i < headers.nurb_count; i++)
 	{
-		memcpy(&nurbs[i], &fileData[offset], sizeof(Nurb) - sizeof(char*) - sizeof(int*));
-		offset += sizeof(Nurb) - sizeof(char*) - sizeof(int*) + 4;
+		if (sizeof(NurbData) > fileSize - offset)
+			return false;
+		memcpy(&nurbs[i], &fileData[offset], sizeof(NurbData));
+		offset += sizeof(NurbData);
 
-		nurbs[i].parentID = new int[nurbs[i].numberOfParent];
-		memcpy(nurbs[i].parentID, &fileData[offset], nurbs[i].numberOfParent * sizeof(int));
+		if (nurbs[i].numberOfParent * sizeof(int)> fileSize - offset)
+			return false;
+		nurbs[i].ParentID = new int[nurbs[i].numberOfParent];
+		memcpy(nurbs[i].ParentID, &fileData[offset], nurbs[i].numberOfParent * sizeof(int));
 		offset += nurbs[i].numberOfParent * sizeof(int);
 
+		if (nurbs[i].name_Length > fileSize - offset)
+			return false;
 		char* name = new char[nurbs[i].name_Length + 1];
 		name[nurbs[i].name_Length] = '\0';
+		
+		memcpy(name, &fileData[offset], nurbs[i].name_Length);
 		nurbs[i].name = name;
-
-		memcpy((char*)nurbs[i].name, &fileData[offset], nurbs[i].name_Length);
 
 		offset += nurbs[i].name_Length;
 	}
@@ -354,111 +441,93 @@ bool Importer::extractNurb(unsigned int& offset, char* fileData, unsigned int& f
 	return true;
 }
 
+bool Importer::extractMorphs(unsigned int& offset, char* fileData, unsigned int& fileSize)
+{
+	morph = new ImporterMorphAnimation[headers.morph_count];
+	for (unsigned int i = 0; i < headers.morph_count; i++)
+	{
+		if (sizeof(MorphAnimationData) > fileSize - offset)
+			return false;
+		memcpy(&morph[i], &fileData[offset], sizeof(MorphAnimationData));
+		offset += sizeof(MorphAnimationData);
+
+		if (morph[i].nrOfPositions * 3 * sizeof(double)> fileSize - offset)
+			return false;
+		morph[i].positions = new double[morph[i].nrOfPositions * 3];
+		memcpy((char*)morph[i].positions, &fileData[offset], morph[i].nrOfPositions * 3 * sizeof(double));
+		offset += morph[i].nrOfPositions * 3 * sizeof(double);
+
+		if (morph[i].blendShape_name_length > fileSize - offset)
+			return false;
+		char* name = new char[morph[i].blendShape_name_length + 1];
+		name[morph[i].blendShape_name_length] = '\0';
+		memcpy(name, &fileData[offset], morph[i].blendShape_name_length);
+		morph[i].name = name;
+
+		offset += morph[i].blendShape_name_length;
+	}
+	return true;
+}
+
+bool Importer::extractSkinAnimations(unsigned int& offset, char* fileData, unsigned int& fileSize)
+{
+	skins = new ImporterWeights[headers.skin_count];
+	for (unsigned int i = 0; i < headers.skin_count; i++)
+	{
+		if (sizeof(SkinAnimation)> fileSize - offset)
+			return false;
+		memcpy(&skins[i], &fileData[offset], sizeof(SkinAnimation));
+		offset += sizeof(SkinAnimation);
+		
+		if (skins[i].numberOfInfluences * sizeof(int) > fileSize - offset)
+			return false;
+		skins[i].influenceIndices = new int[skins[i].numberOfInfluences];
+		memcpy(&skins[i].influenceIndices, &fileData[offset], skins[i].numberOfInfluences * sizeof(int));
+		offset += skins[i].numberOfInfluences * sizeof(int);
+
+		if (skins[i].skinVertexCount * sizeof(VertexInfluence) > fileSize - offset)
+			return false;
+		skins[i].Weights = new VertexInfluence[skins[i].skinVertexCount];
+		memcpy(&skins[i].Weights, &fileData[offset], skins[i].skinVertexCount * sizeof(VertexInfluence));
+		offset += skins[i].skinVertexCount * sizeof(VertexInfluence);
+	}
+	return true;
+}
+
+bool Importer::extractKeys(unsigned int& offset, char* fileData, unsigned int& fileSize)
+{
+	Curves = new ImporterKeyframes[headers.anim_curve_count];
+	for (unsigned int i = 0; i < headers.anim_curve_count; i++)
+	{
+		if (sizeof(KeyframesData) > fileSize - offset)
+			return false;
+		memcpy(&Curves[i], &fileData[offset], sizeof(KeyframesData));
+		offset += sizeof(KeyframesData);
+
+		if (Curves[i].numberOfKeyframes * sizeof(KeyframePoint) > fileSize - offset)
+			return false;
+		Curves[i].keys = new KeyframePoint[Curves[i].numberOfKeyframes];
+		memcpy(&Curves[i].keys, &fileData[offset], Curves[i].numberOfKeyframes * sizeof(KeyframePoint));
+		offset += Curves[i].numberOfKeyframes * sizeof(KeyframePoint);
+
+		if (Curves[i].curveNameLength > fileSize - offset)
+			return false;
+		char* name = new char[Curves[i].curveNameLength + 1];
+		name[Curves[i].curveNameLength] = '\0';
+		memcpy(name, &fileData[offset], Curves[i].curveNameLength);
+		Curves[i].curvaName = name;
+		offset += Curves[i].curveNameLength;
 
 
-//bool Importer::constructModels()
-//{
-//	for (unsigned int i = 0; i < headers.mesh_count; i++)
-//		numModels += meshes[i].transform_count;
-//
-//	models = new ModelData[numModels];
-//
-//	int modelID = 0;
-//
-//	for (unsigned int i = 0; i < headers.mesh_count; i++)
-//	{
-//		for (unsigned int j = 0; j < meshes[i].transform_count; j++)
-//		{
-//			int parent = meshes[i].transform_Id[j];
-//
-//			while (parent != -1)
-//			{
-//				double pos[3];
-//				double rotD[4];
-//				double scale[3];
-//
-//				memcpy(pos, transforms[parent].position, sizeof(double) * 3);
-//				memcpy(rotD, transforms[parent].rotation, sizeof(double) * 4);
-//				memcpy(scale, transforms[parent].scale, sizeof(double) * 3);
-//
-//				float rot[4];
-//
-//				rot[0] = (float)rotD[0];
-//				rot[1] = (float)rotD[1];
-//				rot[2] = (float)rotD[2];
-//				rot[3] = (float)rotD[3];
-//
-//
-//				models[modelID].position[0] += pos[0];
-//				models[modelID].position[1] += pos[1];
-//				models[modelID].position[2] += pos[2];
-//
-//				DirectX::XMVECTOR Q1, Q2;
-//				Q1 = DirectX::XMVectorSet(rot[0], rot[1], rot[2], rot[3]);
-//				Q2 = DirectX::XMVectorSet(models[modelID].rotation[0], models[modelID].rotation[1], models[modelID].rotation[2], models[modelID].rotation[3]);
-//
-//				Q2 = DirectX::XMQuaternionMultiply(Q1, Q2);
-//
-//
-//				DirectX::XMFLOAT4 tmp;
-//				DirectX::XMStoreFloat4(&tmp, Q2);
-//				models[modelID].rotation[0] = tmp.x;
-//				models[modelID].rotation[1] = tmp.y;
-//				models[modelID].rotation[2] = tmp.z;
-//				models[modelID].rotation[3] = tmp.w;
-//
-//
-//				models[modelID].scale[0] *= scale[0];
-//				models[modelID].scale[1] *= scale[1];
-//				models[modelID].scale[2] *= scale[2];
-//
-//				parent = transforms[parent].parentID;
-//			}
-//
-//			models[modelID].MeshID = i;
-//			models[modelID].MaterialID = j;
-//
-//			modelID++;
-//		}
-//	}
-//
-//	return true;
-//}
-
-//bool Importer::constructSpere()
-//{
-//	for (unsigned int i = 0; i < headers.nurb_count; i++)
-//		numSpheres += nurbs[i].numberOfParent;
-//
-//	spheres = new BoundingSphere[numSpheres];
-//
-//	unsigned int sphereID = 0;
-//
-//	for (unsigned int i = 0; i < headers.nurb_count; i++)
-//	{
-//		for (unsigned int j = 0; j < nurbs[i].numberOfParent; j++)
-//		{
-//			int parent = nurbs[i].parentID[j];
-//
-//			while (parent != -1)
-//			{
-//				double pos[3];
-//
-//				memcpy(pos, transforms[parent].position, sizeof(double) * 3);
-//
-//				spheres[sphereID].position[0] += pos[0];
-//				spheres[sphereID].position[1] += pos[1];
-//				spheres[sphereID].position[2] += pos[2];
-//
-//				parent = transforms[parent].parentID;;
-//			}
-//			spheres[sphereID].radius = nurbs[i].radius;
-//			sphereID++;
-//		}
-//	}
-//
-//	return true;
-//}
+		if (Curves[i].attachToNameLength > fileSize - offset)
+			return false;
+		Curves[i].attachToName = new char[Curves[i].attachToNameLength + 1];
+		Curves[i].attachToName[Curves[i].attachToNameLength] = '\0';
+		memcpy(Curves[i].attachToName, &fileData[offset], Curves[i].attachToNameLength);
+		offset += Curves[i].attachToNameLength;
+	}
+	return true;
+}
 
 unsigned int Importer::getNumTransforms() const
 {
@@ -490,90 +559,67 @@ unsigned int Importer::getNumNurbs() const
 	return headers.nurb_count;
 }
 
-const Transform* Importer::getTransform(unsigned int ID) const
+unsigned int Importer::getNumMorph() const
 {
-	if (0 <= ID && ID < headers.group_count)
-	{
-		return &transforms[ID];
-	}
-	else
-		return nullptr;
+	return headers.morph_count;
 }
 
-const meshStruct* Importer::getMesh(unsigned int ID) const
+unsigned int Importer::getNumWeights() const
 {
-	if (0 <= ID && ID < headers.mesh_count)
-	{
-		return &meshes[ID];
-	}
-	else
-		return nullptr;
+	return headers.skin_count;
 }
 
-const camera* Importer::getCamera(unsigned int ID) const
+unsigned int Importer::getNumCurves() const
 {
-	if (0 <= ID && ID < headers.camera_count)
-	{
-		return &cameras[ID];
-	}
-	else
-		return nullptr;
+	return headers.anim_curve_count;
 }
 
-const MaterialData* Importer::getMaterial(unsigned int ID) const
+const ImporterTransform* Importer::getTransform() const
 {
-	if (0 <= ID && ID < headers.material_count)
-	{
-		return &materials[ID];
-	}
-	else
-		return nullptr;
+	return transforms;
 }
 
-const Light* Importer::getLight(unsigned int ID) const
+const ImporterMesh* Importer::getMesh() const
 {
-	if (0 <= ID && ID < headers.light_count)
-	{
-		return &lights[ID];
-	}
-	else
-		return nullptr;
+	return meshes;
 }
 
-const Joint* Importer::getJoint(unsigned int ID) const
+const ImporterCamera* Importer::getCamera() const
 {
-	if (0 <= ID && ID < headers.joint_count)
-	{
-		return &joints[ID];
-	}
-	else
-		return nullptr;
+	return cameras;
 }
 
-const Nurb* Importer::getNurb(unsigned int ID) const
+const ImporterMaterial* Importer::getMaterial() const
 {
-	if (0 <= ID && ID < headers.nurb_count)
-	{
-		return &nurbs[ID];
-	}
-	else
-		return nullptr;
+	return materials;
 }
 
-//const BoundingSphere* Importer::getBoundingSphere() const
-//{
-//	if (numSpheres != 0)
-//		return spheres;
-//	else
-//		return nullptr;
-//}
+const ImporterLight* Importer::getLight() const
+{
+	return lights;
+}
 
-//const ModelData* Importer::getModels() const
-//{
-//	return models;
-//}
+const ImporterJoint* Importer::getJoint() const
+{
+	return joints;
+}
 
-//unsigned int Importer::getNumModels() const
-//{
-//	return numModels;
-//}
+const ImporterNurb* Importer::getNurb() const
+{
+	return nurbs;
+}
+
+const ImporterMorphAnimation* Importer::getMorph() const
+{
+	return morph;
+}
+
+const ImporterWeights* Importer::getWeights() const
+{
+	return skins;
+}
+
+const ImporterKeyframes* Importer::getCurves() const
+{
+	return Curves;
+}

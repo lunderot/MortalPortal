@@ -38,6 +38,6 @@ private:
 	//Geometry* LoadGeometry(ID3D11Device* device, std::string filename);
 
 	void LoadFile(ID3D11Device* device, std::string filename);
-	void AssetHandler::constructVerticies(Importer& importer, unsigned int meshID, vector<VertexPositionTexCoordNormalBinormalTangent>& vertexBuffer);
+	void constructVerticies(Importer& importer,const ImporterMesh& mesh, vector<VertexPositionTexCoordNormalBinormalTangent>& vertexBuffer);
 };
 

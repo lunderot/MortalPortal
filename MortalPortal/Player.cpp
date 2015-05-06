@@ -10,7 +10,7 @@ Player::Player(ID3D11Device* device, Geometry* geometry, Material* material, Mat
 	DirectX::XMFLOAT3 acceleration,
 	DirectX::XMFLOAT3 rotation,
 	DirectX::XMFLOAT3 scale
-	) : Entity(geometry, material, shader, position, velocity, acceleration, rotation, scale)
+	) : Entity(geometry, material, shader, position, velocity, angleVelocity, acceleration, rotation, scale)
 
 { 
 	this->switchMaterial = switchMaterial;
@@ -114,20 +114,16 @@ void Player::Update(float deltaTime)
 {
 	Entity::Update(deltaTime);
 
-
-
 	for (std::vector<CollisionSphere>::iterator Sphere = geometry->GetCollision()->spheres.begin(); Sphere != geometry->GetCollision()->spheres.end(); Sphere++)
 	{
-		for (int i = 0; i < 4; i++)
-		{
 			if (position.x + Sphere->position.x - Sphere->radius < -30)
 			{
-				position.x = -30 - Sphere->position.y + Sphere->radius;
+				position.x = -30 - Sphere->position.x + Sphere->radius;
 				velocity.x = 0;
 			}
 			else if (position.x + Sphere->position.x + Sphere->radius > 30)
 			{
-				position.x = 30 - Sphere->position.y - Sphere->radius;
+				position.x = 30 - Sphere->position.x - Sphere->radius;
 				velocity.x = 0;
 			}
 
@@ -136,12 +132,11 @@ void Player::Update(float deltaTime)
 				position.y = -14 - Sphere->position.y + Sphere->radius;
 				velocity.y = 0;
 			}
-			if (position.y + Sphere->position.y + Sphere->radius > 14)
+			else if (position.y + Sphere->position.y + Sphere->radius > 14)
 			{
 				position.y = 14 - Sphere->position.y - Sphere->radius;
 				velocity.y = 0;
 			}
-		}
 	}
 
 	slowDownAccelerationTimer -= deltaTime;
