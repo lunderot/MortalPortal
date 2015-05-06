@@ -171,13 +171,13 @@ Application::Application(bool fullscreen, bool showCursor, int screenWidth, int 
 	player2->powerUpDisplayText->setMaterial(playerPowerUpDisplayMat);
 
 	// Particles testing area
-	particle = new Particle(1, 50, assetHandler->GetMaterial(d3dHandler->GetDevice(), "powerbar.dds"), d3dHandler->GetDevice());
-	particle2 = new Particle(1, 20, assetHandler->GetMaterial(d3dHandler->GetDevice(), "powerbar.dds"), d3dHandler->GetDevice());
-	particlePowerBar1 = new Particle(2, 300, assetHandler->GetMaterial(d3dHandler->GetDevice(), "powerbar.dds"), d3dHandler->GetDevice());
+	particle = new Particle(1, 50, assetHandler->GetMaterial(d3dHandler->GetDevice(), "powerbar.dds", "", 0.0f), d3dHandler->GetDevice());
+	particle2 = new Particle(1, 20, assetHandler->GetMaterial(d3dHandler->GetDevice(), "powerbar.dds", "", 0.0f), d3dHandler->GetDevice());
+	particlePowerBar1 = new Particle(2, 300, assetHandler->GetMaterial(d3dHandler->GetDevice(), "powerbar.dds", "", 0.0f), d3dHandler->GetDevice());
 	particlePowerBar1->constantBufferData.reset = false;
 	particlePowerBar1->constantBufferData.lifeTime = 20;
 
-	particlePowerBar2 = new Particle(2, 300, assetHandler->GetMaterial(d3dHandler->GetDevice(), "powerbar.dds"), d3dHandler->GetDevice());
+	particlePowerBar2 = new Particle(2, 300, assetHandler->GetMaterial(d3dHandler->GetDevice(), "powerbar.dds", "", 0.0f), d3dHandler->GetDevice());
 	particlePowerBar2->constantBufferData.reset = false;
 	particlePowerBar2->constantBufferData.lifeTime = 20;
 
@@ -244,7 +244,7 @@ Application::Application(bool fullscreen, bool showCursor, int screenWidth, int 
 		//assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/test.bin"),
 		assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/Earth.bin"),
 		assetHandler->GetMaterial(d3dHandler->GetDevice(), "b.dds", "normalmap.dds", 0.0f),
-		playerShader, MapItem::BackgroundAsset, Color::BLUE, XMFLOAT3(0, 0, 5), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0.05, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(1, 1, 1))
+		playerShader, MapItem::BackgroundAsset, Color::BLUE, XMFLOAT3(0, 0, 5), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 2, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(1, 1, 1))
 		);
 	//ljus
 	// ljus objekt
