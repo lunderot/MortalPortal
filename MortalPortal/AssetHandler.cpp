@@ -35,39 +35,38 @@ Geometry* AssetHandler::GetGeometry(ID3D11Device* device, std::string filename)
 	return returnValue;
 }
 
-Material* AssetHandler::GetMaterial(ID3D11Device* device, std::string filename, std::string materilName)
+Material* AssetHandler::GetMaterial(ID3D11Device* device, std::string filename, std::string materialName)
 {
 	Material* returnValue = nullptr;
 
-	if (material.find(filename + materilName) != material.end()) //Material is found
+	if (material.find(filename + materialName) != material.end()) //Material is found
 	{
-		returnValue = material[filename + materilName];
+		returnValue = material[filename + materialName];
 	}
 	else
 	{
 		LoadFile(device, filename);
-		returnValue = material[filename + materilName];
+		returnValue = material[filename + materialName];
 	}
 	if (returnValue == nullptr)
 	{
-		throw std::runtime_error("Failed to get pointer to Material: " + materilName + "\nIn file: " + filename);
+		throw std::runtime_error("Failed to get pointer to Material: " + materialName + "\nIn file: " + filename);
 	}
 	return returnValue;
 }
 
-Material* AssetHandler::GetMaterial(ID3D11Device* device, std::string filename)
+Material* AssetHandler::GetMaterial(ID3D11Device* device, std::string diffuse_map, std::string normal_map, float normal_depth, DirectX::XMFLOAT3 specular, float specular_factor, DirectX::XMFLOAT3 ambient, DirectX::XMFLOAT3 diffuse, DirectX::XMFLOAT3 transparency_color, DirectX::XMFLOAT3 incandescence)
 {
 	Material* returnValue = nullptr;
 
-
-	if (material.find(filename) != material.end()) //Material is found
+	if (material.find(diffuse_map + normal_map) != material.end()) //Material is found
 	{
-		returnValue = material[filename];
+		returnValue = material[diffuse_map + normal_map];
 	}
 	else
 	{
-		returnValue = new Material(textureHandler.LoadTexture(filename, device));
-		material[filename] = returnValue;
+		returnValue = new Material(textureHandler.LoadTexture(diffuse_map, device), (normal_map.length() != 0 ? textureHandler.LoadTexture(normal_map, device) : nullptr), normal_depth, specular, specular_factor, ambient, diffuse, transparency_color, incandescence);
+		material[diffuse_map + normal_map] = returnValue;
 	}
 	return returnValue;
 }
