@@ -95,6 +95,8 @@ void AssetHandler::LoadFile(ID3D11Device* device, std::string filename)
 
 	vertexVec.reserve(numVerticies);
 
+	if (!strcmp(filename.c_str(), "assets/NEW_portal_test_history.bin"))
+		int toto = 0;
 	for (unsigned int meshID = 0; meshID < importer.getNumMeshes(); meshID++)
 	{			
 		constructVerticies(importer, mesh[meshID], vertexVec);
@@ -170,8 +172,9 @@ void AssetHandler::constructVerticies(Importer& importer,const ImporterMesh& mes
 	for (unsigned int i = 0; i < mesh.transform_count; i++)
 	{
 		//float rotation[4] = { 0.0f, 0.0f, 0.0f, 0.0f };
-		float scale[3] = { 1.0f, 1.0f, 1.0f };
+		//float scale[3] = { 1.0f, 1.0f, 1.0f };
 		float position[3] = { 0.0f, 0.0f, 0.0f };
+		DirectX::XMMATRIX TranslateTot = DirectX::XMMatrixIdentity();
 
 		int parent = mesh.transform_Id[i];
 		while (parent != -1)
@@ -184,40 +187,14 @@ void AssetHandler::constructVerticies(Importer& importer,const ImporterMesh& mes
 			memcpy(rotD, transforms[parent].rotation, sizeof(double) * 4);
 			memcpy(scaleD, transforms[parent].scale, sizeof(double) * 3);
 
-			float rot[4];
+			DirectX::XMMATRIX Translate = DirectX::XMMatrixAffineTransformation(DirectX::XMVectorSet(
+				(float)scaleD[0], (float)scaleD[1], (float)scaleD[2], (float)scaleD[3]), 
+				DirectX::XMVectorSet(0, 0, 0, 1), 
+				DirectX::XMVectorSet((float)rotD[0], (float)rotD[1], (float)rotD[2], (float)rotD[3]), 
+				DirectX::XMVectorSet((float)pos[0], -(float)pos[1], (float)pos[2], 1.0f));
 
-			rot[0] = (float)rotD[0];
-			rot[1] = (float)rotD[1];
-			rot[2] = (float)rotD[2];
-			rot[3] = (float)rotD[3];
-
-			position[0] += (float)pos[0];
-			position[1] += (float)pos[1];
-			position[2] += (float)pos[2];
-
-			position[0] *= (float)scaleD[0];
-			position[1] *= (float)scaleD[1];
-			position[2] *= (float)scaleD[2];
-
-			DirectX::XMVECTOR Q1;
-			Q1 = DirectX::XMVectorSet(rot[0], rot[1], rot[2], rot[3]);
-			//Q2 = DirectX::XMVectorSet(rotation[0], rotation[1], rotation[2], rotation[3]);
-
-			//Q2 = DirectX::XMQuaternionMultiply(Q1, Q2);
-
-			DirectX::XMVECTOR posVec = DirectX::XMVectorSet(position[0], position[1], position[2], 1.0f);
-			DirectX::XMQuaternionMultiply(DirectX::XMQuaternionInverse(Q1), posVec);
-
-			DirectX::XMFLOAT3 tmp3;
-			DirectX::XMStoreFloat3(&tmp3, posVec);
-			position[0] = tmp3.x;
-			position[1] = tmp3.y;
-			position[2] = tmp3.z;
-
-			//position[0] *= (float)scaleD[0];
-			//position[1] *= (float)scaleD[1];
-			//position[2] *= (float)scaleD[2];
-
+			TranslateTot = DirectX::XMMatrixMultiply(TranslateTot, DirectX::XMMatrixInverse(nullptr, Translate));
+			
 			parent = transforms[parent].parentID;
 		}
 
@@ -227,9 +204,13 @@ void AssetHandler::constructVerticies(Importer& importer,const ImporterMesh& mes
 			unsigned int uvID = mesh.vertices[j].uv;
 			unsigned int normalID = mesh.vertices[j].normal;
 
-			vertex.position[0] = ((float)mesh.position[positionID * 3 + 0] + (float)position[0]);// *scale[0];
-			vertex.position[1] = ((float)mesh.position[positionID * 3 + 1] + (float)position[1]);// *scale[1];
-			vertex.position[2] = ((float)mesh.position[positionID * 3 + 2] + (float)position[2]);// *scale[2];
+			DirectX::XMVECTOR PosVec = DirectX::XMVectorSet((float)mesh.position[positionID * 3 + 0], (float)mesh.position[positionID * 3 + 1], (float)mesh.position[positionID * 3 + 2], 1.0f);
+			PosVec = DirectX::XMVector3Transform(PosVec, TranslateTot);
+			DirectX::XMFLOAT3 tmp3;
+			DirectX::XMStoreFloat3(&tmp3, PosVec);
+			vertex.position[0] = tmp3.x;// *scale[0];
+			vertex.position[1] = tmp3.y;// *scale[1];
+			vertex.position[2] = tmp3.z;// *scale[2];
 			vertex.texCoord[0] = mesh.uv[uvID * 2];
 			vertex.texCoord[1] = mesh.uv[uvID * 2 + 1];
 			vertex.normal[0] = (float)mesh.normal[normalID * 3 + 0];

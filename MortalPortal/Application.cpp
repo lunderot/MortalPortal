@@ -102,22 +102,22 @@ Application::Application(bool fullscreen, bool showCursor, int screenWidth, int 
 
 	//Create player and add it to entity handler
 	player1 = new Player(d3dHandler->GetDevice(),
-		assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/Player.bin"),
+		assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/NEW_portal_test_history.bin"),
 		assetHandler->GetMaterial(d3dHandler->GetDevice(), "assets/Player.bin", "Portal1"),
 		assetHandler->GetMaterial(d3dHandler->GetDevice(), "assets/Player.bin", "Portal2"),
 		playerShader,
 		Color::BLUE, Color::GREEN,
-		XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(XM_PIDIV2, 0, 0));
+		XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, XM_PIDIV2, 0));
 	entityHandler->Add(player1);
 	player1->SetPlayerNumber(1);
 
 	player2 = new Player(d3dHandler->GetDevice(),
-		assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/Player.bin"),
+		assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/NEW_portal_circlewithstuff_history.bin"),
 		assetHandler->GetMaterial(d3dHandler->GetDevice(), "assets/Player.bin", "Portal1"),
 		assetHandler->GetMaterial(d3dHandler->GetDevice(), "assets/Player.bin", "Portal2"),
 		playerShader,
 		Color::RED, Color::YELLOW,
-		XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(XM_PIDIV2, 0, 0));
+		XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, XM_PIDIV2, 0));
 	entityHandler->Add(player2);
 	player2->SetPlayerNumber(2);
 
