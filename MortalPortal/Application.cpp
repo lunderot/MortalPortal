@@ -243,7 +243,7 @@ Application::Application(bool fullscreen, bool showCursor, int screenWidth, int 
 		new MapItem(
 		//assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/test.bin"),
 		assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/Earth.bin"),
-		assetHandler->GetMaterial(d3dHandler->GetDevice(), "b.dds", "", 0.0f),
+		assetHandler->GetMaterial(d3dHandler->GetDevice(), "b.dds", "normalmap.dds", 0.0f),
 		playerShader, MapItem::BackgroundAsset, Color::BLUE, XMFLOAT3(0, 0, 5), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0.05, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(1, 1, 1))
 		);
 	//ljus

@@ -173,8 +173,11 @@ void EntityHandler::Render(ID3D11DeviceContext* deviceContext)
 			deviceContext->IASetVertexBuffers(0, 1, &vb, &vertexSize, &offset);
 			deviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
-			ID3D11ShaderResourceView* texure = material->GetTexture();
-			deviceContext->PSSetShaderResources(0, 1, &texure);
+			ID3D11ShaderResourceView* texture = material->GetTexture();
+			deviceContext->PSSetShaderResources(0, 1, &texture);
+
+			ID3D11ShaderResourceView* normal_map = material->GetNormalMap();
+			deviceContext->PSSetShaderResources(1, 1, &normal_map);
 
 			deviceContext->Draw(vertexCount, 0);
 		}

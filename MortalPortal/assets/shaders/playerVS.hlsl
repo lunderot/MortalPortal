@@ -24,6 +24,8 @@ struct VS_OUT
 	float2 texCoord : TEXCOORD;
 	float4 worldPos : WORLDPOS;
 	float3 normal : NORMAL;
+	float3 biNormal : BINORMAL;
+	float3 tangent : TANGENT;
 };
 
 VS_OUT main(VS_IN input)
@@ -37,6 +39,8 @@ VS_OUT main(VS_IN input)
 	//calculate worldpos
 	output.worldPos = mul(float4(input.position, 1.0f), worldMatrix);
 	output.normal = input.normal;
+	output.biNormal = input.biNormal;
+	output.tangent = input.tangent;
 
 	output.texCoord = input.texCoord;
 

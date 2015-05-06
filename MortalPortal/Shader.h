@@ -3,6 +3,7 @@
 #include <d3dcompiler.h>
 #include <stdexcept>
 #include <DirectXMath.h>
+#include "Material.h"
 
 struct ConstantBufferPerFrame
 {
@@ -30,7 +31,6 @@ protected:
 	
 	ID3D11Buffer*			constantBufferPerFrame;
 	ID3D11Buffer*			constantBufferPerModel;
-	
 
 public:
 
