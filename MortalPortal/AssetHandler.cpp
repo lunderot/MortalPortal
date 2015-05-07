@@ -95,8 +95,6 @@ void AssetHandler::LoadFile(ID3D11Device* device, std::string filename)
 
 	vertexVec.reserve(numVerticies);
 
-	if (!strcmp(filename.c_str(), "assets/NEW_portal_test_history.bin"))
-		int toto = 0;
 	for (unsigned int meshID = 0; meshID < importer.getNumMeshes(); meshID++)
 	{			
 		constructVerticies(importer, mesh[meshID], vertexVec);
@@ -120,31 +118,54 @@ void AssetHandler::LoadFile(ID3D11Device* device, std::string filename)
 	Collision* objectCollision = new Collision();
 	const ImporterNurb* spheres = importer.getNurb();
 	const ImporterTransform* transforms = importer.getTransform();
+
 	for (unsigned int i = 0; i < importer.getNumNurbs(); i++)
-	{
+	{	
 		DirectX::XMFLOAT3 position;
 		float radius;
-		const ImporterNurb* spheres = importer.getNurb();
-
-		for (unsigned int j = 0; j < importer.getNumNurbs(); j++)
+		const ImporterNurb& thisSphere = spheres[i];
+		for (unsigned int k = 0; k < thisSphere.numberOfParent; k++)
 		{
-			const ImporterNurb& thisSphere = spheres[j];
-			for (unsigned int k = 0; k < thisSphere.numberOfParent; k++)
+			DirectX::XMMATRIX TranslateTot = DirectX::XMMatrixIdentity();
+
+			int parent = transforms[thisSphere.ParentID[k]].parentID;
+			while (parent != -1)
 			{
+				double pos[3];
+				double rotD[4];
+				double scaleD[3];
 
-				int parentID = thisSphere.ParentID[k];
+				memcpy(pos, transforms[parent].position, sizeof(double) * 3);
+				memcpy(rotD, transforms[parent].rotation, sizeof(double) * 4);
+				memcpy(scaleD, transforms[parent].scale, sizeof(double) * 3);
 
-				const ImporterTransform& ParentTarnsform = transforms[parentID];
+				DirectX::XMMATRIX Translate = DirectX::XMMatrixAffineTransformation(DirectX::XMVectorSet(
+					(float)scaleD[0], (float)scaleD[1], (float)scaleD[2], (float)scaleD[3]),
+					DirectX::XMVectorSet(0, 0, 0, 1),
+					DirectX::XMVectorSet((float)rotD[0], (float)rotD[1], (float)rotD[2], (float)rotD[3]),
+					DirectX::XMVectorSet((float)pos[0], -(float)pos[1], (float)pos[2], 1.0f));
 
-				position.x = (float)ParentTarnsform.position[0];
-				position.y = (float)ParentTarnsform.position[1];
-				position.z = (float)ParentTarnsform.position[2];
-				radius = spheres[i].radius;
+				TranslateTot = DirectX::XMMatrixMultiply(TranslateTot, DirectX::XMMatrixInverse(nullptr, Translate));
 
-				objectCollision->spheres.push_back(CollisionSphere(position, radius, ParentTarnsform.name));
+				parent = transforms[parent].parentID;
 			}
+
+			const ImporterTransform& ParentTarnsform = transforms[thisSphere.ParentID[k]];
+
+			DirectX::XMVECTOR PosVec = DirectX::XMVectorSet((float)ParentTarnsform.position[0], (float)ParentTarnsform.position[1], (float)ParentTarnsform.position[2], 1.0f);
+			PosVec = DirectX::XMVector3Transform(PosVec, TranslateTot);
+			DirectX::XMFLOAT3 tmp3;
+			DirectX::XMStoreFloat3(&tmp3, PosVec);
+
+			position.x = tmp3.x;
+			position.y = tmp3.y;
+			position.z = tmp3.x;
+			radius = spheres[i].radius;
+
+			objectCollision->spheres.push_back(CollisionSphere(position, radius, ParentTarnsform.name));
 		}
 	}
+
 
 	geometry[filename] = new Geometry(vertexBuffer, numVerticies, objectCollision);
 
@@ -171,9 +192,6 @@ void AssetHandler::constructVerticies(Importer& importer,const ImporterMesh& mes
 
 	for (unsigned int i = 0; i < mesh.transform_count; i++)
 	{
-		//float rotation[4] = { 0.0f, 0.0f, 0.0f, 0.0f };
-		//float scale[3] = { 1.0f, 1.0f, 1.0f };
-		float position[3] = { 0.0f, 0.0f, 0.0f };
 		DirectX::XMMATRIX TranslateTot = DirectX::XMMatrixIdentity();
 
 		int parent = mesh.transform_Id[i];
