@@ -59,6 +59,11 @@ void PowerBar::SetPosition(DirectX::XMFLOAT2 point[4])
 	this->points[3].pos = point[3];
 }
 
+DirectX::XMFLOAT2 PowerBar::GetCurrentMaxPosition()
+{
+	return points[0].pos;
+}
+
 void PowerBar::SetMaxMinValue(DirectX::XMFLOAT2 value)
 {
 	this->maxMinValue.x = value.x;
@@ -113,8 +118,6 @@ void PowerBar::Render(ID3D11DeviceContext* deviceContext, Shader* shader)
 
 void PowerBar::AddPower(unsigned int bonusPower)
 {
-	if (bonusPower == 0)
-		bonusPower = 1;
 	if (dead == false)
 	{
 		if (points[0].pos.x + powerAdd * (bonusPower + 1) > maxMinValue.x)

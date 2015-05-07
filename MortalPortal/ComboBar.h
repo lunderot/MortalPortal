@@ -25,7 +25,7 @@ public:
 	void setMaterial(Material* materialCombo[9]);
 	void SetPosition(DirectX::XMFLOAT2 point[4]);
 	void SetUV(DirectX::XMFLOAT2 UV[4]);
-	void AddCombo();
+	void AddCombo(bool bonusComboControl);
 	void RemoveCombo();
 	
 	void Update(float deltaTime);

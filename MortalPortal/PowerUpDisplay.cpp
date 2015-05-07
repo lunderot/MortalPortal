@@ -32,8 +32,6 @@ void PowerUpDisplayText::setMaterial(Material* materialCombo[2])
 	}*/
 	this->materialUsing[0] = materialCombo[0];
 	this->materialUsing[1] = materialCombo[1];
-	//this->materialUsing[2] = materialCombo[2];
-	//this->materialUsing[3] = materialCombo[3];
 	//this->materialUsing[4] = materialCombo[4];
 	//this->materialUsing[5] = materialCombo[5];
 	//this->materialUsing[6] = materialCombo[6];
@@ -59,11 +57,6 @@ void PowerUpDisplayText::SetUV(DirectX::XMFLOAT2 UV[4])
 	this->powerUpDTPoints.uv[3] = UV[3];
 }
 
-void PowerUpDisplayText::SetComboText(bool comboTextState)
-{
-	this->comboText = comboTextState;
-}
-
 const DirectX::XMFLOAT2* PowerUpDisplayText::GetPosition()
 {
 	return powerUpDTPoints.pos;
@@ -74,12 +67,12 @@ ID3D11Buffer* PowerUpDisplayText::GetVertexBuffer()
 	return vertexBuffer;
 }
 
-void PowerUpDisplayText::AddCombo()
+void PowerUpDisplayText::AddTextDisplay()
 {
 	comboNr = 0;
 }
 
-void PowerUpDisplayText::RemoveCombo()
+void PowerUpDisplayText::RemoveTextDisplay()
 {
 	comboNr = 1;
 }

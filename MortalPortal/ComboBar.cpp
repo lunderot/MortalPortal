@@ -57,11 +57,19 @@ ID3D11Buffer* ComboBar::GetVertexBuffer()
 	return vertexBuffer;
 }
 
-void ComboBar::AddCombo()
+void ComboBar::AddCombo(bool bonusComboControl)
 {
 	if (changeCombo != 8)
 	{
-		changeCombo++;
+		if (bonusComboControl == false)
+		{
+			changeCombo++;
+		}
+		
+		if (changeCombo != 8 && bonusComboControl == true)
+		{
+			changeCombo++;
+		}
 	}
 }
 

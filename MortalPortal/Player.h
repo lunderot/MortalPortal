@@ -33,7 +33,7 @@ public:
 	void RemovePower();
 	PowerBar* powerBar;
 
-	void AddCombo();
+	void AddCombo(bool bonusComboControl);
 	void RemoveCombo();
 	ComboBar* comboBar;
 
@@ -54,14 +54,29 @@ public:
 	// Slow Down Acceleration
 	bool getSlowDownAcceleration();
 	void setSlowDownAcceleration(float powerUp_SlowDownAcceleration);
+	// Bonus Combo
+	bool getBonusCombo();
+	void setBonusCombo(float powerUp_BonusCombo);
+	// Immortal Portal
+	bool getImmortalPortal();
+	void setImmortalPortal(float powerUp_ImmortalPortal);
 	// Crystal Frenzy
 	bool getCrystalFrenzy();
 	void setCrystalFrenzy(bool powerUp_CrystalFrenzy);
 
 	// Power up - Display
+	// Invert control
 	void AddInvertControlDisplay();
 	void RemoveInvertControlDisplay();
-	PowerUpDisplayText* powerUpDisplayText;
+	// Slow down Acceleration
+	void AddSlowDownAccelerationDisplay();
+	void RemoveSlowDownAccelerationDisplay();
+	// Bonus combo
+	void AddBonusComboDisplay();
+	void RemoveBonusComboDisplay();
+	// Immortal Portal
+	void AddImmortalPortalDisplay();
+	PowerUpDisplayText* powerUpDisplayText[4];
 
 	void Reset();
 
@@ -69,9 +84,13 @@ private:
 	// Power ups
 	float inverControlTimer;
 	float slowDownAccelerationTimer;
+	float bonusComboTimer;
+	float immortalPortalTimer;
 	bool crystalFrenzy;
 	// Power ups - Display
 	bool invertControlerDisplay;
+	bool slowDownAccelerationDisplay;
+	bool bonusComboDisplay;
 
 	Material* switchMaterial;
 	

@@ -31,6 +31,7 @@ public:
 
 	void SetBarSpeed(float speed);
 	void SetPosition(DirectX::XMFLOAT2 point[4]);
+	DirectX::XMFLOAT2 GetCurrentMaxPosition();
 	void SetMaxMinValue(DirectX::XMFLOAT2 value);
 	void AddPower(unsigned int bonusPower);
 	void RemovePower();

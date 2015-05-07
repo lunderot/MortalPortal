@@ -12,15 +12,15 @@ PlayerShader::PlayerShader(ID3D11Device* device, LPWSTR vertexShaderPath, LPWSTR
 		{ "TANGENT", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 44, D3D11_INPUT_PER_VERTEX_DATA, 0 }
 	};
 
-	constantBufferPerState = nullptr;
-	D3D11_BUFFER_DESC colorStateBufferDesc;
-	ZeroMemory(&colorStateBufferDesc, sizeof(D3D11_BUFFER_DESC));
-	colorStateBufferDesc.Usage = D3D11_USAGE_DEFAULT;
-	colorStateBufferDesc.ByteWidth = sizeof(constantBufferPerStateData);
-	colorStateBufferDesc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
-	colorStateBufferDesc.CPUAccessFlags = 0;
-	colorStateBufferDesc.MiscFlags = 0;
-	device->CreateBuffer(&colorStateBufferDesc, NULL, &constantBufferPerState);
+	//constantBufferPerState = nullptr;
+	//D3D11_BUFFER_DESC colorStateBufferDesc;
+	//ZeroMemory(&colorStateBufferDesc, sizeof(D3D11_BUFFER_DESC));
+	//colorStateBufferDesc.Usage = D3D11_USAGE_DEFAULT;
+	//colorStateBufferDesc.ByteWidth = sizeof(constantBufferPerStateData);
+	//colorStateBufferDesc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
+	//colorStateBufferDesc.CPUAccessFlags = 0;
+	//colorStateBufferDesc.MiscFlags = 0;
+	//device->CreateBuffer(&colorStateBufferDesc, NULL, &constantBufferPerState);
 	//HRESULT hr = DirectX::CreateDDSTextureFromFile(device, L"grass.dds", nullptr, &test);
 	//HRESULT hr = DirectX::LoadFromDDSFile(L"grass.dds", DirectX::DDS_FLAGS_NONE, &texMetadata, image);
 	//hr = DirectX::CreateShaderResourceView(device, image.GetImages(), image.GetImageCount(), texMetadata, &test);
@@ -30,10 +30,14 @@ PlayerShader::PlayerShader(ID3D11Device* device, LPWSTR vertexShaderPath, LPWSTR
 
 void PlayerShader::Render(ID3D11DeviceContext* deviceContext, Shader* shader)
 {
-	deviceContext->UpdateSubresource(constantBufferPerState, 0, NULL, &constantBufferPerStateData, 0, 0);
-	deviceContext->PSSetConstantBuffers(0, 1, &constantBufferPerState);
+	//deviceContext->UpdateSubresource(constantBufferPerState, 0, NULL, &constantBufferPerStateData, 0, 0);
+	//deviceContext->PSSetConstantBuffers(0, 1, &constantBufferPerState);
 
-	deviceContext->PSSetShaderResources(0, 1, &test);
+	//deviceContext->PSSetShaderResources(0, 1, &test);
+
+	//// n
+	//deviceContext->PSSetShaderResources(1, 1, &normalm);
+
 
 }
 

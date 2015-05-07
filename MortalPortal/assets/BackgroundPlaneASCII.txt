@@ -5,6 +5,9 @@ Number of cameras: 4
 Number of lights: 0
 Number of joints: 0
 Number of nurbSurfices: 0
+Number of animation curves: 0
+Number of skins: 0
+Number of morph animations: 0
 
 Material type: 0
 Normal depth: 0
@@ -18,57 +21,53 @@ Diffuse: 0.5 0.5 0.5
 Diffuse factor: 0.8
 Transparency color: 0 0 0
 Incandescence: 0 0 0
-Name: lambert1
-Diffuse map: 
-Normal map: 
-Specular map: 
 
+lambert1
 Transform name length: 21
 ParentID: -1
 Position: 0 0 0.707107
 Rotation: 0.707107 0 0 0.707107
 Scale: 12 12 1
-Transform Name: groundPlane_transform
 
+groundPlane_transform
 Transform name length: 5
 ParentID: -1
-Position: 0.472336 1.27508 -0.195411
-Rotation: -0.195411 0.00855829 0.00170533 0.980683
+Position: -2.24825 2.34397 -0.128219
+Rotation: -0.128219 -0.274834 -0.0370085 0.952185
 Scale: 1 1 1
-Transform Name: persp
 
+persp
 Transform name length: 3
 ParentID: -1
 Position: 0 100.1 -0.707107
 Rotation: -0.707107 0 0 0.707107
 Scale: 1 1 1
-Transform Name: top
 
+top
 Transform name length: 5
 ParentID: -1
 Position: 0 0 0
 Rotation: 0 0 0 1
 Scale: 1 1 1
-Transform Name: front
 
+front
 Transform name length: 4
 ParentID: -1
 Position: 100.1 0 0
 Rotation: 0 0.707107 0 0.707107
 Scale: 1 1 1
-Transform Name: side
 
+side
 Transform name length: 7
 ParentID: -1
-Position: 0 0 0
+Position: 0.0194805 -3.33067e-016 0
 Rotation: 0 0 0 1
 Scale: 1 1 1
-Transform Name: pPlane2
 
+pPlane1
 Camera name length: 10
 Number of parents: 1
 CAMERA
-ParentID: 1
 Position: 0 0 0
 Up Vector: 0 1 0
 Intrest position: 0 0 -1
@@ -77,12 +76,12 @@ FOV Y: 0.660595
 Near Plane: 0.1
 Far Plane: 10000
 Projection type: 0
-Name: perspShape
 
+1
+perspShape
 Camera name length: 8
 Number of parents: 1
 CAMERA
-ParentID: 2
 Position: 0 0 0
 Up Vector: 0 1 0
 Intrest position: 0 0 -1
@@ -91,12 +90,12 @@ FOV Y: 0.660595
 Near Plane: 0.1
 Far Plane: 10000
 Projection type: 1
-Name: topShape
 
+2
+topShape
 Camera name length: 10
 Number of parents: 1
 CAMERA
-ParentID: 3
 Position: 0 0 0
 Up Vector: 0 1 0
 Intrest position: 0 0 -1
@@ -105,12 +104,12 @@ FOV Y: 0.660595
 Near Plane: 0.1
 Far Plane: 10000
 Projection type: 1
-Name: frontShape
 
+3
+frontShape
 Camera name length: 9
 Number of parents: 1
 CAMERA
-ParentID: 4
 Position: 0 0 0
 Up Vector: 0 1 0
 Intrest position: 0 0 -1
@@ -119,9 +118,9 @@ FOV Y: 0.660595
 Near Plane: 0.1
 Far Plane: 10000
 Projection type: 1
-Name: sideShape
 
-Mesh Name: pPlaneShape2
+4
+sideShape
 Name Length: 12
 Vertex Count: 4
 Indices Count: 6
@@ -133,39 +132,81 @@ bi-Tangent Count: 6
 Material Count: 1
 Transform Count: 1
 Transform id: 
-5
-Material id: 
+
+-1.01948
+-1
 0
-Position 0: -1 1 4.44089e-016
-Position 1: 1 1 4.44089e-016
-Position 2: -1 -1 -4.44089e-016
-Position 3: 1 -1 -4.44089e-016
-UV 0: 0 0
-UV 1: 1 0
-UV 2: 0 1
-UV 3: 1 1
-Normal 0: 0 4.44089e-016 -1
-Normal 1: 0 4.44089e-016 -1
-Normal 2: 0 4.44089e-016 -1
-Normal 3: 0 4.44089e-016 -1
-Tangent 0: 1 0 0
-Tangent 1: 1 0 0
-Tangent 2: 1 0 0
-Tangent 3: 1 0 0
-Tangent 4: 1 0 0
-Tangent 5: 1 0 0
-Bi-Tangent 0: 0 -1 -4.44089e-016
-Bi-Tangent 1: 0 -1 -4.44089e-016
-Bi-Tangent 2: 0 -1 -4.44089e-016
-Bi-Tangent 3: 0 -1 -4.44089e-016
-Bi-Tangent 4: 0 -1 -4.44089e-016
-Bi-Tangent 5: 0 -1 -4.44089e-016
-Face 0: 
+0.98052
+-1
+0
+-1.01948
+1
+0
+0.98052
+1
+0
+0
+0
+1
+0
+0
+1
+1
+1
+0
+0
+1
+0
+0
+1
+0
+0
+1
+0
+0
+1
+1
+0
+0
+1
+0
+0
+1
+0
+0
+1
+0
+0
+1
+0
+0
+1
+0
+0
+0
+1
+0
+0
+1
+0
+0
+1
+0
+0
+1
+0
+0
+1
+0
+0
+1
+0
+5
+0
 0 / 0 / 0
 1 / 1 / 1
 2 / 2 / 2
-Face 1: 
 2 / 2 / 2
 1 / 1 / 1
 3 / 3 / 3
-
+pPlaneShape1

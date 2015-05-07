@@ -10,7 +10,7 @@ Player::Player(ID3D11Device* device, Geometry* geometry, Material* material, Mat
 	DirectX::XMFLOAT3 acceleration,
 	DirectX::XMFLOAT3 rotation,
 	DirectX::XMFLOAT3 scale
-	) : Entity(geometry, material, shader, position, velocity, acceleration, rotation, scale)
+	) : Entity(geometry, material, shader, position, velocity, angleVelocity, acceleration, rotation, scale)
 
 { 
 	this->switchMaterial = switchMaterial;
@@ -21,8 +21,11 @@ Player::Player(ID3D11Device* device, Geometry* geometry, Material* material, Mat
 	comboDisplayText[1] = new ComboDisplayText(device, material);
 	comboDisplayText[2] = new ComboDisplayText(device, material);
 	comboDisplayText[3] = new ComboDisplayText(device, material);
-	powerUpDisplayText = new PowerUpDisplayText(device, material);
-	
+	powerUpDisplayText[0] = new PowerUpDisplayText(device, material);
+	powerUpDisplayText[1] = new PowerUpDisplayText(device, material);
+	powerUpDisplayText[2] = new PowerUpDisplayText(device, material);
+	powerUpDisplayText[3] = new PowerUpDisplayText(device, material);
+
 	playerNumber = 0;
 	comboCounter = 0;
 	comboCounterChange_10 = 0;
@@ -38,9 +41,13 @@ Player::Player(ID3D11Device* device, Geometry* geometry, Material* material, Mat
 	// Power ups
 	inverControlTimer = 0.0f;
 	slowDownAccelerationTimer = 0.0f;
+	bonusComboTimer = 0.0f;
+	immortalPortalTimer = 0.0f;
 	crystalFrenzy = false;
 	// Power Ups - Display
 	invertControlerDisplay = false;
+	slowDownAccelerationDisplay = false;
+	bonusComboDisplay = false;
 }
 
 
@@ -52,21 +59,46 @@ Player::~Player()
 	delete comboDisplayText[1];
 	delete comboDisplayText[2];
 	delete comboDisplayText[3];
-	delete powerUpDisplayText;
+	delete powerUpDisplayText[0];
+	delete powerUpDisplayText[1];
+	delete powerUpDisplayText[2];
+	delete powerUpDisplayText[3];
 }
 
 bool Player::getInvertControl()
 {
 	if (inverControlTimer < 0.0f)
 	{
-		powerUpDisplayText->RemoveCombo();
+		powerUpDisplayText[0]->RemoveTextDisplay();
 	}
 	return inverControlTimer > 0.0f;
 }
 
 bool Player::getSlowDownAcceleration()
 {
+	if (slowDownAccelerationTimer < 0.0f)
+	{
+		powerUpDisplayText[1]->RemoveTextDisplay();
+	}
 	return slowDownAccelerationTimer > 0.0f;
+}
+
+bool Player::getBonusCombo()
+{
+	if (bonusComboTimer < 0.0f)
+	{
+		powerUpDisplayText[2]->RemoveTextDisplay();
+	}
+	return bonusComboTimer > 0.0f;
+}
+
+bool Player::getImmortalPortal()
+{
+	if (immortalPortalTimer < 0.0f)
+	{
+		powerUpDisplayText[3]->RemoveTextDisplay();
+	}
+	return immortalPortalTimer > 0.0f;
 }
 
 bool Player::getCrystalFrenzy()
@@ -82,6 +114,16 @@ void Player::setInvertControl(float powerUp_InvertControl)
 void Player::setSlowDownAcceleration(float powerUp_SlowdownAcceleration)
 {
 	this->slowDownAccelerationTimer = powerUp_SlowdownAcceleration;
+}
+
+void Player::setBonusCombo(float powerUp_BonusCombo)
+{
+	this->bonusComboTimer = powerUp_BonusCombo;
+}
+
+void Player::setImmortalPortal(float powerUp_ImmortalPortal)
+{
+	this->immortalPortalTimer = powerUp_ImmortalPortal;
 }
 
 void Player::setCrystalFrenzy(bool powerUp_CrystalFrenzy)
@@ -114,20 +156,16 @@ void Player::Update(float deltaTime)
 {
 	Entity::Update(deltaTime);
 
-
-
 	for (std::vector<CollisionSphere>::iterator Sphere = geometry->GetCollision()->spheres.begin(); Sphere != geometry->GetCollision()->spheres.end(); Sphere++)
 	{
-		for (int i = 0; i < 4; i++)
-		{
 			if (position.x + Sphere->position.x - Sphere->radius < -30)
 			{
-				position.x = -30 - Sphere->position.y + Sphere->radius;
+				position.x = -30 - Sphere->position.x + Sphere->radius;
 				velocity.x = 0;
 			}
 			else if (position.x + Sphere->position.x + Sphere->radius > 30)
 			{
-				position.x = 30 - Sphere->position.y - Sphere->radius;
+				position.x = 30 - Sphere->position.x - Sphere->radius;
 				velocity.x = 0;
 			}
 
@@ -136,16 +174,17 @@ void Player::Update(float deltaTime)
 				position.y = -14 - Sphere->position.y + Sphere->radius;
 				velocity.y = 0;
 			}
-			if (position.y + Sphere->position.y + Sphere->radius > 14)
+			else if (position.y + Sphere->position.y + Sphere->radius > 14)
 			{
 				position.y = 14 - Sphere->position.y - Sphere->radius;
 				velocity.y = 0;
 			}
-		}
 	}
 
 	slowDownAccelerationTimer -= deltaTime;
 	inverControlTimer -= deltaTime;
+	bonusComboTimer -= deltaTime;
+	immortalPortalTimer -= deltaTime;
 }
 
 Material* Player::GetMaterial() const
@@ -172,7 +211,7 @@ unsigned int Player::GetPlayerNumber() const
 
 void Player::AddInvertControlDisplay()
 {
-	powerUpDisplayText->AddCombo();
+	powerUpDisplayText[0]->AddTextDisplay();
 }
 
 void Player::RemoveInvertControlDisplay()
@@ -180,14 +219,42 @@ void Player::RemoveInvertControlDisplay()
 	invertControlerDisplay = false;
 }
 
+void Player::AddSlowDownAccelerationDisplay()
+{
+	powerUpDisplayText[1]->AddTextDisplay();
+}
+
+void Player::RemoveSlowDownAccelerationDisplay()
+{
+	slowDownAccelerationDisplay = false;
+}
+
+void Player::AddBonusComboDisplay()
+{
+	powerUpDisplayText[2]->AddTextDisplay();
+}
+
+void Player::AddImmortalPortalDisplay()
+{
+	powerUpDisplayText[3]->AddTextDisplay();
+}
+
 void Player::AddPower(unsigned int bonusPower)
 {
 	powerBar->AddPower(bonusPower);
 }
 
-void Player::AddCombo()
+void Player::AddCombo(bool bonusComboControl)
 {
-	comboBar->AddCombo();
+	if (comboCounterChange_10 >= 9)
+	{
+		comboBar->AddCombo(bonusComboControl);
+	}
+
+	if (bonusComboControl == true)
+	{
+		comboBar->AddCombo(bonusComboControl);
+	}
 }
 
 void Player::AddComboText()
@@ -207,12 +274,12 @@ void Player::AddComboText()
 	if (comboMax != true)
 	{
 		comboDisplayText[1]->AddCombo();
-		if (comboCounterChange_10 == 10)
+		if (comboCounterChange_10 >= 10)
 		{
 			comboDisplayText[2]->AddCombo();
 			comboCounterChange_10 = 0;
 		}
-		if (comboCounterChange_100 == 100)
+		if (comboCounterChange_100 >= 100)
 		{
 			comboDisplayText[3]->AddCombo();
 			comboCounterChange_100 = 0;
@@ -254,6 +321,10 @@ void Player::Reset()
 	this->comboMax = false;
 	this->previousButtonState = false;
 
+	setInvertControl(0.0f);
+	setSlowDownAcceleration(0.0f);
+	setBonusCombo(0.0f);
+	setImmortalPortal(0.0f);
 	comboDisplayText[0]->RemoveCombo();
 	comboDisplayText[1]->RemoveCombo();
 	comboDisplayText[2]->RemoveCombo();

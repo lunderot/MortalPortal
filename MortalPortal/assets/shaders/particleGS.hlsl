@@ -12,7 +12,7 @@ cbuffer ConstantBufferPerModel : register(cb1)
 struct GS_IN
 {
 	float4 Pos : POSITION;
-	float type : TYPE;
+	unsigned int type : TYPE;
 	float2 direction : DIRECTION;
 	float lifeTime : LIFETIME;
 	float speed : SPEED;
@@ -20,8 +20,10 @@ struct GS_IN
 struct GS_OUT
 {
 	float4 Pos : SV_POSITION;
+	float4 particlePos : PARTICLEPOS;
 	float2 Tex : TEXCOORD0;
 	float lifeTime : LIFETIME;
+	unsigned int type : TYPE;
 };
 
 [maxvertexcount(4)]
@@ -30,6 +32,8 @@ void main(point GS_IN input[1], inout TriangleStream<GS_OUT> triStream)
 	GS_OUT output;
 	float3 camPos = float3(0, 0, -20);
 	float3 look = float3(0, 0, 20);//input[0].Pos - camPos;
+	output.particlePos = input[0].Pos;
+	output.type = input[0].type;
 
 	look = normalize(look);
 	output.lifeTime = input[0].lifeTime;
@@ -39,8 +43,22 @@ void main(point GS_IN input[1], inout TriangleStream<GS_OUT> triStream)
 	upVec = normalize(cross(rightVec, look));
 	float3 vert[4];
 	float2 texCoord[4];
-	rightVec = rightVec * 0.1;
-	upVec = upVec * 0.1;
+	if (input[0].type == 2)
+	{
+		rightVec = rightVec * 0.005;
+		upVec = upVec * 0.005;
+	}
+	else if (input[0].type == 3)
+	{
+		rightVec = rightVec * 0.05;
+		upVec = upVec * 0.05;
+	}
+	else
+	{
+		rightVec = rightVec * 0.1;
+		upVec = upVec * 0.1;
+
+	}
 
 	vert[0] = (input[0].Pos - rightVec - upVec);
 	vert[1] = (input[0].Pos + rightVec - upVec);
@@ -52,12 +70,25 @@ void main(point GS_IN input[1], inout TriangleStream<GS_OUT> triStream)
 	texCoord[2] = float2(0, 0);
 	texCoord[3] = float2(1, 0);
 
-	for (int i = 0; i < 4; i++)
+	if (input[0].type == 2)
 	{
-		output.Pos = mul(float4(vert[i], 1.0f), viewMatrix);
-		output.Pos = mul(output.Pos, projectionMatrix);
-		output.Tex = texCoord[i];
-		triStream.Append(output);
+		for (int i = 0; i < 4; i++)
+		{
+			output.Pos = float4(vert[i].x, vert[i].y, 0, 1.0f);
+			output.Tex = texCoord[i];
+			triStream.Append(output);
+		}
+	}
+
+	else
+	{
+		for (int i = 0; i < 4; i++)
+		{
+			output.Pos = mul(float4(vert[i], 1.0f), viewMatrix);
+			output.Pos = mul(output.Pos, projectionMatrix);
+			output.Tex = texCoord[i];
+			triStream.Append(output);
+		}
 	}
 
 }

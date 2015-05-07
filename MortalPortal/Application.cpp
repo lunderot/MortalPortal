@@ -76,62 +76,62 @@ Application::Application(bool fullscreen, bool showCursor, int screenWidth, int 
 	//Setup levelGenerator
 	levelGenerator = new LevelGenerator("assets/levelparts/", "LEVELPARTNAMES.txt");
 
-	levelGenerator->setPlayerOneCrystals(assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/Player1.bin"),
-		assetHandler->GetMaterial(d3dHandler->GetDevice(), "assets/Player1.bin", "Portal1"),
+	levelGenerator->setPlayerOneCrystals(assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/Crystal2.bin"),
+		assetHandler->GetMaterial(d3dHandler->GetDevice(), "assets/Crystal2.bin", "Crystal1"),
 		mapItemShader,
-		assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/Player1.bin"),
-		assetHandler->GetMaterial(d3dHandler->GetDevice(), "assets/Player1.bin", "Portal2"),
+		assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/Crystal2.bin"),
+		assetHandler->GetMaterial(d3dHandler->GetDevice(), "assets/Crystal2.bin", "Crystal2"),
 		mapItemShader);
 
-	levelGenerator->setPlayerTwoCrystals(assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/Player2Crystal.bin"),
-		assetHandler->GetMaterial(d3dHandler->GetDevice(), "assets/Player2Crystal.bin", "Crystal1"),
+	levelGenerator->setPlayerTwoCrystals(assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/Crystal1.bin"),
+		assetHandler->GetMaterial(d3dHandler->GetDevice(), "assets/Crystal1.bin", "Crystal1"),
 		mapItemShader,
-		assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/Player2Crystal.bin"),
-		assetHandler->GetMaterial(d3dHandler->GetDevice(), "assets/Player2Crystal.bin", "Crystal2"),
+		assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/Crystal1.bin"),
+		assetHandler->GetMaterial(d3dHandler->GetDevice(), "assets/Crystal1.bin", "Crystal2"),
 		mapItemShader);
 
 	//Add available comets for LevelGenerator so choose from
 	levelGenerator->addComet(assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/Comet.bin"),
-		assetHandler->GetMaterial(d3dHandler->GetDevice(), "2ggr.dds"/*"assets/Comet.bin", "lambert2"*/),
+		assetHandler->GetMaterial(d3dHandler->GetDevice(), "2ggr.dds", "", 0.0f/*"assets/Comet.bin", "lambert2"*/),
 		shader);
 
 	levelGenerator->addPowerUp(assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/Comet.bin"),
-		assetHandler->GetMaterial(d3dHandler->GetDevice(), "b.dds"),
+		assetHandler->GetMaterial(d3dHandler->GetDevice(), "b.dds", "", 0.0f),
 		mapItemShader);
 
 
 	//Create player and add it to entity handler
 	player1 = new Player(d3dHandler->GetDevice(),
-		assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/Player1.bin"),
-		assetHandler->GetMaterial(d3dHandler->GetDevice(), "assets/Player1.bin", "Portal1"),
-		assetHandler->GetMaterial(d3dHandler->GetDevice(), "assets/Player1.bin", "Portal2"),
+		assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/NEW_portal_test_history.bin"),
+		assetHandler->GetMaterial(d3dHandler->GetDevice(), "assets/Player.bin", "Portal1"),
+		assetHandler->GetMaterial(d3dHandler->GetDevice(), "assets/Player.bin", "Portal2"),
 		playerShader,
 		Color::BLUE, Color::GREEN,
-		XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(40, 0, 30));
+		XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, XM_PIDIV2, 0));
 	entityHandler->Add(player1);
 	player1->SetPlayerNumber(1);
 
 	player2 = new Player(d3dHandler->GetDevice(),
-		assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/Player2.bin"),
-		assetHandler->GetMaterial(d3dHandler->GetDevice(), "assets/Player2.bin", "Portal1"),
-		assetHandler->GetMaterial(d3dHandler->GetDevice(), "assets/Player2.bin", "Portal2"),
+		assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/NEW_portal_circlewithstuff_history.bin"),
+		assetHandler->GetMaterial(d3dHandler->GetDevice(), "assets/Player.bin", "Portal1"),
+		assetHandler->GetMaterial(d3dHandler->GetDevice(), "assets/Player.bin", "Portal2"),
 		playerShader,
 		Color::RED, Color::YELLOW,
-		XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(40, 0, 30));
+		XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, XM_PIDIV2, 0));
 	entityHandler->Add(player2);
 	player2->SetPlayerNumber(2);
 
 	// Create Combo-bar player1 & player2
 	Material* playerComboMat[9];
-	playerComboMat[0] = assetHandler->GetMaterial(d3dHandler->GetDevice(), "comboBonus.dds");
-	playerComboMat[1] = assetHandler->GetMaterial(d3dHandler->GetDevice(), "2ggr.dds");
-	playerComboMat[2] = assetHandler->GetMaterial(d3dHandler->GetDevice(), "3ggr.dds");
-	playerComboMat[3] = assetHandler->GetMaterial(d3dHandler->GetDevice(), "4ggr.dds");
-	playerComboMat[4] = assetHandler->GetMaterial(d3dHandler->GetDevice(), "5ggr.dds");
-	playerComboMat[5] = assetHandler->GetMaterial(d3dHandler->GetDevice(), "6ggr.dds");
-	playerComboMat[6] = assetHandler->GetMaterial(d3dHandler->GetDevice(), "7ggr.dds");
-	playerComboMat[7] = assetHandler->GetMaterial(d3dHandler->GetDevice(), "8ggr.dds");
-	playerComboMat[8] = assetHandler->GetMaterial(d3dHandler->GetDevice(), "9ggr.dds");
+	playerComboMat[0] = assetHandler->GetMaterial(d3dHandler->GetDevice(), "comboBonus.dds", "", 0.0f);
+	playerComboMat[1] = assetHandler->GetMaterial(d3dHandler->GetDevice(), "2ggr.dds", "", 0.0f);
+	playerComboMat[2] = assetHandler->GetMaterial(d3dHandler->GetDevice(), "3ggr.dds", "", 0.0f);
+	playerComboMat[3] = assetHandler->GetMaterial(d3dHandler->GetDevice(), "4ggr.dds", "", 0.0f);
+	playerComboMat[4] = assetHandler->GetMaterial(d3dHandler->GetDevice(), "5ggr.dds", "", 0.0f);
+	playerComboMat[5] = assetHandler->GetMaterial(d3dHandler->GetDevice(), "6ggr.dds", "", 0.0f);
+	playerComboMat[6] = assetHandler->GetMaterial(d3dHandler->GetDevice(), "7ggr.dds", "", 0.0f);
+	playerComboMat[7] = assetHandler->GetMaterial(d3dHandler->GetDevice(), "8ggr.dds", "", 0.0f);
+	playerComboMat[8] = assetHandler->GetMaterial(d3dHandler->GetDevice(), "9ggr.dds", "", 0.0f);
 	// player1
 	player1->comboBar->setMaterial(playerComboMat);
 	// player2
@@ -139,17 +139,17 @@ Application::Application(bool fullscreen, bool showCursor, int screenWidth, int 
 
 	// Create Combo-bar Display text player1 & player2
 	Material* playerComboDTMat[11];
-	playerComboDTMat[0] = assetHandler->GetMaterial(d3dHandler->GetDevice(), "combo.dds");
-	playerComboDTMat[1] = assetHandler->GetMaterial(d3dHandler->GetDevice(), "zero.dds");
-	playerComboDTMat[2] = assetHandler->GetMaterial(d3dHandler->GetDevice(), "one.dds");
-	playerComboDTMat[3] = assetHandler->GetMaterial(d3dHandler->GetDevice(), "two.dds");
-	playerComboDTMat[4] = assetHandler->GetMaterial(d3dHandler->GetDevice(), "three.dds");
-	playerComboDTMat[5] = assetHandler->GetMaterial(d3dHandler->GetDevice(), "four.dds");
-	playerComboDTMat[6] = assetHandler->GetMaterial(d3dHandler->GetDevice(), "five.dds");
-	playerComboDTMat[7] = assetHandler->GetMaterial(d3dHandler->GetDevice(), "six.dds");
-	playerComboDTMat[8] = assetHandler->GetMaterial(d3dHandler->GetDevice(), "seven.dds");
-	playerComboDTMat[9] = assetHandler->GetMaterial(d3dHandler->GetDevice(), "eight.dds");
-	playerComboDTMat[10] = assetHandler->GetMaterial(d3dHandler->GetDevice(), "nine.dds");
+	playerComboDTMat[0] = assetHandler->GetMaterial(d3dHandler->GetDevice(), "combo.dds", "", 0.0f);
+	playerComboDTMat[1] = assetHandler->GetMaterial(d3dHandler->GetDevice(), "zero.dds", "", 0.0f);
+	playerComboDTMat[2] = assetHandler->GetMaterial(d3dHandler->GetDevice(), "one.dds", "", 0.0f);
+	playerComboDTMat[3] = assetHandler->GetMaterial(d3dHandler->GetDevice(), "two.dds", "", 0.0f);
+	playerComboDTMat[4] = assetHandler->GetMaterial(d3dHandler->GetDevice(), "three.dds", "", 0.0f);
+	playerComboDTMat[5] = assetHandler->GetMaterial(d3dHandler->GetDevice(), "four.dds", "", 0.0f);
+	playerComboDTMat[6] = assetHandler->GetMaterial(d3dHandler->GetDevice(), "five.dds", "", 0.0f);
+	playerComboDTMat[7] = assetHandler->GetMaterial(d3dHandler->GetDevice(), "six.dds", "", 0.0f);
+	playerComboDTMat[8] = assetHandler->GetMaterial(d3dHandler->GetDevice(), "seven.dds", "", 0.0f);
+	playerComboDTMat[9] = assetHandler->GetMaterial(d3dHandler->GetDevice(), "eight.dds", "", 0.0f);
+	playerComboDTMat[10] = assetHandler->GetMaterial(d3dHandler->GetDevice(), "nine.dds", "", 0.0f);
 	// player1
 	player1->comboDisplayText[0]->setMaterial(playerComboDTMat);
 	player1->comboDisplayText[1]->setMaterial(playerComboDTMat);
@@ -162,17 +162,46 @@ Application::Application(bool fullscreen, bool showCursor, int screenWidth, int 
 	player2->comboDisplayText[3]->setMaterial(playerComboDTMat);
 
 	// Power Ups - Display text player1 & player2
-	Material* playerPowerUpDisplayMat[2];
-	playerPowerUpDisplayMat[0] = assetHandler->GetMaterial(d3dHandler->GetDevice(), "invertcontrol.dds");
-	playerPowerUpDisplayMat[1] = assetHandler->GetMaterial(d3dHandler->GetDevice(), "invertcontrolfade.dds");
-	// player1
-	player1->powerUpDisplayText->setMaterial(playerPowerUpDisplayMat);
-	// player2
-	player2->powerUpDisplayText->setMaterial(playerPowerUpDisplayMat);
+	Material* playerPowerUpDisplayMat1[2];
+	playerPowerUpDisplayMat1[0] = assetHandler->GetMaterial(d3dHandler->GetDevice(), "invertcontrol.dds", "", 0.0f);
+	playerPowerUpDisplayMat1[1] = assetHandler->GetMaterial(d3dHandler->GetDevice(), "invertcontrolfade.dds", "", 0.0f);
+	Material* playerPowerUpDisplayMat2[2];
+	playerPowerUpDisplayMat2[0] = assetHandler->GetMaterial(d3dHandler->GetDevice(), "slowacceleration.dds", "", 0.0f);
+	playerPowerUpDisplayMat2[1] = assetHandler->GetMaterial(d3dHandler->GetDevice(), "slowaccelerationfade.dds", "", 0.0f);
+	Material* playerPowerUpDisplayMat3[2];
+	playerPowerUpDisplayMat3[0] = assetHandler->GetMaterial(d3dHandler->GetDevice(), "bonuscombo.dds", "", 0.0f);
+	playerPowerUpDisplayMat3[1] = assetHandler->GetMaterial(d3dHandler->GetDevice(), "bonuscombofade.dds", "", 0.0f);
+	Material* playerPowerUpDisplayMat4[2];
+	playerPowerUpDisplayMat4[0] = assetHandler->GetMaterial(d3dHandler->GetDevice(), "immortalportal.dds", "", 0.0f);
+	playerPowerUpDisplayMat4[1] = assetHandler->GetMaterial(d3dHandler->GetDevice(), "immortalportalfade.dds", "", 0.0f);
 
+	// player1
+	player1->powerUpDisplayText[0]->setMaterial(playerPowerUpDisplayMat1);
+	player1->powerUpDisplayText[1]->setMaterial(playerPowerUpDisplayMat2);
+	player1->powerUpDisplayText[2]->setMaterial(playerPowerUpDisplayMat3);
+	player1->powerUpDisplayText[3]->setMaterial(playerPowerUpDisplayMat4);
+	// player2
+	player2->powerUpDisplayText[0]->setMaterial(playerPowerUpDisplayMat1);
+	player2->powerUpDisplayText[1]->setMaterial(playerPowerUpDisplayMat2);
+	player2->powerUpDisplayText[2]->setMaterial(playerPowerUpDisplayMat3);
+	player2->powerUpDisplayText[3]->setMaterial(playerPowerUpDisplayMat4);
 	// Particles testing area
-	particle = new Particle(1, 50, d3dHandler->GetDevice());
-	particle2 = new Particle(1, 20, d3dHandler->GetDevice());
+	particle = new Particle(1, 50, assetHandler->GetMaterial(d3dHandler->GetDevice(), "powerbar.dds", "", 0.0f), d3dHandler->GetDevice());
+	particle->constantBufferData.lifeTime = 100;
+	particle2 = new Particle(1, 20, assetHandler->GetMaterial(d3dHandler->GetDevice(), "powerbar.dds", "", 0.0f), d3dHandler->GetDevice());
+	particle2->constantBufferData.lifeTime = 100;
+	particlePowerBar1 = new Particle(2, 300, assetHandler->GetMaterial(d3dHandler->GetDevice(), "powerbar.dds", "", 0.0f), d3dHandler->GetDevice());
+	particlePowerBar1->constantBufferData.reset = false;
+	particlePowerBar1->constantBufferData.lifeTime = 20;
+
+	particlePowerBar2 = new Particle(2, 300, assetHandler->GetMaterial(d3dHandler->GetDevice(), "powerbar.dds", "", 0.0f), d3dHandler->GetDevice());
+	particlePowerBar2->constantBufferData.reset = false;
+	particlePowerBar2->constantBufferData.lifeTime = 20;
+
+	particleBackground = new Particle(3, 300, assetHandler->GetMaterial(d3dHandler->GetDevice(), "comboBonus.dds", "", 0.0f), d3dHandler->GetDevice());
+	particleBackground->constantBufferData.position = DirectX::XMFLOAT3(70, 0, 0);
+	particleBackground->constantBufferData.reset = false;
+	particleBackground->constantBufferData.lifeTime = 100;
 
 	// Create Background
 	entityHandler->Add(
@@ -180,7 +209,7 @@ Application::Application(bool fullscreen, bool showCursor, int screenWidth, int 
 
 		//assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/test.bin"),
 		assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/BackgroundPlane.bin"),
-		assetHandler->GetMaterial(d3dHandler->GetDevice(), "spaceTest.dds"),
+		assetHandler->GetMaterial(d3dHandler->GetDevice(), "spaceTest.dds", "", 0.0f),
 		playerShader, XMFLOAT3(0, 0, 10), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(46, 26, 1))
 		);
 
@@ -202,28 +231,29 @@ Application::Application(bool fullscreen, bool showCursor, int screenWidth, int 
 		new Background(
 
 		assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/BackgroundPlane.bin"),
-		assetHandler->GetMaterial(d3dHandler->GetDevice(), "spaceAlphaTest.dds"),
+
+		assetHandler->GetMaterial(d3dHandler->GetDevice(), "spaceAlphaTest.dds", "", 0.0f),
 		playerShader, XMFLOAT3(0, 0, 9.9), XMFLOAT3(0.5, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(46, 26, 1))
 		);
 
 	entityHandler->Add(
 		new Background(
 		assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/BackgroundPlane.bin"),
-		assetHandler->GetMaterial(d3dHandler->GetDevice(), "spaceAlphaTest.dds"),
+		assetHandler->GetMaterial(d3dHandler->GetDevice(), "spaceAlphaTest.dds", "", 0.0f),
 		playerShader, XMFLOAT3(-91.5, 0, 9.9), XMFLOAT3(0.5, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(46, 26, 1))
 		);
 
 	entityHandler->Add(
 		new Background(
 		assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/BackgroundPlane.bin"),
-		assetHandler->GetMaterial(d3dHandler->GetDevice(), "test1.dds"),
+		assetHandler->GetMaterial(d3dHandler->GetDevice(), "test1.dds", "", 0.0f),
 		playerShader, XMFLOAT3(-91.5, 0, 9.8), XMFLOAT3(0.4, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(46, 26, 1))
 		);
 
 	entityHandler->Add(
 		new Background(
 		assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/BackgroundPlane.bin"),
-		assetHandler->GetMaterial(d3dHandler->GetDevice(), "test1.dds"),
+		assetHandler->GetMaterial(d3dHandler->GetDevice(), "test1.dds", "", 0.0f),
 		playerShader, XMFLOAT3(0, 0, 9.8), XMFLOAT3(0.4, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(46, 26, 1))
 		);
 
@@ -235,8 +265,8 @@ Application::Application(bool fullscreen, bool showCursor, int screenWidth, int 
 		new MapItem(
 		//assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/test.bin"),
 		assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/Earth.bin"),
-		assetHandler->GetMaterial(d3dHandler->GetDevice(), "b.dds"),
-		playerShader, MapItem::BackgroundAsset, Color::BLUE, XMFLOAT3(0, 0, 5), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0.05, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(1, 1, 1))
+		assetHandler->GetMaterial(d3dHandler->GetDevice(), "b.dds", "normalmap.dds", 0.0f),
+		playerShader, MapItem::BackgroundAsset, Color::BLUE, XMFLOAT3(0, 0, 5), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 2, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(1, 1, 1))
 		);
 	//ljus
 	// ljus objekt
@@ -253,8 +283,8 @@ Application::Application(bool fullscreen, bool showCursor, int screenWidth, int 
 	player2BarPos[2] = DirectX::XMFLOAT2(-0.7f, -0.9f);
 	player2BarPos[3] = DirectX::XMFLOAT2(-0.7f, -1.0f);
 	player2->powerBar->SetPosition(player2BarPos);
-	player2->powerBar->SetMaterial(assetHandler->GetMaterial(d3dHandler->GetDevice(), "powerbar.dds"));
-	player1->powerBar->SetMaterial(assetHandler->GetMaterial(d3dHandler->GetDevice(), "powerbar.dds"));
+	player2->powerBar->SetMaterial(assetHandler->GetMaterial(d3dHandler->GetDevice(), "powerbar.dds", "", 0.0f));
+	player1->powerBar->SetMaterial(assetHandler->GetMaterial(d3dHandler->GetDevice(), "powerbar.dds", "", 0.0f));
 	// Combo bars, player1 & player2
 	// Player 1
 	DirectX::XMFLOAT2 player1Pos[4];
@@ -320,13 +350,33 @@ Application::Application(bool fullscreen, bool showCursor, int screenWidth, int 
 
 	// PowerUp-Display text, player1 & player2
 	// Player 1 - "INVERT CONTROL" text
-	player1Pos[0] = DirectX::XMFLOAT2(1.0f, 1.0f); // längst upp - höger
-	player1Pos[1] = DirectX::XMFLOAT2(1.0f, 0.9f); // längst ner - höger
-	player1Pos[2] = DirectX::XMFLOAT2(0.85f, 1.0f); // längst upp - vänster
-	player1Pos[3] = DirectX::XMFLOAT2(0.85f, 0.9f); // längst ner - vänster
-	player1->powerUpDisplayText->SetPosition(player1Pos);
-	player1->powerUpDisplayText->SetUV(player1UV);
-	player1->powerUpDisplayText->SetComboText(true);
+	player1Pos[0] = DirectX::XMFLOAT2(0.995f, 0.995f); // längst upp - höger
+	player1Pos[1] = DirectX::XMFLOAT2(0.995f, 0.895f); // längst ner - höger
+	player1Pos[2] = DirectX::XMFLOAT2(0.845f, 0.995f); // längst upp - vänster
+	player1Pos[3] = DirectX::XMFLOAT2(0.845f, 0.895f); // längst ner - vänster
+	player1->powerUpDisplayText[0]->SetPosition(player1Pos);
+	player1->powerUpDisplayText[0]->SetUV(player1UV);
+	// Player 1 - "SLOW ACCELERATION" text
+	player1Pos[0] = DirectX::XMFLOAT2(0.995f, 0.885f); // längst upp - höger
+	player1Pos[1] = DirectX::XMFLOAT2(0.995f, 0.785f); // längst ner - höger
+	player1Pos[2] = DirectX::XMFLOAT2(0.845f, 0.885f); // längst upp - vänster
+	player1Pos[3] = DirectX::XMFLOAT2(0.845f, 0.785f); // längst ner - vänster
+	player1->powerUpDisplayText[1]->SetPosition(player1Pos);
+	player1->powerUpDisplayText[1]->SetUV(player1UV);
+	// Player 1 - "COMBO BONUS" text
+	player1Pos[0] = DirectX::XMFLOAT2(0.84f, 0.995f); // längst upp - höger
+	player1Pos[1] = DirectX::XMFLOAT2(0.84f, 0.895f); // längst ner - höger
+	player1Pos[2] = DirectX::XMFLOAT2(0.69f, 0.995f); // längst upp - vänster
+	player1Pos[3] = DirectX::XMFLOAT2(0.69f, 0.895f); // längst ner - vänster
+	player1->powerUpDisplayText[2]->SetPosition(player1Pos);
+	player1->powerUpDisplayText[2]->SetUV(player1UV);
+	// Player 1 - "IMMORTAL PORTAL" text
+	player1Pos[0] = DirectX::XMFLOAT2(0.84f, 0.885f); // längst upp - höger
+	player1Pos[1] = DirectX::XMFLOAT2(0.84f, 0.785f); // längst ner - höger
+	player1Pos[2] = DirectX::XMFLOAT2(0.69f, 0.885f); // längst upp - vänster
+	player1Pos[3] = DirectX::XMFLOAT2(0.69f, 0.785f); // längst ner - vänster
+	player1->powerUpDisplayText[3]->SetPosition(player1Pos);
+	player1->powerUpDisplayText[3]->SetUV(player1UV);
 
 
 	// Player 2 - "COMBO" text
@@ -362,6 +412,36 @@ Application::Application(bool fullscreen, bool showCursor, int screenWidth, int 
 	player2->comboDisplayText[3]->SetUV(player2UV);
 	player2->comboDisplayText[3]->SetComboText(false);
 
+	// PowerUp-Display text, player1 & player2
+	// Player 2 - "INVERT CONTROL" text
+	player2Pos[0] = DirectX::XMFLOAT2(0.995f, -0.895f); // längst upp - höger
+	player2Pos[1] = DirectX::XMFLOAT2(0.995f, -0.995f); // längst ner - höger
+	player2Pos[2] = DirectX::XMFLOAT2(0.845f, -0.895f); // längst upp - vänster
+	player2Pos[3] = DirectX::XMFLOAT2(0.845f, -0.995f); // längst ner - vänster
+	player2->powerUpDisplayText[1]->SetPosition(player2Pos);
+	player2->powerUpDisplayText[1]->SetUV(player2UV);
+	// Player 2 - "SLOW ACCELERATION" text
+	player2Pos[0] = DirectX::XMFLOAT2(0.995f, -0.785f); // längst upp - höger
+	player2Pos[1] = DirectX::XMFLOAT2(0.995f, -0.885f); // längst ner - höger
+	player2Pos[2] = DirectX::XMFLOAT2(0.845f, -0.785f); // längst upp - vänster
+	player2Pos[3] = DirectX::XMFLOAT2(0.845f, -0.885f); // längst ner - vänster
+	player2->powerUpDisplayText[0]->SetPosition(player2Pos);
+	player2->powerUpDisplayText[0]->SetUV(player2UV);
+	// Player 2 - "COMBO BONUS" text
+	player2Pos[0] = DirectX::XMFLOAT2(0.84f, -0.895f); // längst upp - höger
+	player2Pos[1] = DirectX::XMFLOAT2(0.84f, -0.995f); // längst ner - höger
+	player2Pos[2] = DirectX::XMFLOAT2(0.69f, -0.895f); // längst upp - vänster
+	player2Pos[3] = DirectX::XMFLOAT2(0.69f, -0.995f); // längst ner - vänster
+	player2->powerUpDisplayText[3]->SetPosition(player2Pos);
+	player2->powerUpDisplayText[3]->SetUV(player2UV);
+	// Player 2 - "IMMORTAL PORTAL" text
+	player2Pos[0] = DirectX::XMFLOAT2(0.84f, -0.785f); // längst upp - höger
+	player2Pos[1] = DirectX::XMFLOAT2(0.84f, -0.885f); // längst ner - höger
+	player2Pos[2] = DirectX::XMFLOAT2(0.69f, -0.785f); // längst upp - vänster
+	player2Pos[3] = DirectX::XMFLOAT2(0.69f, -0.885f); // längst ner - vänster
+	player2->powerUpDisplayText[2]->SetPosition(player2Pos);
+	player2->powerUpDisplayText[2]->SetUV(player2UV);
+
 	// Start Menu
 	startMenu = new StartMenu(d3dHandler->GetDevice());
 
@@ -369,35 +449,35 @@ Application::Application(bool fullscreen, bool showCursor, int screenWidth, int 
 		player1, player2,
 		DirectX::XMFLOAT2(0, 0.4f),
 		DirectX::XMFLOAT2(0.1f, 0.1f),
-		assetHandler->GetMaterial(d3dHandler->GetDevice(), "start.dds")));
+		assetHandler->GetMaterial(d3dHandler->GetDevice(), "start.dds", "", 0.0f)));
 
 	startMenu->AddButton(new OptionsButton(
 		DirectX::XMFLOAT2(0, 0.0f),
 		DirectX::XMFLOAT2(0.1f, 0.1f),
-		assetHandler->GetMaterial(d3dHandler->GetDevice(), "options.dds")));
+		assetHandler->GetMaterial(d3dHandler->GetDevice(), "options.dds", "", 0.0f)));
 
 	startMenu->AddButton(new QuitButton(
 		DirectX::XMFLOAT2(0, -0.4f),
 		DirectX::XMFLOAT2(0.1f, 0.1f),
-		assetHandler->GetMaterial(d3dHandler->GetDevice(), "quit.dds")));
+		assetHandler->GetMaterial(d3dHandler->GetDevice(), "quit.dds", "", 0.0f)));
 
 	// Pause Menu
 	pauseMenu = new PauseMenu(d3dHandler->GetDevice());
 	pauseMenu->AddButton(new ContinueButton(
 		DirectX::XMFLOAT2(0, 0.4f),
 		DirectX::XMFLOAT2(0.1f, 0.1f),
-		assetHandler->GetMaterial(d3dHandler->GetDevice(), "continue.dds")));
+		assetHandler->GetMaterial(d3dHandler->GetDevice(), "continue.dds", "", 0.0f)));
 
 	pauseMenu->AddButton(new StartButton(entityHandler,
 		player1, player2,
 		DirectX::XMFLOAT2(0, 0.0f),
 		DirectX::XMFLOAT2(0.1f, 0.1f),
-		assetHandler->GetMaterial(d3dHandler->GetDevice(), "restart.dds")));
+		assetHandler->GetMaterial(d3dHandler->GetDevice(), "restart.dds", "", 0.0f)));
 
 	pauseMenu->AddButton(new QuitButton(
 		DirectX::XMFLOAT2(0, -0.4f),
 		DirectX::XMFLOAT2(0.1f, 0.1f),
-		assetHandler->GetMaterial(d3dHandler->GetDevice(), "quit.dds")));
+		assetHandler->GetMaterial(d3dHandler->GetDevice(), "quit.dds", "", 0.0f)));
 
 	// Restart Menu
 	restartMenu = new RestartMenu(d3dHandler->GetDevice());
@@ -406,12 +486,12 @@ Application::Application(bool fullscreen, bool showCursor, int screenWidth, int 
 		player1, player2,
 		DirectX::XMFLOAT2(0, 0.2f),
 		DirectX::XMFLOAT2(0.1f, 0.1f),
-		assetHandler->GetMaterial(d3dHandler->GetDevice(), "restart.dds")));
+		assetHandler->GetMaterial(d3dHandler->GetDevice(), "restart.dds", "", 0.0f)));
 
 	restartMenu->AddButton(new QuitButton(
 		DirectX::XMFLOAT2(0, -0.2f),
 		DirectX::XMFLOAT2(0.1f, 0.1f),
-		assetHandler->GetMaterial(d3dHandler->GetDevice(), "quit.dds")));
+		assetHandler->GetMaterial(d3dHandler->GetDevice(), "quit.dds", "", 0.0f)));
 
 
 
@@ -447,6 +527,9 @@ Application::~Application()
 
 	delete particle;
 	delete particle2;
+	delete particlePowerBar1;
+	delete particlePowerBar2;
+	delete particleBackground;
 	delete startMenu;
 	delete pauseMenu;
 	delete restartMenu;
@@ -457,6 +540,7 @@ bool Application::Update(float deltaTime)
 {
 	float test1 = 5.0f;
 	float test2 = 30.0f;
+	float test3 = 2.0f;
 	pauseMenu->CheckIfToPause(input->GetButtonStartState());
 	if (pauseMenu->renderMenu == true && startMenu->renderMenu == false || startMenu->renderMenu == true || restartMenu->renderMenu == true)
 	{
@@ -481,6 +565,10 @@ bool Application::Update(float deltaTime)
 		dir.x *= test2;
 		dir.y *= test2;
 	}
+	// PowerUp - Bonus Combo - effect on | Player1
+	player1->getBonusCombo();
+	// PowerUp - Immortal Portal - effect on | Player1
+	player1->getImmortalPortal();
 	player1->SetAcceleration(XMFLOAT3(dir.x, dir.y, 0.0f));
 	player1->ReactToInput(input->GetButtonState(), aMaster);
 
@@ -503,6 +591,10 @@ bool Application::Update(float deltaTime)
 		dir2.x *= test2;
 		dir2.y *= test2;
 	}
+	// PowerUp - Bonus Combo - effect on | Player2
+	player2->getBonusCombo();
+	// PowerUp - Immortal Portal - effect on | Player2
+	player2->getImmortalPortal();
 	player2->SetAcceleration(XMFLOAT3(dir2.x, dir2.y, 0.0f));
 	player2->ReactToInput(input2->GetButtonState(), aMaster);
 	
@@ -524,21 +616,30 @@ bool Application::Update(float deltaTime)
 	player1->comboDisplayText[1]->Update(deltaTime);
 	player1->comboDisplayText[2]->Update(deltaTime);
 	player1->comboDisplayText[3]->Update(deltaTime);
-
-	player1->powerUpDisplayText->Update(deltaTime);
+	player1->powerUpDisplayText[0]->Update(deltaTime);
+	player1->powerUpDisplayText[1]->Update(deltaTime);
+	player1->powerUpDisplayText[2]->Update(deltaTime);
+	player1->powerUpDisplayText[3]->Update(deltaTime);
 
 	player2->comboDisplayText[0]->Update(deltaTime);
 	player2->comboDisplayText[1]->Update(deltaTime);
 	player2->comboDisplayText[2]->Update(deltaTime);
 	player2->comboDisplayText[3]->Update(deltaTime);
+	player2->powerUpDisplayText[0]->Update(deltaTime);
+	player2->powerUpDisplayText[1]->Update(deltaTime);
+	player2->powerUpDisplayText[2]->Update(deltaTime);
+	player2->powerUpDisplayText[3]->Update(deltaTime);
 
 	entityHandler->Update(deltaTime, aMaster);
 
+	particleBackground->UpdateParticle(deltaTime, d3dHandler->GetDeviceContext(), particleShader->GetComputeShader());
 	// Particles for player 1
-	particle->UpdatePosition(player1->GetPosition());
-	particle->UpdateParticle(deltaTime, d3dHandler->GetDeviceContext(), particleShader->GetComputeShader());
+	particlePowerBar1->UpdateParticle(deltaTime, d3dHandler->GetDeviceContext(), particleShader->GetComputeShader());
+	particlePowerBar1->UpdatePosition(DirectX::XMFLOAT3(player1->powerBar->GetCurrentMaxPosition().x, player1->powerBar->GetCurrentMaxPosition().y, 0.0f));
 	if (player1->renderParticles == true && particle->particleCounter <= particle->constantBufferData.lifeTime)
 	{
+		particle->UpdatePosition(player1->GetPosition());
+		particle->UpdateParticle(deltaTime, d3dHandler->GetDeviceContext(), particleShader->GetComputeShader());
 		particle->constantBufferData.reset = false;
 		if (player1->doubleUp == true)
 		{
@@ -556,10 +657,12 @@ bool Application::Update(float deltaTime)
 	}
 
 	// Particles for player 2
-	particle2->UpdatePosition(player2->GetPosition());
-	particle2->UpdateParticle(deltaTime, d3dHandler->GetDeviceContext(), particleShader->GetComputeShader());
+	particlePowerBar2->UpdateParticle(deltaTime, d3dHandler->GetDeviceContext(), particleShader->GetComputeShader());
+	particlePowerBar2->UpdatePosition(DirectX::XMFLOAT3(player2->powerBar->GetCurrentMaxPosition().x, player2->powerBar->GetCurrentMaxPosition().y, 0.0f));
 	if (player2->renderParticles == true && particle->particleCounter <= particle2->constantBufferData.lifeTime)
 	{
+		particle2->UpdatePosition(player2->GetPosition());
+		particle2->UpdateParticle(deltaTime, d3dHandler->GetDeviceContext(), particleShader->GetComputeShader());
 		particle2->constantBufferData.reset = false;
 		if (player2->doubleUp == true)
 		{
@@ -581,7 +684,7 @@ bool Application::Update(float deltaTime)
 	if (startMenu->renderMenu == true)
 		startMenu->Update(input->GetButtonUpState(), input->GetButtonDownState(), input->GetButtonEnterState());
 
-	if (pauseMenu->renderMenu == true && startMenu->renderMenu == false)
+	if (pauseMenu->renderMenu == true && startMenu->renderMenu == false && restartMenu->renderMenu == false)
 		pauseMenu->Update(input->GetButtonUpState(), input->GetButtonDownState(), input->GetButtonEnterState());
 
 	if (restartMenu->renderMenu == true)
@@ -597,16 +700,38 @@ void Application::Render()
 
 	if (startMenu->renderMenu == false)
 	{
+		// Particles
+		particleShader->Use(d3dHandler->GetDeviceContext());
+		particlePowerBar1->Render(d3dHandler->GetDeviceContext());
+		particlePowerBar2->Render(d3dHandler->GetDeviceContext());
+		particleBackground->Render(d3dHandler->GetDeviceContext());
+		if (player1->renderParticles == true)
+		{
+			particle->Render(d3dHandler->GetDeviceContext());
+
+		}
+		if (player2->renderParticles == true)
+		{
+			particle2->Render(d3dHandler->GetDeviceContext());
+
+		}
+
 		entityHandler->Render(d3dHandler->GetDeviceContext());
 		// Combo - Display text
 		comboBarShader->Use(d3dHandler->GetDeviceContext());
-		player1->powerUpDisplayText->Render(d3dHandler->GetDeviceContext(), comboBarShader);
-
+		player1->powerUpDisplayText[0]->Render(d3dHandler->GetDeviceContext(), comboBarShader);
+		player1->powerUpDisplayText[1]->Render(d3dHandler->GetDeviceContext(), comboBarShader);
+		player1->powerUpDisplayText[2]->Render(d3dHandler->GetDeviceContext(), comboBarShader);
+		player1->powerUpDisplayText[3]->Render(d3dHandler->GetDeviceContext(), comboBarShader);
 		player1->comboDisplayText[0]->Render(d3dHandler->GetDeviceContext(), comboBarShader);
 		player1->comboDisplayText[1]->Render(d3dHandler->GetDeviceContext(), comboBarShader);
 		player1->comboDisplayText[2]->Render(d3dHandler->GetDeviceContext(), comboBarShader);
 		player1->comboDisplayText[3]->Render(d3dHandler->GetDeviceContext(), comboBarShader);
 
+		player2->powerUpDisplayText[0]->Render(d3dHandler->GetDeviceContext(), comboBarShader);
+		player2->powerUpDisplayText[1]->Render(d3dHandler->GetDeviceContext(), comboBarShader);
+		player2->powerUpDisplayText[2]->Render(d3dHandler->GetDeviceContext(), comboBarShader);
+		player2->powerUpDisplayText[3]->Render(d3dHandler->GetDeviceContext(), comboBarShader);
 		player2->comboDisplayText[0]->Render(d3dHandler->GetDeviceContext(), comboBarShader);
 		player2->comboDisplayText[1]->Render(d3dHandler->GetDeviceContext(), comboBarShader);
 		player2->comboDisplayText[2]->Render(d3dHandler->GetDeviceContext(), comboBarShader);
@@ -628,21 +753,6 @@ void Application::Render()
 		player1->comboBar->Render(d3dHandler->GetDeviceContext(), comboBarShader);
 		player2->comboBar->Render(d3dHandler->GetDeviceContext(), comboBarShader);
 
-	
-
-		// Particles
-		if (particle->particleCounter > 0)
-		{
-			particleShader->Use(d3dHandler->GetDeviceContext());
-			particle->Render(d3dHandler->GetDeviceContext());
-
-		}
-		if (player2->renderParticles == true)
-		{
-			particleShader->Use(d3dHandler->GetDeviceContext());
-			particle2->Render(d3dHandler->GetDeviceContext());
-
-		}
 	}
 	// Menu
 	if (startMenu->renderMenu == true)
@@ -652,7 +762,7 @@ void Application::Render()
 		
 	}
 
-	if (pauseMenu->renderMenu == true && startMenu->renderMenu == false)
+	if (pauseMenu->renderMenu == true && startMenu->renderMenu == false && restartMenu->renderMenu == false)
 	{
 		buttonShader->Use(d3dHandler->GetDeviceContext());
 		pauseMenu->Render(d3dHandler->GetDeviceContext());

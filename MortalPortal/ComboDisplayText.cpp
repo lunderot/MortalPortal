@@ -76,11 +76,11 @@ ID3D11Buffer* ComboDisplayText::GetVertexBuffer()
 
 void ComboDisplayText::AddCombo()
 {
-	if (comboNr != 10)
+	if (comboNr <= 9)
 	{
-		comboNr++;
+		comboNr++;	
 	}
-	else if (comboNr == 10)
+	else if (comboNr >= 9)
 	{
 		comboNr = 1;
 	}

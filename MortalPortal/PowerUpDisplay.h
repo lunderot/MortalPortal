@@ -25,9 +25,8 @@ public:
 	void setMaterial(Material* materialCombo[2]);
 	void SetPosition(DirectX::XMFLOAT2 point[4]);
 	void SetUV(DirectX::XMFLOAT2 UV[4]);
-	void AddCombo();
-	void RemoveCombo();
-	void SetComboText(bool comboTextState);
+	void AddTextDisplay();
+	void RemoveTextDisplay();
 
 	void Update(float deltaTime);
 	void Render(ID3D11DeviceContext* deviceContext, Shader* shader);

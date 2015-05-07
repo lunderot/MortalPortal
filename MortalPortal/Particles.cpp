@@ -1,20 +1,22 @@
 #include "Particles.h"
 
 Particle::Particle(unsigned int type,
-	const unsigned int nrOfParticles,
+	const unsigned int nrOfParticles, 
+	Material* material,
 	ID3D11Device* device,
 	DirectX::XMFLOAT3 position,
 	DirectX::XMFLOAT3 velocity,
 	DirectX::XMFLOAT3 angleVelocity,
 	DirectX::XMFLOAT3 acceleration, DirectX::XMFLOAT3 scale) : Entity(nullptr, nullptr, nullptr, position, velocity, angleVelocity, acceleration, scale)
 {
-
+	SRV = nullptr;
+	this->material = material;
 	if (type == 1)
 	{
 		for (unsigned int i = 0; i < nrOfParticles; i++)
 		{
 			Particles p;
-			p.type = 1;
+			p.type = type;
 			p.lifeTime = rand() % 50 - 10;
 			p.pos.x = 0;
 			p.pos.y = 0;
@@ -33,14 +35,14 @@ Particle::Particle(unsigned int type,
 		for (unsigned int i = 0; i < nrOfParticles; i++)
 		{
 			Particles p;
-			p.type = 1;
-			p.lifeTime = rand() % 3 + 7;
+			p.type = type;
+			p.lifeTime = rand() % 500 - 10;
 			p.pos.x = 0;
 			p.pos.y = 0;
 			p.pos.z = 0;
 
-			p.velocity.x = rand() % 50 + 50;
-			p.velocity.y = rand() % 90 + 50;
+			p.velocity.x = rand() % 10;
+			p.velocity.y = rand() % 5 - 5;
 			p.acceleration.x = 0;
 			p.acceleration.y = 0;
 			particle.push_back(p);
@@ -52,14 +54,14 @@ Particle::Particle(unsigned int type,
 		for (unsigned int i = 0; i < nrOfParticles; i++)
 		{
 			Particles p;
-			p.type = 1;
+			p.type = type;
 			p.lifeTime = rand() % 3 + 7;
-			p.pos.x = 0;
-			p.pos.y = 0;
-			p.pos.z = 0;
+			p.pos.x = rand() % 60;
+			p.pos.y = rand() % 100;
+			p.pos.z = rand() % 20;
 
-			p.velocity.x = rand() %  30 - 30;
-			p.velocity.y = rand() % 10;
+			p.velocity.x = rand() %  50 - 100;
+			p.velocity.y = rand() % 100 - 50;
 			p.acceleration.x = 0;
 			p.acceleration.y = 0;
 			particle.push_back(p);
@@ -164,11 +166,13 @@ void Particle::SetLifeTime(float time)
 void Particle::Render(ID3D11DeviceContext* deviceContext)
 {
 	ID3D11Buffer* vertexBuffer = geometry->GetVertexBuffer();
+	SRV = material->GetTexture();
 	UINT stride = sizeof(Particles);
 	UINT offset = 0;
 
 	deviceContext->IASetVertexBuffers(0, 1, &vertexBuffer, &stride, &offset);
 	deviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_POINTLIST);
+	deviceContext->PSSetShaderResources(0, 1, &SRV);
 	deviceContext->Draw(nrOfParticles, 0);
 }
 
@@ -189,4 +193,7 @@ Particle::~Particle()
 	if (geometry->GetVertexBuffer())
 		geometry->GetVertexBuffer()->Release();
 	delete geometry;
+
+	if (SRV)
+		SRV->Release();
 }

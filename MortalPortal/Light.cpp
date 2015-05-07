@@ -1,6 +1,5 @@
 #include "Light.h"
 
-
 void LightL::CreateLight(ID3D11Device* device)
 {
 	directionLInfo.Position = DirectX::XMFLOAT3(0.5f, 0.5f, -1.0f);

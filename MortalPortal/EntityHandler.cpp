@@ -173,8 +173,11 @@ void EntityHandler::Render(ID3D11DeviceContext* deviceContext)
 			deviceContext->IASetVertexBuffers(0, 1, &vb, &vertexSize, &offset);
 			deviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
-			ID3D11ShaderResourceView* texure = material->GetTexture();
-			deviceContext->PSSetShaderResources(0, 1, &texure);
+			ID3D11ShaderResourceView* texture = material->GetTexture();
+			deviceContext->PSSetShaderResources(0, 1, &texture);
+
+			ID3D11ShaderResourceView* normal_map = material->GetNormalMap();
+			deviceContext->PSSetShaderResources(1, 1, &normal_map);
 
 			deviceContext->Draw(vertexCount, 0);
 		}
@@ -195,38 +198,9 @@ void EntityHandler::HandleCollision(Player* player, Entity* entity2, AudioMaster
 		{
 			case MapItem::objectType::Comet:
 			{
-				player->RemovePower();
-				player->RemoveCombo();
-				player->RemoveComboText();
-				break;
-			}	
-			case MapItem::objectType::PowerUp:
-			{
-				unsigned int rnd = rand() % 1;
-				if (rnd == 0) // Invert Control
+				if (player->getImmortalPortal() == true)
 				{
-					player->AddInvertControlDisplay();
-					player->setInvertControl(4.0f);
-				}
-				//else if (rnd == 1) // Slow Down Acceleration
-				//{
-				//	player->setSlowDownAcceleration(6.0f);
-				//}
-				//else if (rnd == 2) // Add Combo Bonus
-				//{
-				//	player->AddCombo();
-				//}
-				//else if (rnd == 3) // Crystal Frenzy
-				//{
-				//	player->setCrystalFrenzy(true);
-				//}
-				break;
-			}
-			case MapItem::objectType::Crystal:
-			{
-				if (player->GetColor() == item->GetColor())
-				{
-					player->AddCombo();
+					player->AddCombo(false);
 					player->AddComboText();
 					player->AddPower(player->comboBar->GetComboCount());
 					player->renderParticles = true;
@@ -238,6 +212,67 @@ void EntityHandler::HandleCollision(Player* player, Entity* entity2, AudioMaster
 					player->RemovePower();
 					player->RemoveCombo();
 					player->RemoveComboText();
+				}
+				break;
+			}	
+			case MapItem::objectType::PowerUp:
+			{
+				unsigned int rnd = rand() % 5;
+				if (rnd == 0) // Invert Control
+				{
+					player->AddInvertControlDisplay();
+					player->setInvertControl(4.0f);
+				}
+				else if (rnd == 1) // Slow Down Acceleration
+				{
+					player->AddSlowDownAccelerationDisplay();
+					player->setSlowDownAcceleration(5.0f);
+				}
+				else if (rnd == 2) // Bonus Combo
+				{
+					player->AddCombo(true);
+					player->AddBonusComboDisplay();
+					player->setBonusCombo(0.6f);
+				}
+				else if (rnd == 3) // Immortal Portal
+				{
+					player->AddImmortalPortalDisplay();
+					player->setImmortalPortal(6.0f);
+				}
+				else if (rnd == 4) // Crystal Frenzy
+				{
+					player->setCrystalFrenzy(true);
+				}
+				break;
+			}
+			case MapItem::objectType::Crystal:
+			{
+				if (player->GetColor() == item->GetColor())
+				{
+					player->AddCombo(false);
+					player->AddComboText();
+					player->AddPower(player->comboBar->GetComboCount());
+					player->renderParticles = true;
+					player->doubleUp = true;
+					aMaster.playSample("boing");
+				}
+				else
+				{
+					if (player->getImmortalPortal() == true)
+					{
+						player->AddCombo(false);
+						player->AddComboText();
+						player->AddPower(player->comboBar->GetComboCount());
+						player->renderParticles = true;
+						player->doubleUp = true;
+						aMaster.playSample("boing");
+					}
+					else
+					{
+						player->RemovePower();
+						player->RemoveCombo();
+						player->RemoveComboText();
+					}
 				}
 				break;
 			}

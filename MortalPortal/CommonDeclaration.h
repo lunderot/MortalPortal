@@ -9,7 +9,7 @@ struct Header
 {
 	Header()
 	{
-		group_count = mesh_count = material_count = camera_count = joint_count = light_count = nurb_count = 0;
+		group_count = mesh_count = material_count = camera_count = joint_count = light_count = nurb_count = anim_curve_count = skin_count = morph_count = 0;
 	};
 
 	unsigned int group_count;
@@ -19,60 +19,36 @@ struct Header
 	unsigned int light_count;
 	unsigned int joint_count;
 	unsigned int nurb_count;
+	unsigned int anim_curve_count;
+	unsigned int skin_count;
+	unsigned int morph_count;
 
-	void WriteBinary(ofstream& outputfile);
 	friend std::ostream& operator<<(std::ostream& out, const Header& obj);
 };
 
-struct Transform
+struct TransformData
 {
-	Transform()
-	{
-		name_Length = 0;
-		parentID = 0;
-		position[3] = { 0 };
-		rotation[4] = { 0 };
-		scale[3] = { 0 };
-		name = nullptr;
-	}
-#ifndef MAYA_EXPORT
-	~Transform()
-	{
-		delete[] name;
-	};
-#endif
 	unsigned int name_Length;
 	int parentID;
 	double position[3];
 	double rotation[4];
 	double scale[3];
-	const char* name;
 
-	void WriteBinary(ofstream& outputfile);
-
-	friend std::ostream& operator<<(std::ostream& out, const Transform& obj);
+	friend std::ostream& operator<<(std::ostream& out, const TransformData& obj);
 };
 
-struct Joint
+struct JointData
 {
 	double jointOrientation[4];
-	Transform transform;
+	TransformData transform;
 
-	void WriteBinary(ofstream& outputfile)
-	{
-		char* output = (char*) this;
-		outputfile.write((const char*)output, sizeof(double) * 4);
-		transform.WriteBinary(outputfile);
-	}
-
-	friend std::ostream& operator<<(std::ostream& out, const Joint& obj)
+	friend std::ostream& operator<<(std::ostream& out, const JointData& obj)
 	{
 		out << "ParentID: " << obj.transform.parentID << endl
 			<< "Position: " << obj.transform.position[0] << ' ' << obj.transform.position[1] << ' ' << obj.transform.position[3] << endl
 			<< "Rotation: " << obj.transform.rotation[0] << ' ' << obj.transform.rotation[1] << ' ' << obj.transform.rotation[2] << ' ' << obj.transform.rotation[3] << endl
 			<< "Scale: " << obj.transform.scale[0] << ' ' << obj.transform.scale[1] << ' ' << obj.transform.scale[2] << endl
-			<< "Orientation: " << obj.jointOrientation[0] << ' ' << obj.jointOrientation[1] << ' ' << obj.jointOrientation[2] << endl
-			<< "Joint Name: " << obj.transform.name << endl;
+			<< "Orientation: " << obj.jointOrientation[0] << ' ' << obj.jointOrientation[1] << ' ' << obj.jointOrientation[2] << endl;
 		return out;
 	}
 };
@@ -93,47 +69,8 @@ struct Vertex
 	}
 };
 
-struct meshStruct
+struct meshStructData
 {
-#ifndef MAYA_EXPORT
-	~meshStruct()
-	{
-		delete[] name;
-		delete[] vertices;
-		delete[] material_Id;
-		delete[] transform_Id;
-
-		for (unsigned int i = 0; i < position_count; i++)
-		{
-			delete[] position[i];
-		}
-		delete[] position;
-
-		for (unsigned int i = 0; i < uv_count; i++)
-		{
-			delete[] uv[i];
-		}
-		delete[] uv;
-
-		for (unsigned int i = 0; i < normal_count; i++)
-		{
-			delete[] normal[i];
-		}
-		delete[] normal;
-
-		for (unsigned int i = 0; i < tangent_count; i++)
-		{
-			delete[] tangent[i];
-		}
-		delete[] tangent;
-
-		for (unsigned int i = 0; i < biTangent_count; i++)
-		{
-			delete[] bi_tangent[i];
-		}
-		delete[] bi_tangent;
-	}
-#endif
 	unsigned int name_length;
 	unsigned int vertex_count;
 	unsigned int indice_count;
@@ -147,31 +84,23 @@ struct meshStruct
 	//unsigned int joint_count;
 	bool has_Animation;
 
-	double** position;
-	float** uv;
-	double** normal;
-	double** tangent;
-	double** bi_tangent;
+	//double** position;
+	//float** uv;
+	//double** normal;
+	//double** tangent;
+	//double** bi_tangent;
 
-	int* transform_Id;
-	int* material_Id;
-	Vertex* vertices;
-	const char* name;
+	//int* transform_Id;
+	//int* material_Id;
+	//Vertex* vertices;
+	//const char* name;
 
-	void WriteBinary(ofstream& outputfile);
-
-	friend std::ostream& operator<<(std::ostream& out, const meshStruct& obj);
+	friend std::ostream& operator<<(std::ostream& out, const meshStructData& obj);
 };
 
-struct camera
+enum projection_type{ ePerspective, eOrthogonal };
+struct cameraData
 {
-#ifndef MAYA_EXPORT
-	~camera()
-	{
-		delete[] parentID;
-		delete[] name;
-	};
-#endif
 	unsigned int name_length;
 	unsigned int nrOfParents;
 	double position[3];
@@ -181,16 +110,12 @@ struct camera
 	double field_of_view_y;
 	double near_plane;
 	double far_plane;
-	enum projection_type{ ePerspective, eOrthogonal } projection;
-	unsigned int* parentID;
-	const char* name;
+	projection_type projection;
 
-	void WriteBinary(ofstream& outputfile);
-
-	friend std::ostream& operator<<(std::ostream& out, const camera& obj);
+	friend std::ostream& operator<<(std::ostream& out, const cameraData& obj);
 };
 
-struct MorphAnimation
+struct MorphAnimationData
 {
 	unsigned int blendShape_name_length;
 
@@ -199,18 +124,15 @@ struct MorphAnimation
 	unsigned int nrOfVertsPerMesh;
 
 	unsigned int meshID;
-	unsigned int nrOfKeys;
 
-	vector <vector<double>> position;
-	const char* blendShapeName;
+	unsigned int nrOfPositions;
 
-	void WriteBinary(ofstream& outputfile);
-
-	friend std::ostream& operator<<(std::ostream& out, const MorphAnimation& obj);
+	friend std::ostream& operator<<(std::ostream& out, const MorphAnimationData& obj);
 	// vertex
 	// color
 };
 
+enum material_type { eLambert, eBlinn, ePhong };
 struct MaterialData
 {
 	MaterialData()
@@ -219,26 +141,17 @@ struct MaterialData
 		mtrl_type = eLambert;
 		normal_depth = specular_factor = shininess = reflection_factor = diffuse_factor = 0;
 		specular[3] = reflection[3] = ambient[3] = diffuse[3] = transparency_color[3] = incandescence[3] = { 0.0f };
-		node_name = nullptr;
-		diffuse_map = nullptr;
-		normal_map = nullptr;
-		specular_map = nullptr;
+		//node_name = nullptr;
+		//diffuse_map = nullptr;
+		//normal_map = nullptr;
+		//specular_map = nullptr;
 	}
-#ifndef MAYA_EXPORT
-	~MaterialData()
-	{
-		delete[] node_name;
-		delete[] diffuse_map;
-		delete[] normal_map;
-		delete[] specular_map;
-	};
-#endif
 
 	unsigned int name_length;
 	unsigned int duffuse_map_length;
 	unsigned int normal_map_length;
 	unsigned int specular_map_length;
-	enum material_type { eLambert, eBlinn, ePhong } mtrl_type;
+	material_type mtrl_type;
 	double normal_depth;
 	double specular[3];
 	double specular_factor;
@@ -250,66 +163,142 @@ struct MaterialData
 	double diffuse_factor;
 	double transparency_color[3];
 	double incandescence[3];
-	const char* node_name;
-	const char* diffuse_map;
-	const char* normal_map;
-	const char* specular_map;
-
-	void WriteBinary(ofstream& outputfile);
+	//const char* node_name;
+	//char* diffuse_map;
+	//char* normal_map;
+	//char* specular_map;
 
 	friend std::ostream& operator<<(std::ostream& out, const MaterialData& obj);
 };
 
-struct Animation
+enum light_type{ ePoint, eDirectional, eSpot, eArea, eVolume };
+enum decay_type{ eNone, eLinear, eQuadric, eCubic };
+struct LightData
 {
-	unsigned int joint_ID[4];
-	double joint_weight[4];
-	// bone-id
-	// weight
-	// bla bla
-};
-
-struct Light
-{
-	//char name[];
-#ifndef MAYA_EXPORT
-	~Light()
-	{
-		delete[] name;
-	};
-#endif
 	unsigned int name_Length;
-	enum light_type{ ePoint, eDirectional, eSpot, eArea, eVolume }type;
+	light_type type;
 	double color[3];
 	float intensity;
-	enum decay_type{ eNone, eLinear, eQuadric, eCubic }dType;
+	decay_type dType;
 	//short decay_type;
 	bool cast_shadows;
 	double shadow_color[3];
-	const char* name;
+	//const char* name;
 
-	void WriteBinary(ofstream& outputfile);
-	friend std::ostream& operator<<(std::ostream& out, const Light& obj);
+	friend std::ostream& operator<<(std::ostream& out, const LightData& obj);
 
 };
 
-struct Nurb
+struct NurbData
 {
-#ifndef MAYA_EXPORT
-	~Nurb()
-	{
-		delete[] parentID;
-		delete[] name;
-	};
-#endif
 	unsigned int name_Length;
 	unsigned int numberOfParent;
 	float radius;
-	int* parentID;
-	const char* name;
+	//int* parentID;
+	//const char* name;
 
-	void WriteBinary(ofstream& outputfile);
-	friend std::ostream& operator<<(std::ostream& out, const Nurb& obj);
+	friend std::ostream& operator<<(std::ostream& out, const NurbData& obj);
 };
 
-#endif
+enum TangentType {
+	kTangentGlobal,
+	kTangentFixed,
+	kTangentLinear,
+	kTangentFlat,
+	kTangentSmooth,
+	kTangentStep,
+	kTangentSlow,
+	kTangentFast,
+	kTangentClamped,
+	kTangentPlateau,
+	kTangentStepNext
+};
+// Handles a single point on the Graph Editor's curve. This represents a single keyframe.
+struct KeyframePoint
+{
+	// Time of the point in seconds
+	double time;
+	// The attribute's value
+	double value;
+	// The point's in and out tangent positions in X and Y direction.
+	float tangentInX;
+	float tangentInY;
+	float tangentOutX;
+	float tangentOutY;
+	// Which type of input and output curve the point has.
+	TangentType inputTangentType;
+	TangentType outputTangentType;
+
+	friend std::ostream& operator<<(std::ostream& out, const KeyframePoint& obj)
+	{
+		out << "Located at " << obj.time << " seconds" << endl
+			<< "Value: " << obj.value << endl
+			<< "Input tangent at:  X = " << obj.tangentInX << " Y = " << obj.tangentInY << endl
+			<< "Output tangent at: X = " << obj.tangentOutX << " Y = " << obj.tangentOutY << endl
+			<< "Input tangent type:  " << obj.inputTangentType << endl
+			<< "Output tangent type: " << obj.outputTangentType << endl;
+
+		return out;
+	}
+};
+
+enum AffectedType { kJoint, kTransform, kBlendShape, kOther };
+struct KeyframesData
+{
+	unsigned int curveNameLength;
+	// Whether the animation should loop indefinitely.
+	bool loopAnimation;
+	// What type of object the keyframes are linked to.
+	AffectedType affectedObjectType;
+	// Which index the linked object has.
+	unsigned int affectedObjectIndex;
+	unsigned int numberOfKeyframes;
+	unsigned int attachToNameLength;
+	//KeyframePoint* points;
+	//const char* curveName;
+	// Which attribute to attach to. Needs to be non-const because *Maya*.
+	//char* attachToName;
+
+	//void WriteBinary(ofstream& outputfile);
+	friend std::ostream& operator<<(std::ostream& out, const KeyframesData& obj);
+};
+
+// Holds the four influence objects' indices and their weights for a single vertex.
+// The first index is paired with the first weight. The second with the second, and so on. 
+// An index of -1 should be ignored when parsed.
+struct VertexInfluence
+{
+	// The index of the influence object.
+	int influenceObject[4];
+	// The weight of the respective index. Is normalized.
+	double weight[4];
+
+	friend std::ostream& operator<<(std::ostream& out, const VertexInfluence& obj)
+	{
+		out << "Influence object index " << obj.influenceObject[0] << " weight: " << obj.weight[0] << endl
+			<< "Influence object index " << obj.influenceObject[1] << " weight: " << obj.weight[1] << endl
+			<< "Influence object index " << obj.influenceObject[2] << " weight: " << obj.weight[2] << endl
+			<< "Influence object index " << obj.influenceObject[3] << " weight: " << obj.weight[3] << endl;
+
+		return out;
+	}
+};
+
+struct SkinAnimation
+{
+	// The number of influence objects (e.g. the number of joints).
+	unsigned int numberOfInfluences;
+	// The index of the mesh to influence.
+	unsigned int skinMeshIndex;
+	// The number of vertices (and therefore weights) on the mesh.
+	unsigned int skinVertexCount;
+
+	// The indices for the influence objects (e.g. the indices for the joints).
+	//int* influenceIndices;
+	// The data of weights for every vertex. Are as many as there are verts on the mesh.
+	//VertexInfluence* influenceWeights;
+
+	friend std::ostream& operator<<(std::ostream& out, const SkinAnimation& obj);
+};
+
+#endif // COMMONDECLARATION_H

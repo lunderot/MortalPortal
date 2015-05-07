@@ -32,9 +32,11 @@ MapItemShader::~MapItemShader()
 	//sampleState->Release();
 }
 
-void MapItemShader::Use(ID3D11DeviceContext* deviceContext)
+void MapItemShader::Use(ID3D11DeviceContext* deviceContext/*, Material* material*/)
 {
 	Shader::Use(deviceContext); 
 
 	deviceContext->PSSetSamplers(0, 1, &sampleState);
+	//ID3D11ShaderResourceView* texure = material->GetTexture();
+	//deviceContext->PSSetShaderResources(0, 1, &texure);
 }

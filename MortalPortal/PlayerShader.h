@@ -21,7 +21,11 @@ public:
 	//mange
 	ID3D11Buffer*				constantBufferPerState;
 	ConstantBufferPerState		constantBufferPerStateData;
-	ID3D11ShaderResourceView*	test;
+	//ID3D11ShaderResourceView*	test;
+
+	//// n
+	//ID3D11ShaderResourceView*	normalm;
+
 
 	DirectX::TexMetadata texMetadata;
 	DirectX::ScratchImage image;
