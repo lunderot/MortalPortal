@@ -14,7 +14,8 @@ public:
 	LevelGenerator(std::string pathToFiles, std::string pheaderFile);
 
 	void addComet(Geometry* cometsGeometry, Material* cometsMaterial, Shader* cometsShader);
-	void addPowerUp(Geometry* powerUpGeometry, Material* powerUpMaterial, Shader* powerUpShader);
+	void addBackgroundAsset(Geometry* backgroundAssetGeometry, Material* backgroundAssetMaterial, Shader* AssetShader);
+	void setPowerUp(Geometry* powerUpGeometry, Material* powerUpMaterial, Shader* powerUpShader);
 	void setPlayerOneCrystals(Geometry* Crystal1Geometry, Material* Crystal1Material, Shader* Crystal1Shader, Geometry* Crystal2Geometry, Material* Crystal2Material, Shader* Crystal2Shader);
 	void setPlayerTwoCrystals(Geometry* Crystal1Geometry, Material* Crystal1Material, Shader* Crystal1Shader, Geometry* Crystal2Geometry, Material* Crystal2Material, Shader* Crystal2Shader);
 
@@ -35,11 +36,16 @@ protected:
 	std::map<unsigned int, std::string> crystalFreenzyParts;
 	ifstream partFile;
 	lineFormat lastLine;
-	float timeSinceLastSpawn;
+	float timeSinceLastFileSpawn;
+	float timeSinceBackgroundAssetSpawn;
 
 	vector<Geometry*> cometsGeometry;
 	vector<Material*> cometsMaterial;
 	vector<Shader*>	cometsShader;
+
+	vector<Geometry*> backgroundAssetGeometry;
+	vector<Material*> backgroundAssetMaterial;
+	vector<Shader*>	backgroundAssetShader;
 
 	Geometry* powerUpGeometry;
 	Material* powerUpMaterial;

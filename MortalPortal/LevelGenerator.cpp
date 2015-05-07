@@ -39,6 +39,9 @@ LevelGenerator::LevelGenerator(std::string pathToFiles, std::string pheaderFile)
 	lastLine.velocity = 0.0f;
 	lastLine.spawnNext = 1.5f;
 
+	timeSinceLastFileSpawn = 0.0f;
+	timeSinceBackgroundAssetSpawn = 0.0f;
+
 	srand(time(NULL));
 }
 
@@ -49,7 +52,14 @@ void LevelGenerator::addComet(Geometry* cometsGeometry, Material* cometsMaterial
 	this->cometsShader.push_back(cometsShader);
 }
 
-void LevelGenerator::addPowerUp(Geometry* powerUpGeometry, Material* powerUpMaterial, Shader* powerUpShader)
+void LevelGenerator::addBackgroundAsset(Geometry* backgroundAssetGeometry, Material* backgroundAssetMaterial, Shader* AssetShader)
+{
+	this->backgroundAssetGeometry.push_back(backgroundAssetGeometry);
+	this->backgroundAssetMaterial.push_back(backgroundAssetMaterial);
+	this->backgroundAssetShader.push_back(AssetShader);
+}
+
+void LevelGenerator::setPowerUp(Geometry* powerUpGeometry, Material* powerUpMaterial, Shader* powerUpShader)
 {
 	//this->powerUpGeometry.push_back(powerUpGeometry);
 	//this->powerUpMaterial.push_back(powerUpMaterial);
@@ -102,10 +112,28 @@ void LevelGenerator::Update(EntityHandler* entityHandler, float deltaTime, bool 
 		}
 	}
 
-	while(timeSinceLastSpawn > lastLine.spawnNext)
+	if (timeSinceBackgroundAssetSpawn > 10.0f)
+	{
+		float XSpawnPos = 200;
+
+		timeSinceBackgroundAssetSpawn = 0.0f;
+		unsigned int rnd = rand() % backgroundAssetGeometry.size();
+		float rnd_AngVelX = (float)(rand() / (RAND_MAX / 0.1f));
+		float rnd_AngVelY = (float)(rand() / (RAND_MAX / 0.1f));
+		float rnd_AngVelZ = (float)(rand() / (RAND_MAX / 0.1f));
+		float rnd_PosZ = (float)(rand() / (RAND_MAX / 50.0f)) + 70.0f;
+		float rnd_PosY = (float)(rand() / (RAND_MAX / 100.0f)) - 70.0f;
+		float rnd_Vel = (float)(rand() / (RAND_MAX / 10.0f) + 4.0f);
+		Entity* backgroundAsset = new BackgroundAsset(backgroundAssetGeometry[rnd], backgroundAssetMaterial[rnd], backgroundAssetShader[rnd],
+			DirectX::XMFLOAT3(XSpawnPos, rnd_PosY, rnd_PosZ), DirectX::XMFLOAT3(-lastLine.velocity, 0, 0), DirectX::XMFLOAT3(rnd_AngVelX, rnd_AngVelY, rnd_AngVelZ), DirectX::XMFLOAT3(0, 0, 0), DirectX::XMFLOAT3((float)(rand() / (RAND_MAX / DirectX::XM_PI)), (float)(rand() / (RAND_MAX / DirectX::XM_PI)), (float)(rand() / (RAND_MAX / DirectX::XM_PI))), DirectX::XMFLOAT3(10, 10, 10));
+		entityHandler->Add(backgroundAsset);
+	}
+	timeSinceBackgroundAssetSpawn += deltaTime;
+
+	while(timeSinceLastFileSpawn > lastLine.spawnNext)
 	{
 		float XSpawnPos = 35;
-		timeSinceLastSpawn -= lastLine.spawnNext;
+		timeSinceLastFileSpawn -= lastLine.spawnNext;
 
 		std::string nextLine;
 		getline(partFile, nextLine);
@@ -119,7 +147,7 @@ void LevelGenerator::Update(EntityHandler* entityHandler, float deltaTime, bool 
 		{
 			unsigned int rnd = rand() % cometsGeometry.size();
 			Entity* comet = new MapItem(cometsGeometry[rnd], cometsMaterial[rnd], cometsShader[rnd], MapItem::Comet, Color::BLUE,
-				DirectX::XMFLOAT3(XSpawnPos, lastLine.position, 0), DirectX::XMFLOAT3(-lastLine.velocity, 0, 0), DirectX::XMFLOAT3(0, 0, 0), DirectX::XMFLOAT3(0, 0, 0), DirectX::XMFLOAT3(rand() % 360, rand() % 360, rand() % 360));
+				DirectX::XMFLOAT3(XSpawnPos, lastLine.position, 0), DirectX::XMFLOAT3(-lastLine.velocity, 0, 0), DirectX::XMFLOAT3(0, 0, 0), DirectX::XMFLOAT3(0, 0, 0), DirectX::XMFLOAT3((float)(rand() / (RAND_MAX / DirectX::XM_PI)), (float)(rand() / (RAND_MAX / DirectX::XM_PI)), (float)(rand() / (RAND_MAX / DirectX::XM_PI))));
 			entityHandler->Add(comet);
 		}
 		else if (lastLine.type == "pu") // power up
@@ -158,5 +186,5 @@ void LevelGenerator::Update(EntityHandler* entityHandler, float deltaTime, bool 
 		}
 	}
 
-	timeSinceLastSpawn += deltaTime;
+	timeSinceLastFileSpawn += deltaTime;
 }

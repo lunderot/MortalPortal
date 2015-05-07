@@ -118,7 +118,8 @@ void AssetHandler::LoadFile(ID3D11Device* device, std::string filename)
 	Collision* objectCollision = new Collision();
 	const ImporterNurb* spheres = importer.getNurb();
 	const ImporterTransform* transforms = importer.getTransform();
-
+	if (!strcmp(filename.c_str(), "assets/IDAG_PORTAL_NOSMALL_history.bin"))
+		int toto = 0;
 	for (unsigned int i = 0; i < importer.getNumNurbs(); i++)
 	{	
 		DirectX::XMFLOAT3 position;

@@ -10,7 +10,7 @@ BackgroundAsset::BackgroundAsset(Geometry* geometry, Material* material, Shader*
 void BackgroundAsset::Update(float deltaTime)
 {
 	Entity::Update(deltaTime);
-	if (position.x < -30)
+	if (position.x < -200)
 	{
 		alive = false;
 	};

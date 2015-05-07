@@ -37,20 +37,23 @@ void EntityHandler::Update(float deltaTime, AudioMaster &aMaster)
 	{
 		for (std::vector<Entity*>::iterator i = ent->second.begin(); i != ent->second.end();)
 		{
-			MapItem* item = dynamic_cast<MapItem*>(*i);
-			if (item && !item->GetAlive())
+			if (!(*i)->GetAlive())
 			{
-				//If item is a crystal and outside the screen
-				if (item->type == MapItem::objectType::Crystal && item->GetPosition().x < -30)
+				MapItem* item = dynamic_cast<MapItem*>(*i);
+				if (item)
 				{
-					//Check players who has the color of the crystal
-					for (int i = 0; i < 2; i++)
+					//If item is a crystal and outside the screen
+					if (item->type == MapItem::objectType::Crystal && item->GetPosition().x < -30)
 					{
-						//Remove combo if it was the player's color
-						if (player[i]->HasColor(item->GetColor()))
+						//Check players who has the color of the crystal
+						for (int i = 0; i < 2; i++)
 						{
-							player[i]->RemoveComboText();
-							player[i]->RemoveCombo();
+							//Remove combo if it was the player's color
+							if (player[i]->HasColor(item->GetColor()))
+							{
+								player[i]->RemoveComboText();
+								player[i]->RemoveCombo();
+							}
 						}
 					}
 				}
