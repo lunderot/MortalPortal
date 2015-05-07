@@ -158,27 +158,37 @@ void Player::Update(float deltaTime)
 
 	for (std::vector<CollisionSphere>::iterator Sphere = geometry->GetCollision()->spheres.begin(); Sphere != geometry->GetCollision()->spheres.end(); Sphere++)
 	{
-			if (position.x + Sphere->position.x - Sphere->radius < -30)
-			{
-				position.x = -30 - Sphere->position.x + Sphere->radius;
-				velocity.x = 0;
-			}
-			else if (position.x + Sphere->position.x + Sphere->radius > 30)
-			{
-				position.x = 30 - Sphere->position.x - Sphere->radius;
-				velocity.x = 0;
-			}
+		DirectX::XMVECTOR rotationQuat = DirectX::XMQuaternionRotationRollPitchYawFromVector(XMLoadFloat3(&rotation));
+		DirectX::XMMATRIX scaleMatrix = DirectX::XMMatrixScaling(scale.x, scale.y, scale.z);
 
-			if (position.y + Sphere->position.y - Sphere->radius < -14)
-			{
-				position.y = -14 - Sphere->position.y + Sphere->radius;
-				velocity.y = 0;
-			}
-			else if (position.y + Sphere->position.y + Sphere->radius > 14)
-			{
-				position.y = 14 - Sphere->position.y - Sphere->radius;
-				velocity.y = 0;
-			}
+		DirectX::XMMATRIX model = DirectX::XMMatrixRotationQuaternion(rotationQuat);
+		model = DirectX::XMMatrixMultiply(model, DirectX::XMMatrixTranslationFromVector(XMLoadFloat3(&Sphere->position)));
+		model = scaleMatrix * model;
+
+		DirectX::XMFLOAT3 posF3;
+		DirectX::XMStoreFloat3(&posF3, DirectX::XMVector3Transform(DirectX::XMLoadFloat3(&Sphere->position), model));
+
+		if (position.x + posF3.x - Sphere->radius < -30)
+		{
+			position.x = -30 - posF3.x + Sphere->radius;
+			velocity.x = 0;
+		}
+		else if (position.x + posF3.x + Sphere->radius > 30)
+		{
+			position.x = 30 - posF3.x - Sphere->radius;
+			velocity.x = 0;
+		}
+
+		if (position.y + posF3.y - Sphere->radius < -18)
+		{
+			position.y = -18 - posF3.y + Sphere->radius;
+			velocity.y = 0;
+		}
+		else if (position.y + posF3.y + Sphere->radius > 18)
+		{
+			position.y = 18 - posF3.y - Sphere->radius;
+			velocity.y = 0;
+		}
 	}
 
 	slowDownAccelerationTimer -= deltaTime;
