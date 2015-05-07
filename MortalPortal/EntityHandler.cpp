@@ -217,32 +217,14 @@ void EntityHandler::HandleCollision(Player* player, Entity* entity2, AudioMaster
 			}	
 			case MapItem::objectType::PowerUp:
 			{
-				unsigned int rnd = rand() % 5;
-				if (rnd == 0) // Invert Control
-				{
-					player->AddInvertControlDisplay();
-					player->setInvertControl(4.0f);
-				}
-				else if (rnd == 1) // Slow Down Acceleration
+				unsigned int rnd = rand() % 1;
+
+				if (rnd == 0) // Slow Down Acceleration
 				{
 					player->AddSlowDownAccelerationDisplay();
 					player->setSlowDownAcceleration(5.0f);
 				}
-				else if (rnd == 2) // Bonus Combo
-				{
-					player->AddCombo(true);
-					player->AddBonusComboDisplay();
-					player->setBonusCombo(0.6f);
-				}
-				else if (rnd == 3) // Immortal Portal
-				{
-					player->AddImmortalPortalDisplay();
-					player->setImmortalPortal(6.0f);
-				}
-				else if (rnd == 4) // Crystal Frenzy
-				{
-					player->setCrystalFrenzy(true);
-				}
+
 				break;
 			}
 			case MapItem::objectType::Crystal:
