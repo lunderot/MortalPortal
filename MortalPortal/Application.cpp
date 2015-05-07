@@ -40,7 +40,7 @@ Application::Application(bool fullscreen, bool showCursor, int screenWidth, int 
 	player2Keys[2] = 'J';
 	player2Keys[3] = 'L';
 	player2Keys[4] = 'M';
-
+	
 	//Setup input
 	try
 	{
@@ -187,22 +187,21 @@ Application::Application(bool fullscreen, bool showCursor, int screenWidth, int 
 	player2->powerUpDisplayText[2]->setMaterial(playerPowerUpDisplayMat3);
 	player2->powerUpDisplayText[3]->setMaterial(playerPowerUpDisplayMat4);
 	// Particles testing area
-	particle = new Particle(1, 50, assetHandler->GetMaterial(d3dHandler->GetDevice(), "powerbar.dds", "", 0.0f), d3dHandler->GetDevice());
+	particle = new Particle(1, 50, assetHandler->GetMaterial(d3dHandler->GetDevice(), "particlePew.dds", "", 0.0f), d3dHandler->GetDevice());
 	particle->constantBufferData.lifeTime = 100;
-	particle2 = new Particle(1, 20, assetHandler->GetMaterial(d3dHandler->GetDevice(), "powerbar.dds", "", 0.0f), d3dHandler->GetDevice());
+	particle2 = new Particle(1, 20, assetHandler->GetMaterial(d3dHandler->GetDevice(), "particlePew.dds", "", 0.0f), d3dHandler->GetDevice());
 	particle2->constantBufferData.lifeTime = 100;
-	particlePowerBar1 = new Particle(2, 300, assetHandler->GetMaterial(d3dHandler->GetDevice(), "powerbar.dds", "", 0.0f), d3dHandler->GetDevice());
+	particlePowerBar1 = new Particle(2, 100, assetHandler->GetMaterial(d3dHandler->GetDevice(), "powerbar.dds", "", 0.0f), d3dHandler->GetDevice());
 	particlePowerBar1->constantBufferData.reset = false;
 	particlePowerBar1->constantBufferData.lifeTime = 20;
 
-	particlePowerBar2 = new Particle(2, 300, assetHandler->GetMaterial(d3dHandler->GetDevice(), "powerbar.dds", "", 0.0f), d3dHandler->GetDevice());
+	particlePowerBar2 = new Particle(2, 100, assetHandler->GetMaterial(d3dHandler->GetDevice(), "powerbar.dds", "", 0.0f), d3dHandler->GetDevice());
 	particlePowerBar2->constantBufferData.reset = false;
 	particlePowerBar2->constantBufferData.lifeTime = 20;
 
-	particleBackground = new Particle(3, 300, assetHandler->GetMaterial(d3dHandler->GetDevice(), "comboBonus.dds", "", 0.0f), d3dHandler->GetDevice());
-	particleBackground->constantBufferData.position = DirectX::XMFLOAT3(70, 0, 0);
+	particleBackground = new Particle(3, 200, assetHandler->GetMaterial(d3dHandler->GetDevice(), "particleTest.dds", "", 0.0f), d3dHandler->GetDevice());
+	particleBackground->constantBufferData.position = DirectX::XMFLOAT3(80, 0, 0);
 	particleBackground->constantBufferData.reset = false;
-	particleBackground->constantBufferData.lifeTime = 100;
 
 	// Create Background
 	entityHandler->Add(
@@ -496,7 +495,7 @@ Application::Application(bool fullscreen, bool showCursor, int screenWidth, int 
 
 
 	// Skip the shitty menu
-	startMenu->renderMenu = false;
+	startMenu->renderMenu = true;
 	pauseMenu->renderMenu = false;
 
 	// Power Up
@@ -542,7 +541,7 @@ bool Application::Update(float deltaTime)
 	float test2 = 30.0f;
 	float test3 = 2.0f;
 	pauseMenu->CheckIfToPause(input->GetButtonStartState());
-	if (pauseMenu->renderMenu == true && startMenu->renderMenu == false || startMenu->renderMenu == true || restartMenu->renderMenu == true)
+	if (pauseMenu->renderMenu == true && startMenu->renderMenu == false || restartMenu->renderMenu == true)
 	{
 		deltaTime = 0;
 	}
@@ -697,14 +696,15 @@ void Application::Render()
 	d3dHandler->BeginScene(0.0f, 0.0f, 0.0f, 1.0f);
 
 	d3dHandler->GetDeviceContext()->PSSetConstantBuffers(0, 1, &oneDirectionLightObject.pointerToBufferL);
-
+	entityHandler->Render(d3dHandler->GetDeviceContext());
+	particleShader->Use(d3dHandler->GetDeviceContext());
+	particleBackground->Render(d3dHandler->GetDeviceContext());
 	if (startMenu->renderMenu == false)
 	{
 		// Particles
 		particleShader->Use(d3dHandler->GetDeviceContext());
 		particlePowerBar1->Render(d3dHandler->GetDeviceContext());
 		particlePowerBar2->Render(d3dHandler->GetDeviceContext());
-		particleBackground->Render(d3dHandler->GetDeviceContext());
 		if (player1->renderParticles == true)
 		{
 			particle->Render(d3dHandler->GetDeviceContext());
@@ -715,8 +715,6 @@ void Application::Render()
 			particle2->Render(d3dHandler->GetDeviceContext());
 
 		}
-
-		entityHandler->Render(d3dHandler->GetDeviceContext());
 		// Combo - Display text
 		comboBarShader->Use(d3dHandler->GetDeviceContext());
 		player1->powerUpDisplayText[0]->Render(d3dHandler->GetDeviceContext(), comboBarShader);

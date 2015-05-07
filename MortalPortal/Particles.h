@@ -48,7 +48,7 @@ public:
 
 	ID3D11UnorderedAccessView* getUAV();
 	unsigned int GetNrOfParticles();
-	float particleCounter;
+	int particleCounter;
 	std::vector<Particles> particle;
 	ConstantBufferData constantBufferData;
 

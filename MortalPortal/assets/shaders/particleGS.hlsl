@@ -34,9 +34,9 @@ void main(point GS_IN input[1], inout TriangleStream<GS_OUT> triStream)
 	float3 look = float3(0, 0, 20);//input[0].Pos - camPos;
 	output.particlePos = input[0].Pos;
 	output.type = input[0].type;
+	output.lifeTime = input[0].lifeTime;
 
 	look = normalize(look);
-	output.lifeTime = input[0].lifeTime;
 
 	float3 upVec = float3(0, 1, 0);
 	float3 rightVec = normalize(cross(look, upVec));
@@ -50,13 +50,13 @@ void main(point GS_IN input[1], inout TriangleStream<GS_OUT> triStream)
 	}
 	else if (input[0].type == 3)
 	{
-		rightVec = rightVec * 0.05;
-		upVec = upVec * 0.05;
+		rightVec = rightVec * 0.1;
+		upVec = upVec * 0.1;
 	}
 	else
 	{
-		rightVec = rightVec * 0.1;
-		upVec = upVec * 0.1;
+		rightVec = rightVec * 0.15;
+		upVec = upVec * 0.15;
 
 	}
 

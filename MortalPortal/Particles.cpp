@@ -17,7 +17,7 @@ Particle::Particle(unsigned int type,
 		{
 			Particles p;
 			p.type = type;
-			p.lifeTime = rand() % 50 - 10;
+			p.lifeTime = rand() % 100;
 			p.pos.x = 0;
 			p.pos.y = 0;
 			p.pos.z = 0;
@@ -42,7 +42,7 @@ Particle::Particle(unsigned int type,
 			p.pos.z = 0;
 
 			p.velocity.x = rand() % 10;
-			p.velocity.y = rand() % 5 - 5;
+			p.velocity.y = rand() % 10 - 5;
 			p.acceleration.x = 0;
 			p.acceleration.y = 0;
 			particle.push_back(p);
@@ -55,13 +55,13 @@ Particle::Particle(unsigned int type,
 		{
 			Particles p;
 			p.type = type;
-			p.lifeTime = rand() % 3 + 7;
-			p.pos.x = rand() % 60;
-			p.pos.y = rand() % 100;
-			p.pos.z = rand() % 20;
+			p.lifeTime = 300;
+			p.pos.x = rand() % 90 - 30;
+			p.pos.y = rand() % 100 - 50;
+			p.pos.z = 0;
 
 			p.velocity.x = rand() %  50 - 100;
-			p.velocity.y = rand() % 100 - 50;
+			p.velocity.y = rand() % 50 - 15;
 			p.acceleration.x = 0;
 			p.acceleration.y = 0;
 			particle.push_back(p);
@@ -115,7 +115,7 @@ Particle::Particle(unsigned int type,
 		throw std::runtime_error("Failed to create constant buffer in Particles");
 	}
 	// Ett stycke hård kod
-	constantBufferData.lifeTime = 30;
+	constantBufferData.lifeTime = 50;
 	constantBufferData.reset = true;
 	particleCounter = 0;
 }
@@ -152,7 +152,7 @@ void Particle::UpdateParticle(float deltaTime, ID3D11DeviceContext* deviceContex
 	deviceContext->CSSetShader(computeShader, nullptr, 0);
 	deviceContext->CSSetConstantBuffers(0, 1, &constantBuffer);
 
-	deviceContext->Dispatch((nrOfParticles / 32) + 1, 1, 1);
+	deviceContext->Dispatch((nrOfParticles / 64) + 1, 1, 1);
 	pUAV[0] = nullptr;
 	deviceContext->CSSetUnorderedAccessViews(0, 1, pUAV, 0);
 	deviceContext->CSSetShader(nullptr, nullptr, 0);
