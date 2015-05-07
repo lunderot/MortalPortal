@@ -286,6 +286,7 @@ Application::Application(bool fullscreen, bool showCursor, int screenWidth, int 
 	player2->powerBar->SetMaterial(assetHandler->GetMaterial(d3dHandler->GetDevice(), "powerbar.dds", "", 0.0f));
 	player1->powerBar->SetMaterial(assetHandler->GetMaterial(d3dHandler->GetDevice(), "powerbar.dds", "", 0.0f));
 	// Combo bars, player1 & player2
+	playerWins = new PlayerWins(assetHandler->GetMaterial(d3dHandler->GetDevice(), "player1win.dds", "", 0.0f), assetHandler->GetMaterial(d3dHandler->GetDevice(), "player2win.dds", "", 0.0f), d3dHandler->GetDevice());
 	// Player 1
 	DirectX::XMFLOAT2 player1Pos[4];
 	DirectX::XMFLOAT2 player1UV[4];
@@ -532,6 +533,7 @@ Application::~Application()
 	delete startMenu;
 	delete pauseMenu;
 	delete restartMenu;
+	delete playerWins;
 
 }
 
@@ -544,6 +546,7 @@ bool Application::Update(float deltaTime)
 	if (pauseMenu->renderMenu == true && startMenu->renderMenu == false || restartMenu->renderMenu == true)
 	{
 		deltaTime = 0;
+		playerWins->player1Wins = false;
 	}
 	// Player 1 - control
 	XMFLOAT2 dir = input->GetDirection(player1Test);
@@ -745,6 +748,13 @@ void Application::Render()
 			buttonShader->Use(d3dHandler->GetDeviceContext());
 			restartMenu->renderMenu = true;
 			restartMenu->Render(d3dHandler->GetDeviceContext());
+
+			if (player2->powerBar->IsDead() == true)
+				playerWins->player1Wins = true;
+			restartMenu->scaling = DirectX::XMVECTOR(DirectX::XMVectorSet(1, 1, 1, 1));
+			restartMenu->translation = DirectX::XMVECTOR(DirectX::XMVectorSet(0, 0.6f, 1,1));
+			restartMenu->UpdateConstantBuffer(d3dHandler->GetDeviceContext(), &restartMenu->buttonScale);
+			playerWins->RenderText(d3dHandler->GetDeviceContext());
 		}
 
 		comboBarShader->Use(d3dHandler->GetDeviceContext());

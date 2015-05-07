@@ -17,22 +17,19 @@ protected:
 	ID3D11Buffer* constantBuffer;
 	ID3D11ShaderResourceView* SRV;
 	Geometry* buttonGeometry;
-	ButtonScale buttonScale;
-
 	unsigned int check;
 
 	DirectX::XMVECTOR scalingOrigin;
-	DirectX::XMVECTOR scaling;
 	DirectX::XMVECTOR rotationOrigin;
-	DirectX::XMVECTOR translation;
 
 public:
-
 	RestartMenu(ID3D11Device* device);
 	~RestartMenu();
 	bool renderMenu;
-
+	DirectX::XMVECTOR scaling;
+	DirectX::XMVECTOR translation;
 	Geometry* GetButtonGeometry();
+	ButtonScale buttonScale;
 
 	void Update(bool gamepadUp, bool gamepadDown, bool aButton);
 	void Render(ID3D11DeviceContext* deviceContext);

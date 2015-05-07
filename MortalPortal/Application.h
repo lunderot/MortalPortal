@@ -26,6 +26,7 @@
 #include "RestartMenu.h"
 #include "LevelGenerator.h"
 #include "MapItemShader.h"
+#include "PlayerWins.h"
 
 #include "Background.h"
 #include "BackgroundShader.h"
@@ -79,6 +80,7 @@ private:
 	char player2Keys[5];
 	unsigned int player1Test = 0;
 	unsigned int player2Test = 1;
+	PlayerWins* playerWins;
 
 	// Menu
 	StartMenu* startMenu;
