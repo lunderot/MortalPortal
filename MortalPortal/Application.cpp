@@ -175,6 +175,7 @@ Application::Application(bool fullscreen, bool showCursor, int screenWidth, int 
 	playerPowerUpDisplayMat4[0] = assetHandler->GetMaterial(d3dHandler->GetDevice(), "immortalportal.dds", "", 0.0f);
 	playerPowerUpDisplayMat4[1] = assetHandler->GetMaterial(d3dHandler->GetDevice(), "immortalportalfade.dds", "", 0.0f);
 
+
 	// player1
 	player1->powerUpDisplayText[0]->setMaterial(playerPowerUpDisplayMat1);
 	player1->powerUpDisplayText[1]->setMaterial(playerPowerUpDisplayMat2);

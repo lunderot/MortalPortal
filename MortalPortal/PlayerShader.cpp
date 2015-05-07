@@ -33,10 +33,13 @@ void PlayerShader::Render(ID3D11DeviceContext* deviceContext, Shader* shader)
 	//deviceContext->UpdateSubresource(constantBufferPerState, 0, NULL, &constantBufferPerStateData, 0, 0);
 	//deviceContext->PSSetConstantBuffers(0, 1, &constantBufferPerState);
 
+
 	//deviceContext->PSSetShaderResources(0, 1, &test);
 
 	//// n
 	//deviceContext->PSSetShaderResources(1, 1, &normalm);
+
+
 
 
 }
