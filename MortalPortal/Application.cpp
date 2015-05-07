@@ -291,6 +291,7 @@ Application::Application(bool fullscreen, bool showCursor, int screenWidth, int 
 	player2->powerBar->SetMaterial(assetHandler->GetMaterial(d3dHandler->GetDevice(), "powerbar.dds", "", 0.0f));
 	player1->powerBar->SetMaterial(assetHandler->GetMaterial(d3dHandler->GetDevice(), "powerbar.dds", "", 0.0f));
 	// Combo bars, player1 & player2
+	playerWins = new PlayerWins(assetHandler->GetMaterial(d3dHandler->GetDevice(), "player1win.dds", "", 0.0f), assetHandler->GetMaterial(d3dHandler->GetDevice(), "player2win.dds", "", 0.0f), d3dHandler->GetDevice());
 	// Player 1
 	DirectX::XMFLOAT2 player1Pos[4];
 	DirectX::XMFLOAT2 player1UV[4];
@@ -418,19 +419,19 @@ Application::Application(bool fullscreen, bool showCursor, int screenWidth, int 
 
 	// PowerUp-Display text, player1 & player2
 	// Player 2 - "INVERT CONTROL" text
-	player2Pos[0] = DirectX::XMFLOAT2(0.995f, -0.895f); // längst upp - höger
-	player2Pos[1] = DirectX::XMFLOAT2(0.995f, -0.995f); // längst ner - höger
-	player2Pos[2] = DirectX::XMFLOAT2(0.845f, -0.895f); // längst upp - vänster
-	player2Pos[3] = DirectX::XMFLOAT2(0.845f, -0.995f); // längst ner - vänster
-	player2->powerUpDisplayText[1]->SetPosition(player2Pos);
-	player2->powerUpDisplayText[1]->SetUV(player2UV);
+	player2Pos[0] = DirectX::XMFLOAT2(0.995f, 0.995f); // längst upp - höger
+	player2Pos[1] = DirectX::XMFLOAT2(0.995f, 0.895f); // längst ner - höger
+	player2Pos[2] = DirectX::XMFLOAT2(0.845f, 0.995f); // längst upp - vänster
+	player2Pos[3] = DirectX::XMFLOAT2(0.845f, 0.895f); // längst ner - vänster
+	player2->powerUpDisplayText[0]->SetPosition(player2Pos);
+	player2->powerUpDisplayText[0]->SetUV(player2UV);
 	// Player 2 - "SLOW ACCELERATION" text
 	player2Pos[0] = DirectX::XMFLOAT2(0.995f, 0.885f); // längst upp - höger
 	player2Pos[1] = DirectX::XMFLOAT2(0.995f, 0.785f); // längst ner - höger
 	player2Pos[2] = DirectX::XMFLOAT2(0.845f, 0.885f); // längst upp - vänster
 	player2Pos[3] = DirectX::XMFLOAT2(0.845f, 0.785f); // längst ner - vänster
-	player2->powerUpDisplayText[0]->SetPosition(player2Pos);
-	player2->powerUpDisplayText[0]->SetUV(player2UV);
+	player2->powerUpDisplayText[1]->SetPosition(player2Pos);
+	player2->powerUpDisplayText[1]->SetUV(player2UV);
 	// Player 2 - "COMBO BONUS" text
 	player2Pos[0] = DirectX::XMFLOAT2(0.84f, -0.895f); // längst upp - höger
 	player2Pos[1] = DirectX::XMFLOAT2(0.84f, -0.995f); // längst ner - höger
@@ -537,6 +538,7 @@ Application::~Application()
 	delete startMenu;
 	delete pauseMenu;
 	delete restartMenu;
+	delete playerWins;
 
 }
 
@@ -549,6 +551,7 @@ bool Application::Update(float deltaTime)
 	if (pauseMenu->renderMenu == true && startMenu->renderMenu == false || restartMenu->renderMenu == true)
 	{
 		deltaTime = 0;
+		playerWins->player1Wins = false;
 	}
 	// Player 1 - control
 	XMFLOAT2 dir = input->GetDirection(player1Test);
@@ -750,6 +753,13 @@ void Application::Render()
 			buttonShader->Use(d3dHandler->GetDeviceContext());
 			restartMenu->renderMenu = true;
 			restartMenu->Render(d3dHandler->GetDeviceContext());
+
+			if (player2->powerBar->IsDead() == true)
+				playerWins->player1Wins = true;
+			restartMenu->scaling = DirectX::XMVECTOR(DirectX::XMVectorSet(1, 1, 1, 1));
+			restartMenu->translation = DirectX::XMVECTOR(DirectX::XMVectorSet(0, 0.6f, 1,1));
+			restartMenu->UpdateConstantBuffer(d3dHandler->GetDeviceContext(), &restartMenu->buttonScale);
+			playerWins->RenderText(d3dHandler->GetDeviceContext());
 		}
 
 		comboBarShader->Use(d3dHandler->GetDeviceContext());

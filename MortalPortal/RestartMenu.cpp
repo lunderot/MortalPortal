@@ -94,7 +94,6 @@ void RestartMenu::Render(ID3D11DeviceContext* deviceContext)
 			scaling = DirectX::XMVectorSet(buttons[i]->scale.x, buttons[i]->scale.y, 1.0f, 1.0f);
 		translation = DirectX::XMVectorSet(buttons[i]->position.x, buttons[i]->position.y, 1.0f, 1.0f);
 
-		buttonScale.scale = DirectX::XMMatrixTranspose(DirectX::XMMatrixTransformation2D(scalingOrigin, 0.0f, scaling, rotationOrigin, 0.0f, translation));
 		UpdateConstantBuffer(deviceContext, &buttonScale);
 		deviceContext->VSSetConstantBuffers(0, 1, &constantBuffer);
 		deviceContext->IASetVertexBuffers(0, 1, &vertexBuffer, &vertexSize, &offset);
@@ -113,6 +112,7 @@ Geometry* RestartMenu::GetButtonGeometry()
 
 void RestartMenu::UpdateConstantBuffer(ID3D11DeviceContext* deviceContext, ButtonScale* buffer)
 {
+	buttonScale.scale = DirectX::XMMatrixTranspose(DirectX::XMMatrixTransformation2D(scalingOrigin, 0.0f, scaling, rotationOrigin, 0.0f, translation));
 	D3D11_MAPPED_SUBRESOURCE mappedResource;
 	deviceContext->Map(constantBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
 	memcpy(mappedResource.pData, buffer, sizeof(ButtonScale));
