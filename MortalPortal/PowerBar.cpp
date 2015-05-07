@@ -118,8 +118,6 @@ void PowerBar::Render(ID3D11DeviceContext* deviceContext, Shader* shader)
 
 void PowerBar::AddPower(unsigned int bonusPower)
 {
-	if (bonusPower == 0)
-		bonusPower = 1;
 	if (dead == false)
 	{
 		if (points[0].pos.x + powerAdd * (bonusPower + 1) > maxMinValue.x)

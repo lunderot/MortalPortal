@@ -162,14 +162,30 @@ Application::Application(bool fullscreen, bool showCursor, int screenWidth, int 
 	player2->comboDisplayText[3]->setMaterial(playerComboDTMat);
 
 	// Power Ups - Display text player1 & player2
-	Material* playerPowerUpDisplayMat[2];
-	playerPowerUpDisplayMat[0] = assetHandler->GetMaterial(d3dHandler->GetDevice(), "invertcontrol.dds", "", 0.0f);
-	playerPowerUpDisplayMat[1] = assetHandler->GetMaterial(d3dHandler->GetDevice(), "invertcontrolfade.dds", "", 0.0f);
-	// player1
-	player1->powerUpDisplayText->setMaterial(playerPowerUpDisplayMat);
-	// player2
-	player2->powerUpDisplayText->setMaterial(playerPowerUpDisplayMat);
+	Material* playerPowerUpDisplayMat1[2];
+	playerPowerUpDisplayMat1[0] = assetHandler->GetMaterial(d3dHandler->GetDevice(), "invertcontrol.dds", "", 0.0f);
+	playerPowerUpDisplayMat1[1] = assetHandler->GetMaterial(d3dHandler->GetDevice(), "invertcontrolfade.dds", "", 0.0f);
+	Material* playerPowerUpDisplayMat2[2];
+	playerPowerUpDisplayMat2[0] = assetHandler->GetMaterial(d3dHandler->GetDevice(), "slowacceleration.dds", "", 0.0f);
+	playerPowerUpDisplayMat2[1] = assetHandler->GetMaterial(d3dHandler->GetDevice(), "slowaccelerationfade.dds", "", 0.0f);
+	Material* playerPowerUpDisplayMat3[2];
+	playerPowerUpDisplayMat3[0] = assetHandler->GetMaterial(d3dHandler->GetDevice(), "bonuscombo.dds", "", 0.0f);
+	playerPowerUpDisplayMat3[1] = assetHandler->GetMaterial(d3dHandler->GetDevice(), "bonuscombofade.dds", "", 0.0f);
+	Material* playerPowerUpDisplayMat4[2];
+	playerPowerUpDisplayMat4[0] = assetHandler->GetMaterial(d3dHandler->GetDevice(), "immortalportal.dds", "", 0.0f);
+	playerPowerUpDisplayMat4[1] = assetHandler->GetMaterial(d3dHandler->GetDevice(), "immortalportalfade.dds", "", 0.0f);
 
+
+	// player1
+	player1->powerUpDisplayText[0]->setMaterial(playerPowerUpDisplayMat1);
+	player1->powerUpDisplayText[1]->setMaterial(playerPowerUpDisplayMat2);
+	player1->powerUpDisplayText[2]->setMaterial(playerPowerUpDisplayMat3);
+	player1->powerUpDisplayText[3]->setMaterial(playerPowerUpDisplayMat4);
+	// player2
+	player2->powerUpDisplayText[0]->setMaterial(playerPowerUpDisplayMat1);
+	player2->powerUpDisplayText[1]->setMaterial(playerPowerUpDisplayMat2);
+	player2->powerUpDisplayText[2]->setMaterial(playerPowerUpDisplayMat3);
+	player2->powerUpDisplayText[3]->setMaterial(playerPowerUpDisplayMat4);
 	// Particles testing area
 	particle = new Particle(1, 50, assetHandler->GetMaterial(d3dHandler->GetDevice(), "powerbar.dds", "", 0.0f), d3dHandler->GetDevice());
 	particle->constantBufferData.lifeTime = 100;
@@ -333,17 +349,6 @@ Application::Application(bool fullscreen, bool showCursor, int screenWidth, int 
 	player1->comboDisplayText[3]->SetUV(player1UV);
 	player1->comboDisplayText[3]->SetComboText(false);
 
-	// PowerUp-Display text, player1 & player2
-	// Player 1 - "INVERT CONTROL" text
-	player1Pos[0] = DirectX::XMFLOAT2(1.0f, 1.0f); // längst upp - höger
-	player1Pos[1] = DirectX::XMFLOAT2(1.0f, 0.9f); // längst ner - höger
-	player1Pos[2] = DirectX::XMFLOAT2(0.85f, 1.0f); // längst upp - vänster
-	player1Pos[3] = DirectX::XMFLOAT2(0.85f, 0.9f); // längst ner - vänster
-	player1->powerUpDisplayText->SetPosition(player1Pos);
-	player1->powerUpDisplayText->SetUV(player1UV);
-	player1->powerUpDisplayText->SetComboText(true);
-
-
 	// Player 2 - "COMBO" text
 	player2Pos[0] = DirectX::XMFLOAT2(-0.1f, -0.8f); // längst upp - höger
 	player2Pos[1] = DirectX::XMFLOAT2(-0.1f, -0.9f); // längst ner - höger
@@ -376,6 +381,66 @@ Application::Application(bool fullscreen, bool showCursor, int screenWidth, int 
 	player2->comboDisplayText[3]->SetPosition(player2Pos);
 	player2->comboDisplayText[3]->SetUV(player2UV);
 	player2->comboDisplayText[3]->SetComboText(false);
+
+	// PowerUp-Display text, player1 & player2
+	// Player 1 - "INVERT CONTROL" text
+	player1Pos[0] = DirectX::XMFLOAT2(0.995f, -0.785f); // längst upp - höger
+	player1Pos[1] = DirectX::XMFLOAT2(0.995f, -0.885f); // längst ner - höger
+	player1Pos[2] = DirectX::XMFLOAT2(0.845f, -0.785f); // längst upp - vänster
+	player1Pos[3] = DirectX::XMFLOAT2(0.845f, -0.885f); // längst ner - vänster
+	player1->powerUpDisplayText[0]->SetPosition(player1Pos);
+	player1->powerUpDisplayText[0]->SetUV(player1UV);
+	// Player 1 - "SLOW ACCELERATION" text
+	player1Pos[0] = DirectX::XMFLOAT2(0.995f, -0.895f); // längst upp - höger
+	player1Pos[1] = DirectX::XMFLOAT2(0.995f, -0.995f); // längst ner - höger
+	player1Pos[2] = DirectX::XMFLOAT2(0.845f, -0.895f); // längst upp - vänster
+	player1Pos[3] = DirectX::XMFLOAT2(0.845f, -0.995f); // längst ner - vänster
+	player1->powerUpDisplayText[1]->SetPosition(player1Pos);
+	player1->powerUpDisplayText[1]->SetUV(player1UV);
+	// Player 1 - "COMBO BONUS" text
+	player1Pos[0] = DirectX::XMFLOAT2(0.84f, 0.995f); // längst upp - höger
+	player1Pos[1] = DirectX::XMFLOAT2(0.84f, 0.895f); // längst ner - höger
+	player1Pos[2] = DirectX::XMFLOAT2(0.69f, 0.995f); // längst upp - vänster
+	player1Pos[3] = DirectX::XMFLOAT2(0.69f, 0.895f); // längst ner - vänster
+	player1->powerUpDisplayText[2]->SetPosition(player1Pos);
+	player1->powerUpDisplayText[2]->SetUV(player1UV);
+	// Player 1 - "IMMORTAL PORTAL" text
+	player1Pos[0] = DirectX::XMFLOAT2(0.84f, 0.885f); // längst upp - höger
+	player1Pos[1] = DirectX::XMFLOAT2(0.84f, 0.785f); // längst ner - höger
+	player1Pos[2] = DirectX::XMFLOAT2(0.69f, 0.885f); // längst upp - vänster
+	player1Pos[3] = DirectX::XMFLOAT2(0.69f, 0.785f); // längst ner - vänster
+	player1->powerUpDisplayText[3]->SetPosition(player1Pos);
+	player1->powerUpDisplayText[3]->SetUV(player1UV);
+
+	// PowerUp-Display text, player1 & player2
+	// Player 2 - "INVERT CONTROL" text
+	player2Pos[0] = DirectX::XMFLOAT2(0.995f, -0.895f); // längst upp - höger
+	player2Pos[1] = DirectX::XMFLOAT2(0.995f, -0.995f); // längst ner - höger
+	player2Pos[2] = DirectX::XMFLOAT2(0.845f, -0.895f); // längst upp - vänster
+	player2Pos[3] = DirectX::XMFLOAT2(0.845f, -0.995f); // längst ner - vänster
+	player2->powerUpDisplayText[1]->SetPosition(player2Pos);
+	player2->powerUpDisplayText[1]->SetUV(player2UV);
+	// Player 2 - "SLOW ACCELERATION" text
+	player2Pos[0] = DirectX::XMFLOAT2(0.995f, 0.885f); // längst upp - höger
+	player2Pos[1] = DirectX::XMFLOAT2(0.995f, 0.785f); // längst ner - höger
+	player2Pos[2] = DirectX::XMFLOAT2(0.845f, 0.885f); // längst upp - vänster
+	player2Pos[3] = DirectX::XMFLOAT2(0.845f, 0.785f); // längst ner - vänster
+	player2->powerUpDisplayText[0]->SetPosition(player2Pos);
+	player2->powerUpDisplayText[0]->SetUV(player2UV);
+	// Player 2 - "COMBO BONUS" text
+	player2Pos[0] = DirectX::XMFLOAT2(0.84f, -0.895f); // längst upp - höger
+	player2Pos[1] = DirectX::XMFLOAT2(0.84f, -0.995f); // längst ner - höger
+	player2Pos[2] = DirectX::XMFLOAT2(0.69f, -0.895f); // längst upp - vänster
+	player2Pos[3] = DirectX::XMFLOAT2(0.69f, -0.995f); // längst ner - vänster
+	player2->powerUpDisplayText[3]->SetPosition(player2Pos);
+	player2->powerUpDisplayText[3]->SetUV(player2UV);
+	// Player 2 - "IMMORTAL PORTAL" text
+	player2Pos[0] = DirectX::XMFLOAT2(0.84f, -0.785f); // längst upp - höger
+	player2Pos[1] = DirectX::XMFLOAT2(0.84f, -0.885f); // längst ner - höger
+	player2Pos[2] = DirectX::XMFLOAT2(0.69f, -0.785f); // längst upp - vänster
+	player2Pos[3] = DirectX::XMFLOAT2(0.69f, -0.885f); // längst ner - vänster
+	player2->powerUpDisplayText[2]->SetPosition(player2Pos);
+	player2->powerUpDisplayText[2]->SetUV(player2UV);
 
 	// Start Menu
 	startMenu = new StartMenu(d3dHandler->GetDevice());
@@ -475,6 +540,7 @@ bool Application::Update(float deltaTime)
 {
 	float test1 = 5.0f;
 	float test2 = 30.0f;
+	float test3 = 2.0f;
 	pauseMenu->CheckIfToPause(input->GetButtonStartState());
 	if (pauseMenu->renderMenu == true && startMenu->renderMenu == false || startMenu->renderMenu == true || restartMenu->renderMenu == true)
 	{
@@ -499,6 +565,10 @@ bool Application::Update(float deltaTime)
 		dir.x *= test2;
 		dir.y *= test2;
 	}
+	// PowerUp - Bonus Combo - effect on | Player1
+	player1->getBonusCombo();
+	// PowerUp - Immortal Portal - effect on | Player1
+	player1->getImmortalPortal();
 	player1->SetAcceleration(XMFLOAT3(dir.x, dir.y, 0.0f));
 	player1->ReactToInput(input->GetButtonState(), aMaster);
 
@@ -521,6 +591,10 @@ bool Application::Update(float deltaTime)
 		dir2.x *= test2;
 		dir2.y *= test2;
 	}
+	// PowerUp - Bonus Combo - effect on | Player2
+	player2->getBonusCombo();
+	// PowerUp - Immortal Portal - effect on | Player2
+	player2->getImmortalPortal();
 	player2->SetAcceleration(XMFLOAT3(dir2.x, dir2.y, 0.0f));
 	player2->ReactToInput(input2->GetButtonState(), aMaster);
 	
@@ -542,13 +616,19 @@ bool Application::Update(float deltaTime)
 	player1->comboDisplayText[1]->Update(deltaTime);
 	player1->comboDisplayText[2]->Update(deltaTime);
 	player1->comboDisplayText[3]->Update(deltaTime);
-
-	player1->powerUpDisplayText->Update(deltaTime);
+	player1->powerUpDisplayText[0]->Update(deltaTime);
+	player1->powerUpDisplayText[1]->Update(deltaTime);
+	player1->powerUpDisplayText[2]->Update(deltaTime);
+	player1->powerUpDisplayText[3]->Update(deltaTime);
 
 	player2->comboDisplayText[0]->Update(deltaTime);
 	player2->comboDisplayText[1]->Update(deltaTime);
 	player2->comboDisplayText[2]->Update(deltaTime);
 	player2->comboDisplayText[3]->Update(deltaTime);
+	player2->powerUpDisplayText[0]->Update(deltaTime);
+	player2->powerUpDisplayText[1]->Update(deltaTime);
+	player2->powerUpDisplayText[2]->Update(deltaTime);
+	player2->powerUpDisplayText[3]->Update(deltaTime);
 
 	entityHandler->Update(deltaTime, aMaster);
 
@@ -639,13 +719,19 @@ void Application::Render()
 		entityHandler->Render(d3dHandler->GetDeviceContext());
 		// Combo - Display text
 		comboBarShader->Use(d3dHandler->GetDeviceContext());
-		player1->powerUpDisplayText->Render(d3dHandler->GetDeviceContext(), comboBarShader);
-
+		player1->powerUpDisplayText[0]->Render(d3dHandler->GetDeviceContext(), comboBarShader);
+		player1->powerUpDisplayText[1]->Render(d3dHandler->GetDeviceContext(), comboBarShader);
+		player1->powerUpDisplayText[2]->Render(d3dHandler->GetDeviceContext(), comboBarShader);
+		player1->powerUpDisplayText[3]->Render(d3dHandler->GetDeviceContext(), comboBarShader);
 		player1->comboDisplayText[0]->Render(d3dHandler->GetDeviceContext(), comboBarShader);
 		player1->comboDisplayText[1]->Render(d3dHandler->GetDeviceContext(), comboBarShader);
 		player1->comboDisplayText[2]->Render(d3dHandler->GetDeviceContext(), comboBarShader);
 		player1->comboDisplayText[3]->Render(d3dHandler->GetDeviceContext(), comboBarShader);
 
+		player2->powerUpDisplayText[0]->Render(d3dHandler->GetDeviceContext(), comboBarShader);
+		player2->powerUpDisplayText[1]->Render(d3dHandler->GetDeviceContext(), comboBarShader);
+		player2->powerUpDisplayText[2]->Render(d3dHandler->GetDeviceContext(), comboBarShader);
+		player2->powerUpDisplayText[3]->Render(d3dHandler->GetDeviceContext(), comboBarShader);
 		player2->comboDisplayText[0]->Render(d3dHandler->GetDeviceContext(), comboBarShader);
 		player2->comboDisplayText[1]->Render(d3dHandler->GetDeviceContext(), comboBarShader);
 		player2->comboDisplayText[2]->Render(d3dHandler->GetDeviceContext(), comboBarShader);

@@ -198,38 +198,9 @@ void EntityHandler::HandleCollision(Player* player, Entity* entity2, AudioMaster
 		{
 			case MapItem::objectType::Comet:
 			{
-				player->RemovePower();
-				player->RemoveCombo();
-				player->RemoveComboText();
-				break;
-			}	
-			case MapItem::objectType::PowerUp:
-			{
-				unsigned int rnd = rand() % 1;
-				if (rnd == 0) // Invert Control
+				if (player->getImmortalPortal() == true)
 				{
-					player->AddInvertControlDisplay();
-					player->setInvertControl(4.0f);
-				}
-				//else if (rnd == 1) // Slow Down Acceleration
-				//{
-				//	player->setSlowDownAcceleration(6.0f);
-				//}
-				//else if (rnd == 2) // Add Combo Bonus
-				//{
-				//	player->AddCombo();
-				//}
-				//else if (rnd == 3) // Crystal Frenzy
-				//{
-				//	player->setCrystalFrenzy(true);
-				//}
-				break;
-			}
-			case MapItem::objectType::Crystal:
-			{
-				if (player->GetColor() == item->GetColor())
-				{
-					player->AddCombo();
+					player->AddCombo(false);
 					player->AddComboText();
 					player->AddPower(player->comboBar->GetComboCount());
 					player->renderParticles = true;
@@ -241,6 +212,49 @@ void EntityHandler::HandleCollision(Player* player, Entity* entity2, AudioMaster
 					player->RemovePower();
 					player->RemoveCombo();
 					player->RemoveComboText();
+				}
+				break;
+			}	
+			case MapItem::objectType::PowerUp:
+			{
+				unsigned int rnd = rand() % 1;
+
+				if (rnd == 0) // Slow Down Acceleration
+				{
+					player->AddSlowDownAccelerationDisplay();
+					player->setSlowDownAcceleration(5.0f);
+				}
+
+				break;
+			}
+			case MapItem::objectType::Crystal:
+			{
+				if (player->GetColor() == item->GetColor())
+				{
+					player->AddCombo(false);
+					player->AddComboText();
+					player->AddPower(player->comboBar->GetComboCount());
+					player->renderParticles = true;
+					player->doubleUp = true;
+					aMaster.playSample("boing");
+				}
+				else
+				{
+					if (player->getImmortalPortal() == true)
+					{
+						player->AddCombo(false);
+						player->AddComboText();
+						player->AddPower(player->comboBar->GetComboCount());
+						player->renderParticles = true;
+						player->doubleUp = true;
+						aMaster.playSample("boing");
+					}
+					else
+					{
+						player->RemovePower();
+						player->RemoveCombo();
+						player->RemoveComboText();
+					}
 				}
 				break;
 			}
