@@ -414,19 +414,19 @@ Application::Application(bool fullscreen, bool showCursor, int screenWidth, int 
 
 	// PowerUp-Display text, player1 & player2
 	// Player 2 - "INVERT CONTROL" text
-	player2Pos[0] = DirectX::XMFLOAT2(0.995f, -0.895f); // längst upp - höger
-	player2Pos[1] = DirectX::XMFLOAT2(0.995f, -0.995f); // längst ner - höger
-	player2Pos[2] = DirectX::XMFLOAT2(0.845f, -0.895f); // längst upp - vänster
-	player2Pos[3] = DirectX::XMFLOAT2(0.845f, -0.995f); // längst ner - vänster
-	player2->powerUpDisplayText[1]->SetPosition(player2Pos);
-	player2->powerUpDisplayText[1]->SetUV(player2UV);
+	player2Pos[0] = DirectX::XMFLOAT2(0.995f, 0.995f); // längst upp - höger
+	player2Pos[1] = DirectX::XMFLOAT2(0.995f, 0.895f); // längst ner - höger
+	player2Pos[2] = DirectX::XMFLOAT2(0.845f, 0.995f); // längst upp - vänster
+	player2Pos[3] = DirectX::XMFLOAT2(0.845f, 0.895f); // längst ner - vänster
+	player2->powerUpDisplayText[0]->SetPosition(player2Pos);
+	player2->powerUpDisplayText[0]->SetUV(player2UV);
 	// Player 2 - "SLOW ACCELERATION" text
 	player2Pos[0] = DirectX::XMFLOAT2(0.995f, 0.885f); // längst upp - höger
 	player2Pos[1] = DirectX::XMFLOAT2(0.995f, 0.785f); // längst ner - höger
 	player2Pos[2] = DirectX::XMFLOAT2(0.845f, 0.885f); // längst upp - vänster
 	player2Pos[3] = DirectX::XMFLOAT2(0.845f, 0.785f); // längst ner - vänster
-	player2->powerUpDisplayText[0]->SetPosition(player2Pos);
-	player2->powerUpDisplayText[0]->SetUV(player2UV);
+	player2->powerUpDisplayText[1]->SetPosition(player2Pos);
+	player2->powerUpDisplayText[1]->SetUV(player2UV);
 	// Player 2 - "COMBO BONUS" text
 	player2Pos[0] = DirectX::XMFLOAT2(0.84f, -0.895f); // längst upp - höger
 	player2Pos[1] = DirectX::XMFLOAT2(0.84f, -0.995f); // längst ner - höger
