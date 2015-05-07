@@ -9,6 +9,7 @@
 #include "AssetHandler.h"
 #include "Player.h"
 #include "MapItem.h"
+#include "BackgroundAsset.h"
 #include "AudioMaster.h"
 
 class EntityHandler

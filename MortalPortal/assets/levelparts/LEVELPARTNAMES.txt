@@ -1,3 +1,6 @@
+normalPart
 Part1.txt
 Part2.txt
+
+freenzyPart
 Frenzy1.txt

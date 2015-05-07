@@ -86,6 +86,7 @@
     <ClCompile Include="AudioHandler.cpp" />
     <ClCompile Include="AudioMaster.cpp" />
     <ClCompile Include="Background.cpp" />
+    <ClCompile Include="BackgroundAsset.cpp" />
     <ClCompile Include="BackgroundShader.cpp" />
     <ClCompile Include="Button.cpp" />
     <ClCompile Include="ButtonShader.cpp" />
@@ -135,6 +136,7 @@
     <ClInclude Include="AudioHandler.h" />
     <ClInclude Include="AudioMaster.h" />
     <ClInclude Include="Background.h" />
+    <ClInclude Include="BackgroundAsset.h" />
     <ClInclude Include="BackgroundShader.h" />
     <ClInclude Include="Bullshit.h" />
     <ClInclude Include="Button.h" />

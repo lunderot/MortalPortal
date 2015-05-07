@@ -77,23 +77,23 @@ Application::Application(bool fullscreen, bool showCursor, int screenWidth, int 
 	levelGenerator = new LevelGenerator("assets/levelparts/", "LEVELPARTNAMES.txt");
 
 	levelGenerator->setPlayerOneCrystals(assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/Crystal2.bin"),
-		assetHandler->GetMaterial(d3dHandler->GetDevice(), "assets/Crystal2.bin", "Crystal1"),
+		assetHandler->GetMaterial(d3dHandler->GetDevice(), "assets/Crystal.bin", "Crystal1"),
 		mapItemShader,
-		assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/Crystal2.bin"),
-		assetHandler->GetMaterial(d3dHandler->GetDevice(), "assets/Crystal2.bin", "Crystal2"),
+		assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/Crystal.bin"),
+		assetHandler->GetMaterial(d3dHandler->GetDevice(), "assets/Crystal.bin", "Crystal2"),
 		mapItemShader);
 
 	levelGenerator->setPlayerTwoCrystals(assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/Crystal1.bin"),
-		assetHandler->GetMaterial(d3dHandler->GetDevice(), "assets/Crystal1.bin", "Crystal1"),
+		assetHandler->GetMaterial(d3dHandler->GetDevice(), "assets/Crystal.bin", "Crystal3"),
 		mapItemShader,
-		assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/Crystal1.bin"),
-		assetHandler->GetMaterial(d3dHandler->GetDevice(), "assets/Crystal1.bin", "Crystal2"),
+		assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/Crystal.bin"),
+		assetHandler->GetMaterial(d3dHandler->GetDevice(), "assets/Crystal.bin", "blinn4"),
 		mapItemShader);
 
 	//Add available comets for LevelGenerator so choose from
 	levelGenerator->addComet(assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/Comet.bin"),
-		assetHandler->GetMaterial(d3dHandler->GetDevice(), "2ggr.dds", "", 0.0f/*"assets/Comet.bin", "lambert2"*/),
-		shader);
+		assetHandler->GetMaterial(d3dHandler->GetDevice(), "assets/Comet.bin", "Comet"),
+		mapItemShader);
 
 	levelGenerator->addPowerUp(assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/Comet.bin"),
 		assetHandler->GetMaterial(d3dHandler->GetDevice(), "b.dds", "", 0.0f),
@@ -102,9 +102,9 @@ Application::Application(bool fullscreen, bool showCursor, int screenWidth, int 
 
 	//Create player and add it to entity handler
 	player1 = new Player(d3dHandler->GetDevice(),
-		assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/NEW_portal_test_history.bin"),
-		assetHandler->GetMaterial(d3dHandler->GetDevice(), "assets/Player.bin", "Portal1"),
-		assetHandler->GetMaterial(d3dHandler->GetDevice(), "assets/Player.bin", "Portal2"),
+		assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/IDAG_PORTAL_NOSMALL_history.bin"),
+		assetHandler->GetMaterial(d3dHandler->GetDevice(), "assets/Crystal.bin", "Crystal1"),
+		assetHandler->GetMaterial(d3dHandler->GetDevice(), "assets/Crystal.bin", "Crystal2"),
 		playerShader,
 		Color::BLUE, Color::GREEN,
 		XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, XM_PIDIV2, 0));
@@ -112,9 +112,9 @@ Application::Application(bool fullscreen, bool showCursor, int screenWidth, int 
 	player1->SetPlayerNumber(1);
 
 	player2 = new Player(d3dHandler->GetDevice(),
-		assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/NEW_portal_circlewithstuff_history.bin"),
-		assetHandler->GetMaterial(d3dHandler->GetDevice(), "assets/Player.bin", "Portal1"),
-		assetHandler->GetMaterial(d3dHandler->GetDevice(), "assets/Player.bin", "Portal2"),
+		assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/IDAG_PORTAL_NOSMALL_history.bin"),
+		assetHandler->GetMaterial(d3dHandler->GetDevice(), "assets/Crystal.bin", "Crystal3"),
+		assetHandler->GetMaterial(d3dHandler->GetDevice(), "assets/Crystal.bin", "blinn4"),
 		playerShader,
 		Color::RED, Color::YELLOW,
 		XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, XM_PIDIV2, 0));
@@ -247,11 +247,11 @@ Application::Application(bool fullscreen, bool showCursor, int screenWidth, int 
 
 	// create Earth
 	entityHandler->Add(
-		new MapItem(
+		new BackgroundAsset(
 		//assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/test.bin"),
 		assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/Earth.bin"),
 		assetHandler->GetMaterial(d3dHandler->GetDevice(), "b.dds", "normalmap.dds", 0.0f),
-		playerShader, MapItem::BackgroundAsset, Color::BLUE, XMFLOAT3(0, 0, 5), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 2, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(1, 1, 1))
+		playerShader, XMFLOAT3(0, 0, 5), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 2, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(1, 1, 1))
 		);
 	//ljus
 	// ljus objekt

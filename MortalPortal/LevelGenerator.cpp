@@ -15,16 +15,23 @@ LevelGenerator::LevelGenerator(std::string pathToFiles, std::string pheaderFile)
 	if (!in.is_open())
 		throw std::runtime_error("Failed to open 'LEVELPARTNAMES.txt'");
 
-	numFiles = 0;
+	string currentType;
 	while (!in.eof())
 	{
 	   	string fileName;
 		getline(in, fileName);
-		fileIndex[fileIndex.size()] = fileName;
-		numFiles++;
+		if (!strcmp(fileName.c_str(), "normalPart"))
+			currentType = "normalPart";
+		else if (!strcmp(fileName.c_str(), "freenzyPart"))
+			currentType = "freenzyPart";
+
+		else if (!strcmp(currentType.c_str(), "normalPart") && !fileName.empty())
+			normalLevelParts[normalLevelParts.size()] = fileName;
+		else if (!strcmp(currentType.c_str(), "freenzyPart") && !fileName.empty())
+			crystalFreenzyParts[crystalFreenzyParts.size()] = fileName;
 	}
 
-	if (numFiles == 0)
+	if (normalLevelParts.size() == 0 && crystalFreenzyParts.size() == 0)
 		throw std::runtime_error("'LEVELPARTNAMES.txt' is empty");
 
 	lastLine.type = "e";
@@ -76,31 +83,29 @@ void LevelGenerator::setPlayerTwoCrystals(Geometry* Crystal1Geometry, Material* 
 
 void LevelGenerator::Update(EntityHandler* entityHandler, float deltaTime, bool &crystalFrenzy)
 {
+	while (!partFile.is_open() || crystalFrenzy == true)
+	{
+		
+		if (crystalFrenzy == true)
+		{
+			partFile.close();
+			unsigned int newPart = rand() % crystalFreenzyParts.size();
+			std::string tmp = pathToFiles + crystalFreenzyParts[newPart];
+			partFile.open(tmp.c_str());
+			crystalFrenzy = false;
+		}
+		else
+		{
+			unsigned int newPart = rand() % normalLevelParts.size();
+			std::string tmp = pathToFiles + normalLevelParts[newPart];
+			partFile.open(tmp.c_str());
+		}
+	}
+
 	while(timeSinceLastSpawn > lastLine.spawnNext)
 	{
 		float XSpawnPos = 35;
 		timeSinceLastSpawn -= lastLine.spawnNext;
-
-		unsigned int tries = 0;
-		while(!partFile.is_open() && tries != 100)
-		{
-			unsigned int newPart = rand() % numFiles - 1;
-			if (crystalFrenzy == true)
-			{
-				std::string tmp = "assets/levelparts/Frenzy1.txt";
-				partFile.open(tmp.c_str());
-				crystalFrenzy = false;
-			}
-			else
-			{
-				std::string tmp = pathToFiles + fileIndex[newPart];
-				partFile.open(tmp.c_str());
-			}
-			tries++;
-		}
-
-		if (numFiles == 100)
-			throw std::runtime_error("Failed open random file referred from 'LEVELPARTNAMES.txt' 100 times");
 
 		std::string nextLine;
 		getline(partFile, nextLine);
@@ -109,7 +114,6 @@ void LevelGenerator::Update(EntityHandler* entityHandler, float deltaTime, bool 
 		ss >> lastLine.velocity;
 		ss >> lastLine.position;
 		ss >> lastLine.spawnNext;
-		//fscanf_s(partFile, "%s %f %f %f", lastLine.type, lastLine.position, lastLine.velocity, lastLine.spawnNext);
 
 		if (lastLine.type == "c")
 		{

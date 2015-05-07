@@ -171,6 +171,9 @@
     <ClCompile Include="PowerUpDisplay.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="BackgroundAsset.cpp">
+      <Filter>Source Files\Entities</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="System.h">
@@ -313,6 +316,9 @@
     </ClInclude>
     <ClInclude Include="PowerUpDisplay.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="BackgroundAsset.h">
+      <Filter>Header Files\Entities</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

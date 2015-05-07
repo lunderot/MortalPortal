@@ -31,8 +31,8 @@ protected:
 	};
 
 	std::string  pathToFiles;
-	unsigned int numFiles;
-	std::map<unsigned int, std::string> fileIndex;
+	std::map<unsigned int, std::string> normalLevelParts;
+	std::map<unsigned int, std::string> crystalFreenzyParts;
 	ifstream partFile;
 	lineFormat lastLine;
 	float timeSinceLastSpawn;
