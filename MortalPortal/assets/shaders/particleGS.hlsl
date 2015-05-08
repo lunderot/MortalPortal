@@ -74,7 +74,7 @@ void main(point GS_IN input[1], inout TriangleStream<GS_OUT> triStream)
 	{
 		for (int i = 0; i < 4; i++)
 		{
-			output.Pos = float4(vert[i].x, vert[i].y, 0, 1.0f);
+			output.Pos = float4(vert[i].x, vert[i].y, 0.5, 1.0f);
 			output.Tex = texCoord[i];
 			triStream.Append(output);
 		}

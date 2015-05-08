@@ -32,8 +32,8 @@ void main(uint3 dispatchThreadID : SV_DispatchThreadID)
 	velocity.y += acceleration.y * deltaTime;
 	if (particleType == 2)
 	{
-		pos.x += velocity.x * deltaTime / 80;
-		pos.y += velocity.y * deltaTime / 80;
+		pos.x += velocity.x * deltaTime / 100;
+		pos.y += velocity.y * deltaTime / 100;
 	}
 
 	else if (particleType == 3)
@@ -53,7 +53,7 @@ void main(uint3 dispatchThreadID : SV_DispatchThreadID)
 	//pos.y -= 0.3f * deltaTime;
 	if (life > lifeTime && particleType == 2)
 	{
-		pos.x = position.x - 0.015f;
+		pos.x = position.x - 0.02f;
 		pos.y = position.y - 0.05f;
 		life -= lifeTime;
 	}

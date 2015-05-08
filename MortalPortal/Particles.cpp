@@ -11,6 +11,8 @@ Particle::Particle(unsigned int type,
 {
 	SRV = nullptr;
 	this->material = material;
+
+	// Crystal Pick-up
 	if (type == 1)
 	{
 		for (unsigned int i = 0; i < nrOfParticles; i++)
@@ -30,16 +32,17 @@ Particle::Particle(unsigned int type,
 		}
 	}
 
+	// Power Bar
 	if (type == 2)
 	{
 		for (unsigned int i = 0; i < nrOfParticles; i++)
 		{
 			Particles p;
 			p.type = type;
-			p.lifeTime = rand() % 500 - 10;
-			p.pos.x = 0;
-			p.pos.y = 0;
-			p.pos.z = 0;
+			p.lifeTime = rand() % 100 - 10;
+			p.pos.x = 20;
+			p.pos.y = 20;
+			p.pos.z = 20;
 
 			p.velocity.x = rand() % 10;
 			p.velocity.y = rand() % 10 - 5;
@@ -49,6 +52,7 @@ Particle::Particle(unsigned int type,
 		}
 	}
 
+	// Background particles
 	if (type == 3)
 	{
 		for (unsigned int i = 0; i < nrOfParticles; i++)

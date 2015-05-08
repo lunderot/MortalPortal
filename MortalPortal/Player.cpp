@@ -321,6 +321,10 @@ bool Player::HasColor(Color color) const
 
 void Player::Reset()
 {
+	position = DirectX::XMFLOAT3(0, 0, 0);
+	velocity = DirectX::XMFLOAT3(0, 0, 0);
+	angleVelocity = DirectX::XMFLOAT3(0, 0, 0);
+	acceleration = DirectX::XMFLOAT3(0, 0, 0);
 	this->powerBar->Reset();
 	this->alive = true;
 	this->SetPosition(DirectX::XMFLOAT3(0, 0, 0));
@@ -330,6 +334,11 @@ void Player::Reset()
 	this->comboCounterChange_100 = 0;
 	this->comboMax = false;
 	this->previousButtonState = false;
+
+	inverControlTimer = 0;
+	slowDownAccelerationTimer = 0;
+	bonusComboTimer = 0;
+	immortalPortalTimer = 0;
 
 	setInvertControl(0.0f);
 	setSlowDownAcceleration(0.0f);
