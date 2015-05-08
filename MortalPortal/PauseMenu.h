@@ -15,7 +15,6 @@ protected:
 	ID3D11Buffer* constantBuffer;
 	ID3D11ShaderResourceView* SRV;
 	Geometry* buttonGeometry;
-	ButtonScale buttonScale;
 
 	unsigned int check;
 	unsigned int pauseCheck;
@@ -30,7 +29,7 @@ public:
 	PauseMenu(ID3D11Device* device);
 	~PauseMenu();
 	bool renderMenu;
-
+	ButtonScale buttonScale;
 	Geometry* GetButtonGeometry();
 	void CheckIfToPause(bool gamepadStart);
 	void Update(bool gamepadUp, bool gamepadDown, bool aButton);

@@ -17,7 +17,6 @@ protected:
 	ID3D11Buffer* constantBuffer;
 	ID3D11ShaderResourceView* SRV;
 	Geometry* buttonGeometry;
-	ButtonScale buttonScale;
 
 	unsigned int check;
 
@@ -27,7 +26,7 @@ protected:
 	DirectX::XMVECTOR translation;
 
 public:
-	
+	ButtonScale buttonScale;
 	StartMenu(ID3D11Device* device);
 	~StartMenu();
 	bool renderMenu;

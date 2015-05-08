@@ -14,6 +14,8 @@ struct buttonPoint
 struct ButtonScale
 {
 	DirectX::XMMATRIX scale;
+	bool button;
+
 };
 
 

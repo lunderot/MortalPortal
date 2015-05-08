@@ -113,7 +113,7 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Material.cpp" />
     <ClCompile Include="PauseMenu.cpp" />
-    <ClCompile Include="PlayerWins.cpp" />
+    <ClCompile Include="RectangleScreen.cpp" />
     <ClCompile Include="PowerUpDisplay.cpp" />
     <ClCompile Include="RestartMenu.cpp" />
     <ClCompile Include="StartMenu.cpp" />
@@ -165,7 +165,7 @@
     <ClInclude Include="LevelGenerator.h" />
     <ClInclude Include="Material.h" />
     <ClInclude Include="PauseMenu.h" />
-    <ClInclude Include="PlayerWins.h" />
+    <ClInclude Include="RectangleScreen.h" />
     <ClInclude Include="PowerUpDisplay.h" />
     <ClInclude Include="RestartMenu.h" />
     <ClInclude Include="StartMenu.h" />

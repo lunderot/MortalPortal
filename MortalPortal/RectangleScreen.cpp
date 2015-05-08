@@ -1,25 +1,11 @@
-#include "PlayerWins.h"
+#include "RectangleScreen.h"
 
-PlayerWins::PlayerWins(Material* mat1, Material* mat2, ID3D11Device* device)
+RectangleScreen::RectangleScreen(buttonPoint* points, Material* mat1, Material* mat2, ID3D11Device* device)
 {
 	this->material1 = mat1;
 	this->material2 = mat2;
 
-	buttonPoint points[4] =
-	{
-		DirectX::XMFLOAT2(-0.2f, -0.2f),
-		DirectX::XMFLOAT2(0.0f, 1.0f),
-
-		DirectX::XMFLOAT2(-0.2f, 0.2f),
-		DirectX::XMFLOAT2(0.0f, 0.0f),
-
-		DirectX::XMFLOAT2(0.2f, -0.2f),
-		DirectX::XMFLOAT2(1.0f, 1.0f),
-
-		DirectX::XMFLOAT2(0.2f, 0.2f),
-		DirectX::XMFLOAT2(1.0f, 0.0f)
-
-	};
+	rectPoints = points;
 
 	D3D11_BUFFER_DESC bufferDesc;
 	memset(&bufferDesc, 0, sizeof(bufferDesc));
@@ -30,7 +16,7 @@ PlayerWins::PlayerWins(Material* mat1, Material* mat2, ID3D11Device* device)
 	bufferDesc.MiscFlags = 0;
 
 	D3D11_SUBRESOURCE_DATA data;
-	data.pSysMem = &points;
+	data.pSysMem = rectPoints;
 
 	HRESULT hr = device->CreateBuffer(&bufferDesc, &data, &vertexBuffer);
 
@@ -39,27 +25,34 @@ PlayerWins::PlayerWins(Material* mat1, Material* mat2, ID3D11Device* device)
 		throw std::runtime_error("Failed to create vertex buffer in the PowerBar class.");
 	}
 	player1Wins = false;
+	playerWinsText = false;
 
 }
 
 
-void PlayerWins::RenderText(ID3D11DeviceContext* deviceContext)
+void RectangleScreen::RenderText(ID3D11DeviceContext* deviceContext)
 {
 	unsigned int vertexSize = sizeof(float) * 4;
 	unsigned int offset = 0;
 	unsigned int vertexCount = 4;
 
-	if (player1Wins == true)
-		SRV = material1->GetTexture();
+	if (playerWinsText == true)
+	{
+		if (player1Wins == true)
+			SRV = material1->GetTexture();
+		else
+			SRV = material2->GetTexture();
+	}
 	else
-		SRV = material2->GetTexture();
+		SRV = material1->GetTexture();
 	deviceContext->IASetVertexBuffers(0, 1, &vertexBuffer, &vertexSize, &offset);
+
 	deviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);
 	deviceContext->PSSetShaderResources(0, 1, &SRV);
 	deviceContext->Draw(vertexCount, 0);
 }
 
-PlayerWins::~PlayerWins()
+RectangleScreen::~RectangleScreen()
 {
 	if (vertexBuffer)
 		vertexBuffer->Release();

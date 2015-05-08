@@ -4,17 +4,19 @@
 #include "Shader.h"
 #include "Button.h"
 
-class PlayerWins
+class RectangleScreen
 {
 protected:
 	ID3D11Buffer* vertexBuffer;
 	ID3D11ShaderResourceView* SRV;
 	Material* material1;
 	Material* material2;
+	buttonPoint* rectPoints;
 public:
-	PlayerWins(Material* mat1, Material* mat2, ID3D11Device* device);
-	~PlayerWins();
+	RectangleScreen(buttonPoint* points, Material* mat1, Material* mat2, ID3D11Device* device);
+	~RectangleScreen();
 	bool player1Wins;
+	bool playerWinsText;
 
 	void RenderText(ID3D11DeviceContext* deviceContext);
 };

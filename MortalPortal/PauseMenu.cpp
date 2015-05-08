@@ -9,6 +9,7 @@ PauseMenu::PauseMenu(ID3D11Device* device)
 	rotationOrigin = DirectX::XMVectorSet(0.0f, 0.0f, 0.0f, 0.0f);
 
 	ID3D11Buffer* buttonVertexBuffer = nullptr;
+	buttonScale.button = true;
 	buttonPoint points[4] =
 	{
 		DirectX::XMFLOAT2(-1.0f, -1.0f),

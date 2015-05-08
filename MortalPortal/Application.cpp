@@ -291,7 +291,52 @@ Application::Application(bool fullscreen, bool showCursor, int screenWidth, int 
 	player2->powerBar->SetMaterial(assetHandler->GetMaterial(d3dHandler->GetDevice(), "powerbar.dds", "", 0.0f));
 	player1->powerBar->SetMaterial(assetHandler->GetMaterial(d3dHandler->GetDevice(), "powerbar.dds", "", 0.0f));
 	// Combo bars, player1 & player2
-	playerWins = new PlayerWins(assetHandler->GetMaterial(d3dHandler->GetDevice(), "player1win.dds", "", 0.0f), assetHandler->GetMaterial(d3dHandler->GetDevice(), "player2win.dds", "", 0.0f), d3dHandler->GetDevice());
+	buttonPoint points[4] =
+	{
+		DirectX::XMFLOAT2(-0.2f, 0.4f),
+		DirectX::XMFLOAT2(0.0f, 1.0f),
+
+		DirectX::XMFLOAT2(-0.2f, 0.6f),
+		DirectX::XMFLOAT2(0.0f, 0.0f),
+
+		DirectX::XMFLOAT2(0.2f, 0.4f),
+		DirectX::XMFLOAT2(1.0f, 1.0f),
+
+		DirectX::XMFLOAT2(0.2f, 0.6f),
+		DirectX::XMFLOAT2(1.0f, 0.0f)
+
+	};
+	playerWins = new RectangleScreen(points, assetHandler->GetMaterial(d3dHandler->GetDevice(), "player1win.dds", "", 0.0f), assetHandler->GetMaterial(d3dHandler->GetDevice(), "player2win.dds", "", 0.0f), d3dHandler->GetDevice());
+	buttonPoint player1Points[4] =
+	{
+		DirectX::XMFLOAT2(-1.0f, 0.8f),
+		DirectX::XMFLOAT2(0.0f, 1.0f),
+
+		DirectX::XMFLOAT2(-1.0f, 1.0f),
+		DirectX::XMFLOAT2(0.0f, 0.0f),
+
+		DirectX::XMFLOAT2(-0.65f, 0.8f),
+		DirectX::XMFLOAT2(1.0f, 1.0f),
+
+		DirectX::XMFLOAT2(-0.65f, 1.0f),
+		DirectX::XMFLOAT2(1.0f, 0.0f)
+	};
+	player1Info = new RectangleScreen(player1Points, assetHandler->GetMaterial(d3dHandler->GetDevice(), "player1.dds", "", 0.0f), assetHandler->GetMaterial(d3dHandler->GetDevice(), "player2win.dds", "", 0.0f), d3dHandler->GetDevice());
+	buttonPoint player2Points[4] =
+	{
+		DirectX::XMFLOAT2(-1.0f, -1.0f),
+		DirectX::XMFLOAT2(0.0f, 1.0f),
+
+		DirectX::XMFLOAT2(-1.0f, -0.8f),
+		DirectX::XMFLOAT2(0.0f, 0.0f),
+
+		DirectX::XMFLOAT2(-0.65f, -1.0f),
+		DirectX::XMFLOAT2(1.0f, 1.0f),
+
+		DirectX::XMFLOAT2(-0.65f, -0.8f),
+		DirectX::XMFLOAT2(1.0f, 0.0f)
+	};
+	player2Info = new RectangleScreen(player2Points, assetHandler->GetMaterial(d3dHandler->GetDevice(), "player2.dds", "", 0.0f), assetHandler->GetMaterial(d3dHandler->GetDevice(), "player2win.dds", "", 0.0f), d3dHandler->GetDevice());
 	// Player 1
 	DirectX::XMFLOAT2 player1Pos[4];
 	DirectX::XMFLOAT2 player1UV[4];
@@ -539,6 +584,8 @@ Application::~Application()
 	delete pauseMenu;
 	delete restartMenu;
 	delete playerWins;
+	delete player1Info;
+	delete player2Info;
 
 }
 
@@ -577,7 +624,8 @@ bool Application::Update(float deltaTime)
 	// PowerUp - Immortal Portal - effect on | Player1
 	player1->getImmortalPortal();
 	player1->SetAcceleration(XMFLOAT3(dir.x, dir.y, 0.0f));
-	player1->ReactToInput(input->GetButtonState(), aMaster);
+	if (pauseMenu->renderMenu == false && restartMenu->renderMenu == false)
+		player1->ReactToInput(input->GetButtonState(), aMaster);
 
 	// Player 2 - control
 	XMFLOAT2 dir2 = input2->GetDirection(player2Test);
@@ -603,7 +651,8 @@ bool Application::Update(float deltaTime)
 	// PowerUp - Immortal Portal - effect on | Player2
 	player2->getImmortalPortal();
 	player2->SetAcceleration(XMFLOAT3(dir2.x, dir2.y, 0.0f));
-	player2->ReactToInput(input2->GetButtonState(), aMaster);
+	if (pauseMenu->renderMenu == false && restartMenu->renderMenu == false)
+		player2->ReactToInput(input2->GetButtonState(), aMaster);
 	
 	// Check if Crystal Frenzy is true for both Player1 & Player2wdawddsadsadwas
 	if (player1->getCrystalFrenzy() == true || player2->getCrystalFrenzy() == true)
@@ -709,6 +758,10 @@ void Application::Render()
 	particleBackground->Render(d3dHandler->GetDeviceContext());
 	if (startMenu->renderMenu == false)
 	{
+		powerBarShader->Use(d3dHandler->GetDeviceContext());
+		playerWins->playerWinsText = false;
+		player1Info->RenderText(d3dHandler->GetDeviceContext());
+		player2Info->RenderText(d3dHandler->GetDeviceContext());
 		// Particles
 		particleShader->Use(d3dHandler->GetDeviceContext());
 		particlePowerBar1->Render(d3dHandler->GetDeviceContext());
@@ -752,13 +805,14 @@ void Application::Render()
 		{
 			buttonShader->Use(d3dHandler->GetDeviceContext());
 			restartMenu->renderMenu = true;
+			restartMenu->buttonScale.button = true;
 			restartMenu->Render(d3dHandler->GetDeviceContext());
 
 			if (player2->powerBar->IsDead() == true)
 				playerWins->player1Wins = true;
-			restartMenu->scaling = DirectX::XMVECTOR(DirectX::XMVectorSet(1, 1, 1, 1));
-			restartMenu->translation = DirectX::XMVECTOR(DirectX::XMVectorSet(0, 0.6f, 1,1));
+			restartMenu->buttonScale.button = false;
 			restartMenu->UpdateConstantBuffer(d3dHandler->GetDeviceContext(), &restartMenu->buttonScale);
+			playerWins->playerWinsText = true;
 			playerWins->RenderText(d3dHandler->GetDeviceContext());
 		}
 

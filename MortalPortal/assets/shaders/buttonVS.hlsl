@@ -1,6 +1,7 @@
 cbuffer buttonScale : register(cb0)
 {
 	matrix scaleMatrix;
+	bool button;
 }
 struct VS_IN
 {
@@ -19,7 +20,8 @@ VS_OUT main(VS_IN input)
 	VS_OUT output = (VS_OUT)0;
 
 	output.position = float4(input.position, 0.0f, 1.0f);
-	output.position = mul(output.position,scaleMatrix);
+	if (button == true)
+		output.position = mul(output.position,scaleMatrix);
 
 	output.texCoord = input.texCoord;
 

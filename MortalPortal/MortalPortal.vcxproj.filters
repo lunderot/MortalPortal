@@ -174,7 +174,7 @@
     <ClCompile Include="BackgroundAsset.cpp">
       <Filter>Source Files\Entities</Filter>
     </ClCompile>
-    <ClCompile Include="PlayerWins.cpp">
+    <ClCompile Include="RectangleScreen.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -323,7 +323,7 @@
     <ClInclude Include="BackgroundAsset.h">
       <Filter>Header Files\Entities</Filter>
     </ClInclude>
-    <ClInclude Include="PlayerWins.h">
+    <ClInclude Include="RectangleScreen.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
