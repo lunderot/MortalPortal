@@ -114,7 +114,6 @@ Application::Application(bool fullscreen, bool showCursor, int screenWidth, int 
 		Color::BLUE, Color::GREEN,
 		XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, XM_PIDIV2, 0));
 	entityHandler->Add(player1);
-	player1->SetPlayerNumber(1);
 
 	player2 = new Player(d3dHandler->GetDevice(),
 		assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/Portal_nosmall_nohistory.bin"),
@@ -124,7 +123,6 @@ Application::Application(bool fullscreen, bool showCursor, int screenWidth, int 
 		Color::RED, Color::YELLOW,
 		XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, XM_PIDIV2, 0));
 	entityHandler->Add(player2);
-	player2->SetPlayerNumber(2);
 
 	// Create Combo-bar player1 & player2
 	Material* playerComboMat[9];
