@@ -94,7 +94,8 @@ void AssetHandler::LoadFile(ID3D11Device* device, std::string filename)
 	}
 
 	vertexVec.reserve(numVerticies);
-
+	if (!strcmp(filename.c_str(), "assets/Portal_scaled.bin"))
+		int toto = 0;
 	for (unsigned int meshID = 0; meshID < importer.getNumMeshes(); meshID++)
 	{			
 		constructVerticies(importer, mesh[meshID], vertexVec);
@@ -118,8 +119,7 @@ void AssetHandler::LoadFile(ID3D11Device* device, std::string filename)
 	Collision* objectCollision = new Collision();
 	const ImporterNurb* spheres = importer.getNurb();
 	const ImporterTransform* transforms = importer.getTransform();
-	if (!strcmp(filename.c_str(), "assets/IDAG_PORTAL_NOSMALL_history.bin"))
-		int toto = 0;
+
 	for (unsigned int i = 0; i < importer.getNumNurbs(); i++)
 	{	
 		DirectX::XMFLOAT3 position;
@@ -141,12 +141,12 @@ void AssetHandler::LoadFile(ID3D11Device* device, std::string filename)
 				memcpy(scaleD, transforms[parent].scale, sizeof(double) * 3);
 
 				DirectX::XMMATRIX Translate = DirectX::XMMatrixAffineTransformation(DirectX::XMVectorSet(
-					(float)scaleD[0], (float)scaleD[1], (float)scaleD[2], (float)scaleD[3]),
+					1 / (float)scaleD[0], 1 / (float)scaleD[1], 1 / (float)scaleD[2], 1.0f),
 					DirectX::XMVectorSet(0, 0, 0, 1),
-					DirectX::XMVectorSet((float)rotD[0], (float)rotD[1], (float)rotD[2], (float)rotD[3]),
+					DirectX::XMQuaternionInverse(DirectX::XMVectorSet((float)rotD[0], (float)rotD[1], (float)rotD[2], (float)rotD[3])),
 					DirectX::XMVectorSet((float)pos[0], -(float)pos[1], (float)pos[2], 1.0f));
 
-				TranslateTot = DirectX::XMMatrixMultiply(TranslateTot, DirectX::XMMatrixInverse(nullptr, Translate));
+				TranslateTot = Translate * TranslateTot;
 
 				parent = transforms[parent].parentID;
 			}
@@ -154,7 +154,7 @@ void AssetHandler::LoadFile(ID3D11Device* device, std::string filename)
 			const ImporterTransform& ParentTarnsform = transforms[thisSphere.ParentID[k]];
 
 			DirectX::XMVECTOR PosVec = DirectX::XMVectorSet((float)ParentTarnsform.position[0], (float)ParentTarnsform.position[1], (float)ParentTarnsform.position[2], 1.0f);
-			PosVec = DirectX::XMVector3Transform(PosVec, TranslateTot);
+			PosVec = DirectX::XMVector3Transform(PosVec, DirectX::XMMatrixInverse(nullptr, TranslateTot));
 			DirectX::XMFLOAT3 tmp3;
 			DirectX::XMStoreFloat3(&tmp3, PosVec);
 
@@ -174,21 +174,35 @@ void AssetHandler::LoadFile(ID3D11Device* device, std::string filename)
 	for (unsigned int i = 0; i < importer.getNumMaterials(); i++)
 	{
 
+		ID3D11ShaderResourceView* diffuseMap = nullptr;
+		ID3D11ShaderResourceView* normalMap = nullptr;
+
 		const ImporterMaterial& thisMaterial = materials[i];
+
 		if (thisMaterial.duffuse_map_length > 0)
 		{
-			//Convert char* to LPCWSTR
-			std::string tmp = thisMaterial.diffuse_map;
-
-			material[filename + thisMaterial.name] = new Material(textureHandler.LoadTexture(tmp, device));
+			diffuseMap = textureHandler.LoadTexture(thisMaterial.diffuse_map, device);
 		}
+
+		if (thisMaterial.normal_map_length > 0)
+		{
+			normalMap = textureHandler.LoadTexture(thisMaterial.normal_map, device);
+		}
+
+		material[filename + thisMaterial.name] = new Material(	diffuseMap, normalMap, thisMaterial.normal_depth, 
+																DirectX::XMFLOAT3(thisMaterial.specular[0], thisMaterial.specular[1], thisMaterial.specular[2]), 
+																thisMaterial.specular_factor, 
+																DirectX::XMFLOAT3(thisMaterial.ambient[0], thisMaterial.ambient[1], thisMaterial.ambient[2]), 
+																DirectX::XMFLOAT3(thisMaterial.diffuse[0], thisMaterial.diffuse[1], thisMaterial.diffuse[2]),
+																DirectX::XMFLOAT3(thisMaterial.transparency_color[0], thisMaterial.transparency_color[1], thisMaterial.transparency_color[2]),
+																DirectX::XMFLOAT3(thisMaterial.incandescence[0], thisMaterial.incandescence[1], thisMaterial.incandescence[2])
+															 );
 	}
 
 }
 
 void AssetHandler::constructVerticies(Importer& importer,const ImporterMesh& mesh, vector<VertexPositionTexCoordNormalBinormalTangent>& vertexBuffer)
 {
-	VertexPositionTexCoordNormalBinormalTangent vertex;
 	const ImporterTransform* transforms = importer.getTransform();
 
 	for (unsigned int i = 0; i < mesh.transform_count; i++)
@@ -206,25 +220,27 @@ void AssetHandler::constructVerticies(Importer& importer,const ImporterMesh& mes
 			memcpy(rotD, transforms[parent].rotation, sizeof(double) * 4);
 			memcpy(scaleD, transforms[parent].scale, sizeof(double) * 3);
 
-			DirectX::XMMATRIX Translate = DirectX::XMMatrixAffineTransformation(DirectX::XMVectorSet(
-				(float)scaleD[0], (float)scaleD[1], (float)scaleD[2], (float)scaleD[3]), 
+			DirectX::XMMATRIX Translate = DirectX::XMMatrixAffineTransformation( DirectX::XMVectorSet(
+				1 / (float)scaleD[0], 1 / (float)scaleD[1], 1 / (float)scaleD[2], 1.0f),
 				DirectX::XMVectorSet(0, 0, 0, 1), 
-				DirectX::XMVectorSet((float)rotD[0], (float)rotD[1], (float)rotD[2], (float)rotD[3]), 
+				DirectX::XMQuaternionInverse(DirectX::XMVectorSet((float)rotD[0], (float)rotD[1], (float)rotD[2], (float)rotD[3])),
 				DirectX::XMVectorSet((float)pos[0], -(float)pos[1], (float)pos[2], 1.0f));
 
-			TranslateTot = DirectX::XMMatrixMultiply(TranslateTot, DirectX::XMMatrixInverse(nullptr, Translate));
+			TranslateTot = Translate * TranslateTot;
 			
 			parent = transforms[parent].parentID;
 		}
 
 		for (unsigned int j = 0; j < mesh.indice_count; j++)
 		{
+			VertexPositionTexCoordNormalBinormalTangent vertex;
+
 			unsigned int positionID = mesh.vertices[j].position;
 			unsigned int uvID = mesh.vertices[j].uv;
 			unsigned int normalID = mesh.vertices[j].normal;
 
 			DirectX::XMVECTOR PosVec = DirectX::XMVectorSet((float)mesh.position[positionID * 3 + 0], (float)mesh.position[positionID * 3 + 1], (float)mesh.position[positionID * 3 + 2], 1.0f);
-			PosVec = DirectX::XMVector3Transform(PosVec, TranslateTot);
+			PosVec = DirectX::XMVector3Transform(PosVec, DirectX::XMMatrixInverse(nullptr, TranslateTot));
 			DirectX::XMFLOAT3 tmp3;
 			DirectX::XMStoreFloat3(&tmp3, PosVec);
 			vertex.position[0] = tmp3.x;// *scale[0];

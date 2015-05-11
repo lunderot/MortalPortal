@@ -99,6 +99,18 @@ Application::Application(bool fullscreen, bool showCursor, int screenWidth, int 
 		assetHandler->GetMaterial(d3dHandler->GetDevice(), "assets/Comet.bin", "Comet"),
 		playerShader);
 
+	//levelGenerator->addBackgroundAsset(assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/DeadPortal.bin"),
+	//	assetHandler->GetMaterial(d3dHandler->GetDevice(), "assets/Comet.bin", "Comet"),
+	//	playerShader);
+
+	levelGenerator->addBackgroundAsset(assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/EscapePod.bin"),
+		assetHandler->GetMaterial(d3dHandler->GetDevice(), "assets/Comet.bin", "Comet"),
+		playerShader);
+
+	levelGenerator->addBackgroundAsset(assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/Satellite.bin"),
+		assetHandler->GetMaterial(d3dHandler->GetDevice(), "assets/Comet.bin", "Comet"),
+		playerShader);
+
 	levelGenerator->setPowerUp(assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/Comet.bin"),
 		assetHandler->GetMaterial(d3dHandler->GetDevice(), "b.dds", "", 0.0f),
 		mapItemShader);
@@ -107,7 +119,7 @@ Application::Application(bool fullscreen, bool showCursor, int screenWidth, int 
 
 	//Create player and add it to entity handler
 	player1 = new Player(d3dHandler->GetDevice(),
-		assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/Portal_nosmall_nohistory.bin"),
+		assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/Portal_scaled_NoCylinder.bin"),
 		assetHandler->GetMaterial(d3dHandler->GetDevice(), "assets/Crystal.bin", "Crystal1"),
 		assetHandler->GetMaterial(d3dHandler->GetDevice(), "assets/Crystal.bin", "Crystal2"),
 		playerShader,
@@ -116,7 +128,7 @@ Application::Application(bool fullscreen, bool showCursor, int screenWidth, int 
 	entityHandler->Add(player1);
 
 	player2 = new Player(d3dHandler->GetDevice(),
-		assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/Portal_nosmall_nohistory.bin"),
+		assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/Portal_scaled_NoCylinder.bin"),
 		assetHandler->GetMaterial(d3dHandler->GetDevice(), "assets/Crystal.bin", "Crystal3"),
 		assetHandler->GetMaterial(d3dHandler->GetDevice(), "assets/Crystal.bin", "blinn4"),
 		playerShader,
@@ -194,11 +206,11 @@ Application::Application(bool fullscreen, bool showCursor, int screenWidth, int 
 	particle->constantBufferData.lifeTime = 3.0f;
 	particle2 = new Particle(1, 20, assetHandler->GetMaterial(d3dHandler->GetDevice(), "particlePew.dds", "", 0.0f), d3dHandler->GetDevice());
 	particle2->constantBufferData.lifeTime = 3.0f;
-	particlePowerBar1 = new Particle(2, 100, assetHandler->GetMaterial(d3dHandler->GetDevice(), "powerbar.dds", "", 0.0f), d3dHandler->GetDevice());
+	particlePowerBar1 = new Particle(2, 100, assetHandler->GetMaterial(d3dHandler->GetDevice(), "energybar.dds", "", 0.0f), d3dHandler->GetDevice());
 	particlePowerBar1->constantBufferData.reset = false;
 	particlePowerBar1->constantBufferData.lifeTime = 20;
 
-	particlePowerBar2 = new Particle(2, 100, assetHandler->GetMaterial(d3dHandler->GetDevice(), "powerbar.dds", "", 0.0f), d3dHandler->GetDevice());
+	particlePowerBar2 = new Particle(2, 100, assetHandler->GetMaterial(d3dHandler->GetDevice(), "energybar.dds", "", 0.0f), d3dHandler->GetDevice());
 	particlePowerBar2->constantBufferData.reset = false;
 	particlePowerBar2->constantBufferData.lifeTime = 20;
 
@@ -221,28 +233,28 @@ Application::Application(bool fullscreen, bool showCursor, int screenWidth, int 
 		new Background(
 			assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/BackgroundPlane.bin"),
 			assetHandler->GetMaterial(d3dHandler->GetDevice(), "spaceAlphaTest.dds", "", 0.0f),
-			playerShader, XMFLOAT3(0, 0, 199.9), XMFLOAT3(0.5, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(337, 190, 1))
+			playerShader, XMFLOAT3(0, 0, 199.9), XMFLOAT3(12, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(337, 190, 1))
 		);
 
 	entityHandler->Add(
 		new Background(
 			assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/BackgroundPlane.bin"),
 			assetHandler->GetMaterial(d3dHandler->GetDevice(), "spaceAlphaTest.dds", "", 0.0f),
-			playerShader, XMFLOAT3(-91.5, 0, 199.9), XMFLOAT3(0.5, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(337, 190, 1))
+			playerShader, XMFLOAT3(-674, 0, 199.9), XMFLOAT3(12, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(337, 190, 1))
 		);
 
 	entityHandler->Add(
 		new Background(
 			assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/BackgroundPlane.bin"),
 			assetHandler->GetMaterial(d3dHandler->GetDevice(), "test1.dds", "", 0.0f),
-			playerShader, XMFLOAT3(-91.5, 0, 199.8), XMFLOAT3(0.4, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(337, 190, 1))
+			playerShader, XMFLOAT3(-674, 0, 199.8), XMFLOAT3(8, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(337, 190, 1))
 		);
 
 	entityHandler->Add(
 		new Background(
 		assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/BackgroundPlane.bin"),
 		assetHandler->GetMaterial(d3dHandler->GetDevice(), "test1.dds", "", 0.0f),
-		playerShader, XMFLOAT3(0, 0, 199.8), XMFLOAT3(0.4, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(337, 190, 1))
+		playerShader, XMFLOAT3(0, 0, 199.8), XMFLOAT3(8, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(337, 190, 1))
 		);
 
 	// create Earth
@@ -250,7 +262,7 @@ Application::Application(bool fullscreen, bool showCursor, int screenWidth, int 
 		new BackgroundAsset(
 			assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/Earth.bin"),
 			assetHandler->GetMaterial(d3dHandler->GetDevice(), "b.dds", "normalmap.dds", 0.0f),
-			playerShader, XMFLOAT3(0, 0, 170), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 2, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(10, 10, 10))
+			playerShader, XMFLOAT3(0, 0, 170), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0.4, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(10, 10, 10))
 		);
 
 	//Light
@@ -258,15 +270,46 @@ Application::Application(bool fullscreen, bool showCursor, int screenWidth, int 
 
 	//Setup player bars
 	DirectX::XMFLOAT2 player2BarPos[4];
-	player2BarPos[0] = DirectX::XMFLOAT2(-0.1f, -0.9f);
-	player2BarPos[1] = DirectX::XMFLOAT2(-0.1f, -1.0f);
-	player2BarPos[2] = DirectX::XMFLOAT2(-0.7f, -0.9f);
-	player2BarPos[3] = DirectX::XMFLOAT2(-0.7f, -1.0f);
+	player2BarPos[0] = DirectX::XMFLOAT2(-0.08f, -0.9f);
+	player2BarPos[1] = DirectX::XMFLOAT2(-0.08f, -1.0f);
+	player2BarPos[2] = DirectX::XMFLOAT2(-0.595f, -0.9f);
+	player2BarPos[3] = DirectX::XMFLOAT2(-0.595f, -1.0f);
 	player2->powerBar->SetPosition(player2BarPos);
-	player2->powerBar->SetMaterial(assetHandler->GetMaterial(d3dHandler->GetDevice(), "powerbar.dds", "", 0.0f));
-	player1->powerBar->SetMaterial(assetHandler->GetMaterial(d3dHandler->GetDevice(), "powerbar.dds", "", 0.0f));
+	player2->powerBar->SetMaterial(assetHandler->GetMaterial(d3dHandler->GetDevice(), "energybar.dds", "", 0.0f));
+	player1->powerBar->SetMaterial(assetHandler->GetMaterial(d3dHandler->GetDevice(), "energybar.dds", "", 0.0f));
 	
 	// Screen space rectangle
+
+	buttonPoint powerbar1Points[4] = 
+	{
+		DirectX::XMFLOAT2(-0.08f, 1.0f),
+		DirectX::XMFLOAT2(0.0f, 1.0f),
+
+		DirectX::XMFLOAT2(-0.08f, 0.9f),
+		DirectX::XMFLOAT2(0.0f, 0.0f),
+
+		DirectX::XMFLOAT2(-0.6f, 1.0f),
+		DirectX::XMFLOAT2(1.0f, 1.0f),
+
+		DirectX::XMFLOAT2(-0.6f, 0.9f),
+		DirectX::XMFLOAT2(1.0f, 0.0f)
+	};
+	powerbarBackground1 = new RectangleScreen(powerbar1Points, assetHandler->GetMaterial(d3dHandler->GetDevice(), "energybar_holder.dds", "", 0.0f), assetHandler->GetMaterial(d3dHandler->GetDevice(), "player2win.dds", "", 0.0f), d3dHandler->GetDevice());
+	buttonPoint powerbar2Points[4] =
+	{
+		DirectX::XMFLOAT2(-0.08f, -0.9f),
+		DirectX::XMFLOAT2(0.0f, 1.0f),
+
+		DirectX::XMFLOAT2(-0.08f, -1.0f),
+		DirectX::XMFLOAT2(0.0f, 0.0f),
+
+		DirectX::XMFLOAT2(-0.6f, -0.9f),
+		DirectX::XMFLOAT2(1.0f, 1.0f),
+
+		DirectX::XMFLOAT2(-0.6f, -1.0f),
+		DirectX::XMFLOAT2(1.0f, 0.0f)
+	};
+	powerbarBackground2 = new RectangleScreen(powerbar2Points, assetHandler->GetMaterial(d3dHandler->GetDevice(), "energybar_holder.dds", "", 0.0f), assetHandler->GetMaterial(d3dHandler->GetDevice(), "player2win.dds", "", 0.0f), d3dHandler->GetDevice());
 	buttonPoint points[4] =
 	{
 		DirectX::XMFLOAT2(-0.2f, 0.4f),
@@ -579,6 +622,8 @@ Application::~Application()
 	delete playerWins;
 	delete player1Info;
 	delete player2Info;
+	delete powerbarBackground1;
+	delete powerbarBackground2;
 
 	delete highscoreDisplay;
 }
@@ -741,9 +786,10 @@ bool Application::Update(float deltaTime)
 void Application::Render()
 {
 	d3dHandler->BeginScene(0.0f, 0.0f, 0.0f, 1.0f);
-
+	d3dHandler->EnableDepthStencil();
 	d3dHandler->GetDeviceContext()->PSSetConstantBuffers(0, 1, &oneDirectionLightObject.pointerToBufferL);
 	entityHandler->Render(d3dHandler->GetDeviceContext());
+	d3dHandler->DisableDepthStencil();
 	particleShader->Use(d3dHandler->GetDeviceContext());
 	particleBackground->Render(d3dHandler->GetDeviceContext());
 	//particlePortal->Render(d3dHandler->GetDeviceContext());
@@ -780,6 +826,8 @@ void Application::Render()
 
 		// Power Bars
 		powerBarShader->Use(d3dHandler->GetDeviceContext());
+		powerbarBackground1->RenderText(d3dHandler->GetDeviceContext());
+		powerbarBackground2->RenderText(d3dHandler->GetDeviceContext());
 		player1->powerBar->Render(d3dHandler->GetDeviceContext(), powerBarShader);
 		player2->powerBar->Render(d3dHandler->GetDeviceContext(), powerBarShader);
 

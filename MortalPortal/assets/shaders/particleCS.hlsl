@@ -73,7 +73,7 @@ void main(uint3 dispatchThreadID : SV_DispatchThreadID)
 	//pos.y -= 0.3f * deltaTime;
 	if (life > lifeTime && particleType == 2)
 	{
-		pos.x = position.x - 0.02f;
+		pos.x = position.x - 0.01f;
 		pos.y = position.y - 0.05f;
 		life -= lifeTime;
 	}

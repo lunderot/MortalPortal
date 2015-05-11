@@ -89,6 +89,8 @@ private:
 	StartMenu* startMenu;
 	PauseMenu* pauseMenu;
 	RestartMenu* restartMenu;
+	RectangleScreen* powerbarBackground1;
+	RectangleScreen* powerbarBackground2;
 
 	bool crystalFrenzy;
 	bool crystalFrenzyControl;
