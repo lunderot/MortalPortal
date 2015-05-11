@@ -528,6 +528,22 @@ Application::Application(bool fullscreen, bool showCursor, int screenWidth, int 
 	// Power Up
 	crystalFrenzy = false;
 	crystalFrenzyControl = false;
+
+	highscoreDisplay = new HighscoreDisplay(
+		assetHandler->GetMaterial(d3dHandler->GetDevice(), "zero.dds", "", 0.0f),
+		assetHandler->GetMaterial(d3dHandler->GetDevice(), "one.dds", "", 0.0f),
+		assetHandler->GetMaterial(d3dHandler->GetDevice(), "two.dds", "", 0.0f),
+		assetHandler->GetMaterial(d3dHandler->GetDevice(), "three.dds", "", 0.0f),
+		assetHandler->GetMaterial(d3dHandler->GetDevice(), "four.dds", "", 0.0f),
+		assetHandler->GetMaterial(d3dHandler->GetDevice(), "five.dds", "", 0.0f),
+		assetHandler->GetMaterial(d3dHandler->GetDevice(), "six.dds", "", 0.0f),
+		assetHandler->GetMaterial(d3dHandler->GetDevice(), "seven.dds", "", 0.0f),
+		assetHandler->GetMaterial(d3dHandler->GetDevice(), "eight.dds", "", 0.0f),
+		assetHandler->GetMaterial(d3dHandler->GetDevice(), "nine.dds", "", 0.0f),
+		assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/BackgroundPlane.bin"),
+		playerShader,
+		entityHandler
+	);
 }
 
 Application::~Application()
@@ -564,6 +580,7 @@ Application::~Application()
 	delete player1Info;
 	delete player2Info;
 
+	delete highscoreDisplay;
 }
 
 bool Application::Update(float deltaTime)
@@ -714,6 +731,10 @@ bool Application::Update(float deltaTime)
 
 	if (restartMenu->renderMenu == true)
 		restartMenu->Update(input->GetButtonUpState(), input->GetButtonDownState(), input->GetButtonEnterState());
+
+
+	highscoreDisplay->Update(player1->GetScore(), player2->GetScore());
+
 	return false;
 }
 
@@ -781,12 +802,14 @@ void Application::Render()
 		player1->comboBar->Render(d3dHandler->GetDeviceContext(), comboBarShader);
 		player2->comboBar->Render(d3dHandler->GetDeviceContext(), comboBarShader);
 
+		highscoreDisplay->SetVisible(true);
 	}
 	// Menu
 	if (startMenu->renderMenu)
 	{
 		buttonShader->Use(d3dHandler->GetDeviceContext());
 		startMenu->Render(d3dHandler->GetDeviceContext());
+		highscoreDisplay->SetVisible(false);
 	}
 
 	if (pauseMenu->renderMenu && !startMenu->renderMenu && !restartMenu->renderMenu)

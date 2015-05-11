@@ -47,6 +47,8 @@ Player::Player(ID3D11Device* device, Geometry* geometry, Material* material, Mat
 	invertControlerDisplay = false;
 	slowDownAccelerationDisplay = false;
 	bonusComboDisplay = false;
+
+	score = 0;
 }
 
 
@@ -337,6 +339,8 @@ void Player::Reset()
 	comboDisplayText[1]->RemoveCombo();
 	comboDisplayText[2]->RemoveCombo();
 	comboBar->RemoveCombo();
+
+	score = 0;
 }
 
 void Player::RemoveCombo()
@@ -358,4 +362,18 @@ void Player::RemoveComboText()
 	comboDisplayText[1]->RemoveCombo();
 	comboDisplayText[2]->RemoveCombo();
 	comboDisplayText[3]->RemoveCombo();
+}
+
+void Player::AddScore(int amount)
+{
+	score += amount;
+	if (score < 0)
+	{
+		score = 0;
+	}
+}
+
+int Player::GetScore() const
+{
+	return score;
 }

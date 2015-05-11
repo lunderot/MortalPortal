@@ -130,59 +130,61 @@ void EntityHandler::Render(ID3D11DeviceContext* deviceContext)
 
 		for (std::vector<Entity*>::iterator i = ent->second.begin(); i != ent->second.end(); ++i)
 		{
-
-			Geometry* geometry = (*i)->GetGeometry();
-			Material* material = (*i)->GetMaterial();
-
-			if (currentShader == nullptr)
+			if ((*i)->GetVisible())
 			{
-				throw std::runtime_error("Shader pointer is nullptr");
+				Geometry* geometry = (*i)->GetGeometry();
+				Material* material = (*i)->GetMaterial();
+
+				if (currentShader == nullptr)
+				{
+					throw std::runtime_error("Shader pointer is nullptr");
+				}
+				if (geometry == nullptr)
+				{
+					throw std::runtime_error("Geometry pointer is nullptr");
+				}
+				if (material == nullptr)
+				{
+					throw std::runtime_error("Material pointer is nullptr");
+				}
+
+				//Update per model constant buffer
+				XMFLOAT3 position = (*i)->GetPosition();
+				XMFLOAT3 rotation = (*i)->GetRotation();
+				XMVECTOR rotationQuat = XMQuaternionRotationRollPitchYawFromVector(XMLoadFloat3(&rotation));
+
+				ConstantBufferPerModel data;
+				XMMATRIX model = XMMatrixRotationQuaternion(rotationQuat);
+				//Här - Scaling
+				XMFLOAT3 scaling = (*i)->GetScale();
+				XMMATRIX scaleMatrix = XMMatrixScaling(scaling.x, scaling.y, scaling.z);
+
+				model = XMMatrixMultiply(model, XMMatrixTranslation(position.x, position.y, position.z));
+
+				model = scaleMatrix * model;
+
+				XMStoreFloat4x4(&data.worldMatrix, XMMatrixTranspose(model));
+				currentShader->UpdateConstantBufferPerModel(deviceContext, &data);
+
+
+
+				//Draw the mesh
+				unsigned int vertexSize = sizeof(VertexPositionTexCoordNormalBinormalTangent);
+				unsigned int vertexCount = (*i)->GetGeometry()->GetVertexCount();
+				unsigned int offset = 0;
+				ID3D11Buffer* vb = (*i)->GetGeometry()->GetVertexBuffer();
+
+				deviceContext->IASetVertexBuffers(0, 1, &vb, &vertexSize, &offset);
+				deviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+
+				ID3D11ShaderResourceView* texture = material->GetTexture();
+				deviceContext->PSSetShaderResources(0, 1, &texture);
+
+				ID3D11ShaderResourceView* normal_map = material->GetNormalMap();
+				deviceContext->PSSetShaderResources(1, 1, &normal_map);
+
+				deviceContext->Draw(vertexCount, 0);
 			}
-			if (geometry == nullptr)
-			{
-				throw std::runtime_error("Geometry pointer is nullptr");
-			}
-			if (material == nullptr)
-			{
-				throw std::runtime_error("Material pointer is nullptr");
-			}
-
-			//Update per model constant buffer
-			XMFLOAT3 position = (*i)->GetPosition();
-			XMFLOAT3 rotation = (*i)->GetRotation();
-			XMVECTOR rotationQuat = XMQuaternionRotationRollPitchYawFromVector(XMLoadFloat3(&rotation));
-			
-			ConstantBufferPerModel data;
-			XMMATRIX model = XMMatrixRotationQuaternion(rotationQuat);
-			//Här - Scaling
-			XMFLOAT3 scaling = (*i)->GetScale();
-			XMMATRIX scaleMatrix = XMMatrixScaling(scaling.x, scaling.y, scaling.z);
-
-			model = XMMatrixMultiply(model, XMMatrixTranslation(position.x, position.y, position.z));
-
-			model = scaleMatrix * model;
-
-			XMStoreFloat4x4(&data.worldMatrix, XMMatrixTranspose(model));
-			currentShader->UpdateConstantBufferPerModel(deviceContext, &data);
-
-
-
-			//Draw the mesh
-			unsigned int vertexSize = sizeof(VertexPositionTexCoordNormalBinormalTangent);
-			unsigned int vertexCount = (*i)->GetGeometry()->GetVertexCount();
-			unsigned int offset = 0;
-			ID3D11Buffer* vb = (*i)->GetGeometry()->GetVertexBuffer();
-
-			deviceContext->IASetVertexBuffers(0, 1, &vb, &vertexSize, &offset);
-			deviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-
-			ID3D11ShaderResourceView* texture = material->GetTexture();
-			deviceContext->PSSetShaderResources(0, 1, &texture);
-
-			ID3D11ShaderResourceView* normal_map = material->GetNormalMap();
-			deviceContext->PSSetShaderResources(1, 1, &normal_map);
-
-			deviceContext->Draw(vertexCount, 0);
 		}
 	}
 }
@@ -215,6 +217,7 @@ void EntityHandler::HandleCollision(Player* player, Entity* entity2, AudioMaster
 					player->RemovePower();
 					player->RemoveCombo();
 					player->RemoveComboText();
+					player->AddScore(-20);
 				}
 				break;
 			}	
@@ -240,6 +243,7 @@ void EntityHandler::HandleCollision(Player* player, Entity* entity2, AudioMaster
 					player->renderParticles = true;
 					player->doubleUp = true;
 					aMaster.playSample("boing");
+					player->AddScore(100);
 				}
 				else
 				{
@@ -257,6 +261,7 @@ void EntityHandler::HandleCollision(Player* player, Entity* entity2, AudioMaster
 						player->RemovePower();
 						player->RemoveCombo();
 						player->RemoveComboText();
+						player->AddScore(-20);
 					}
 				}
 				break;

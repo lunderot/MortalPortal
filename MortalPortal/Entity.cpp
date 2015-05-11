@@ -23,6 +23,7 @@ Entity::Entity(Geometry* geometry, Material* material, Shader* shader,
 	this->scale = scale;
 
 	this->alive = true;
+	this->visible = true;
 }	
 
 
@@ -130,4 +131,14 @@ XMFLOAT3 Entity::GetScale() const
 bool Entity::GetAlive() const
 {
 	return alive;
+}
+
+bool Entity::GetVisible() const
+{
+	return visible;
+}
+
+void Entity::SetVisible(bool visible)
+{
+	this->visible = visible;
 }

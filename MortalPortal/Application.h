@@ -37,7 +37,7 @@
 #include "TextureHandler.h"
 
 #include "AudioMaster.h"
-
+#include "HighscoreDisplay.h"
 
 class Application : public System
 {
@@ -94,6 +94,8 @@ private:
 	bool crystalFrenzyControl;
 
 	LightL oneDirectionLightObject;
+
+	HighscoreDisplay* highscoreDisplay;
 
 public:
 	Application(bool fullscreen, bool showCursor, int screenWidth, int screenHeight, LPCWSTR windowTitle);

@@ -23,7 +23,7 @@ protected:
 	DirectX::XMFLOAT3 scale;
 
 	bool alive;
-
+	bool visible;
 public:
 	Entity(Geometry* geometry, Material* material, Shader* shader,
 		DirectX::XMFLOAT3 position = DirectX::XMFLOAT3(0, 0, 0),
@@ -57,6 +57,9 @@ public:
 	DirectX::XMFLOAT3 GetRotation() const;
 	DirectX::XMFLOAT3 GetScale() const;
 	bool GetAlive() const;
+
+	bool GetVisible() const;
+	void SetVisible(bool visible);
 
 };
 

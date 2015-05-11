@@ -77,6 +77,9 @@ public:
 
 	void Reset();
 
+	void AddScore(int amount);
+	int GetScore() const;
+
 private:
 	// Power ups
 	float inverControlTimer;
@@ -99,5 +102,7 @@ private:
 
 	Color colorState;
 	Color colors[2];
+
+	int score;
 };
 

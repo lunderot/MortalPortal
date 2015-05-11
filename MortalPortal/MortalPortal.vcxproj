@@ -94,6 +94,7 @@
     <ClCompile Include="ComboBarShader.cpp" />
     <ClCompile Include="ComboDisplayText.cpp" />
     <ClCompile Include="ContinueButton.cpp" />
+    <ClCompile Include="HighscoreDisplay.cpp" />
     <ClCompile Include="Light.cpp" />
     <ClCompile Include="MapItemShader.cpp" />
     <ClCompile Include="MapItem.cpp" />
@@ -112,6 +113,7 @@
     <ClCompile Include="LevelGenerator.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Material.cpp" />
+    <ClCompile Include="NumberDisplay.cpp" />
     <ClCompile Include="PauseMenu.cpp" />
     <ClCompile Include="RectangleScreen.cpp" />
     <ClCompile Include="PowerUpDisplay.cpp" />
@@ -147,6 +149,7 @@
     <ClInclude Include="ComboDisplayText.h" />
     <ClInclude Include="ContinueButton.h" />
     <ClInclude Include="DisableAudio.h" />
+    <ClInclude Include="HighscoreDisplay.h" />
     <ClInclude Include="Light.h" />
     <ClInclude Include="MapItemShader.h" />
     <ClInclude Include="MapItem.h" />
@@ -164,6 +167,7 @@
     <ClInclude Include="KeyboardInput.h" />
     <ClInclude Include="LevelGenerator.h" />
     <ClInclude Include="Material.h" />
+    <ClInclude Include="NumberDisplay.h" />
     <ClInclude Include="PauseMenu.h" />
     <ClInclude Include="RectangleScreen.h" />
     <ClInclude Include="PowerUpDisplay.h" />
