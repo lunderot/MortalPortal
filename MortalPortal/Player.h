@@ -24,9 +24,6 @@ public:
 
 	void ReactToInput(bool currentButtonState, AudioMaster &aMaster);
 	void Update(float deltaTime);
-	
-	unsigned int GetPlayerNumber() const;
-	void SetPlayerNumber(unsigned int playerNr);
 
 	Material* GetMaterial() const;
 	void AddPower(unsigned int bonusPower);
@@ -99,7 +96,6 @@ private:
 	unsigned int comboCounterChange_100;
 	bool comboMax;
 	bool previousButtonState;
-	unsigned int playerNumber;
 
 	Color colorState;
 	Color colors[2];
