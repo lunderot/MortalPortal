@@ -21,6 +21,7 @@ RWByteAddressBuffer buffer : register (t0);
 void main(uint3 dispatchThreadID : SV_DispatchThreadID)
 {
 	uint rng_state = dispatchThreadID.x;
+
 	float3 pos = asfloat(buffer.Load3(dispatchThreadID.x * 36));
 	uint particleType = asuint(buffer.Load(dispatchThreadID.x * 36 + 12));
 	float2 acceleration = asfloat(buffer.Load2(dispatchThreadID.x * 36 + 16));
@@ -42,13 +43,32 @@ void main(uint3 dispatchThreadID : SV_DispatchThreadID)
 		pos.x += velocity.x * deltaTime / f0;
 		pos.y += velocity.y * deltaTime / f0;
 	}
+
+	else if (particleType == 4)
+	{	
+		if (life > lifeTime)
+		{
+			float3 vecTowardsPlayer = (pos - position);
+			float velLength = length(velocity);
+			vecTowardsPlayer = normalize(vecTowardsPlayer) * velLength;
+			pos.x -= vecTowardsPlayer.x * deltaTime;
+			pos.y -= vecTowardsPlayer.y * deltaTime;
+			if (length(pos - position) < 0.01f)
+				life = 0.0f;
+		}
+		else
+		{
+			pos.x += velocity.x * deltaTime;
+			pos.y += velocity.y * deltaTime;
+		}
+	}
 	else
 	{
 		pos.x += velocity.x * deltaTime / 5;
 		pos.y += velocity.y * deltaTime / 5;
 	}
 	//pos.z = 0;
-	life += deltaTime * 20;
+	
 
 	//pos.y -= 0.3f * deltaTime;
 	if (life > lifeTime && particleType == 2)
@@ -64,13 +84,16 @@ void main(uint3 dispatchThreadID : SV_DispatchThreadID)
 		pos.y = 0;
 		life -= lifeTime;
 	}
-
 	else if (reset == true)
 	{
 		pos.x = position.x;
 		pos.y = position.y;
 		life -= lifeTime;
 	}
+	if (particleType == 2)
+		life += deltaTime * 20;
+	else
+		life += deltaTime;
 
 	buffer.Store3(dispatchThreadID.x * 36, asuint(pos));
 	buffer.Store(dispatchThreadID.x * 36 + 12, asuint(particleType));

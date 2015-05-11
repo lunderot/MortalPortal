@@ -193,9 +193,9 @@ Application::Application(bool fullscreen, bool showCursor, int screenWidth, int 
 	player2->powerUpDisplayText[3]->setMaterial(playerPowerUpDisplayMat4);
 	// Particles testing area
 	particle = new Particle(1, 50, assetHandler->GetMaterial(d3dHandler->GetDevice(), "particlePew.dds", "", 0.0f), d3dHandler->GetDevice());
-	particle->constantBufferData.lifeTime = 100;
+	particle->constantBufferData.lifeTime = 3.0f;
 	particle2 = new Particle(1, 20, assetHandler->GetMaterial(d3dHandler->GetDevice(), "particlePew.dds", "", 0.0f), d3dHandler->GetDevice());
-	particle2->constantBufferData.lifeTime = 100;
+	particle2->constantBufferData.lifeTime = 3.0f;
 	particlePowerBar1 = new Particle(2, 100, assetHandler->GetMaterial(d3dHandler->GetDevice(), "powerbar.dds", "", 0.0f), d3dHandler->GetDevice());
 	particlePowerBar1->constantBufferData.reset = false;
 	particlePowerBar1->constantBufferData.lifeTime = 20;
@@ -208,6 +208,9 @@ Application::Application(bool fullscreen, bool showCursor, int screenWidth, int 
 	particleBackground->constantBufferData.position = DirectX::XMFLOAT3(80, 0, 0);
 	particleBackground->constantBufferData.reset = false;
 
+	particlePortal = new Particle(4, 2000, assetHandler->GetMaterial(d3dHandler->GetDevice(), "RedPowerParticle.dds", "", 0.0f), d3dHandler->GetDevice());
+	particlePortal->constantBufferData.reset = false;
+	particlePortal->constantBufferData.lifeTime = 0.2f;
 	// Create Background
 	entityHandler->Add(
 		new Background(
@@ -290,7 +293,8 @@ Application::Application(bool fullscreen, bool showCursor, int screenWidth, int 
 	player2->powerBar->SetPosition(player2BarPos);
 	player2->powerBar->SetMaterial(assetHandler->GetMaterial(d3dHandler->GetDevice(), "powerbar.dds", "", 0.0f));
 	player1->powerBar->SetMaterial(assetHandler->GetMaterial(d3dHandler->GetDevice(), "powerbar.dds", "", 0.0f));
-	// Combo bars, player1 & player2
+	
+	// Screen space rectangles
 	buttonPoint points[4] =
 	{
 		DirectX::XMFLOAT2(-0.2f, 0.4f),
@@ -337,6 +341,8 @@ Application::Application(bool fullscreen, bool showCursor, int screenWidth, int 
 		DirectX::XMFLOAT2(1.0f, 0.0f)
 	};
 	player2Info = new RectangleScreen(player2Points, assetHandler->GetMaterial(d3dHandler->GetDevice(), "player2.dds", "", 0.0f), assetHandler->GetMaterial(d3dHandler->GetDevice(), "player2win.dds", "", 0.0f), d3dHandler->GetDevice());
+	
+	// Combo bars, player1 & player2
 	// Player 1
 	DirectX::XMFLOAT2 player1Pos[4];
 	DirectX::XMFLOAT2 player1UV[4];
@@ -580,6 +586,7 @@ Application::~Application()
 	delete particlePowerBar1;
 	delete particlePowerBar2;
 	delete particleBackground;
+	delete particlePortal;
 	delete startMenu;
 	delete pauseMenu;
 	delete restartMenu;
@@ -690,6 +697,8 @@ bool Application::Update(float deltaTime)
 
 	particleBackground->UpdateParticle(deltaTime, d3dHandler->GetDeviceContext(), particleShader->GetComputeShader());
 	// Particles for player 1
+	particlePortal->UpdateParticle(deltaTime, d3dHandler->GetDeviceContext(), particleShader->GetComputeShader());
+	particlePortal->UpdatePosition(player1->GetPosition());
 	particlePowerBar1->UpdateParticle(deltaTime, d3dHandler->GetDeviceContext(), particleShader->GetComputeShader());
 	particlePowerBar1->UpdatePosition(DirectX::XMFLOAT3(player1->powerBar->GetCurrentMaxPosition().x, player1->powerBar->GetCurrentMaxPosition().y, 0.0f));
 	if (player1->renderParticles == true && particle->particleCounter <= particle->constantBufferData.lifeTime)
@@ -703,7 +712,7 @@ bool Application::Update(float deltaTime)
 			particle->particleCounter = 0;
 			player1->doubleUp = false;
 		}
-		particle->particleCounter += deltaTime * 20;
+		particle->particleCounter += deltaTime;
 		if (particle->particleCounter >= particle->constantBufferData.lifeTime)
 		{
 			particle->constantBufferData.reset = true;
@@ -726,7 +735,7 @@ bool Application::Update(float deltaTime)
 			particle2->particleCounter = 0;
 			player2->doubleUp = false;
 		}
-		particle2->particleCounter += deltaTime * 20;
+		particle2->particleCounter += deltaTime;
 		if (particle2->particleCounter >= particle2->constantBufferData.lifeTime)
 		{
 			particle2->constantBufferData.reset = true;
@@ -756,6 +765,8 @@ void Application::Render()
 	entityHandler->Render(d3dHandler->GetDeviceContext());
 	particleShader->Use(d3dHandler->GetDeviceContext());
 	particleBackground->Render(d3dHandler->GetDeviceContext());
+	//particlePortal->Render(d3dHandler->GetDeviceContext());
+
 	if (startMenu->renderMenu == false)
 	{
 		powerBarShader->Use(d3dHandler->GetDeviceContext());

@@ -19,7 +19,7 @@ Particle::Particle(unsigned int type,
 		{
 			Particles p;
 			p.type = type;
-			p.lifeTime = rand() % 100;
+			p.lifeTime = (float)(rand()) / (float)(RAND_MAX / 0.5f);
 			p.pos.x = 0;
 			p.pos.y = 0;
 			p.pos.z = 0;
@@ -59,13 +59,40 @@ Particle::Particle(unsigned int type,
 		{
 			Particles p;
 			p.type = type;
-			p.lifeTime = 300;
+			p.lifeTime = 0;
 			p.pos.x = rand() % 90 - 30;
 			p.pos.y = rand() % 100 - 50;
 			p.pos.z = 0;
 
-			p.velocity.x = rand() %  50 - 100;
+			p.velocity.x = rand() % 50 - 100;
 			p.velocity.y = rand() % 50 - 15;
+			p.acceleration.x = 0;
+			p.acceleration.y = 0;
+			particle.push_back(p);
+		}
+	}
+
+	// Portal
+	if (type == 4)
+	{
+		for (unsigned int i = 0; i < nrOfParticles; i++)
+		{
+			Particles p;
+			p.type = type;
+			p.lifeTime = (float)(rand()) / (float)(RAND_MAX / 0.5f);
+			p.pos.x = 0;
+			p.pos.y = 0;
+			p.pos.z = 0;
+
+			float r = (float)(rand()) / (float)(RAND_MAX / (DirectX::XM_PI * 2));
+			//int negx = rand() % 2;
+			//if (!negx)
+			//	negx = -1;
+			//int negy = rand() % 2;
+			//if (!negy)
+			//	negy = -1;
+			p.velocity.x = 13 * cos(r);
+			p.velocity.y = 13 * sin(r);
 			p.acceleration.x = 0;
 			p.acceleration.y = 0;
 			particle.push_back(p);
