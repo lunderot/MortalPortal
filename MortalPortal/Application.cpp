@@ -99,6 +99,18 @@ Application::Application(bool fullscreen, bool showCursor, int screenWidth, int 
 		assetHandler->GetMaterial(d3dHandler->GetDevice(), "assets/Comet.bin", "Comet"),
 		playerShader);
 
+	//levelGenerator->addBackgroundAsset(assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/DeadPortal.bin"),
+	//	assetHandler->GetMaterial(d3dHandler->GetDevice(), "assets/Comet.bin", "Comet"),
+	//	playerShader);
+
+	levelGenerator->addBackgroundAsset(assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/EscapePod.bin"),
+		assetHandler->GetMaterial(d3dHandler->GetDevice(), "assets/Comet.bin", "Comet"),
+		playerShader);
+
+	levelGenerator->addBackgroundAsset(assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/Satellite.bin"),
+		assetHandler->GetMaterial(d3dHandler->GetDevice(), "assets/Comet.bin", "Comet"),
+		playerShader);
+
 	levelGenerator->setPowerUp(assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/Comet.bin"),
 		assetHandler->GetMaterial(d3dHandler->GetDevice(), "b.dds", "", 0.0f),
 		mapItemShader);
@@ -107,7 +119,7 @@ Application::Application(bool fullscreen, bool showCursor, int screenWidth, int 
 
 	//Create player and add it to entity handler
 	player1 = new Player(d3dHandler->GetDevice(),
-		assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/Portal_nosmall_nohistory.bin"),
+		assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/Portal_scaled.bin"),
 		assetHandler->GetMaterial(d3dHandler->GetDevice(), "assets/Crystal.bin", "Crystal1"),
 		assetHandler->GetMaterial(d3dHandler->GetDevice(), "assets/Crystal.bin", "Crystal2"),
 		playerShader,
@@ -116,7 +128,7 @@ Application::Application(bool fullscreen, bool showCursor, int screenWidth, int 
 	entityHandler->Add(player1);
 
 	player2 = new Player(d3dHandler->GetDevice(),
-		assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/Portal_nosmall_nohistory.bin"),
+		assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/Portal_scaled.bin"),
 		assetHandler->GetMaterial(d3dHandler->GetDevice(), "assets/Crystal.bin", "Crystal3"),
 		assetHandler->GetMaterial(d3dHandler->GetDevice(), "assets/Crystal.bin", "blinn4"),
 		playerShader,
