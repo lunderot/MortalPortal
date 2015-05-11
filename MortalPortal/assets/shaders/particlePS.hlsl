@@ -15,8 +15,8 @@ float4 main(VS_OUT input) : SV_Target
 	if (input.type == 2)
 	{
 		
-		input.texCoord.x = 1 / 0.7f * abs(input.particlePos.x);
-		input.texCoord.y = 1 / 0.7f * abs(input.particlePos.y);
+		input.texCoord.x = 1 / 0.675f * abs(input.particlePos.x);
+		input.texCoord.y = 0.5f;
 		texColor = tex.Sample(samplState, input.texCoord);
 	}
 	else if (input.type == 1)

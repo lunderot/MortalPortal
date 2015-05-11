@@ -4,17 +4,17 @@ PowerBar::PowerBar(ID3D11Device* device)
 {
 	Points p[4] =
 	{
-		DirectX::XMFLOAT2(-0.1f, 1.0f),
-		DirectX::XMFLOAT2(0.0f, 1.0f),
+		DirectX::XMFLOAT2(-0.08f, 1.0f),
+		DirectX::XMFLOAT2(1.0f, 0.0f),
 
-		DirectX::XMFLOAT2(-0.1f, 0.9f),
-		DirectX::XMFLOAT2(0.0f, 0.0f),
-
-		DirectX::XMFLOAT2(-0.7f, 1.0f),
+		DirectX::XMFLOAT2(-0.08f, 0.9f),
 		DirectX::XMFLOAT2(1.0f, 1.0f),
 
-		DirectX::XMFLOAT2(-0.7f, 0.9f),
-		DirectX::XMFLOAT2(1.0f, 0.0f)
+		DirectX::XMFLOAT2(-0.595f, 1.0f),
+		DirectX::XMFLOAT2(0.0f, 0.0f),
+
+		DirectX::XMFLOAT2(-0.595f, 0.9f),
+		DirectX::XMFLOAT2(0.0f, 1.0f)
 	};
 
 	points[0] = p[0];
@@ -22,8 +22,8 @@ PowerBar::PowerBar(ID3D11Device* device)
 	points[2] = p[2];
 	points[3] = p[3];
 
-	maxMinValue.x = -0.1f;
-	maxMinValue.y = -0.7f;
+	maxMinValue.x = -0.08f;
+	maxMinValue.y = -0.595f;
 	powerAdd = 0.02f;
 	powerRemove = 0.04f;
 	dead = false;
@@ -57,6 +57,11 @@ void PowerBar::SetPosition(DirectX::XMFLOAT2 point[4])
 	this->points[1].pos = point[1];
 	this->points[2].pos = point[2];
 	this->points[3].pos = point[3];
+
+	this->points[0].uv = DirectX::XMFLOAT2(1.0f, 0.0f);
+	this->points[1].uv = DirectX::XMFLOAT2(1.0f, 1.0f);
+	this->points[2].uv = DirectX::XMFLOAT2(0.0f, 0.0f);
+	this->points[3].uv = DirectX::XMFLOAT2(0.0f, 1.0f);
 }
 
 DirectX::XMFLOAT2 PowerBar::GetCurrentMaxPosition()
@@ -164,9 +169,9 @@ void PowerBar::Update(float deltaTime, ID3D11DeviceContext* deviceContext)
 	else if (dead == false)
 	{
 		points[0].pos.x += barSpeed * deltaTime;
-		points[0].uv.x = 1 / (maxMinValue.x - maxMinValue.y) * abs(points[0].pos.x);
+		points[0].uv.x = 1.0f / (maxMinValue.x - maxMinValue.y) * abs(maxMinValue.y - points[0].pos.x);
 		points[1].pos.x += barSpeed * deltaTime;
-		points[1].uv.x = 1 / (maxMinValue.x - maxMinValue.y) * abs(points[1].pos.x);
+		points[1].uv.x = 1.0f / (maxMinValue.x - maxMinValue.y) * abs(maxMinValue.y - points[1].pos.x);
 	}
 
 }

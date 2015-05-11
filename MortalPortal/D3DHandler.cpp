@@ -349,6 +349,15 @@ ID3D11DeviceContext* D3DHandler::GetDeviceContext()
 	return deviceContext;
 }
 
+void D3DHandler::DisableDepthStencil()
+{
+	deviceContext->OMSetDepthStencilState(depthDisabledStencilState, 1);
+}
+
+void D3DHandler::EnableDepthStencil()
+{
+	deviceContext->OMSetDepthStencilState(depthStencilState, 1);
+}
 
 void D3DHandler::GetProjectionMatrix(XMFLOAT4X4& projectionMatrix)
 {

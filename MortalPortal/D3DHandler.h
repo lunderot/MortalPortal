@@ -41,6 +41,8 @@ public:
 
 	ID3D11Device* GetDevice();
 	ID3D11DeviceContext* GetDeviceContext();
+	void DisableDepthStencil();
+	void EnableDepthStencil();
 
 	void GetProjectionMatrix(DirectX::XMFLOAT4X4& projectionMatrix);
 	void GetWorldMatrix(DirectX::XMFLOAT4X4& worldMatrix);
