@@ -1,28 +1,29 @@
 
 
-//struct ConstantBufferPerFrame : register (cb0)
-//{
-//	DirectX::XMFLOAT4X4 viewMatrix;
-//	DirectX::XMFLOAT4X4 projectionMatrix;
-//};
-//
-//
-//cbuffer ConstantBufferPerModel : register(cb1)
-//{
-//	matrix worldMatrix;
-//};
+cbuffer ConstantBufferPerFrame : register(cb0)
+{
+	matrix viewMatrix;
+	matrix projectionMatrix;
+};
 
+cbuffer ConstantBufferPerModel : register(cb1)
+{
+	matrix worldMatrix;
+};
 
 struct VS_IN
 {
-	float3 Position : POSITION;
-	float3 Color	: COLOR;
+	float3 position : POSITION;
+	float2 texCoord : TEXCOORD;
+	float3 normal : NORMAL;
+	float3 biNormal : BINORMAL;
+	float3 tangent : TANGENT;
 };
 
 struct VS_OUT
 {
 	float4 Position : SV_POSITION;
-	float3 Color	: COLOR;
+	float2 texCoord : TEXCOORD;
 };
 
 VS_OUT main(VS_IN input)
@@ -31,9 +32,12 @@ VS_OUT main(VS_IN input)
 
 	//float4 worldPos = mul(float4())
 
-	output.Position = float4(input.Position, 1.0f);
+	output.Position = float4(input.position, 1.0f);
+	output.Position = mul(output.Position, worldMatrix);
+	output.Position = mul(output.Position, viewMatrix);
+	output.Position = mul(output.Position, projectionMatrix);
 
-	output.Color = input.Color;
+	output.texCoord = input.texCoord;
 
 	return output;
 }
