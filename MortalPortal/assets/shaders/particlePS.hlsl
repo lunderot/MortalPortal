@@ -19,6 +19,11 @@ float4 main(VS_OUT input) : SV_Target
 		input.texCoord.y = 0.5f;
 		texColor = tex.Sample(samplState, input.texCoord);
 	}
+	else if (input.type == 4)
+	{
+		texColor = tex.Sample(samplState, input.texCoord);
+		texColor.a = lerp(texColor.a, 0, input.lifeTime / 0.4f);
+	}
 	else if (input.type == 1)
 	{
 		texColor = tex.Sample(samplState, input.texCoord);
@@ -27,5 +32,5 @@ float4 main(VS_OUT input) : SV_Target
 	}
 	else
 		texColor = tex.Sample(samplState, input.texCoord);
-	return float4(texColor[0], texColor[1], texColor[2], texColor[3]);
+	return texColor;
 }

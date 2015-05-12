@@ -227,11 +227,13 @@ D3DHandler::D3DHandler(int screenWidth, int screenHeight, HWND hwnd, bool fullsc
 	blendStateDescription.RenderTarget[0].SrcBlendAlpha = D3D11_BLEND_ONE;
 	blendStateDescription.RenderTarget[0].DestBlendAlpha = D3D11_BLEND_ZERO;
 	blendStateDescription.RenderTarget[0].BlendOpAlpha = D3D11_BLEND_OP_ADD;
-	blendStateDescription.RenderTarget[0].RenderTargetWriteMask = 0x0f;
+	blendStateDescription.RenderTarget[0].RenderTargetWriteMask = D3D11_COLOR_WRITE_ENABLE_ALL;
+	blendStateDescription.AlphaToCoverageEnable = true;
+	blendStateDescription.IndependentBlendEnable = false;
 
 	result = device->CreateBlendState(&blendStateDescription, &alphaEnableBlendingState);
 	// For transparency
-	deviceContext->OMSetBlendState(alphaEnableBlendingState, 0, 0xffffff);
+	deviceContext->OMSetBlendState(alphaEnableBlendingState, NULL, 0xffffff);
 	if (FAILED(result))
 	{
 		throw std::runtime_error("Blend state error");
