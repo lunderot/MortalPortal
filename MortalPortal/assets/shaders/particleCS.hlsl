@@ -46,21 +46,29 @@ void main(uint3 dispatchThreadID : SV_DispatchThreadID)
 
 	else if (particleType == 4)
 	{	
-		if (life > lifeTime)
-		{
-			float3 vecTowardsPlayer = (pos - position);
-			float velLength = length(velocity);
-			vecTowardsPlayer = normalize(vecTowardsPlayer) * velLength;
-			pos.x -= vecTowardsPlayer.x * deltaTime;
-			pos.y -= vecTowardsPlayer.y * deltaTime;
-			if (length(pos - position) < 0.01f)
-				life = 0.0f;
-		}
-		else
-		{
-			pos.x += velocity.x * deltaTime;
-			pos.y += velocity.y * deltaTime;
-		}
+		float3 vecTowardsPlayer = (pos - position);	
+		float velLength = length(velocity);
+		vecTowardsPlayer = normalize(vecTowardsPlayer) * velLength;	
+
+		//if (life > lifeTime)
+		//{	
+		//	pos.x -= vecTowardsPlayer.x * deltaTime * 5;
+		//	pos.y -= vecTowardsPlayer.y * deltaTime * 5;
+		//	if (length(pos - position) < 0.001f)
+		//		life = 0.0f;
+		//}
+		float3 vec = cross(float3(0, 0, 1), float3(velocity.x, velocity.y, 0));
+		pos.x = position.x + (velocity.x + sin(vec.x)) * deltaTime;// + vecTowardsPlayer.x * 0.0 * deltaTime;
+		pos.y = position.y + (velocity.y + sin(vec.y)) * deltaTime;// + vecTowardsPlayer.y * 0.0 * deltaTime;
+		//pos.x += (velocity.x + vec.x) * deltaTime;// + vecTowardsPlayer.x * 0.0 * deltaTime;
+		//pos.y += (velocity.y + vec.y) * deltaTime;// + vecTowardsPlayer.y * 0.0 * deltaTime;
+
+		//if (length(pos - position) > 2.0f)
+		//{
+		//	pos.x = position.x;
+		//	pos.y = position.y;
+		//	life = 0;
+		//}
 	}
 	else
 	{

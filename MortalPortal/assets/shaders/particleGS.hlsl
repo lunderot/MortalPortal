@@ -53,6 +53,11 @@ void main(point GS_IN input[1], inout TriangleStream<GS_OUT> triStream)
 		rightVec = rightVec * 0.1;
 		upVec = upVec * 0.1;
 	}
+	else if (input[0].type == 4)
+	{
+		rightVec = rightVec * 0.1;
+		upVec = upVec * 0.1;
+	}
 	else
 	{
 		rightVec = rightVec * 0.15;

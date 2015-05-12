@@ -218,9 +218,9 @@ Application::Application(bool fullscreen, bool showCursor, int screenWidth, int 
 	particleBackground->constantBufferData.position = DirectX::XMFLOAT3(80, 0, 0);
 	particleBackground->constantBufferData.reset = false;
 
-	particlePortal = new Particle(4, 2000, assetHandler->GetMaterial(d3dHandler->GetDevice(), "RedPowerParticle.dds", "", 0.0f), d3dHandler->GetDevice());
+	particlePortal = new Particle(4, 1000, assetHandler->GetMaterial(d3dHandler->GetDevice(), "RedPowerParticle.dds", "", 0.0f), d3dHandler->GetDevice());
 	particlePortal->constantBufferData.reset = false;
-	particlePortal->constantBufferData.lifeTime = 0.2f;
+	particlePortal->constantBufferData.lifeTime = 0.1f;
 	// Create Background
 	entityHandler->Add(
 		new Background(
@@ -799,7 +799,7 @@ void Application::Render()
 	d3dHandler->DisableDepthStencil();
 	particleShader->Use(d3dHandler->GetDeviceContext());
 	particleBackground->Render(d3dHandler->GetDeviceContext());
-	//particlePortal->Render(d3dHandler->GetDeviceContext());
+	particlePortal->Render(d3dHandler->GetDeviceContext());
 
 	if (startMenu->renderMenu == false)
 	{
