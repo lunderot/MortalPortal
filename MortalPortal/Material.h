@@ -15,8 +15,23 @@ private:
 	DirectX::XMFLOAT3 diffuse;
 	DirectX::XMFLOAT3 transparencyColor;
 	DirectX::XMFLOAT3 incandescence;
+
+	struct MaterialInformation
+	{	
+		DirectX::XMFLOAT3 Specular;
+		float Specular_factor;
+		DirectX::XMFLOAT3 Ambient;
+		float pad1;
+		DirectX::XMFLOAT3 Diffuse;
+		float pad2;
+		DirectX::XMFLOAT3 Transparency_Color;
+		float Normal_Depth;
+	} 
+	materialInfo;
+
 public:
 	Material(
+		ID3D11Device* device,
 		ID3D11ShaderResourceView* texture = nullptr, 
 		ID3D11ShaderResourceView* normal_map = nullptr,
 		float normal_depth = 0.0f,
@@ -37,5 +52,7 @@ public:
 	DirectX::XMFLOAT3 GetDiffuse();
 	DirectX::XMFLOAT3 GetTransparencyColor();
 	DirectX::XMFLOAT3 GetIncandescence();
+
+	ID3D11Buffer* pointerToBufferM = nullptr;
 };
 

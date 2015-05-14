@@ -38,9 +38,9 @@ VS_OUT main(VS_IN input)
 	output.position = mul(output.position, projectionMatrix);
 	//calculate worldpos
 	output.worldPos = mul(float4(input.position, 1.0f), worldMatrix);
-	output.normal = input.normal;
-	output.biNormal = input.biNormal;
-	output.tangent = input.tangent;
+	output.normal = mul(input.normal, worldMatrix);
+	output.biNormal = mul(input.biNormal, worldMatrix);
+	output.tangent = mul(input.tangent, worldMatrix);
 
 	output.texCoord = input.texCoord;
 

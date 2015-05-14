@@ -9,9 +9,20 @@ SamplerState sample1;
 cbuffer Lightbuffer : register (b0)
 {
 	float3 positionC;
-	float3 ambientC;
-	float3 diffuseC;
-	float3 specularC;
+	int isDirectional;
+	//float3 ambientC;
+	float3 colorC;
+	//float3 specularC;
+}
+
+cbuffer Materialbuffer : register (b1)
+{
+	float3 specular;
+	float specularFactor;
+	float3 ambient;
+	float3 diffuse;
+	float3 transparencyColor;
+	float normalDepth;
 }
 
 cbuffer ConstantBufferPerState
@@ -57,11 +68,10 @@ float4 main(VS_OUT input) : SV_Target
 	float3 reflection = reflect(lightDirection, finalNormalM);
 
 	//diffuse
-	float3 diffuseLight = mul(max(dot(-lightDirection, finalNormalM), 0.0f), diffuseC);
-	float specPower = 1000.0f;
-	float3 specularLight = mul(pow(max(dot(vecCamToFace, reflection), 0.0f), specPower), specularC);
+	float3 diffuseLight = mul(max(dot(-lightDirection, finalNormalM), 0.0f), colorC);
+	float3 specularLight = mul(pow(max(dot(vecCamToFace, reflection), 0.0f), specularFactor), specular);
 
-	float3 addAmbDiffSpec = saturate(diffuseLight + specularLight + ambientC);
+	float3 addAmbDiffSpec = saturate(diffuseLight + specularLight + ambient);
 
 
 	// ----------- end

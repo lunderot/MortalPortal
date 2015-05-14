@@ -188,6 +188,8 @@ void EntityHandler::Render(ID3D11DeviceContext* deviceContext, D3DHandler* d3dHa
 				ID3D11ShaderResourceView* normal_map = material->GetNormalMap();
 				deviceContext->PSSetShaderResources(1, 1, &normal_map);
 
+				deviceContext->PSSetConstantBuffers(1, 1, &material->pointerToBufferM);
+
 				deviceContext->Draw(vertexCount, 0);
 
 				if (dynamic_cast<PowerupIndicator*> (*i))

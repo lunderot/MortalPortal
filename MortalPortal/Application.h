@@ -114,6 +114,7 @@ private:
 	bool crystalFrenzyControl;
 
 	LightL oneDirectionLightObject;
+	LightL* oneDirection;
 
 	HighscoreDisplay* highscoreDisplay;
 
