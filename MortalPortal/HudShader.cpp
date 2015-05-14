@@ -1,6 +1,6 @@
-#include "ButtonShader.h"
+#include "HudShader.h"
 
-ButtonShader::ButtonShader(ID3D11Device* device, LPWSTR vertexShaderPath, LPWSTR pixelShaderPath, unsigned int screenWidth, unsigned int screenHeight, float screenNear, float screenFar)
+HudShader::HudShader(ID3D11Device* device, LPWSTR vertexShaderPath, LPWSTR pixelShaderPath, unsigned int screenWidth, unsigned int screenHeight, float screenNear, float screenFar)
 	: Shader(device, screenWidth, screenHeight, screenNear, screenFar)
 {
 	D3D11_INPUT_ELEMENT_DESC inputDesc[] =
@@ -12,7 +12,7 @@ ButtonShader::ButtonShader(ID3D11Device* device, LPWSTR vertexShaderPath, LPWSTR
 	CreateMandatoryShaders(device, vertexShaderPath, pixelShaderPath, inputDesc, ARRAYSIZE(inputDesc));
 }
 
-ButtonShader::~ButtonShader()
-{
 
+HudShader::~HudShader()
+{
 }

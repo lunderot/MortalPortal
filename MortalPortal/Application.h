@@ -11,11 +11,8 @@
 #include "KeyboardInput.h"
 #include "EntityHandler.h"
 #include "Player.h"
-#include "PlayerShader.h"
 #include "DefaultShader.h"
 #include "PowerBar.h"
-#include "PowerBarShader.h"
-#include "ButtonShader.h"
 #include "ComboBar.h"
 #include "ComboBarShader.h"
 #include "ComboDisplayText.h"
@@ -25,11 +22,9 @@
 #include "PauseMenu.h"
 #include "RestartMenu.h"
 #include "LevelGenerator.h"
-#include "MapItemShader.h"
 #include "RectangleScreen.h"
 #include "PowerupIndicator.h"
 #include "Background.h"
-#include "BackgroundShader.h"
 #include "Light.h"
 
 #include "ParticleShader.h"
@@ -39,20 +34,25 @@
 #include "AudioMaster.h"
 #include "HighscoreDisplay.h"
 
+#include "HudShader.h"
+#include "ObjectShader.h"
+
 class Application : public System
 {
 private:
 	D3DHandler* d3dHandler;
 	
-	//Shaders
-	DefaultShader* shader;
+	//Object shaders
+	ObjectShader* playerShader;
+	ObjectShader* mapItemShader;
+	ObjectShader* backgShader;
+
+	//HUD shaders
+	HudShader* buttonShader;
+	HudShader* powerBarShader;
 	ComboBarShader* comboBarShader;
-	PowerBarShader* powerBarShader;
+
 	ParticleShader* particleShader;
-	PlayerShader* playerShader;
-	BackgroundShader* backgShader;
-	MapItemShader* mapItemShader;
-	ButtonShader* buttonShader;
 
 	//Handlers
 	Input* input;
