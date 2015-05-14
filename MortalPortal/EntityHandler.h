@@ -10,7 +10,9 @@
 #include "Player.h"
 #include "MapItem.h"
 #include "BackgroundAsset.h"
+#include "PowerupIndicator.h"
 #include "AudioMaster.h"
+#include "D3DHandler.h"
 
 class EntityHandler
 {
@@ -20,7 +22,7 @@ public:
 	~EntityHandler();
 
 	void Update(float deltaTime, AudioMaster &aMaster);
-	virtual void Render(ID3D11DeviceContext* deviceContext);
+	virtual void Render(ID3D11DeviceContext* deviceContext, D3DHandler* d3dHandler);
 	void KillAllMapItems();
 
 	void Add(Entity* entity);

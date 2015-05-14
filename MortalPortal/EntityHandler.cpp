@@ -120,7 +120,7 @@ void EntityHandler::Update(float deltaTime, AudioMaster &aMaster)
 	}
 }
 
-void EntityHandler::Render(ID3D11DeviceContext* deviceContext)
+void EntityHandler::Render(ID3D11DeviceContext* deviceContext, D3DHandler* d3dHandler)
 {
 	for (std::map<Shader*, std::vector<Entity*>>::iterator ent = entities.begin(); ent != entities.end(); ++ent)
 	{
@@ -132,6 +132,11 @@ void EntityHandler::Render(ID3D11DeviceContext* deviceContext)
 		{
 			if ((*i)->GetVisible())
 			{
+				if (dynamic_cast<PowerupIndicator*>(*i))
+				{
+					d3dHandler->EnableAlphaBlendingSeverlOverlapping();
+				}
+
 				Geometry* geometry = (*i)->GetGeometry();
 				Material* material = (*i)->GetMaterial();
 
@@ -184,6 +189,11 @@ void EntityHandler::Render(ID3D11DeviceContext* deviceContext)
 				deviceContext->PSSetShaderResources(1, 1, &normal_map);
 
 				deviceContext->Draw(vertexCount, 0);
+
+				if (dynamic_cast<PowerupIndicator*> (*i))
+				{
+					d3dHandler->EnableAlphaBlendingFewOverlapping();
+				}
 			}
 		}
 	}
@@ -223,13 +233,37 @@ void EntityHandler::HandleCollision(Player* player, Entity* entity2, AudioMaster
 			}	
 			case MapItem::objectType::PowerUp:
 			{
-				unsigned int rnd = rand() % 1;
+				unsigned int rnd = rand() % 5;
 
 				if (rnd == 0) // Slow Down Acceleration
 				{
 					player->AddSlowDownAccelerationDisplay();
 					player->setSlowDownAcceleration(5.0f);
 				}
+
+				if (rnd == 1) // Immortal Portal
+				{
+					player->AddImmortalPortalDisplay();
+					player->setImmortalPortal(5.0f);
+				}
+
+				if (rnd == 2) // Combo Bonus
+				{
+					player->AddBonusComboDisplay();
+					player->setBonusCombo(5.0f);
+				}
+
+				if (rnd == 3) // Crystal Frenzy
+				{
+					player->setCrystalFrenzy(5.0f);
+				}
+
+				if (rnd == 4) // Inverse Control
+				{
+					player->AddInvertControlDisplay();
+					player->setInvertControl(5.0f);
+				}
+
 
 				break;
 			}

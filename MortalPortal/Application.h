@@ -27,7 +27,7 @@
 #include "LevelGenerator.h"
 #include "MapItemShader.h"
 #include "RectangleScreen.h"
-
+#include "PowerupIndicator.h"
 #include "Background.h"
 #include "BackgroundShader.h"
 #include "Light.h"
@@ -92,6 +92,16 @@ private:
 	RectangleScreen* playerWins;
 	RectangleScreen* player1Info;
 	RectangleScreen* player2Info;
+
+	//Power up Inidcators
+	PowerupIndicator* slowSpeedIndicator1;
+	PowerupIndicator* slowSpeedIndicator2;
+
+	PowerupIndicator* immortalIndicator1;
+	PowerupIndicator* immortalIndicator2;
+
+	PowerupIndicator* inverseIndicator1;
+	PowerupIndicator* inverseIndicator2;
 
 	// Menu
 	StartMenu* startMenu;

@@ -240,6 +240,53 @@ Application::Application(bool fullscreen, bool showCursor, int screenWidth, int 
 	particlePortal2->constantBufferData.reset = false;
 	particlePortal2->constantBufferData.lifeTime = 0.3f;
 
+	// Power Up Indicators
+	slowSpeedIndicator1 = new PowerupIndicator(
+		assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/BackgroundPlane.bin"),
+		assetHandler->GetMaterial(d3dHandler->GetDevice(), "FrostPower.dds", "", 0.0f),
+		backgShader, XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(2, 3, 1)
+		);
+	slowSpeedIndicator2 = new PowerupIndicator(
+		assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/BackgroundPlane.bin"),
+		assetHandler->GetMaterial(d3dHandler->GetDevice(), "FrostPower.dds", "", 0.0f),
+		backgShader, XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(2, 3, 1)
+		);
+
+	entityHandler->Add(slowSpeedIndicator1);
+	entityHandler->Add(slowSpeedIndicator2);
+
+	immortalIndicator1 = new PowerupIndicator(
+		assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/BackgroundPlane.bin"),
+		assetHandler->GetMaterial(d3dHandler->GetDevice(), "immortalPower.dds", "", 0.0f),
+		backgShader, XMFLOAT3(0, 0, -1.5), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(3, 3, 1)
+		);
+
+	immortalIndicator2 = new PowerupIndicator(
+		assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/BackgroundPlane.bin"),
+		assetHandler->GetMaterial(d3dHandler->GetDevice(), "immortalPower.dds", "", 0.0f),
+		backgShader, XMFLOAT3(0, 0, -1), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(3, 3, 1)
+		);
+
+	entityHandler->Add(immortalIndicator1);
+	entityHandler->Add(immortalIndicator2);
+
+	inverseIndicator1 = new PowerupIndicator(
+		assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/BackgroundPlane.bin"),
+		assetHandler->GetMaterial(d3dHandler->GetDevice(), "GreenPowerParticle.dds", "", 0.0f),
+		backgShader, XMFLOAT3(0, 0, -1), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(3, 3, 1)
+		);
+
+	inverseIndicator2 = new PowerupIndicator(
+		assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/BackgroundPlane.bin"),
+		assetHandler->GetMaterial(d3dHandler->GetDevice(), "GreenPowerParticle.dds", "", 0.0f),
+		backgShader, XMFLOAT3(0, 0, -1), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(3, 3, 1)
+		);
+
+	entityHandler->Add(inverseIndicator1);
+	entityHandler->Add(inverseIndicator2);
+
+
+	
 	// Create Background
 	entityHandler->Add(
 		new Background(
@@ -542,17 +589,12 @@ Application::Application(bool fullscreen, bool showCursor, int screenWidth, int 
 
 	startMenu->AddButton(new StartButton(entityHandler,
 		player1, player2,
-		DirectX::XMFLOAT2(0, 0.4f),
+		DirectX::XMFLOAT2(0, 0.2f),
 		DirectX::XMFLOAT2(0.1f, 0.1f),
 		assetHandler->GetMaterial(d3dHandler->GetDevice(), "start.dds", "", 0.0f)));
 
-	startMenu->AddButton(new OptionsButton(
-		DirectX::XMFLOAT2(0, 0.0f),
-		DirectX::XMFLOAT2(0.1f, 0.1f),
-		assetHandler->GetMaterial(d3dHandler->GetDevice(), "options.dds", "", 0.0f)));
-
 	startMenu->AddButton(new QuitButton(
-		DirectX::XMFLOAT2(0, -0.4f),
+		DirectX::XMFLOAT2(0, -0.2f),
 		DirectX::XMFLOAT2(0.1f, 0.1f),
 		assetHandler->GetMaterial(d3dHandler->GetDevice(), "quit.dds", "", 0.0f)));
 
@@ -674,23 +716,32 @@ bool Application::Update(float deltaTime)
 	{
 		dir.x *= -0.5f;
 		dir.y *= -0.5f;
+		inverseIndicator2->SetVisible(true);
 	}
+	else
+		inverseIndicator2->SetVisible(false);
 
 	// PowerUp - Slow Down Acceleration - effect on | Player2
 	if (player2->getSlowDownAcceleration() == true)
 	{
 		dir.x *= test1;
 		dir.y *= test1;
+		slowSpeedIndicator2->SetVisible(true);
 	}
 	else
 	{
 		dir.x *= test2;
 		dir.y *= test2;
+		slowSpeedIndicator2->SetVisible(false);
 	}
 	// PowerUp - Bonus Combo - effect on | Player1
 	player1->getBonusCombo();
 	// PowerUp - Immortal Portal - effect on | Player1
-	player1->getImmortalPortal();
+	if (player1->getImmortalPortal())
+		immortalIndicator1->SetVisible(true);
+	else
+		immortalIndicator1->SetVisible(false);
+
 	player1->SetAcceleration(XMFLOAT3(dir.x, dir.y, 0.0f));
 	if (pauseMenu->renderMenu == false && restartMenu->renderMenu == false)
 		player1->ReactToInput(input->GetButtonState(), aMaster);
@@ -702,22 +753,33 @@ bool Application::Update(float deltaTime)
 	{
 		dir2.x *= -0.5f;
 		dir2.y *= -0.5f;
+		inverseIndicator1->SetVisible(true);
 	}
+	else
+		inverseIndicator1->SetVisible(false);
+
 	// PowerUp - Slow Down Acceleration - effect on | Player1
 	if (player1->getSlowDownAcceleration() == true)
 	{
 		dir2.x *= test1;
 		dir2.y *= test1;
+		slowSpeedIndicator1->SetVisible(true);
 	}
 	else
 	{
 		dir2.x *= test2;
 		dir2.y *= test2;
+		slowSpeedIndicator1->SetVisible(false);
 	}
 	// PowerUp - Bonus Combo - effect on | Player2
 	player2->getBonusCombo();
 	// PowerUp - Immortal Portal - effect on | Player2
-	player2->getImmortalPortal();
+	if (player2->getImmortalPortal())
+		immortalIndicator2->SetVisible(true);
+	else
+		immortalIndicator2->SetVisible(false);
+
+
 	player2->SetAcceleration(XMFLOAT3(dir2.x, dir2.y, 0.0f));
 	if (pauseMenu->renderMenu == false && restartMenu->renderMenu == false)
 		player2->ReactToInput(input2->GetButtonState(), aMaster);
@@ -750,8 +812,11 @@ bool Application::Update(float deltaTime)
 	// Particles for player 1
 	particlePortal1->UpdateParticle(deltaTime, d3dHandler->GetDeviceContext(), particleShader->GetComputeShader());
 	particlePortal1->UpdatePosition(player1->GetPosition());
+	particlePortal1->UpdateColor(player1->renderParticles, player1->GetColor(), particle, particleMaterials);
+
 	particlePowerBar1->UpdateParticle(deltaTime, d3dHandler->GetDeviceContext(), particleShader->GetComputeShader());
 	particlePowerBar1->UpdatePosition(DirectX::XMFLOAT3(player1->powerBar->GetCurrentMaxPosition().x, player1->powerBar->GetCurrentMaxPosition().y, 0.0f));
+	
 	if (player1->renderParticles == true && particle->particleCounter <= particle->constantBufferData.lifeTime)
 	{
 		particle->UpdatePosition(player1->GetPosition());
@@ -775,8 +840,11 @@ bool Application::Update(float deltaTime)
 	// Particles for player 2
 	particlePowerBar2->UpdateParticle(deltaTime, d3dHandler->GetDeviceContext(), particleShader->GetComputeShader());
 	particlePowerBar2->UpdatePosition(DirectX::XMFLOAT3(player2->powerBar->GetCurrentMaxPosition().x, player2->powerBar->GetCurrentMaxPosition().y, 0.0f));
+	
 	particlePortal2->UpdateParticle(deltaTime, d3dHandler->GetDeviceContext(), particleShader->GetComputeShader());
 	particlePortal2->UpdatePosition(player2->GetPosition());
+	particlePortal2->UpdateColor(player2->renderParticles, player2->GetColor(), particle2, particleMaterials);
+	
 	if (player2->renderParticles == true && particle->particleCounter <= particle2->constantBufferData.lifeTime)
 	{
 		particle2->UpdatePosition(player2->GetPosition());
@@ -796,8 +864,14 @@ bool Application::Update(float deltaTime)
 			player2->renderParticles = false;
 		}
 	}
-	particlePortal1->UpdateColor(player1->renderParticles, player1->GetColor(), particle, particleMaterials);
-	particlePortal2->UpdateColor(player2->renderParticles, player2->GetColor(), particle2, particleMaterials);
+	slowSpeedIndicator1->UpdatePosition(player2->GetPosition());
+	slowSpeedIndicator2->UpdatePosition(player1->GetPosition());
+
+	inverseIndicator1->UpdatePosition(player2->GetPosition());
+	inverseIndicator2->UpdatePosition(player1->GetPosition());
+
+	immortalIndicator1->UpdatePosition(player1->GetPosition());
+	immortalIndicator2->UpdatePosition(player2->GetPosition());
 
 	levelGenerator->Update(entityHandler, deltaTime, crystalFrenzy);
 
@@ -823,7 +897,7 @@ void Application::Render()
 	d3dHandler->EnableAlphaBlendingFewOverlapping();
 	d3dHandler->GetDeviceContext()->PSSetConstantBuffers(0, 1, &oneDirectionLightObject.pointerToBufferL);
 
-	entityHandler->Render(d3dHandler->GetDeviceContext());
+	entityHandler->Render(d3dHandler->GetDeviceContext(), d3dHandler);
 
 	particleShader->Use(d3dHandler->GetDeviceContext());
 	d3dHandler->DisableDepthStencil();

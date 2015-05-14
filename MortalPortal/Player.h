@@ -30,6 +30,7 @@ public:
 	void RemovePower();
 	PowerBar* powerBar;
 
+
 	void AddCombo(bool bonusComboControl);
 	void RemoveCombo();
 	ComboBar* comboBar;
