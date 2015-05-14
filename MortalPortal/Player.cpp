@@ -312,13 +312,13 @@ bool Player::HasColor(Color color) const
 
 void Player::Reset()
 {
-	position = DirectX::XMFLOAT3(0, 0, 0);
+	position = DirectX::XMFLOAT3(-15, 0, 0);
 	velocity = DirectX::XMFLOAT3(0, 0, 0);
 	angleVelocity = DirectX::XMFLOAT3(0, 0, 0);
 	acceleration = DirectX::XMFLOAT3(0, 0, 0);
 	this->powerBar->Reset();
 	this->alive = true;
-	this->SetPosition(DirectX::XMFLOAT3(0, 0, 0));
+	this->SetPosition(DirectX::XMFLOAT3(-15, 0, 0));
 	this->colorState = colors[0];
 	this->comboCounter = 0;
 	this->comboCounterChange_10 = 0;

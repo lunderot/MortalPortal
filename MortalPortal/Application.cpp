@@ -124,7 +124,7 @@ Application::Application(bool fullscreen, bool showCursor, int screenWidth, int 
 		assetHandler->GetMaterial(d3dHandler->GetDevice(), "Zbrush_Portal_Red.dds", "", 0.0f),
 		playerShader,
 		Color::BLUE, Color::GREEN,
-		XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, XM_PIDIV2, 0));
+		XMFLOAT3(-10, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, XM_PIDIV2, 0));
 	entityHandler->Add(player1);
 
 	player2 = new Player(d3dHandler->GetDevice(),
@@ -133,7 +133,7 @@ Application::Application(bool fullscreen, bool showCursor, int screenWidth, int 
 		assetHandler->GetMaterial(d3dHandler->GetDevice(), "Zbrush_Portal_Blue.dds", "", 0.0f),
 		playerShader,
 		Color::RED, Color::YELLOW,
-		XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, XM_PIDIV2, 0));
+		XMFLOAT3(-10, 5, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, XM_PIDIV2, 0));
 	entityHandler->Add(player2);
 
 	// Create Combo-bar player1 & player2
@@ -268,8 +268,8 @@ Application::Application(bool fullscreen, bool showCursor, int screenWidth, int 
 	entityHandler->Add(
 		new BackgroundAsset(
 			assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/Earth.bin"),
-			assetHandler->GetMaterial(d3dHandler->GetDevice(), "b.dds", "normalmap.dds", 0.0f),
-			playerShader, XMFLOAT3(0, 0, 170), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0.4, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(6.2, 6.2, 6.2))
+			assetHandler->GetMaterial(d3dHandler->GetDevice(), "EarthTexture.dds", "EarthNormalMap.dds"/*"normalmap.dds"*/, 0.0f),
+			playerShader, XMFLOAT3(0, 0, 170), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0.4, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(15, 15, 15))
 		);
 
 	//Light
