@@ -29,14 +29,16 @@ protected:
 	ID3D11UnorderedAccessView* particleUAV;
 	ID3D11Buffer* constantBuffer;
 	ID3D11ShaderResourceView* SRV;
-	Material* material;
+	Material* material1;
+	Material* material2;
 
 	unsigned int nrOfParticles;
 public:
 
 	Particle(unsigned int type,
 		const unsigned int nrOfParticles,
-		Material* material,
+		Material* material1,
+		Material* material2,
 		ID3D11Device* device,
 		DirectX::XMFLOAT3 position = DirectX::XMFLOAT3(0, 0, 0),
 		DirectX::XMFLOAT3 velocity = DirectX::XMFLOAT3(0, 0, 0),
@@ -51,6 +53,7 @@ public:
 	float particleCounter;
 	std::vector<Particles> particle;
 	ConstantBufferData constantBufferData;
+	bool changeTexture;
 
 	void UpdatePosition(DirectX::XMFLOAT3 pos);
 	void UpdateParticle(float deltaTime, ID3D11DeviceContext* deviceContext, ID3D11ComputeShader* computeShader);
@@ -58,5 +61,7 @@ public:
 	void Render(ID3D11DeviceContext* deviceContext);
 	void Reset();
 	void UpdateConstantBuffer(ID3D11DeviceContext* deviceContext);
+	void SetMaterial(Material* material);
+	void UpdateColor(bool renderParticles, const Color color, Particle* explosionParticles, std::vector<Material*> materials);
 
 };

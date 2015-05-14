@@ -2,7 +2,8 @@
 
 Particle::Particle(unsigned int type,
 	const unsigned int nrOfParticles, 
-	Material* material,
+	Material* material1,
+	Material* material2,
 	ID3D11Device* device,
 	DirectX::XMFLOAT3 position,
 	DirectX::XMFLOAT3 velocity,
@@ -10,7 +11,9 @@ Particle::Particle(unsigned int type,
 	DirectX::XMFLOAT3 acceleration, DirectX::XMFLOAT3 scale) : Entity(nullptr, nullptr, nullptr, position, velocity, angleVelocity, acceleration, scale)
 {
 	SRV = nullptr;
-	this->material = material;
+	this->material1 = material1;
+	this->material2 = material2;
+	changeTexture = false;
 
 	// Crystal Pick-up
 	if (type == 1)
@@ -199,12 +202,15 @@ void Particle::SetLifeTime(float time)
 void Particle::Render(ID3D11DeviceContext* deviceContext)
 {
 	ID3D11Buffer* vertexBuffer = geometry->GetVertexBuffer();
-	SRV = material->GetTexture();
 	UINT stride = sizeof(Particles);
 	UINT offset = 0;
 
 	deviceContext->IASetVertexBuffers(0, 1, &vertexBuffer, &stride, &offset);
 	deviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_POINTLIST);
+	if (changeTexture == false)
+		SRV = material1->GetTexture();
+	else
+		SRV = material2->GetTexture();
 	deviceContext->PSSetShaderResources(0, 1, &SRV);
 	deviceContext->Draw(nrOfParticles, 0);
 }
@@ -218,6 +224,11 @@ void Particle::UpdateConstantBuffer(ID3D11DeviceContext* deviceContext)
 	deviceContext->Unmap(constantBuffer, 0);
 }
 
+void Particle::SetMaterial(Material* material)
+{
+	this->material1 = material;
+}
+
 
 Particle::~Particle()
 {
@@ -229,4 +240,35 @@ Particle::~Particle()
 
 	if (SRV)
 		SRV->Release();
+}
+
+void Particle::UpdateColor(bool renderParticles, const Color color, Particle* explosionParticles, std::vector<Material*> materials)
+{
+	if (color == Color::GREEN)
+	{
+		this->changeTexture = false;
+		if (renderParticles == false || explosionParticles->constantBufferData.reset == true)
+			explosionParticles->SetMaterial(materials[Color::GREEN]);
+	}
+
+	else if (color == Color::RED)
+	{
+		this->changeTexture = true;
+		if (renderParticles == false || explosionParticles->constantBufferData.reset == true)
+			explosionParticles->SetMaterial(materials[Color::RED]);
+	}
+
+	else if (color == Color::YELLOW)
+	{
+		this->changeTexture = false;
+		if (renderParticles == false || explosionParticles->constantBufferData.reset == true)
+			explosionParticles->SetMaterial(materials[Color::YELLOW]);
+	}
+
+	else if (color == Color::BLUE)
+	{
+		this->changeTexture = true;
+		if (renderParticles == false || explosionParticles->constantBufferData.reset == true)
+			explosionParticles->SetMaterial(materials[Color::BLUE]);
+	}
 }
