@@ -73,7 +73,15 @@ private:
 	Particle* particlePowerBar1;
 	Particle* particlePowerBar2;
 	Particle* particleBackground;
-	Particle* particlePortal;
+	Particle* particlePortal1;
+	Particle* particlePortal2;
+
+	// Particle Materials
+	std::vector <Material*> particleMaterials;
+	Material* greenParticle;
+	Material* redParticle;
+	Material* yellowParticle;
+	Material* blueParticle;
 
 
 	//Player data

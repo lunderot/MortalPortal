@@ -2,7 +2,8 @@
 
 Particle::Particle(unsigned int type,
 	const unsigned int nrOfParticles, 
-	Material* material,
+	Material* material1,
+	Material* material2,
 	ID3D11Device* device,
 	DirectX::XMFLOAT3 position,
 	DirectX::XMFLOAT3 velocity,
@@ -10,7 +11,9 @@ Particle::Particle(unsigned int type,
 	DirectX::XMFLOAT3 acceleration, DirectX::XMFLOAT3 scale) : Entity(nullptr, nullptr, nullptr, position, velocity, angleVelocity, acceleration, scale)
 {
 	SRV = nullptr;
-	this->material = material;
+	this->material1 = material1;
+	this->material2 = material2;
+	changeTexture = false;
 
 	// Crystal Pick-up
 	if (type == 1)
@@ -19,13 +22,13 @@ Particle::Particle(unsigned int type,
 		{
 			Particles p;
 			p.type = type;
-			p.lifeTime = (float)(rand()) / (float)(RAND_MAX / 0.5f);
+			p.lifeTime = 0;// (float)(rand()) / (float)(RAND_MAX / 2.0f);
 			p.pos.x = 0;
 			p.pos.y = 0;
 			p.pos.z = 0;
-
-			p.velocity.x = rand() % 100 - 100;
-			p.velocity.y = rand() % 100 - 50;
+			float r = (float)(rand()) / (float)(RAND_MAX / DirectX::XM_PIDIV4) + DirectX::XM_PI - DirectX::XM_PIDIV4 * 0.5;
+			p.velocity.x = (rand() % 100 + 50) * cos(r);
+			p.velocity.y = (rand() % 100 + 50) * sin(r);
 			p.acceleration.x = 0;
 			p.acceleration.y = 0;
 			particle.push_back(p);
@@ -59,13 +62,13 @@ Particle::Particle(unsigned int type,
 		{
 			Particles p;
 			p.type = type;
-			p.lifeTime = 0;
+			p.lifeTime = (float)(rand()) / (float)(RAND_MAX / 0.5f);
 			p.pos.x = rand() % 90 - 30;
-			p.pos.y = rand() % 100 - 50;
-			p.pos.z = rand() % 3;
+			p.pos.y = 0;
+			p.pos.z = 1;
 
-			p.velocity.x = rand() % 50 - 100;
-			p.velocity.y = rand() % 50 - 15;
+			p.velocity.x = rand() % 10 - 5;
+			p.velocity.y = rand() % 8 - 4;
 			p.acceleration.x = 0;
 			p.acceleration.y = 0;
 			particle.push_back(p);
@@ -79,21 +82,22 @@ Particle::Particle(unsigned int type,
 		{
 			Particles p;
 			p.type = type;
-			p.lifeTime = (float)(rand()) / (float)(RAND_MAX / 0.1f);
-			float r = (float)(rand()) / (float)(RAND_MAX / (DirectX::XM_PI * 2));
-			p.pos.x = cos(r);
-			p.pos.y = sin(r);
+			p.lifeTime = (float)(rand()) / (float)(RAND_MAX / 0.4f);
+			float r = (float)(rand()) / (float)(RAND_MAX / (DirectX::XM_2PI));
+			float k = (float)(rand()) / (float)(RAND_MAX);
+			p.pos.x = cos(r) * k - 0.8f;
+			p.pos.y = sin(r) * k;
 			p.pos.z = 0;
 
-			r = (float)(rand()) / (float)(RAND_MAX / (DirectX::XM_PI * 2));
 			//int negx = rand() % 2;
 			//if (!negx)
 			//	negx = -1;
 			//int negy = rand() % 2;
 			//if (!negy)
 			//	negy = -1;
-			p.velocity.x = 20 * cos(r);
-			p.velocity.y = 20 * sin(r);
+			float speed = 20.0f;
+			p.velocity.x = speed * cos(r);
+			p.velocity.y = speed * sin(r);
 			p.acceleration.x = 0;
 			p.acceleration.y = 0;
 			particle.push_back(p);
@@ -198,12 +202,15 @@ void Particle::SetLifeTime(float time)
 void Particle::Render(ID3D11DeviceContext* deviceContext)
 {
 	ID3D11Buffer* vertexBuffer = geometry->GetVertexBuffer();
-	SRV = material->GetTexture();
 	UINT stride = sizeof(Particles);
 	UINT offset = 0;
 
 	deviceContext->IASetVertexBuffers(0, 1, &vertexBuffer, &stride, &offset);
 	deviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_POINTLIST);
+	if (changeTexture == false)
+		SRV = material1->GetTexture();
+	else
+		SRV = material2->GetTexture();
 	deviceContext->PSSetShaderResources(0, 1, &SRV);
 	deviceContext->Draw(nrOfParticles, 0);
 }
@@ -217,6 +224,11 @@ void Particle::UpdateConstantBuffer(ID3D11DeviceContext* deviceContext)
 	deviceContext->Unmap(constantBuffer, 0);
 }
 
+void Particle::SetMaterial(Material* material)
+{
+	this->material1 = material;
+}
+
 
 Particle::~Particle()
 {
@@ -228,4 +240,35 @@ Particle::~Particle()
 
 	if (SRV)
 		SRV->Release();
+}
+
+void Particle::UpdateColor(bool renderParticles, const Color color, Particle* explosionParticles, std::vector<Material*> materials)
+{
+	if (color == Color::GREEN)
+	{
+		this->changeTexture = false;
+		if (renderParticles == false || explosionParticles->constantBufferData.reset == true)
+			explosionParticles->SetMaterial(materials[Color::GREEN]);
+	}
+
+	else if (color == Color::RED)
+	{
+		this->changeTexture = true;
+		if (renderParticles == false || explosionParticles->constantBufferData.reset == true)
+			explosionParticles->SetMaterial(materials[Color::RED]);
+	}
+
+	else if (color == Color::YELLOW)
+	{
+		this->changeTexture = false;
+		if (renderParticles == false || explosionParticles->constantBufferData.reset == true)
+			explosionParticles->SetMaterial(materials[Color::YELLOW]);
+	}
+
+	else if (color == Color::BLUE)
+	{
+		this->changeTexture = true;
+		if (renderParticles == false || explosionParticles->constantBufferData.reset == true)
+			explosionParticles->SetMaterial(materials[Color::BLUE]);
+	}
 }

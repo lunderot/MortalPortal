@@ -39,29 +39,58 @@ void main(uint3 dispatchThreadID : SV_DispatchThreadID)
 
 	else if (particleType == 3)
 	{
-		float f0 = float(rand(rng_state) * 200 / 4294967296.0) + 10;
-		pos.x += velocity.x * deltaTime / f0;
-		pos.y += velocity.y * deltaTime / f0;
+		//float f0 = float(rand(rng_state) * 200 / 4294967296.0) + 10;
+		pos.x -= velocity.x * deltaTime;
+		pos.y -= velocity.y * deltaTime;
+
+		if (life > lifeTime)
+			life -= lifeTime;
 	}
 
 	else if (particleType == 4)
 	{	
-		float3 vecTowardsPlayer = (pos - position);	
+		/*float3 vecTowardsPlayer = (pos - position);	
 		float velLength = length(velocity);
 		vecTowardsPlayer = normalize(vecTowardsPlayer) * velLength;	
-
-		//if (life > lifeTime)
-		//{	
-		//	pos.x -= vecTowardsPlayer.x * deltaTime * 5;
-		//	pos.y -= vecTowardsPlayer.y * deltaTime * 5;
-		//	if (length(pos - position) < 0.001f)
-		//		life = 0.0f;
+		*/
+		float3 tmpPosition = position;
+			tmpPosition.x -= 0.8f;
+		//if (length(pos - tmpPosition) > lifeTime * length(velocity))
+		//{
+		//	pos.x = tmpPosition.x;
+		//	pos.y = tmpPosition.y;
 		//}
+		if (life > lifeTime)
+		{
+			pos.x = tmpPosition.x;
+			pos.y = tmpPosition.y;
+			life -= lifeTime;
+		}
+
+		/*else if (length(pos - tmpPosition) < 0.01f)
+		{
+			velocity *= -1;
+			life = lifeTime / 2;
+		}*/
+		
+
+		/*
+		if (life > lifeTime)
+		{	
+			pos.x -= vecTowardsPlayer.x * deltaTime * 5;
+			pos.y -= vecTowardsPlayer.y * deltaTime * 5;
+			if (length(pos - position) < 0.1f)
+				life = 0.0f;
+		}
+		*/
 		float3 vec = cross(float3(0, 0, 1), float3(velocity.x, velocity.y, 0));
-		pos.x = position.x + (velocity.x + sin(vec.x)) * deltaTime;// + vecTowardsPlayer.x * 0.0 * deltaTime;
-		pos.y = position.y + (velocity.y + sin(vec.y)) * deltaTime;// + vecTowardsPlayer.y * 0.0 * deltaTime;
-		//pos.x += (velocity.x + vec.x) * deltaTime;// + vecTowardsPlayer.x * 0.0 * deltaTime;
-		//pos.y += (velocity.y + vec.y) * deltaTime;// + vecTowardsPlayer.y * 0.0 * deltaTime;
+			//pos.x += position.x + (velocity.x + sin(vec.x)) * deltaTime;// + vecTowardsPlayer.x * 0.0 * deltaTime;
+			//pos.y += position.y + (velocity.y + sin(vec.y)) * deltaTime;// + vecTowardsPlayer.y * 0.0 * deltaTime;
+			float test = lerp(1, 0.01, saturate(length(pos - tmpPosition)));
+		pos.x += (test) * (velocity.x + vec.x)/2 * deltaTime;// + vecTowardsPlayer.x * 0.0 * deltaTime;
+		//test = lerp(0.01, 1, saturate(pos.y - tmpPosition.y));
+		pos.y += (test)* (velocity.y + vec.y)/2 * deltaTime;// + vecTowardsPlayer.y * 0.0 * deltaTime;
+		
 
 		//if (length(pos - position) > 2.0f)
 		//{
@@ -89,14 +118,13 @@ void main(uint3 dispatchThreadID : SV_DispatchThreadID)
 	else if (pos.x < -32.0f && particleType == 3)
 	{
 		pos.x = position.x;
-		pos.y = 0;
-		life -= lifeTime;
+		pos.y = velocity.y * sin(life);
 	}
 	else if (reset == true)
 	{
 		pos.x = position.x;
 		pos.y = position.y;
-		life -= lifeTime;
+		life = 0.0f;
 	}
 	if (particleType == 2)
 		life += deltaTime * 20;

@@ -14,7 +14,8 @@ D3DHandler::D3DHandler(int screenWidth, int screenHeight, HWND hwnd, bool fullsc
 	depthStencilView = nullptr;
 	rasterState = nullptr;
 	depthDisabledStencilState = nullptr;
-	alphaEnableBlendingState = nullptr;
+	alphaFewOverlappingBlendingState = nullptr;
+	alphaSeveralOverlappingBlendingState = nullptr;
 	alphaDisableBlendingState = nullptr;
 
 
@@ -227,14 +228,21 @@ D3DHandler::D3DHandler(int screenWidth, int screenHeight, HWND hwnd, bool fullsc
 	blendStateDescription.RenderTarget[0].SrcBlendAlpha = D3D11_BLEND_ONE;
 	blendStateDescription.RenderTarget[0].DestBlendAlpha = D3D11_BLEND_ZERO;
 	blendStateDescription.RenderTarget[0].BlendOpAlpha = D3D11_BLEND_OP_ADD;
-	blendStateDescription.RenderTarget[0].RenderTargetWriteMask = 0x0f;
+	blendStateDescription.RenderTarget[0].RenderTargetWriteMask = D3D11_COLOR_WRITE_ENABLE_ALL;
+	blendStateDescription.AlphaToCoverageEnable = false;
+	blendStateDescription.IndependentBlendEnable = false;
 
-	result = device->CreateBlendState(&blendStateDescription, &alphaEnableBlendingState);
-	// For transparency
-	deviceContext->OMSetBlendState(alphaEnableBlendingState, 0, 0xffffff);
+	result = device->CreateBlendState(&blendStateDescription, &alphaFewOverlappingBlendingState);
 	if (FAILED(result))
 	{
 		throw std::runtime_error("Blend state error");
+	}
+	blendStateDescription.AlphaToCoverageEnable = true;
+	result = device->CreateBlendState(&blendStateDescription, &alphaSeveralOverlappingBlendingState);
+
+	if (FAILED(result))
+	{
+		throw std::runtime_error("Blend state error 2");
 	}
 
 	blendStateDescription.RenderTarget[0].BlendEnable = FALSE;
@@ -242,19 +250,25 @@ D3DHandler::D3DHandler(int screenWidth, int screenHeight, HWND hwnd, bool fullsc
 	result = device->CreateBlendState(&blendStateDescription, &alphaDisableBlendingState);
 	if (FAILED(result))
 	{
-		throw std::runtime_error("Blend state error 2");
+		throw std::runtime_error("Blend state error 3");
 	}
 }
 
 D3DHandler::~D3DHandler()
-{
+{	
 	if (swapChain)
 		swapChain->SetFullscreenState(false, NULL);
 
-	if (alphaEnableBlendingState)
+	if (alphaFewOverlappingBlendingState)
 	{
-		alphaEnableBlendingState->Release();
-		alphaEnableBlendingState = nullptr;
+		alphaFewOverlappingBlendingState->Release();
+		alphaFewOverlappingBlendingState = nullptr;
+	}
+
+	if (alphaSeveralOverlappingBlendingState)
+	{
+		alphaSeveralOverlappingBlendingState->Release();
+		alphaSeveralOverlappingBlendingState = nullptr;
 	}
 
 	if (alphaDisableBlendingState)
@@ -357,6 +371,20 @@ void D3DHandler::DisableDepthStencil()
 void D3DHandler::EnableDepthStencil()
 {
 	deviceContext->OMSetDepthStencilState(depthStencilState, 1);
+}
+void D3DHandler::EnableAlphaBlendingFewOverlapping()
+{
+	deviceContext->OMSetBlendState(alphaFewOverlappingBlendingState, NULL, 0xffffff);
+}
+
+void D3DHandler::EnableAlphaBlendingSeverlOverlapping()
+{
+	deviceContext->OMSetBlendState(alphaSeveralOverlappingBlendingState, NULL, 0xffffff);
+}
+
+void D3DHandler::DisableAlphaBlening()
+{
+	deviceContext->OMSetBlendState(alphaDisableBlendingState, NULL, 0xffffff);
 }
 
 void D3DHandler::GetProjectionMatrix(XMFLOAT4X4& projectionMatrix)

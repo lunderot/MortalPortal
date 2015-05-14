@@ -102,7 +102,7 @@ System::~System()
 
 void System::Run()
 {
-	float dt = 1 / 60.0f;
+	float dt = 1.0f / 10.0f;
 	float currentTime = GetTickCount() / 1000.0f;
 
 

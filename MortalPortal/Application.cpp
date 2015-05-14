@@ -123,8 +123,10 @@ Application::Application(bool fullscreen, bool showCursor, int screenWidth, int 
 		assetHandler->GetMaterial(d3dHandler->GetDevice(), "Zbrush_Portal_Green.dds", "", 0.0f),
 		assetHandler->GetMaterial(d3dHandler->GetDevice(), "Zbrush_Portal_Red.dds", "", 0.0f),
 		playerShader,
-		Color::BLUE, Color::GREEN,
+
+		Color::GREEN, Color::RED,
 		XMFLOAT3(-10, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, XM_PIDIV2, 0));
+
 	entityHandler->Add(player1);
 
 	player2 = new Player(d3dHandler->GetDevice(),
@@ -132,8 +134,10 @@ Application::Application(bool fullscreen, bool showCursor, int screenWidth, int 
 		assetHandler->GetMaterial(d3dHandler->GetDevice(), "Zbrush_Portal_Yellow.dds", "", 0.0f),
 		assetHandler->GetMaterial(d3dHandler->GetDevice(), "Zbrush_Portal_Blue.dds", "", 0.0f),
 		playerShader,
-		Color::RED, Color::YELLOW,
+
+		Color::YELLOW, Color::BLUE,
 		XMFLOAT3(-10, 5, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, XM_PIDIV2, 0));
+
 	entityHandler->Add(player2);
 
 	// Create Combo-bar player1 & player2
@@ -201,26 +205,41 @@ Application::Application(bool fullscreen, bool showCursor, int screenWidth, int 
 	player2->powerUpDisplayText[1]->setMaterial(playerPowerUpDisplayMat2);
 	player2->powerUpDisplayText[2]->setMaterial(playerPowerUpDisplayMat3);
 	player2->powerUpDisplayText[3]->setMaterial(playerPowerUpDisplayMat4);
-	// Particles testing area
-	particle = new Particle(1, 50, assetHandler->GetMaterial(d3dHandler->GetDevice(), "particlePew.dds", "", 0.0f), d3dHandler->GetDevice());
-	particle->constantBufferData.lifeTime = 3.0f;
-	particle2 = new Particle(1, 20, assetHandler->GetMaterial(d3dHandler->GetDevice(), "particlePew.dds", "", 0.0f), d3dHandler->GetDevice());
-	particle2->constantBufferData.lifeTime = 3.0f;
-	particlePowerBar1 = new Particle(2, 100, assetHandler->GetMaterial(d3dHandler->GetDevice(), "energybar.dds", "", 0.0f), d3dHandler->GetDevice());
+
+	// Particle Materials
+	greenParticle = assetHandler->GetMaterial(d3dHandler->GetDevice(), "RedPowerParticle.dds", "", 0.0f);
+	redParticle = assetHandler->GetMaterial(d3dHandler->GetDevice(), "RedPowerParticle.dds", "", 0.0f);
+	yellowParticle = assetHandler->GetMaterial(d3dHandler->GetDevice(), "YellowPowerParticle.dds", "", 0.0f);
+	blueParticle = assetHandler->GetMaterial(d3dHandler->GetDevice(), "RedPowerParticle.dds", "", 0.0f);
+	particleMaterials.push_back(redParticle);
+	particleMaterials.push_back(greenParticle);
+	particleMaterials.push_back(blueParticle);
+	particleMaterials.push_back(yellowParticle);
+
+	particle = new Particle(1, 50, assetHandler->GetMaterial(d3dHandler->GetDevice(), "particlePew.dds", "", 0.0f), NULL, d3dHandler->GetDevice());
+	particle->constantBufferData.lifeTime = 0.5f;
+	particle2 = new Particle(1, 20, assetHandler->GetMaterial(d3dHandler->GetDevice(), "particlePew.dds", "", 0.0f), NULL, d3dHandler->GetDevice());
+	particle2->constantBufferData.lifeTime = 0.5f;
+	particlePowerBar1 = new Particle(2, 100, assetHandler->GetMaterial(d3dHandler->GetDevice(), "energybar.dds", "", 0.0f), NULL, d3dHandler->GetDevice());
 	particlePowerBar1->constantBufferData.reset = false;
 	particlePowerBar1->constantBufferData.lifeTime = 20;
 
-	particlePowerBar2 = new Particle(2, 100, assetHandler->GetMaterial(d3dHandler->GetDevice(), "energybar.dds", "", 0.0f), d3dHandler->GetDevice());
+	particlePowerBar2 = new Particle(2, 100, assetHandler->GetMaterial(d3dHandler->GetDevice(), "energybar.dds", "", 0.0f), NULL, d3dHandler->GetDevice());
 	particlePowerBar2->constantBufferData.reset = false;
 	particlePowerBar2->constantBufferData.lifeTime = 20;
 
-	particleBackground = new Particle(3, 200, assetHandler->GetMaterial(d3dHandler->GetDevice(), "particleTest.dds", "", 0.0f), d3dHandler->GetDevice());
+	particleBackground = new Particle(3, 200, assetHandler->GetMaterial(d3dHandler->GetDevice(), "particleTest.dds", "", 0.0f), NULL, d3dHandler->GetDevice());
 	particleBackground->constantBufferData.position = DirectX::XMFLOAT3(80, 0, 0);
 	particleBackground->constantBufferData.reset = false;
 
-	particlePortal = new Particle(4, 1000, assetHandler->GetMaterial(d3dHandler->GetDevice(), "RedPowerParticle.dds", "", 0.0f), d3dHandler->GetDevice());
-	particlePortal->constantBufferData.reset = false;
-	particlePortal->constantBufferData.lifeTime = 0.1f;
+	particlePortal1 = new Particle(4, 200, greenParticle, redParticle, d3dHandler->GetDevice());
+	particlePortal1->constantBufferData.reset = false;
+	particlePortal1->constantBufferData.lifeTime = 0.4f;
+
+	particlePortal2 = new Particle(4, 200, yellowParticle, blueParticle, d3dHandler->GetDevice());
+	particlePortal2->constantBufferData.reset = false;
+	particlePortal2->constantBufferData.lifeTime = 0.4f;
+
 	// Create Background
 	entityHandler->Add(
 		new Background(
@@ -622,7 +641,9 @@ Application::~Application()
 	delete particlePowerBar1;
 	delete particlePowerBar2;
 	delete particleBackground;
-	delete particlePortal;
+	delete particlePortal1;
+	delete particlePortal2;
+
 	delete startMenu;
 	delete pauseMenu;
 	delete restartMenu;
@@ -654,6 +675,7 @@ bool Application::Update(float deltaTime)
 		dir.x *= -0.5f;
 		dir.y *= -0.5f;
 	}
+
 	// PowerUp - Slow Down Acceleration - effect on | Player2
 	if (player2->getSlowDownAcceleration() == true)
 	{
@@ -726,8 +748,8 @@ bool Application::Update(float deltaTime)
 
 	particleBackground->UpdateParticle(deltaTime, d3dHandler->GetDeviceContext(), particleShader->GetComputeShader());
 	// Particles for player 1
-	particlePortal->UpdateParticle(deltaTime, d3dHandler->GetDeviceContext(), particleShader->GetComputeShader());
-	particlePortal->UpdatePosition(player1->GetPosition());
+	particlePortal1->UpdateParticle(deltaTime, d3dHandler->GetDeviceContext(), particleShader->GetComputeShader());
+	particlePortal1->UpdatePosition(player1->GetPosition());
 	particlePowerBar1->UpdateParticle(deltaTime, d3dHandler->GetDeviceContext(), particleShader->GetComputeShader());
 	particlePowerBar1->UpdatePosition(DirectX::XMFLOAT3(player1->powerBar->GetCurrentMaxPosition().x, player1->powerBar->GetCurrentMaxPosition().y, 0.0f));
 	if (player1->renderParticles == true && particle->particleCounter <= particle->constantBufferData.lifeTime)
@@ -753,6 +775,8 @@ bool Application::Update(float deltaTime)
 	// Particles for player 2
 	particlePowerBar2->UpdateParticle(deltaTime, d3dHandler->GetDeviceContext(), particleShader->GetComputeShader());
 	particlePowerBar2->UpdatePosition(DirectX::XMFLOAT3(player2->powerBar->GetCurrentMaxPosition().x, player2->powerBar->GetCurrentMaxPosition().y, 0.0f));
+	particlePortal2->UpdateParticle(deltaTime, d3dHandler->GetDeviceContext(), particleShader->GetComputeShader());
+	particlePortal2->UpdatePosition(player2->GetPosition());
 	if (player2->renderParticles == true && particle->particleCounter <= particle2->constantBufferData.lifeTime)
 	{
 		particle2->UpdatePosition(player2->GetPosition());
@@ -772,6 +796,8 @@ bool Application::Update(float deltaTime)
 			player2->renderParticles = false;
 		}
 	}
+	particlePortal1->UpdateColor(player1->renderParticles, player1->GetColor(), particle, particleMaterials);
+	particlePortal2->UpdateColor(player2->renderParticles, player2->GetColor(), particle2, particleMaterials);
 
 	levelGenerator->Update(entityHandler, deltaTime, crystalFrenzy);
 
@@ -794,12 +820,20 @@ void Application::Render()
 {
 	d3dHandler->BeginScene(0.0f, 0.0f, 0.0f, 1.0f);
 	d3dHandler->EnableDepthStencil();
+	d3dHandler->EnableAlphaBlendingFewOverlapping();
 	d3dHandler->GetDeviceContext()->PSSetConstantBuffers(0, 1, &oneDirectionLightObject.pointerToBufferL);
+
 	entityHandler->Render(d3dHandler->GetDeviceContext());
-	d3dHandler->DisableDepthStencil();
+
 	particleShader->Use(d3dHandler->GetDeviceContext());
+	
+	d3dHandler->EnableAlphaBlendingSeverlOverlapping();
+	particlePortal1->Render(d3dHandler->GetDeviceContext());
+	particlePortal2->Render(d3dHandler->GetDeviceContext());
+	d3dHandler->EnableAlphaBlendingFewOverlapping();
 	particleBackground->Render(d3dHandler->GetDeviceContext());
-	particlePortal->Render(d3dHandler->GetDeviceContext());
+
+	d3dHandler->DisableDepthStencil();
 
 	if (startMenu->renderMenu == false)
 	{

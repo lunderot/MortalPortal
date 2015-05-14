@@ -50,18 +50,18 @@ void main(point GS_IN input[1], inout TriangleStream<GS_OUT> triStream)
 	}
 	else if (input[0].type == 3)
 	{
-		rightVec = rightVec * 0.1;
-		upVec = upVec * 0.1;
+		rightVec = rightVec * 0.4;
+		upVec = upVec * 0.4;
 	}
 	else if (input[0].type == 4)
 	{
-		rightVec = rightVec * 0.1;
-		upVec = upVec * 0.1;
+		rightVec = rightVec * 0.4;
+		upVec = upVec * 0.4;
 	}
 	else
 	{
-		rightVec = rightVec * 0.15;
-		upVec = upVec * 0.15;
+		rightVec = rightVec * 0.2;
+		upVec = upVec * 0.2;
 
 	}
 
