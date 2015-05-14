@@ -19,13 +19,13 @@ Particle::Particle(unsigned int type,
 		{
 			Particles p;
 			p.type = type;
-			p.lifeTime = (float)(rand()) / (float)(RAND_MAX / 0.5f);
+			p.lifeTime = 0;// (float)(rand()) / (float)(RAND_MAX / 2.0f);
 			p.pos.x = 0;
 			p.pos.y = 0;
 			p.pos.z = 0;
-
-			p.velocity.x = rand() % 100 - 100;
-			p.velocity.y = rand() % 100 - 50;
+			float r = (float)(rand()) / (float)(RAND_MAX / DirectX::XM_PIDIV4) + DirectX::XM_PI - DirectX::XM_PIDIV4 * 0.5;
+			p.velocity.x = (rand() % 100 + 50) * cos(r);
+			p.velocity.y = (rand() % 100 + 50) * sin(r);
 			p.acceleration.x = 0;
 			p.acceleration.y = 0;
 			particle.push_back(p);
@@ -59,12 +59,12 @@ Particle::Particle(unsigned int type,
 		{
 			Particles p;
 			p.type = type;
-			p.lifeTime = 0;
+			p.lifeTime = (float)(rand()) / (float)(RAND_MAX / 0.5f);
 			p.pos.x = rand() % 90 - 30;
-			p.pos.y = rand() % 100 - 50;
-			p.pos.z = rand() % 3;
+			p.pos.y = 0;
+			p.pos.z = 1;
 
-			p.velocity.x = rand() % 5 - 10;
+			p.velocity.x = rand() % 10 - 5;
 			p.velocity.y = rand() % 8 - 4;
 			p.acceleration.x = 0;
 			p.acceleration.y = 0;
@@ -80,7 +80,7 @@ Particle::Particle(unsigned int type,
 			Particles p;
 			p.type = type;
 			p.lifeTime = (float)(rand()) / (float)(RAND_MAX / 0.4f);
-			float r = (float)(rand()) / (float)(RAND_MAX / (DirectX::XM_PI * 2));
+			float r = (float)(rand()) / (float)(RAND_MAX / (DirectX::XM_2PI));
 			float k = (float)(rand()) / (float)(RAND_MAX);
 			p.pos.x = cos(r) * k - 0.8f;
 			p.pos.y = sin(r) * k;

@@ -24,7 +24,8 @@ private:
 	ID3D11DepthStencilView*		depthStencilView;
 	ID3D11RasterizerState*		rasterState;
 	ID3D11DepthStencilState*    depthDisabledStencilState;
-	ID3D11BlendState*			alphaEnableBlendingState;
+	ID3D11BlendState*			alphaFewOverlappingBlendingState;
+	ID3D11BlendState*			alphaSeveralOverlappingBlendingState;
 	ID3D11BlendState*			alphaDisableBlendingState;
 
 	DirectX::XMFLOAT4X4 projectionMatrix;
@@ -43,6 +44,9 @@ public:
 	ID3D11DeviceContext* GetDeviceContext();
 	void DisableDepthStencil();
 	void EnableDepthStencil();
+	void EnableAlphaBlendingFewOverlapping();
+	void EnableAlphaBlendingSeverlOverlapping();
+	void DisableAlphaBlening();
 
 	void GetProjectionMatrix(DirectX::XMFLOAT4X4& projectionMatrix);
 	void GetWorldMatrix(DirectX::XMFLOAT4X4& worldMatrix);

@@ -203,9 +203,9 @@ Application::Application(bool fullscreen, bool showCursor, int screenWidth, int 
 	player2->powerUpDisplayText[3]->setMaterial(playerPowerUpDisplayMat4);
 	// Particles testing area
 	particle = new Particle(1, 50, assetHandler->GetMaterial(d3dHandler->GetDevice(), "particlePew.dds", "", 0.0f), d3dHandler->GetDevice());
-	particle->constantBufferData.lifeTime = 3.0f;
+	particle->constantBufferData.lifeTime = 0.5f;
 	particle2 = new Particle(1, 20, assetHandler->GetMaterial(d3dHandler->GetDevice(), "particlePew.dds", "", 0.0f), d3dHandler->GetDevice());
-	particle2->constantBufferData.lifeTime = 3.0f;
+	particle2->constantBufferData.lifeTime = 0.5f;
 	particlePowerBar1 = new Particle(2, 100, assetHandler->GetMaterial(d3dHandler->GetDevice(), "energybar.dds", "", 0.0f), d3dHandler->GetDevice());
 	particlePowerBar1->constantBufferData.reset = false;
 	particlePowerBar1->constantBufferData.lifeTime = 20;
@@ -214,8 +214,8 @@ Application::Application(bool fullscreen, bool showCursor, int screenWidth, int 
 	particlePowerBar2->constantBufferData.reset = false;
 	particlePowerBar2->constantBufferData.lifeTime = 20;
 
-	particleBackground = new Particle(3, 200, assetHandler->GetMaterial(d3dHandler->GetDevice(), "particleTest.dds", "", 0.0f), d3dHandler->GetDevice());
-	particleBackground->constantBufferData.position = DirectX::XMFLOAT3(80, 0, 0);
+	particleBackground = new Particle(3, 200, assetHandler->GetMaterial(d3dHandler->GetDevice(), "particlePew.dds", "", 0.0f), d3dHandler->GetDevice());
+	particleBackground->constantBufferData.position = DirectX::XMFLOAT3(80, 0, 20);
 	particleBackground->constantBufferData.reset = false;
 
 	particlePortal = new Particle(4, 200, assetHandler->GetMaterial(d3dHandler->GetDevice(), "RedPowerParticle.dds", "", 0.0f), d3dHandler->GetDevice());
@@ -794,12 +794,20 @@ void Application::Render()
 {
 	d3dHandler->BeginScene(0.0f, 0.0f, 0.0f, 1.0f);
 	d3dHandler->EnableDepthStencil();
+	d3dHandler->EnableAlphaBlendingFewOverlapping();
 	d3dHandler->GetDeviceContext()->PSSetConstantBuffers(0, 1, &oneDirectionLightObject.pointerToBufferL);
+
 	entityHandler->Render(d3dHandler->GetDeviceContext());
+
 	particleShader->Use(d3dHandler->GetDeviceContext());
-	particleBackground->Render(d3dHandler->GetDeviceContext());
+
+	d3dHandler->EnableAlphaBlendingSeverlOverlapping();
 	particlePortal->Render(d3dHandler->GetDeviceContext());
+	d3dHandler->EnableAlphaBlendingFewOverlapping();
+
+	particleBackground->Render(d3dHandler->GetDeviceContext());
 	d3dHandler->DisableDepthStencil();
+
 	if (startMenu->renderMenu == false)
 	{
 		powerBarShader->Use(d3dHandler->GetDeviceContext());
