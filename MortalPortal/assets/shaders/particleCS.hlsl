@@ -40,11 +40,8 @@ void main(uint3 dispatchThreadID : SV_DispatchThreadID)
 	else if (particleType == 3)
 	{
 		//float f0 = float(rand(rng_state) * 200 / 4294967296.0) + 10;
-		pos.x -= velocity.x * deltaTime;
-		pos.y -= velocity.y * deltaTime;
-
-		if (life > lifeTime)
-			life -= lifeTime;
+		pos.x += velocity.x * deltaTime;
+		pos.y += velocity.y * deltaTime;
 	}
 
 	else if (particleType == 4)
@@ -86,7 +83,7 @@ void main(uint3 dispatchThreadID : SV_DispatchThreadID)
 		float3 vec = cross(float3(0, 0, 1), float3(velocity.x, velocity.y, 0));
 			//pos.x += position.x + (velocity.x + sin(vec.x)) * deltaTime;// + vecTowardsPlayer.x * 0.0 * deltaTime;
 			//pos.y += position.y + (velocity.y + sin(vec.y)) * deltaTime;// + vecTowardsPlayer.y * 0.0 * deltaTime;
-			float test = lerp(1, 0.01, saturate(length(pos - tmpPosition)));
+			float test = lerp(1, 0.001, saturate(length(pos - tmpPosition)));
 		pos.x += (test) * (velocity.x + vec.x)/2 * deltaTime;// + vecTowardsPlayer.x * 0.0 * deltaTime;
 		//test = lerp(0.01, 1, saturate(pos.y - tmpPosition.y));
 		pos.y += (test)* (velocity.y + vec.y)/2 * deltaTime;// + vecTowardsPlayer.y * 0.0 * deltaTime;

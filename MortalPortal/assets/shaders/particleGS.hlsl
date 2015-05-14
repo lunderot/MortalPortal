@@ -43,27 +43,32 @@ void main(point GS_IN input[1], inout TriangleStream<GS_OUT> triStream)
 	upVec = normalize(cross(rightVec, look));
 	float3 vert[4];
 	float2 texCoord[4];
-	if (input[0].type == 2)
+	if (input[0].type == 1)
 	{
-		rightVec = rightVec * 0.005;
-		upVec = upVec * 0.005;
+		float size = lerp(0.4, 0, input[0].lifeTime / 0.5f);
+		rightVec = rightVec * size;
+		upVec = upVec * size;
+
 	}
-	else if (input[0].type == 3)
-	{
-		rightVec = rightVec * 0.4;
-		upVec = upVec * 0.4;
+	else if (input[0].type == 2)
+	{	
+		float size = lerp(0.005, 0, input[0].lifeTime / 20.0f);
+		rightVec = rightVec * size;
+		upVec = upVec * size;
 	}
 	else if (input[0].type == 4)
 	{
-		rightVec = rightVec * 0.4;
-		upVec = upVec * 0.4;
+		float size = lerp(0.5, 0, input[0].lifeTime / 0.3f);
+		rightVec = rightVec * size;
+		upVec = upVec * size;
+		
 	}
 	else
 	{
-		rightVec = rightVec * 0.2;
-		upVec = upVec * 0.2;
-
+		rightVec = rightVec * 0.1;
+		upVec = upVec * 0.1;
 	}
+
 
 	vert[0] = (input[0].Pos - rightVec - upVec);
 	vert[1] = (input[0].Pos + rightVec - upVec);

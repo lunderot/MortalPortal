@@ -63,12 +63,18 @@ Particle::Particle(unsigned int type,
 			Particles p;
 			p.type = type;
 			p.lifeTime = (float)(rand()) / (float)(RAND_MAX / 0.5f);
+			p.velocity.x = (float)(rand()) / (float)(RAND_MAX / 5.0f) - 10.0f;
+			p.velocity.y = (float)(rand()) / (float)(RAND_MAX / 8.0f) - 4.0f;
+
 			p.pos.x = rand() % 90 - 30;
-			p.pos.y = 0;
+			if (p.velocity.y > 0)
+				p.pos.y = (float)(rand()) / (float)(RAND_MAX / 12.0f);
+			else if (p.velocity.y < 0)
+				p.pos.y = -(float)(rand()) / (float)(RAND_MAX / 12.0f);
+			else
+				p.pos.y = 0.0f;
 			p.pos.z = 1;
 
-			p.velocity.x = rand() % 10 - 5;
-			p.velocity.y = rand() % 8 - 4;
 			p.acceleration.x = 0;
 			p.acceleration.y = 0;
 			particle.push_back(p);
@@ -82,7 +88,7 @@ Particle::Particle(unsigned int type,
 		{
 			Particles p;
 			p.type = type;
-			p.lifeTime = (float)(rand()) / (float)(RAND_MAX / 0.4f);
+			p.lifeTime = (float)(rand()) / (float)(RAND_MAX / 0.3f);
 			float r = (float)(rand()) / (float)(RAND_MAX / (DirectX::XM_2PI));
 			float k = (float)(rand()) / (float)(RAND_MAX);
 			p.pos.x = cos(r) * k - 0.8f;
@@ -95,7 +101,7 @@ Particle::Particle(unsigned int type,
 			//int negy = rand() % 2;
 			//if (!negy)
 			//	negy = -1;
-			float speed = 20.0f;
+			float speed = 15.0f;
 			p.velocity.x = speed * cos(r);
 			p.velocity.y = speed * sin(r);
 			p.acceleration.x = 0;

@@ -207,10 +207,10 @@ Application::Application(bool fullscreen, bool showCursor, int screenWidth, int 
 	player2->powerUpDisplayText[3]->setMaterial(playerPowerUpDisplayMat4);
 
 	// Particle Materials
-	greenParticle = assetHandler->GetMaterial(d3dHandler->GetDevice(), "RedPowerParticle.dds", "", 0.0f);
+	greenParticle = assetHandler->GetMaterial(d3dHandler->GetDevice(), "GreenPowerParticle.dds", "", 0.0f);
 	redParticle = assetHandler->GetMaterial(d3dHandler->GetDevice(), "RedPowerParticle.dds", "", 0.0f);
 	yellowParticle = assetHandler->GetMaterial(d3dHandler->GetDevice(), "YellowPowerParticle.dds", "", 0.0f);
-	blueParticle = assetHandler->GetMaterial(d3dHandler->GetDevice(), "RedPowerParticle.dds", "", 0.0f);
+	blueParticle = assetHandler->GetMaterial(d3dHandler->GetDevice(), "BluePowerParticle.dds", "", 0.0f);
 	particleMaterials.push_back(redParticle);
 	particleMaterials.push_back(greenParticle);
 	particleMaterials.push_back(blueParticle);
@@ -234,11 +234,11 @@ Application::Application(bool fullscreen, bool showCursor, int screenWidth, int 
 
 	particlePortal1 = new Particle(4, 200, greenParticle, redParticle, d3dHandler->GetDevice());
 	particlePortal1->constantBufferData.reset = false;
-	particlePortal1->constantBufferData.lifeTime = 0.4f;
+	particlePortal1->constantBufferData.lifeTime = 0.3f;
 
 	particlePortal2 = new Particle(4, 200, yellowParticle, blueParticle, d3dHandler->GetDevice());
 	particlePortal2->constantBufferData.reset = false;
-	particlePortal2->constantBufferData.lifeTime = 0.4f;
+	particlePortal2->constantBufferData.lifeTime = 0.3f;
 
 	// Create Background
 	entityHandler->Add(
@@ -826,14 +826,14 @@ void Application::Render()
 	entityHandler->Render(d3dHandler->GetDeviceContext());
 
 	particleShader->Use(d3dHandler->GetDeviceContext());
-	
+	d3dHandler->DisableDepthStencil();
 	d3dHandler->EnableAlphaBlendingSeverlOverlapping();
 	particlePortal1->Render(d3dHandler->GetDeviceContext());
 	particlePortal2->Render(d3dHandler->GetDeviceContext());
 	d3dHandler->EnableAlphaBlendingFewOverlapping();
 	particleBackground->Render(d3dHandler->GetDeviceContext());
 
-	d3dHandler->DisableDepthStencil();
+
 
 	if (startMenu->renderMenu == false)
 	{
