@@ -76,9 +76,9 @@ Application::Application(bool fullscreen, bool showCursor, int screenWidth, int 
 	//Setup levelGenerator
 	levelGenerator = new LevelGenerator("assets/levelparts/", "LEVELPARTNAMES.txt");
 
-	levelGenerator->setPlayerOneCrystals(assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/Crystal2.bin"),
-		assetHandler->GetMaterial(d3dHandler->GetDevice(), "assets/Crystal.bin", "Crystal1"),
-		mapItemShader,
+	levelGenerator->setPlayerOneCrystals(assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/crystal_v2.bin"),
+		assetHandler->GetMaterial(d3dHandler->GetDevice(), "assets/crystal_v2.bin", "Crystal_Green"),
+		playerShader,
 		assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/Crystal.bin"),
 		assetHandler->GetMaterial(d3dHandler->GetDevice(), "assets/Crystal.bin", "Crystal2"),
 		mapItemShader);
@@ -191,9 +191,9 @@ Application::Application(bool fullscreen, bool showCursor, int screenWidth, int 
 	particleMaterials.push_back(blueParticle);
 	particleMaterials.push_back(yellowParticle);
 
-	particle = new Particle(1, 50, assetHandler->GetMaterial(d3dHandler->GetDevice(), "particlePew.dds", "", 0.0f), NULL, d3dHandler->GetDevice());
+	particle = new Particle(1, 35, assetHandler->GetMaterial(d3dHandler->GetDevice(), "particlePew.dds", "", 0.0f), NULL, d3dHandler->GetDevice());
 	particle->constantBufferData.lifeTime = 0.5f;
-	particle2 = new Particle(1, 20, assetHandler->GetMaterial(d3dHandler->GetDevice(), "particlePew.dds", "", 0.0f), NULL, d3dHandler->GetDevice());
+	particle2 = new Particle(1, 35, assetHandler->GetMaterial(d3dHandler->GetDevice(), "particlePew.dds", "", 0.0f), NULL, d3dHandler->GetDevice());
 	particle2->constantBufferData.lifeTime = 0.5f;
 	particlePowerBar1 = new Particle(2, 100, assetHandler->GetMaterial(d3dHandler->GetDevice(), "energybar.dds", "", 0.0f), NULL, d3dHandler->GetDevice());
 	particlePowerBar1->constantBufferData.reset = false;

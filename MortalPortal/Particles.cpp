@@ -48,7 +48,7 @@ Particle::Particle(unsigned int type,
 			p.pos.z = 20;
 
 			p.velocity.x = rand() % 10;
-			p.velocity.y = rand() % 10 - 5;
+			p.velocity.y = rand() % 12 - 6;
 			p.acceleration.x = 0;
 			p.acceleration.y = 0;
 			particle.push_back(p);

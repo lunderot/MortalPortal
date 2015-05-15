@@ -235,7 +235,7 @@ void EntityHandler::HandleCollision(Player* player, Entity* entity2, AudioMaster
 			}	
 			case MapItem::objectType::PowerUp:
 			{
-				unsigned int rnd = rand() % 5;
+				unsigned int rnd = rand() % 1;
 
 				if (rnd == 0) // Slow Down Acceleration
 				{

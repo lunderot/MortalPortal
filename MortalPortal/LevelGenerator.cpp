@@ -159,7 +159,7 @@ void LevelGenerator::Update(EntityHandler* entityHandler, float deltaTime, bool 
 		else if (lastLine.type == "p11")
 		{
 			MapItem* crystal = new MapItem(playerOneCrystalGeometry[0], playerOneCrystalMaterial[0], playerOneCrystalShader[0], MapItem::Crystal, Color::GREEN,
-				DirectX::XMFLOAT3(XSpawnPos, lastLine.position, 0), DirectX::XMFLOAT3(-lastLine.velocity, 0, 0));
+				DirectX::XMFLOAT3(XSpawnPos, lastLine.position, 0), DirectX::XMFLOAT3(-lastLine.velocity, 0, 0), DirectX::XMFLOAT3(0,1,0));
 			entityHandler->Add(crystal);
 		}
 		else if (lastLine.type == "p12")
