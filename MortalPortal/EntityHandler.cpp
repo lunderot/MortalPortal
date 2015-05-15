@@ -239,19 +239,16 @@ void EntityHandler::HandleCollision(Player* player, Entity* entity2, AudioMaster
 
 				if (rnd == 0) // Slow Down Acceleration
 				{
-					player->AddSlowDownAccelerationDisplay();
 					player->setSlowDownAcceleration(5.0f);
 				}
 
 				if (rnd == 1) // Immortal Portal
 				{
-					player->AddImmortalPortalDisplay();
 					player->setImmortalPortal(5.0f);
 				}
 
 				if (rnd == 2) // Combo Bonus
 				{
-					player->AddBonusComboDisplay();
 					player->setBonusCombo(5.0f);
 				}
 
@@ -262,7 +259,6 @@ void EntityHandler::HandleCollision(Player* player, Entity* entity2, AudioMaster
 
 				if (rnd == 4) // Inverse Control
 				{
-					player->AddInvertControlDisplay();
 					player->setInvertControl(5.0f);
 				}
 

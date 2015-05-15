@@ -116,7 +116,6 @@
     <ClCompile Include="PauseMenu.cpp" />
     <ClCompile Include="PowerupIndicator.cpp" />
     <ClCompile Include="RectangleScreen.cpp" />
-    <ClCompile Include="PowerUpDisplay.cpp" />
     <ClCompile Include="RestartMenu.cpp" />
     <ClCompile Include="StartMenu.cpp" />
     <ClCompile Include="OptionsButton.cpp" />
@@ -168,7 +167,6 @@
     <ClInclude Include="PauseMenu.h" />
     <ClInclude Include="PowerupIndicator.h" />
     <ClInclude Include="RectangleScreen.h" />
-    <ClInclude Include="PowerUpDisplay.h" />
     <ClInclude Include="RestartMenu.h" />
     <ClInclude Include="StartMenu.h" />
     <ClInclude Include="OptionsButton.h" />

@@ -153,9 +153,6 @@
     <ClCompile Include="Light.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="PowerUpDisplay.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="BackgroundAsset.cpp">
       <Filter>Source Files\Entities</Filter>
     </ClCompile>
@@ -300,9 +297,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Light.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="PowerUpDisplay.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="BackgroundAsset.h">

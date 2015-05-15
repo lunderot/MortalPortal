@@ -12,6 +12,7 @@ private:
 	bool isDirectional;
 	//DirectX::XMFLOAT3 ambient;
 	DirectX::XMFLOAT3 diffuse;
+	float pad;
 	//DirectX::XMFLOAT3 specular;
 	//float specularPow;
 

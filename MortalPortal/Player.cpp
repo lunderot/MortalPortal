@@ -21,10 +21,6 @@ Player::Player(ID3D11Device* device, Geometry* geometry, Material* material, Mat
 	comboDisplayText[1] = new ComboDisplayText(device, material);
 	comboDisplayText[2] = new ComboDisplayText(device, material);
 	comboDisplayText[3] = new ComboDisplayText(device, material);
-	powerUpDisplayText[0] = new PowerUpDisplayText(device, material);
-	powerUpDisplayText[1] = new PowerUpDisplayText(device, material);
-	powerUpDisplayText[2] = new PowerUpDisplayText(device, material);
-	powerUpDisplayText[3] = new PowerUpDisplayText(device, material);
 
 	comboCounter = 0;
 	comboCounterChange_10 = 0;
@@ -60,45 +56,25 @@ Player::~Player()
 	delete comboDisplayText[1];
 	delete comboDisplayText[2];
 	delete comboDisplayText[3];
-	delete powerUpDisplayText[0];
-	delete powerUpDisplayText[1];
-	delete powerUpDisplayText[2];
-	delete powerUpDisplayText[3];
 }
 
 bool Player::getInvertControl()
 {
-	if (inverControlTimer < 0.0f)
-	{
-		powerUpDisplayText[0]->RemoveTextDisplay();
-	}
 	return inverControlTimer > 0.0f;
 }
 
 bool Player::getSlowDownAcceleration()
 {
-	if (slowDownAccelerationTimer < 0.0f)
-	{
-		powerUpDisplayText[1]->RemoveTextDisplay();
-	}
 	return slowDownAccelerationTimer > 0.0f;
 }
 
 bool Player::getBonusCombo()
 {
-	if (bonusComboTimer < 0.0f)
-	{
-		powerUpDisplayText[2]->RemoveTextDisplay();
-	}
 	return bonusComboTimer > 0.0f;
 }
 
 bool Player::getImmortalPortal()
 {
-	if (immortalPortalTimer < 0.0f)
-	{
-		powerUpDisplayText[3]->RemoveTextDisplay();
-	}
 	return immortalPortalTimer > 0.0f;
 }
 
@@ -208,36 +184,6 @@ Material* Player::GetMaterial() const
 	{
 		return switchMaterial;
 	}
-}
-
-void Player::AddInvertControlDisplay()
-{
-	powerUpDisplayText[0]->AddTextDisplay();
-}
-
-void Player::RemoveInvertControlDisplay()
-{
-	invertControlerDisplay = false;
-}
-
-void Player::AddSlowDownAccelerationDisplay()
-{
-	powerUpDisplayText[1]->AddTextDisplay();
-}
-
-void Player::RemoveSlowDownAccelerationDisplay()
-{
-	slowDownAccelerationDisplay = false;
-}
-
-void Player::AddBonusComboDisplay()
-{
-	powerUpDisplayText[2]->AddTextDisplay();
-}
-
-void Player::AddImmortalPortalDisplay()
-{
-	powerUpDisplayText[3]->AddTextDisplay();
 }
 
 void Player::AddPower(unsigned int bonusPower)

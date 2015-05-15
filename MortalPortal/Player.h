@@ -3,7 +3,6 @@
 #include "PowerBar.h"
 #include "ComboBar.h"
 #include "ComboDisplayText.h"
-#include "PowerUpDisplay.h"
 #include "AudioMaster.h"
 
 class Player :
@@ -61,20 +60,6 @@ public:
 	// Crystal Frenzy
 	bool getCrystalFrenzy();
 	void setCrystalFrenzy(bool powerUp_CrystalFrenzy);
-
-	// Power up - Display
-	// Invert control
-	void AddInvertControlDisplay();
-	void RemoveInvertControlDisplay();
-	// Slow down Acceleration
-	void AddSlowDownAccelerationDisplay();
-	void RemoveSlowDownAccelerationDisplay();
-	// Bonus combo
-	void AddBonusComboDisplay();
-	void RemoveBonusComboDisplay();
-	// Immortal Portal
-	void AddImmortalPortalDisplay();
-	PowerUpDisplayText* powerUpDisplayText[4];
 
 	void Reset();
 
