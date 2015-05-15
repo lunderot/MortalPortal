@@ -110,6 +110,26 @@ Particle::Particle(unsigned int type,
 		}
 	}
 
+	// Portal Engine
+	if (type == 5)
+	{
+		for (unsigned int i = 0; i < nrOfParticles; i++)
+		{
+			Particles p;
+			p.type = type;
+			p.lifeTime = (float)(rand()) / (float)(RAND_MAX / 1.0f);
+			p.pos.x = 0;
+			p.pos.y = 0;
+			p.pos.z = 0;
+			float r = (float)(rand()) / (float)(RAND_MAX / DirectX::XM_PIDIV4) + DirectX::XM_PI - DirectX::XM_PIDIV4 * 0.5;
+			p.velocity.x = (rand() % 100 + 50) * cos(r);
+			p.velocity.y = (rand() % 100 + 50) * sin(r);
+			p.acceleration.x = 0;
+			p.acceleration.y = 0;
+			particle.push_back(p);
+		}
+	}
+
 	HRESULT hr;
 	this->nrOfParticles = nrOfParticles;
 	ID3D11Buffer* vertexBuffer = nullptr;

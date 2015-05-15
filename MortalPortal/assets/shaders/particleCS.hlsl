@@ -96,6 +96,24 @@ void main(uint3 dispatchThreadID : SV_DispatchThreadID)
 		//	life = 0;
 		//}
 	}
+
+	else if (particleType == 5)
+	{
+		pos.x += velocity.x * deltaTime / 20;
+		pos.y += velocity.y * deltaTime / 20;
+
+		if (life > lifeTime)
+		{
+			int whatEngine = dispatchThreadID.x % 2;
+			if (whatEngine == 0)
+				pos.y = position.y + 2;
+			else
+				pos.y = position.y - 2;
+
+			pos.x = position.x - 2;
+			life -= lifeTime;
+		}
+	}
 	else
 	{
 		pos.x += velocity.x * deltaTime / 5;

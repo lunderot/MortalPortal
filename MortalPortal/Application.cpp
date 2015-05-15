@@ -215,6 +215,14 @@ Application::Application(bool fullscreen, bool showCursor, int screenWidth, int 
 	particlePortal2->constantBufferData.reset = false;
 	particlePortal2->constantBufferData.lifeTime = 0.3f;
 
+	particlePortal1Engine = new Particle(5, 100, assetHandler->GetMaterial(d3dHandler->GetDevice(), "particleTest.dds", "", 0.0f), NULL, d3dHandler->GetDevice());
+	particlePortal1Engine->constantBufferData.reset = false;
+	particlePortal1Engine->constantBufferData.lifeTime = 1.0f;
+
+	particlePortal2Engine = new Particle(5, 100, assetHandler->GetMaterial(d3dHandler->GetDevice(), "particleTest.dds", "", 0.0f), NULL, d3dHandler->GetDevice());
+	particlePortal2Engine->constantBufferData.reset = false;
+	particlePortal2Engine->constantBufferData.lifeTime = 1.0f;
+
 	// Power Up & Player Indicators
 	//player1Plane = new PowerupIndicator(
 	//	assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/BackgroundPlane.bin"),
@@ -295,14 +303,14 @@ Application::Application(bool fullscreen, bool showCursor, int screenWidth, int 
 		new Background(
 			assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/BackgroundPlane.bin"),
 			assetHandler->GetMaterial(d3dHandler->GetDevice(), "spaceAsteroider.dds", "", 0.0f),
-			backgShader, XMFLOAT3(-674, 0, 199.8), XMFLOAT3(8, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(337, 190, 1))
+			backgShader, XMFLOAT3(-674, 0, 199.8), XMFLOAT3(3, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(337, 190, 1))
 		);
 
 	entityHandler->Add(
 		new Background(
 		assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/BackgroundPlane.bin"),
 		assetHandler->GetMaterial(d3dHandler->GetDevice(), "spaceAsteroider.dds", "", 0.0f),
-		backgShader, XMFLOAT3(0, 0, 199.8), XMFLOAT3(8, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(337, 190, 1))
+		backgShader, XMFLOAT3(0, 0, 199.8), XMFLOAT3(3, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(337, 190, 1))
 		);
 
 	//entityHandler->Add(
@@ -317,7 +325,7 @@ Application::Application(bool fullscreen, bool showCursor, int screenWidth, int 
 		new BackgroundAsset(
 			assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/Earth.bin"),
 			assetHandler->GetMaterial(d3dHandler->GetDevice(), "EarthTexture.dds", "EarthNormalMap.dds"/*"normalmap.dds"*/, 0.0f, DirectX::XMFLOAT3(0.5, 0.5, 0.5), 10.0f, DirectX::XMFLOAT3(0.1, 0.1, 0.1), DirectX::XMFLOAT3(0, 0, 0)),
-			playerShader, XMFLOAT3(0, 0, 170), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0.4, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(15, 15, 15))
+			playerShader, XMFLOAT3(0, 0, 170), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0.05f, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(15, 15, 15))
 		);
 
 	//Light
@@ -607,6 +615,8 @@ Application::~Application()
 	delete particleBackground;
 	delete particlePortal1;
 	delete particlePortal2;
+	delete particlePortal1Engine;
+	delete particlePortal2Engine;
 
 	delete startMenu;
 	delete pauseMenu;
@@ -733,6 +743,9 @@ bool Application::Update(float deltaTime)
 	particlePowerBar1->UpdateParticle(deltaTime, d3dHandler->GetDeviceContext(), particleShader->GetComputeShader());
 	particlePowerBar1->UpdatePosition(DirectX::XMFLOAT3(player1->powerBar->GetCurrentMaxPosition().x, player1->powerBar->GetCurrentMaxPosition().y, 0.0f));
 	
+	particlePortal1Engine->UpdateParticle(deltaTime, d3dHandler->GetDeviceContext(), particleShader->GetComputeShader());
+	particlePortal1Engine->UpdatePosition(player1->GetPosition());
+
 	if (player1->renderParticles == true && particle->particleCounter <= particle->constantBufferData.lifeTime)
 	{
 		particle->UpdatePosition(player1->GetPosition());
@@ -761,6 +774,9 @@ bool Application::Update(float deltaTime)
 	particlePortal2->UpdatePosition(player2->GetPosition());
 	particlePortal2->UpdateColor(player2->renderParticles, player2->GetColor(), particle2, particleMaterials);
 	
+	particlePortal2Engine->UpdateParticle(deltaTime, d3dHandler->GetDeviceContext(), particleShader->GetComputeShader());
+	particlePortal2Engine->UpdatePosition(player2->GetPosition());
+
 	if (player2->renderParticles == true && particle->particleCounter <= particle2->constantBufferData.lifeTime)
 	{
 		particle2->UpdatePosition(player2->GetPosition());
@@ -823,6 +839,13 @@ void Application::Render()
 	d3dHandler->EnableAlphaBlendingSeverlOverlapping();
 	particlePortal1->Render(d3dHandler->GetDeviceContext());
 	particlePortal2->Render(d3dHandler->GetDeviceContext());
+
+	if (GetAsyncKeyState('D'))
+	{
+		particlePortal1Engine->Render(d3dHandler->GetDeviceContext());
+	}
+	particlePortal2Engine->Render(d3dHandler->GetDeviceContext());
+
 	d3dHandler->EnableAlphaBlendingFewOverlapping();
 	particleBackground->Render(d3dHandler->GetDeviceContext());
 

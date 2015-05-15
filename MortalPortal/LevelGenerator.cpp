@@ -40,7 +40,7 @@ LevelGenerator::LevelGenerator(std::string pathToFiles, std::string pheaderFile)
 	lastLine.spawnNext = 1.5f;
 
 	timeSinceLastFileSpawn = 0.0f;
-	timeSinceBackgroundAssetSpawn = 0.0f;
+	timeSinceBackgroundAssetSpawn = 28.0f;
 
 	srand(time(NULL));
 }
@@ -123,9 +123,9 @@ void LevelGenerator::Update(EntityHandler* entityHandler, float deltaTime, bool 
 		float rnd_AngVelZ = (float)(rand() / (RAND_MAX / 0.1f));
 		//float rnd_PosZ = (float)(rand() / (RAND_MAX / 50.0f)) + 70.0f;
 		float rnd_PosY = (float)(rand() / (RAND_MAX / 100.0f)) - 50.0f;
-		float rnd_Vel = (float)(rand() / (RAND_MAX / 10.0f) + 10.0f);
+		float rnd_Vel = (float)(rand() / (RAND_MAX / 10.0f) + 20.0f);
 		Entity* backgroundAsset = new BackgroundAsset(backgroundAssetGeometry[rnd], backgroundAssetMaterial[rnd], backgroundAssetShader[rnd],
-			DirectX::XMFLOAT3(XSpawnPos, rnd_PosY, 80), DirectX::XMFLOAT3(-lastLine.velocity, 0, 0), DirectX::XMFLOAT3(rnd_AngVelX, rnd_AngVelY, rnd_AngVelZ), DirectX::XMFLOAT3(0, 0, 0), DirectX::XMFLOAT3((float)(rand() / (RAND_MAX / DirectX::XM_PI)), (float)(rand() / (RAND_MAX / DirectX::XM_PI)), (float)(rand() / (RAND_MAX / DirectX::XM_PI))), DirectX::XMFLOAT3(1, 1, 1));
+			DirectX::XMFLOAT3(XSpawnPos, rnd_PosY, 80), DirectX::XMFLOAT3(-rnd_Vel, 0, 0), DirectX::XMFLOAT3(rnd_AngVelX, rnd_AngVelY, rnd_AngVelZ), DirectX::XMFLOAT3(0, 0, 0), DirectX::XMFLOAT3((float)(rand() / (RAND_MAX / DirectX::XM_PI)), (float)(rand() / (RAND_MAX / DirectX::XM_PI)), (float)(rand() / (RAND_MAX / DirectX::XM_PI))), DirectX::XMFLOAT3(1, 1, 1));
 		entityHandler->Add(backgroundAsset);
 	}
 	timeSinceBackgroundAssetSpawn += deltaTime;

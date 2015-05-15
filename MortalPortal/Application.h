@@ -74,6 +74,8 @@ private:
 	Particle* particleBackground;
 	Particle* particlePortal1;
 	Particle* particlePortal2;
+	Particle* particlePortal1Engine;
+	Particle* particlePortal2Engine;
 
 	// Particle Materials
 	std::vector <Material*> particleMaterials;
