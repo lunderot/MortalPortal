@@ -116,7 +116,7 @@ void AssetHandler::LoadFile(ID3D11Device* device, std::string filename)
 			isDir = false;
 		}
 		
-		this->light[filename] = new LightL(device, DirectX::XMFLOAT3(-0.5f, -0.5f, -0.5f), isDir, DirectX::XMFLOAT3(thisLight.color[0], thisLight.color[1], thisLight.color[2]));
+		this->light[filename] = new LightL(device, DirectX::XMFLOAT3(1.0f, 0.0f, 0.5f), isDir, DirectX::XMFLOAT3(thisLight.color[0], thisLight.color[1], thisLight.color[2]));
 	}
 
 

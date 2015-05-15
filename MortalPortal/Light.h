@@ -7,25 +7,16 @@
 class LightL
 {
 private:
-	//enum type {eDirectional, ePoint} lightType;
 	DirectX::XMFLOAT3 position;
 	bool isDirectional;
-	//DirectX::XMFLOAT3 ambient;
 	DirectX::XMFLOAT3 diffuse;
-	float pad;
-	//DirectX::XMFLOAT3 specular;
-	//float specularPow;
 
 	struct LightInfo
 	{
 		DirectX::XMFLOAT3 Position;
 		int isDirectional;
-		//DirectX::XMFLOAT3 Ambient;
-		//float pad1;
 		DirectX::XMFLOAT3 Diffuse;
 		float pad2;
-		//DirectX::XMFLOAT3 Specular;
-		//float pad3;
 	} directionLInfo;
 protected:
 

@@ -71,7 +71,7 @@ LightL::LightL(ID3D11Device* device, DirectX::XMFLOAT3 position, bool isDirectio
 	this->isDirectional = isDirectional;
 	this->diffuse = diffuse; //color
 
-	directionLInfo.Diffuse = this->position;
+	directionLInfo.Diffuse = this->diffuse;
 	directionLInfo.isDirectional = (int)this->isDirectional;
 	directionLInfo.Position = this->position;
 
