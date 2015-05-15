@@ -79,16 +79,16 @@ Application::Application(bool fullscreen, bool showCursor, int screenWidth, int 
 	levelGenerator->setPlayerOneCrystals(assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/crystal_v2.bin"),
 		assetHandler->GetMaterial(d3dHandler->GetDevice(), "assets/crystal_v2.bin", "Crystal_Green"),
 		playerShader,
-		assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/Crystal.bin"),
-		assetHandler->GetMaterial(d3dHandler->GetDevice(), "assets/Crystal.bin", "Crystal2"),
-		mapItemShader);
+		assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/crystal_v2.bin"),
+		assetHandler->GetMaterial(d3dHandler->GetDevice(), "assets/crystal_v2.bin", "Crystal_Red"),
+		playerShader);
 
-	levelGenerator->setPlayerTwoCrystals(assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/Crystal1.bin"),
-		assetHandler->GetMaterial(d3dHandler->GetDevice(), "assets/Crystal.bin", "Crystal3"),
-		mapItemShader,
-		assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/Crystal.bin"),
-		assetHandler->GetMaterial(d3dHandler->GetDevice(), "assets/Crystal.bin", "blinn4"),
-		mapItemShader);
+	levelGenerator->setPlayerTwoCrystals(assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/crystal_v2.bin"),
+		assetHandler->GetMaterial(d3dHandler->GetDevice(), "assets/crystal_v2.bin", "Crystal_Yellow"),
+		playerShader,
+		assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/crystal_v2.bin"),
+		assetHandler->GetMaterial(d3dHandler->GetDevice(), "assets/crystal_v2.bin", "Crystal_Blue"),
+		playerShader);
 
 	//Add available comets for LevelGenerator so choose from
 	levelGenerator->addComet(assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/Comet.bin"),
@@ -112,7 +112,7 @@ Application::Application(bool fullscreen, bool showCursor, int screenWidth, int 
 	//	playerShader);
 
 	levelGenerator->addBackgroundAsset(assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/big_comet.bin"),
-		assetHandler->GetMaterial(d3dHandler->GetDevice(), "big_comet_color.dds", "", 0.0f),
+		assetHandler->GetMaterial(d3dHandler->GetDevice(), "assets/big_comet.bin", "Comet"),
 		playerShader);
 
 	levelGenerator->setPowerUp(assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/Comet.bin"),

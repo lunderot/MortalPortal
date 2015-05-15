@@ -69,7 +69,7 @@ float4 main(VS_OUT input) : SV_Target
 	float3 diffuseLight = mul(max(dot(-lightDirection, finalNormalM), 0.0f), colorC);
 	float3 specularLight = mul(pow(max(dot(vecCamToFace, reflection), 0.0f), (specularFactor * 10.0f)), specular);
 
-	float3 addAmbDiffSpec = saturate(diffuseLight + specularLight + ambient);
+	float3 addAmbDiffSpec = saturate(diffuseLight + ambient);
 
 
 	// ----------- end
@@ -84,6 +84,7 @@ float4 main(VS_OUT input) : SV_Target
 	}
 	else
 	{
-		return outputTextured * float4(addAmbDiffSpec, 1.0f);
+		return saturate(outputTextured * float4(addAmbDiffSpec, 1.0f) + float4(specularLight, 1.0f));
+		//return float4(specularLight, 1.0f); 
 	}
 }
