@@ -86,7 +86,7 @@ float4 main(VS_OUT input) : SV_Target
 	}
 	else
 	{
-		return test3 * float4(addAmbDiffSpec, 1.0f)/* + float4(ambientC, 1.0f)*/;
+		return test3; //* float4(addAmbDiffSpec, 1.0f)/* + float4(ambientC, 1.0f)*/;
 		//return float4(input.texCoord, 1, 1);
 	}
 
