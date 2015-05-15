@@ -84,7 +84,7 @@ float4 main(VS_OUT input) : SV_Target
 	}
 	else
 	{
-		return saturate(outputTextured * float4(addAmbDiffSpec, 1.0f) + float4(specularLight, 1.0f));
+		return saturate(outputTextured * float4(addAmbDiffSpec, 1.0f) + float4(specularLight, 0.0f));
 		//return float4(specularLight, 1.0f); 
 	}
 }
