@@ -176,6 +176,7 @@ enum decay_type{ eNone, eLinear, eQuadric, eCubic };
 struct LightData
 {
 	unsigned int name_Length;
+	unsigned int numberOfParents;
 	light_type type;
 	double color[3];
 	float intensity;

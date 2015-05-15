@@ -88,12 +88,14 @@ struct ImporterMaterial
 struct ImporterLight
 {
 	unsigned int name_Length;
+	unsigned int numberOfParents;
 	light_type type;
 	double color[3];
 	float intensity;
 	decay_type dType;
 	bool cast_shadows;
 	double shadow_color[3];
+	int* parentID;
 	char* name;
 };
 
