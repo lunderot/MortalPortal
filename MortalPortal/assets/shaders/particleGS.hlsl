@@ -66,7 +66,7 @@ void main(point GS_IN input[1], inout TriangleStream<GS_OUT> triStream)
 
 	else if (input[0].type == 5)
 	{
-		float size = lerp(0.5, 0, input[0].lifeTime / 1.0f);
+		float size = lerp(0.5, 0, input[0].lifeTime / 0.3f);
 		rightVec = rightVec * size;
 		upVec = upVec * size;
 

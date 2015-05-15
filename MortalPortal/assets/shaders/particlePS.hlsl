@@ -34,7 +34,7 @@ float4 main(VS_OUT input) : SV_Target
 		//texColor[3] = saturate(texColor[3]);
 	}
 
-	else if (input.type == 1)
+	else if (input.type == 5)
 	{
 		texColor = tex.Sample(samplState, input.texCoord);
 		texColor.a -= lerp(0, 0, input.lifeTime / 0.5f);

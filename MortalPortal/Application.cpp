@@ -95,21 +95,21 @@ Application::Application(bool fullscreen, bool showCursor, int screenWidth, int 
 		assetHandler->GetMaterial(d3dHandler->GetDevice(), "assets/Comet.bin", "Comet"),
 		mapItemShader);
 
-	//levelGenerator->addBackgroundAsset(assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/DeadPortal.bin"),
-	//	assetHandler->GetMaterial(d3dHandler->GetDevice(), "Zbrush_DeadPortal.dds", "", 0.0f),
-	//	playerShader);
-
-	////levelGenerator->addBackgroundAsset(assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/DeadPortal.bin"),
-	////	assetHandler->GetMaterial(d3dHandler->GetDevice(), "assets/Comet.bin", "Comet"),
-	////	playerShader);
+	levelGenerator->addBackgroundAsset(assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/DeadPortal.bin"),
+		assetHandler->GetMaterial(d3dHandler->GetDevice(), "Zbrush_DeadPortal.dds", "", 0.0f),
+		playerShader);
 
 	//levelGenerator->addBackgroundAsset(assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/DeadPortal.bin"),
-	//	assetHandler->GetMaterial(d3dHandler->GetDevice(), "Zbrush_DeadPortal.dds", "", 0.0f),
+	//	assetHandler->GetMaterial(d3dHandler->GetDevice(), "assets/Comet.bin", "Comet"),
 	//	playerShader);
 
-	//levelGenerator->addBackgroundAsset(assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/DeadPortal.bin"),
-	//	assetHandler->GetMaterial(d3dHandler->GetDevice(), "Zbrush_DeadPortal.dds", "", 0.0f),
-	//	playerShader);
+	levelGenerator->addBackgroundAsset(assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/DeadPortal.bin"),
+		assetHandler->GetMaterial(d3dHandler->GetDevice(), "Zbrush_DeadPortal.dds", "", 0.0f),
+		playerShader);
+
+	levelGenerator->addBackgroundAsset(assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/DeadPortal.bin"),
+		assetHandler->GetMaterial(d3dHandler->GetDevice(), "Zbrush_DeadPortal.dds", "", 0.0f),
+		playerShader);
 
 	levelGenerator->addBackgroundAsset(assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/big_comet.bin"),
 		assetHandler->GetMaterial(d3dHandler->GetDevice(), "assets/big_comet.bin", "Comet"),
@@ -221,11 +221,11 @@ Application::Application(bool fullscreen, bool showCursor, int screenWidth, int 
 
 	particlePortal1Engine = new Particle(5, 100, assetHandler->GetMaterial(d3dHandler->GetDevice(), "particleTest.dds", "", 0.0f), NULL, d3dHandler->GetDevice());
 	particlePortal1Engine->constantBufferData.reset = false;
-	particlePortal1Engine->constantBufferData.lifeTime = 1.0f;
+	particlePortal1Engine->constantBufferData.lifeTime = 0.3f;
 
 	particlePortal2Engine = new Particle(5, 100, assetHandler->GetMaterial(d3dHandler->GetDevice(), "particleTest.dds", "", 0.0f), NULL, d3dHandler->GetDevice());
 	particlePortal2Engine->constantBufferData.reset = false;
-	particlePortal2Engine->constantBufferData.lifeTime = 1.0f;
+	particlePortal2Engine->constantBufferData.lifeTime = 0.3f;
 
 	// Power Up & Player Indicators
 	//player1Plane = new PowerupIndicator(
@@ -641,6 +641,7 @@ bool Application::Update(float deltaTime)
 	float test1 = 5.0f;
 	float test2 = 30.0f;
 	float test3 = 2.0f;
+
 	pauseMenu->CheckIfToPause(input->GetButtonStartState());
 	if (pauseMenu->renderMenu == true && startMenu->renderMenu == false || restartMenu->renderMenu == true)
 	{
@@ -747,6 +748,25 @@ bool Application::Update(float deltaTime)
 	particlePowerBar1->UpdateParticle(deltaTime, d3dHandler->GetDeviceContext(), particleShader->GetComputeShader());
 	particlePowerBar1->UpdatePosition(DirectX::XMFLOAT3(player1->powerBar->GetCurrentMaxPosition().x, player1->powerBar->GetCurrentMaxPosition().y, 0.0f));
 	
+	if (GetAsyncKeyState('D'))
+	{
+		particlePortal1Engine->renderPortalEngine = true;
+		particlePortal1Engine->constantBufferData.reset = false;
+		particlePortal1Engine->particleCounter = 0;
+	}
+
+	if (particlePortal1Engine->renderPortalEngine == true)
+	{
+		particlePortal1Engine->particleCounter += deltaTime;
+
+		if (particlePortal1Engine->particleCounter > particlePortal1Engine->constantBufferData.lifeTime)
+		{
+			particlePortal1Engine->renderPortalEngine = false;
+			particlePortal1Engine->particleCounter = 0;
+			particlePortal1Engine->constantBufferData.reset = true;
+		}
+	}
+
 	particlePortal1Engine->UpdateParticle(deltaTime, d3dHandler->GetDeviceContext(), particleShader->GetComputeShader());
 	particlePortal1Engine->UpdatePosition(player1->GetPosition());
 
@@ -844,10 +864,11 @@ void Application::Render()
 	particlePortal1->Render(d3dHandler->GetDeviceContext());
 	particlePortal2->Render(d3dHandler->GetDeviceContext());
 
-	if (GetAsyncKeyState('D'))
+	if (particlePortal1Engine->renderPortalEngine == true)
 	{
 		particlePortal1Engine->Render(d3dHandler->GetDeviceContext());
 	}
+
 	particlePortal2Engine->Render(d3dHandler->GetDeviceContext());
 
 	d3dHandler->EnableAlphaBlendingFewOverlapping();

@@ -14,6 +14,7 @@ Particle::Particle(unsigned int type,
 	this->material1 = material1;
 	this->material2 = material2;
 	changeTexture = false;
+	renderPortalEngine = false;
 
 	// Crystal Pick-up
 	if (type == 1)
@@ -117,7 +118,7 @@ Particle::Particle(unsigned int type,
 		{
 			Particles p;
 			p.type = type;
-			p.lifeTime = (float)(rand()) / (float)(RAND_MAX / 1.0f);
+			p.lifeTime = (float)(rand()) / (float)(RAND_MAX / 0.3f);
 			p.pos.x = 0;
 			p.pos.y = 0;
 			p.pos.z = 0;
