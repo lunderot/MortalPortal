@@ -52,7 +52,8 @@ public:
 		DirectX::XMFLOAT3 ambient = DirectX::XMFLOAT3(0, 0, 0),
 		DirectX::XMFLOAT3 diffuse = DirectX::XMFLOAT3(0, 0, 0),
 		DirectX::XMFLOAT3 transparency_color = DirectX::XMFLOAT3(0, 0, 0),
-		DirectX::XMFLOAT3 incandescence = DirectX::XMFLOAT3(0, 0, 0));
+		DirectX::XMFLOAT3 incandescence = DirectX::XMFLOAT3(0, 0, 0),
+		std::string specular_map = "");
 
 private:
 	//Geometry* LoadGeometry(ID3D11Device* device, std::string filename);

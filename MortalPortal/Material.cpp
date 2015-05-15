@@ -1,10 +1,11 @@
 #include "Material.h"
 
 
-Material::Material(ID3D11Device* device, ID3D11ShaderResourceView* texture, ID3D11ShaderResourceView* normal_map, float normal_depth, DirectX::XMFLOAT3 specular, float specular_factor, DirectX::XMFLOAT3 ambient, DirectX::XMFLOAT3 diffuse, DirectX::XMFLOAT3 transparency_color, DirectX::XMFLOAT3 incandescence)
+Material::Material(ID3D11Device* device, ID3D11ShaderResourceView* texture, ID3D11ShaderResourceView* normal_map, float normal_depth, DirectX::XMFLOAT3 specular, float specular_factor, DirectX::XMFLOAT3 ambient, DirectX::XMFLOAT3 diffuse, DirectX::XMFLOAT3 transparency_color, DirectX::XMFLOAT3 incandescence, ID3D11ShaderResourceView* specular_map)
 {
 	this->texture = texture;
 	this->normalMap = normal_map;
+	this->specularMap = specular_map;
 
 	this->normalDepth = normal_depth;
 	this->specular = specular;
@@ -15,7 +16,7 @@ Material::Material(ID3D11Device* device, ID3D11ShaderResourceView* texture, ID3D
 	this->incandescence = incandescence;
 
 	materialInfo.Specular = this->specular;
-	materialInfo.Specular_factor = this->specularFactor;
+	materialInfo.Specular_Factor = this->specularFactor;
 	materialInfo.Ambient = this->ambient;
 	materialInfo.Diffuse = this->diffuse;
 	materialInfo.Transparency_Color = this->transparencyColor;
@@ -55,6 +56,11 @@ ID3D11ShaderResourceView* Material::GetTexture() const
 ID3D11ShaderResourceView* Material::GetNormalMap() const
 {
 	return this->normalMap;
+}
+
+ID3D11ShaderResourceView* Material::GetSpecularMap() const
+{
+	return this->specularMap;
 }
 
 float Material::GetNormalDepth()
