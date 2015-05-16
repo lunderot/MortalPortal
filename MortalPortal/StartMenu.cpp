@@ -136,8 +136,5 @@ StartMenu::~StartMenu()
 
 	if (buttonVertexBuffer)
 		buttonVertexBuffer->Release();
-
-	if (SRV)
-		SRV->Release();
 	delete buttonGeometry;
 }

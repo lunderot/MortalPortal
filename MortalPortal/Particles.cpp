@@ -264,9 +264,6 @@ Particle::~Particle()
 	if (geometry->GetVertexBuffer())
 		geometry->GetVertexBuffer()->Release();
 	delete geometry;
-
-	if (SRV)
-		SRV->Release();
 }
 
 void Particle::UpdateColor(bool renderParticles, const Color color, Particle* explosionParticles, std::vector<Material*> materials)
