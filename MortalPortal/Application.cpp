@@ -219,11 +219,11 @@ Application::Application(bool fullscreen, bool showCursor, int screenWidth, int 
 	particlePortal2->constantBufferData.reset = false;
 	particlePortal2->constantBufferData.lifeTime = 0.3f;
 
-	particlePortal1Engine = new Particle(5, 100, assetHandler->GetMaterial(d3dHandler->GetDevice(), "particleTest.dds", "", 0.0f), NULL, d3dHandler->GetDevice());
+	particlePortal1Engine = new Particle(5, 100,greenParticle, redParticle, d3dHandler->GetDevice());
 	particlePortal1Engine->constantBufferData.reset = false;
 	particlePortal1Engine->constantBufferData.lifeTime = 0.3f;
 
-	particlePortal2Engine = new Particle(5, 100, assetHandler->GetMaterial(d3dHandler->GetDevice(), "particleTest.dds", "", 0.0f), NULL, d3dHandler->GetDevice());
+	particlePortal2Engine = new Particle(5, 100,yellowParticle, blueParticle, d3dHandler->GetDevice());
 	particlePortal2Engine->constantBufferData.reset = false;
 	particlePortal2Engine->constantBufferData.lifeTime = 0.3f;
 
@@ -673,27 +673,10 @@ bool Application::Update(float deltaTime)
 	particlePowerBar1->UpdateParticle(deltaTime, d3dHandler->GetDeviceContext(), particleShader->GetComputeShader());
 	particlePowerBar1->UpdatePosition(DirectX::XMFLOAT3(player1->powerBar->GetCurrentMaxPosition().x, player1->powerBar->GetCurrentMaxPosition().y, 0.0f));
 	
-	if (GetAsyncKeyState('D'))
-	{
-		particlePortal1Engine->renderPortalEngine = true;
-		particlePortal1Engine->constantBufferData.reset = false;
-		particlePortal1Engine->particleCounter = 0;
-	}
-
-	if (particlePortal1Engine->renderPortalEngine == true)
-	{
-		particlePortal1Engine->particleCounter += deltaTime;
-
-		if (particlePortal1Engine->particleCounter > particlePortal1Engine->constantBufferData.lifeTime)
-		{
-			particlePortal1Engine->renderPortalEngine = false;
-			particlePortal1Engine->particleCounter = 0;
-			particlePortal1Engine->constantBufferData.reset = true;
-		}
-	}
 
 	particlePortal1Engine->UpdateParticle(deltaTime, d3dHandler->GetDeviceContext(), particleShader->GetComputeShader());
 	particlePortal1Engine->UpdatePosition(player1->GetPosition());
+	particlePortal1Engine->UpdateColor(player1->renderParticles, player1->GetColor(), particle, particleMaterials);
 
 	if (player1->renderParticles == true && particle->particleCounter <= particle->constantBufferData.lifeTime)
 	{
@@ -725,7 +708,7 @@ bool Application::Update(float deltaTime)
 	
 	particlePortal2Engine->UpdateParticle(deltaTime, d3dHandler->GetDeviceContext(), particleShader->GetComputeShader());
 	particlePortal2Engine->UpdatePosition(player2->GetPosition());
-
+	particlePortal2Engine->UpdateColor(player2->renderParticles, player2->GetColor(), particle2, particleMaterials);
 	if (player2->renderParticles == true && particle->particleCounter <= particle2->constantBufferData.lifeTime)
 	{
 		particle2->UpdatePosition(player2->GetPosition());
@@ -789,10 +772,7 @@ void Application::Render()
 	particlePortal1->Render(d3dHandler->GetDeviceContext());
 	particlePortal2->Render(d3dHandler->GetDeviceContext());
 
-	if (particlePortal1Engine->renderPortalEngine == true)
-	{
-		particlePortal1Engine->Render(d3dHandler->GetDeviceContext());
-	}
+	particlePortal1Engine->Render(d3dHandler->GetDeviceContext());
 
 	particlePortal2Engine->Render(d3dHandler->GetDeviceContext());
 

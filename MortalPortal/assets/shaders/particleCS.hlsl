@@ -102,7 +102,7 @@ void main(uint3 dispatchThreadID : SV_DispatchThreadID)
 		pos.x += velocity.x * deltaTime / 20;
 		pos.y += velocity.y * deltaTime / 20;
 
-		if (life > lifeTime && reset == true)
+		if (life > lifeTime && pos.x < position.x)
 		{
 			int whatEngine = dispatchThreadID.x % 2;
 			if (whatEngine == 0)
@@ -114,17 +114,18 @@ void main(uint3 dispatchThreadID : SV_DispatchThreadID)
 			life -= lifeTime;
 		}
 
-		else if (life > lifeTime)
+		else if (pos.x > position.x)
 		{
 			int whatEngine = dispatchThreadID.x % 2;
 			if (whatEngine == 0)
-				pos.y = position.y + 2;
+				pos.y = position.y + 200;
 			else
-				pos.y = position.y - 2;
+				pos.y = position.y - 200;
 
 			pos.x = position.x - 2;
-			life -= lifeTime;
+			life -= lifeTime * 0.30f;
 		}
+
 
 	}
 	else
