@@ -129,6 +129,33 @@ void Player::ReactToInput(bool currentButtonState, AudioMaster &aMaster)
 	previousButtonState = currentButtonState;
 }
 
+void Player::ReactToControl(DirectX::XMFLOAT2 dir, bool invertControl, bool slowDown)
+{
+	float slowDownAcc = 5.0f;
+	float notSlowDownAcc = 30.0f;
+	float test3 = 2.0f;
+	// Player 1 - control
+	// PowerUp - Invert Control - effect on | Player2
+	if (invertControl)
+	{
+		dir.x *= -0.5f;
+		dir.y *= -0.5f;
+	}
+
+	// PowerUp - Slow Down Acceleration - effect on | Player2
+	if (slowDown)
+	{
+		dir.x *= slowDownAcc;
+		dir.y *= slowDownAcc;
+	}
+	else
+	{
+		dir.x *= notSlowDownAcc;
+		dir.y *= notSlowDownAcc;
+	}
+	SetAcceleration(DirectX::XMFLOAT3(dir.x, dir.y, 0.0f));
+}
+
 void Player::Update(float deltaTime)
 {
 	Entity::Update(deltaTime);

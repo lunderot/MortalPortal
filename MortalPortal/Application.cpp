@@ -638,91 +638,16 @@ Application::~Application()
 
 bool Application::Update(float deltaTime)
 {
-	float test1 = 5.0f;
-	float test2 = 30.0f;
-	float test3 = 2.0f;
-
 	pauseMenu->CheckIfToPause(input->GetButtonStartState());
 	if (pauseMenu->renderMenu == true && startMenu->renderMenu == false || restartMenu->renderMenu == true)
 	{
 		deltaTime = 0;
 		playerWins->player1Wins = false;
 	}
-	// Player 1 - control
-	XMFLOAT2 dir = input->GetDirection(player1Test);
-	// PowerUp - Invert Control - effect on | Player2
-	if (player2->getInvertControl() == true)
-	{
-		dir.x *= -0.5f;
-		dir.y *= -0.5f;
-		inverseIndicator2->SetVisible(true);
-	}
-	else
-		inverseIndicator2->SetVisible(false);
-
-	// PowerUp - Slow Down Acceleration - effect on | Player2
-	if (player2->getSlowDownAcceleration() == true)
-	{
-		dir.x *= test1;
-		dir.y *= test1;
-		slowSpeedIndicator2->SetVisible(true);
-	}
-	else
-	{
-		dir.x *= test2;
-		dir.y *= test2;
-		slowSpeedIndicator2->SetVisible(false);
-	}
-	// PowerUp - Bonus Combo - effect on | Player1
-	player1->getBonusCombo();
-	// PowerUp - Immortal Portal - effect on | Player1
-	if (player1->getImmortalPortal())
-		immortalIndicator1->SetVisible(true);
-	else
-		immortalIndicator1->SetVisible(false);
-
-	player1->SetAcceleration(XMFLOAT3(dir.x, dir.y, 0.0f));
-	if (pauseMenu->renderMenu == false && restartMenu->renderMenu == false)
-		player1->ReactToInput(input->GetButtonState(), aMaster);
-
-	// Player 2 - control
-	XMFLOAT2 dir2 = input2->GetDirection(player2Test);
-	// PowerUp - Invert Control - effect on | Player1
-	if (player1->getInvertControl() == true)
-	{
-		dir2.x *= -0.5f;
-		dir2.y *= -0.5f;
-		inverseIndicator1->SetVisible(true);
-	}
-	else
-		inverseIndicator1->SetVisible(false);
-
-	// PowerUp - Slow Down Acceleration - effect on | Player1
-	if (player1->getSlowDownAcceleration() == true)
-	{
-		dir2.x *= test1;
-		dir2.y *= test1;
-		slowSpeedIndicator1->SetVisible(true);
-	}
-	else
-	{
-		dir2.x *= test2;
-		dir2.y *= test2;
-		slowSpeedIndicator1->SetVisible(false);
-	}
-	// PowerUp - Bonus Combo - effect on | Player2
-	player2->getBonusCombo();
-	// PowerUp - Immortal Portal - effect on | Player2
-	if (player2->getImmortalPortal())
-		immortalIndicator2->SetVisible(true);
-	else
-		immortalIndicator2->SetVisible(false);
-
-
-	player2->SetAcceleration(XMFLOAT3(dir2.x, dir2.y, 0.0f));
-	if (pauseMenu->renderMenu == false && restartMenu->renderMenu == false)
-		player2->ReactToInput(input2->GetButtonState(), aMaster);
 	
+	UpdatePlayerControls(input, player1, player2, immortalIndicator1, inverseIndicator1, slowSpeedIndicator1);
+	UpdatePlayerControls(input2, player2, player1, immortalIndicator2, inverseIndicator2, slowSpeedIndicator2);
+
 	// Check if Crystal Frenzy is true for both Player1 & Player2wdawddsadsadwas
 	if (player1->getCrystalFrenzy() == true || player2->getCrystalFrenzy() == true)
 	{
@@ -947,4 +872,21 @@ void Application::Render()
 	}
 
 	d3dHandler->EndScene();
+}
+
+void Application::UpdatePlayerControls(Input* input, Player* player, Player* enemyPlayer,
+	PowerupIndicator* importalPortalIndicator,
+	PowerupIndicator* inverseIndicator,
+	PowerupIndicator* slowSpeedIndicator)
+{
+	//React to switch portal button
+	if (pauseMenu->renderMenu == false && restartMenu->renderMenu == false)
+	{
+		player->ReactToInput(input->GetButtonState(), aMaster);
+	}
+	player->ReactToControl(input->GetDirection(player1Test), enemyPlayer->getInvertControl(), enemyPlayer->getSlowDownAcceleration());
+	//Set player indicators depending on powerups
+	importalPortalIndicator->SetVisible(player->getImmortalPortal());
+	inverseIndicator->SetVisible(player->getInvertControl());
+	slowSpeedIndicator->SetVisible(player->getSlowDownAcceleration());
 }

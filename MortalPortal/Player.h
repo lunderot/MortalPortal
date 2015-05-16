@@ -22,6 +22,7 @@ public:
 	~Player();
 
 	void ReactToInput(bool currentButtonState, AudioMaster &aMaster);
+	void ReactToControl(DirectX::XMFLOAT2 dir, bool invertControl, bool slowDown);
 	void Update(float deltaTime);
 
 	Material* GetMaterial() const;

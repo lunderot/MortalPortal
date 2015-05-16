@@ -127,5 +127,8 @@ public:
 
 	bool Update(float deltaTime); //Returns true on quit
 	void Render();
+
+private:
+	void UpdatePlayerControls(Input* input, Player* player, Player* enemyPlayer, PowerupIndicator* importalPortalIndicator, PowerupIndicator* inverseIndicator, PowerupIndicator* slowSpeedIndicator);
 };
 
