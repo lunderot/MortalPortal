@@ -50,8 +50,8 @@ Importer::~Importer()
 
 	for (unsigned int i = 0; i < headers.light_count; i++)
 	{
-		delete[] lights[i].name;
 		delete[] lights[i].parentID;
+		delete[] lights[i].name;		
 	}
 
 	for (unsigned int i = 0; i < headers.joint_count; i++)
@@ -380,7 +380,7 @@ bool Importer::extractLights(unsigned int& offset, char* fileData, unsigned int&
 		if (lights[i].numberOfParents * sizeof(int) > fileSize - offset)
 			return false;
 		lights[i].parentID = new int[lights[i].numberOfParents];
-		memcpy(lights[i].parentID, &fileData[offset], lights[i].name_Length);
+		memcpy(lights[i].parentID, &fileData[offset], lights[i].numberOfParents * sizeof(int));
 
 		if (lights[i].name_Length > fileSize - offset)
 			return false;
