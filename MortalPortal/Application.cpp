@@ -90,10 +90,18 @@ Application::Application(bool fullscreen, bool showCursor, int screenWidth, int 
 		assetHandler->GetMaterial(d3dHandler->GetDevice(), "assets/crystal_v2.bin", "Crystal_Blue"),
 		playerShader);
 
-	//Add available comets for LevelGenerator so choose from
-	levelGenerator->addComet(assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/Comet.bin"),
-		assetHandler->GetMaterial(d3dHandler->GetDevice(), "assets/Comet.bin", "Comet"),
-		mapItemShader);
+	// Add available comets for LevelGenerator to choose from
+	levelGenerator->addComet(assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/small_comet_v1.bin"),
+		assetHandler->GetMaterial(d3dHandler->GetDevice(), "assets/small_comet_v1.bin", "Comet"),
+		playerShader);
+
+	levelGenerator->addComet(assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/small_comet_v2.bin"),
+		assetHandler->GetMaterial(d3dHandler->GetDevice(), "assets/small_comet_v2.bin", "Comet"),
+		playerShader);
+
+	levelGenerator->addComet(assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/small_comet_v3.bin"),
+		assetHandler->GetMaterial(d3dHandler->GetDevice(), "assets/small_comet_v3.bin", "Comet"),
+		playerShader);
 
 	levelGenerator->addBackgroundAsset(assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/DeadPortal.bin"),
 		assetHandler->GetMaterial(d3dHandler->GetDevice(), "Zbrush_DeadPortal.dds", "", 0.0f),
