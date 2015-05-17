@@ -337,7 +337,7 @@ Application::Application(bool fullscreen, bool showCursor, int screenWidth, int 
 		new BackgroundAsset(
 			assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/Earth.bin"),
 			assetHandler->GetMaterial(d3dHandler->GetDevice(), "EarthTexture.dds", "EarthNormalMap.dds", 0.0f, DirectX::XMFLOAT3(0.2, 0.2, 0.2), 10.0f, DirectX::XMFLOAT3(0.1, 0.1, 0.1), DirectX::XMFLOAT3(0.8, 0.8, 0.8)),
-			playerShader, XMFLOAT3(0, 0, 170), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0.4, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(15, 15, 15))
+			playerShader, XMFLOAT3(0, 0, 170), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0.05f, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(15, 15, 15))
 		);
 
 	//Light
@@ -653,8 +653,8 @@ bool Application::Update(float deltaTime)
 		playerWins->player1Wins = false;
 	}
 	
-	UpdatePlayerControls(input, player1, player2, immortalIndicator1, inverseIndicator1, slowSpeedIndicator1);
-	UpdatePlayerControls(input2, player2, player1, immortalIndicator2, inverseIndicator2, slowSpeedIndicator2);
+	UpdatePlayerControls(input, player1, player2, immortalIndicator1, inverseIndicator1, slowSpeedIndicator1, particlePortal2Engine, particlePortal2);
+	UpdatePlayerControls(input2, player2, player1, immortalIndicator2, inverseIndicator2, slowSpeedIndicator2,particlePortal1Engine, particlePortal1);
 
 	// Check if Crystal Frenzy is true for both Player1 & Player2wdawddsadsadwas
 	if (player1->getCrystalFrenzy() == true || player2->getCrystalFrenzy() == true)
@@ -865,7 +865,9 @@ void Application::Render()
 void Application::UpdatePlayerControls(Input* input, Player* player, Player* enemyPlayer,
 	PowerupIndicator* importalPortalIndicator,
 	PowerupIndicator* inverseIndicator,
-	PowerupIndicator* slowSpeedIndicator)
+	PowerupIndicator* slowSpeedIndicator,
+	Particle* portalEngine,
+	Particle* portalParticles)
 {
 	//React to switch portal button
 	if (pauseMenu->renderMenu == false && restartMenu->renderMenu == false)
@@ -877,4 +879,16 @@ void Application::UpdatePlayerControls(Input* input, Player* player, Player* ene
 	importalPortalIndicator->SetVisible(player->getImmortalPortal());
 	inverseIndicator->SetVisible(player->getInvertControl());
 	slowSpeedIndicator->SetVisible(player->getSlowDownAcceleration());
+
+	// Disable Portal Engine Particles when slowed
+	if (player->getSlowDownAcceleration())
+	{
+		portalEngine->constantBufferData.reset = true;
+		portalParticles->constantBufferData.reset = true;
+	}
+	else
+	{
+		portalEngine->constantBufferData.reset = false;
+		portalParticles->constantBufferData.reset = false;
+	}
 }

@@ -15,6 +15,7 @@ Particle::Particle(unsigned int type,
 	this->material2 = material2;
 	changeTexture = false;
 	renderPortalEngine = false;
+	//slowEffect = false;
 
 	// Crystal Pick-up
 	if (type == 1)
@@ -239,6 +240,7 @@ void Particle::Render(ID3D11DeviceContext* deviceContext)
 	else
 		SRV = material2->GetTexture();
 	deviceContext->PSSetShaderResources(0, 1, &SRV);
+	deviceContext->PSSetConstantBuffers(0, 1, &constantBuffer);
 	deviceContext->Draw(nrOfParticles, 0);
 }
 

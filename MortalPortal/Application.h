@@ -129,6 +129,6 @@ public:
 	void Render();
 
 private:
-	void UpdatePlayerControls(Input* input, Player* player, Player* enemyPlayer, PowerupIndicator* importalPortalIndicator, PowerupIndicator* inverseIndicator, PowerupIndicator* slowSpeedIndicator);
+	void UpdatePlayerControls(Input* input, Player* player, Player* enemyPlayer, PowerupIndicator* importalPortalIndicator, PowerupIndicator* inverseIndicator, PowerupIndicator* slowSpeedIndicator, Particle* portalEngine, Particle* portal);
 };
 
