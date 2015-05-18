@@ -102,15 +102,13 @@ void EntityHandler::Update(float deltaTime, AudioMaster &aMaster)
 
 					model2 = scaleMatrix * model2;
 
-					bool collision = false;
-					for (std::vector<CollisionSphere>::iterator k = collision1->spheres.begin(); k != collision1->spheres.end() && !collision; ++k)
+					for (std::vector<CollisionSphere>::iterator k = collision1->spheres.begin(); k != collision1->spheres.end(); ++k)
 					{
-						for (std::vector<CollisionSphere>::iterator l = collision2->spheres.begin(); l != collision2->spheres.end() && !collision; ++l)
+						for (std::vector<CollisionSphere>::iterator l = collision2->spheres.begin(); l != collision2->spheres.end(); ++l)
 						{
 							if (IsSpheresColliding((*k), (*l), model1, model2))
 							{
-								HandleCollision((*i), (*j), aMaster);
-								collision = true;
+								HandleCollision((*i), (*j), (*k).name, aMaster);
 							}
 						}
 					}
@@ -209,9 +207,11 @@ void EntityHandler::Add(Entity* entity)
 	entities[entity->GetShader()].push_back(entity);
 }
 
-void EntityHandler::HandleCollision(Player* player, Entity* entity2, AudioMaster &aMaster)
+void EntityHandler::HandleCollision(Player* player, Entity* entity2, std::string name, AudioMaster &aMaster)
 {
 	MapItem* item = dynamic_cast<MapItem*>(entity2);
+	bool isPortal = name == "nurbsSphere1";
+
 	if (item)
 	{
 		switch (item->type)
@@ -238,39 +238,41 @@ void EntityHandler::HandleCollision(Player* player, Entity* entity2, AudioMaster
 			}	
 			case MapItem::objectType::PowerUp:
 			{
-				unsigned int rnd = rand() % 5;
-
-				if (rnd == 0) // Slow Down Acceleration
+				if (isPortal)
 				{
-					player->setSlowDownAcceleration(5.0f);
-				}
+					unsigned int rnd = rand() % 5;
 
-				if (rnd == 1) // Immortal Portal
-				{
-					player->setImmortalPortal(5.0f);
-				}
+					if (rnd == 0) // Slow Down Acceleration
+					{
+						player->setSlowDownAcceleration(5.0f);
+					}
 
-				if (rnd == 2) // Combo Bonus
-				{
-					player->setBonusCombo(5.0f);
-				}
+					if (rnd == 1) // Immortal Portal
+					{
+						player->setImmortalPortal(5.0f);
+					}
 
-				if (rnd == 3) // Crystal Frenzy
-				{
-					player->setCrystalFrenzy(5.0f);
-				}
+					if (rnd == 2) // Combo Bonus
+					{
+						player->setBonusCombo(5.0f);
+					}
 
-				if (rnd == 4) // Inverse Control
-				{
-					player->setInvertControl(5.0f);
-				}
+					if (rnd == 3) // Crystal Frenzy
+					{
+						player->setCrystalFrenzy(5.0f);
+					}
 
+					if (rnd == 4) // Inverse Control
+					{
+						player->setInvertControl(5.0f);
+					}
+				}
 
 				break;
 			}
 			case MapItem::objectType::Crystal:
 			{
-				if (player->GetColor() == item->GetColor())
+				if (player->GetColor() == item->GetColor() && isPortal)
 				{
 					player->AddCombo(false);
 					player->AddComboText();
