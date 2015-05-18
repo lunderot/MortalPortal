@@ -1,6 +1,5 @@
 #pragma once
 #include "StartButton.h"
-#include "OptionsButton.h"
 #include "QuitButton.h"
 #include "Button.h"
 #include <d3d11.h>

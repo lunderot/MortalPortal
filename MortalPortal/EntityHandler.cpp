@@ -209,7 +209,7 @@ void EntityHandler::HandleCollision(Player* player, Entity* entity2, std::string
 		{
 			case MapItem::objectType::Comet:
 			{
-				if (player->getImmortalPortal() == true)
+				if (player->GetImmortalPortal() == true)
 				{
 					player->AddCombo(false);
 					player->AddComboText();
@@ -255,7 +255,7 @@ void EntityHandler::HandleCollision(Player* player, Entity* entity2, std::string
 
 					if (rnd == 4) // Inverse Control
 					{
-						player->setInvertControl(5.0f);
+						player->SetInvertControl(5.0f);
 					}
 				}
 
@@ -275,7 +275,7 @@ void EntityHandler::HandleCollision(Player* player, Entity* entity2, std::string
 				}
 				else
 				{
-					if (player->getImmortalPortal() == true)
+					if (player->GetImmortalPortal() == true)
 					{
 						player->AddCombo(false);
 						player->AddComboText();

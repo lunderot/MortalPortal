@@ -18,5 +18,5 @@ public:
 	bool player1Wins;
 	bool playerWinsText;
 
-	void RenderText(ID3D11DeviceContext* deviceContext);
+	void Render(ID3D11DeviceContext* deviceContext);
 };

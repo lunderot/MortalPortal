@@ -8,6 +8,6 @@ public:
 	ContinueButton(DirectX::XMFLOAT2 position, DirectX::XMFLOAT2 scale, Material* material);
 	~ContinueButton();
 
-	bool isClicked();
+	bool IsClicked();
 
 };

@@ -48,7 +48,7 @@ public:
 
 	~Particle();
 
-	ID3D11UnorderedAccessView* getUAV();
+	ID3D11UnorderedAccessView* GetUAV();
 	unsigned int GetNrOfParticles();
 	float particleCounter;
 	std::vector<Particles> particle;

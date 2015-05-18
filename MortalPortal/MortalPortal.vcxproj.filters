@@ -236,9 +236,6 @@
     <ClInclude Include="StartButton.h">
       <Filter>Header Files\Buttons</Filter>
     </ClInclude>
-    <ClInclude Include="QuitButton.h">
-      <Filter>Header Files\Buttons</Filter>
-    </ClInclude>
     <ClInclude Include="Entity.h">
       <Filter>Header Files\Entities</Filter>
     </ClInclude>
@@ -320,6 +317,9 @@
     <ClInclude Include="ObjectShader.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="QuitButton.h">
+      <Filter>Header Files\Buttons</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="assets\shaders\powerBarPS.hlsl">
@@ -334,19 +334,11 @@
     <FxCompile Include="assets\shaders\BackgroundVertexShader.hlsl">
       <Filter>Resource Files</Filter>
     </FxCompile>
-    <ClCompile Include="OptionsButton.cpp">
-      <Filter>Source Files\Buttons</Filter>
-    </ClCompile>
     <FxCompile Include="assets\shaders\playerPS.hlsl">
       <Filter>Resource Files</Filter>
     </FxCompile>
     <FxCompile Include="assets\shaders\playerVS.hlsl">
       <Filter>Resource Files</Filter>
     </FxCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="OptionsButton.h">
-      <Filter>Header Files\Buttons</Filter>
-    </ClInclude>
   </ItemGroup>
 </Project>

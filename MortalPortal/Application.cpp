@@ -137,7 +137,7 @@ Application::Application(bool fullscreen, bool showCursor, int screenWidth, int 
 		playerShader,
 
 		Color::GREEN, Color::RED,
-		XMFLOAT3(-10, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, XM_PIDIV2, 0));
+		XMFLOAT3(-15, 5, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, XM_PIDIV2, 0));
 
 	entityHandler->Add(player1);
 
@@ -148,7 +148,7 @@ Application::Application(bool fullscreen, bool showCursor, int screenWidth, int 
 		playerShader,
 
 		Color::YELLOW, Color::BLUE,
-		XMFLOAT3(-10, 5, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, XM_PIDIV2, 0));
+		XMFLOAT3(-15, -5, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, XM_PIDIV2, 0));
 
 	entityHandler->Add(player2);
 
@@ -658,7 +658,7 @@ bool Application::Update(float deltaTime)
 	UpdatePlayerControls(input2, player2, player1, immortalIndicator2, inverseIndicator2, slowSpeedIndicator2,particlePortal1Engine, particlePortal1);
 
 	// Check if Crystal Frenzy is true for both Player1 & Player2wdawddsadsadwas
-	if (player1->getCrystalFrenzy() == true || player2->getCrystalFrenzy() == true)
+	if (player1->GetCrystalFrenzy() == true || player2->GetCrystalFrenzy() == true)
 	{
 		player1->setCrystalFrenzy(false);
 		player2->setCrystalFrenzy(false);
@@ -794,8 +794,8 @@ void Application::Render()
 	{
 		powerBarShader->Use(d3dHandler->GetDeviceContext());
 		playerWins->playerWinsText = false;
-		player1Info->RenderText(d3dHandler->GetDeviceContext());
-		player2Info->RenderText(d3dHandler->GetDeviceContext());
+		player1Info->Render(d3dHandler->GetDeviceContext());
+		player2Info->Render(d3dHandler->GetDeviceContext());
 		// Particles
 		particleShader->Use(d3dHandler->GetDeviceContext());
 		particlePowerBar1->Render(d3dHandler->GetDeviceContext());
@@ -820,8 +820,8 @@ void Application::Render()
 
 		// Power Bars
 		powerBarShader->Use(d3dHandler->GetDeviceContext());
-		powerbarBackground1->RenderText(d3dHandler->GetDeviceContext());
-		powerbarBackground2->RenderText(d3dHandler->GetDeviceContext());
+		powerbarBackground1->Render(d3dHandler->GetDeviceContext());
+		powerbarBackground2->Render(d3dHandler->GetDeviceContext());
 		player1->powerBar->Render(d3dHandler->GetDeviceContext(), powerBarShader);
 		player2->powerBar->Render(d3dHandler->GetDeviceContext(), powerBarShader);
 
@@ -837,7 +837,7 @@ void Application::Render()
 			restartMenu->buttonScale.button = false;
 			restartMenu->UpdateConstantBuffer(d3dHandler->GetDeviceContext(), &restartMenu->buttonScale);
 			playerWins->playerWinsText = true;
-			playerWins->RenderText(d3dHandler->GetDeviceContext());
+			playerWins->Render(d3dHandler->GetDeviceContext());
 		}
 
 		comboBarShader->Use(d3dHandler->GetDeviceContext());
@@ -875,14 +875,14 @@ void Application::UpdatePlayerControls(Input* input, Player* player, Player* ene
 	{
 		player->ReactToInput(input->GetButtonState(), aMaster);
 	}
-	player->ReactToControl(input->GetDirection(player1Test), enemyPlayer->getInvertControl(), enemyPlayer->getSlowDownAcceleration());
+	player->ReactToControl(input->GetDirection(player1Test), enemyPlayer->GetInvertControl(), enemyPlayer->GetSlowDownAcceleration());
 	//Set player indicators depending on powerups
-	importalPortalIndicator->SetVisible(player->getImmortalPortal());
-	inverseIndicator->SetVisible(player->getInvertControl());
-	slowSpeedIndicator->SetVisible(player->getSlowDownAcceleration());
+	importalPortalIndicator->SetVisible(player->GetImmortalPortal());
+	inverseIndicator->SetVisible(player->GetInvertControl());
+	slowSpeedIndicator->SetVisible(player->GetSlowDownAcceleration());
 
 	// Disable Portal Engine Particles when slowed
-	if (player->getSlowDownAcceleration())
+	if (player->GetSlowDownAcceleration())
 	{
 		portalEngine->constantBufferData.reset = true;
 		portalParticles->constantBufferData.reset = true;
