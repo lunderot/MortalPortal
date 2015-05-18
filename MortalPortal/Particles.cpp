@@ -44,13 +44,13 @@ Particle::Particle(unsigned int type,
 		{
 			Particles p;
 			p.type = type;
-			p.lifeTime = rand() % 100 - 10;
+			p.lifeTime = rand() % 60 - 10;
 			p.pos.x = 20;
 			p.pos.y = 20;
 			p.pos.z = 20;
 
 			p.velocity.x = rand() % 10;
-			p.velocity.y = rand() % 12 - 6;
+			p.velocity.y = rand() % 15 - 6;
 			p.acceleration.x = 0;
 			p.acceleration.y = 0;
 			particle.push_back(p);

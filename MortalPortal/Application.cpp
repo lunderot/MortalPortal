@@ -209,7 +209,7 @@ Application::Application(bool fullscreen, bool showCursor, int screenWidth, int 
 	particlePowerBar1->constantBufferData.reset = false;
 	particlePowerBar1->constantBufferData.lifeTime = 20;
 
-	particlePowerBar2 = new Particle(2, 100, assetHandler->GetMaterial(d3dHandler->GetDevice(), "energybar.dds", "", 0.0f), NULL, d3dHandler->GetDevice());
+	particlePowerBar2 = new Particle(2, 100, assetHandler->GetMaterial(d3dHandler->GetDevice(), "energybar1.dds", "", 0.0f), NULL, d3dHandler->GetDevice());
 	particlePowerBar2->constantBufferData.reset = false;
 	particlePowerBar2->constantBufferData.lifeTime = 20;
 
@@ -590,8 +590,6 @@ Application::~Application()
 	delete playerWins;
 	delete player1Info;
 	delete player2Info;
-	delete powerbarBackground1;
-	delete powerbarBackground2;
 
 	delete oneDirection;
 

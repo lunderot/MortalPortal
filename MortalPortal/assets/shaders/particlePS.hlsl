@@ -23,8 +23,8 @@ float4 main(VS_OUT input) : SV_Target
 	if (input.type == 2)
 	{
 		
-		input.texCoord.x = 1 / 0.675f * abs(input.particlePos.x);
-		input.texCoord.y = 0.5f;
+		input.texCoord.x = 1 / 0.502f * abs(input.particlePos.x + 0.184);
+		input.texCoord.y = 0.3f;
 		texColor = tex.Sample(samplState, input.texCoord);
 		texColor.a -= lerp(0, 0.5, input.lifeTime / 20.0f);
 	}
