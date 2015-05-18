@@ -98,6 +98,7 @@ void StartMenu::Render(ID3D11DeviceContext* deviceContext)
 		buttonScale.scale = DirectX::XMMatrixTranspose(DirectX::XMMatrixTransformation2D(scalingOrigin, 0.0f, scaling, rotationOrigin, 0.0f, translation));
 		UpdateConstantBuffer(deviceContext, &buttonScale);
 		deviceContext->VSSetConstantBuffers(0, 1, &constantBuffer);
+		deviceContext->PSSetConstantBuffers(0, 1, &constantBuffer);
 		deviceContext->IASetVertexBuffers(0, 1, &vertexBuffer, &vertexSize, &offset);
 		deviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);
 

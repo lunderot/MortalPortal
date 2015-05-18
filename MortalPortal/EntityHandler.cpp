@@ -130,10 +130,6 @@ void EntityHandler::Render(ID3D11DeviceContext* deviceContext, D3DHandler* d3dHa
 		{
 			if ((*i)->GetVisible())
 			{
-				if (dynamic_cast<PowerupIndicator*>(*i))
-				{
-					d3dHandler->EnableAlphaBlendingSeverlOverlapping();
-				}
 
 				Geometry* geometry = (*i)->GetGeometry();
 				Material* material = (*i)->GetMaterial();
@@ -192,11 +188,6 @@ void EntityHandler::Render(ID3D11DeviceContext* deviceContext, D3DHandler* d3dHa
 				deviceContext->PSSetConstantBuffers(1, 1, &material->pointerToBufferM);
 
 				deviceContext->Draw(vertexCount, 0);
-
-				if (dynamic_cast<PowerupIndicator*> (*i))
-				{
-					d3dHandler->EnableAlphaBlendingFewOverlapping();
-				}
 			}
 		}
 	}

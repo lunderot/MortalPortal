@@ -243,50 +243,6 @@ Application::Application(bool fullscreen, bool showCursor, int screenWidth, int 
 	//	);
 	//entityHandler->Add(player1Plane);
 
-	slowSpeedIndicator1 = new PowerupIndicator(
-		assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/BackgroundPlane.bin"),
-		assetHandler->GetMaterial(d3dHandler->GetDevice(), "FrostPower.dds", "", 0.0f),
-		backgShader, XMFLOAT3(0, 0, -1.5), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(2, 3, 1)
-		);
-	slowSpeedIndicator2 = new PowerupIndicator(
-		assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/BackgroundPlane.bin"),
-		assetHandler->GetMaterial(d3dHandler->GetDevice(), "FrostPower.dds", "", 0.0f),
-		backgShader, XMFLOAT3(0, 0, -1.5), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(2, 3, 1)
-		);
-
-	entityHandler->Add(slowSpeedIndicator1);
-	entityHandler->Add(slowSpeedIndicator2);
-
-	immortalIndicator1 = new PowerupIndicator(
-		assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/BackgroundPlane.bin"),
-		assetHandler->GetMaterial(d3dHandler->GetDevice(), "immortalPower2.dds", "", 0.0f),
-		backgShader, XMFLOAT3(0, 0, -1.5), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(3, 3, 1)
-		);
-
-	immortalIndicator2 = new PowerupIndicator(
-		assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/BackgroundPlane.bin"),
-		assetHandler->GetMaterial(d3dHandler->GetDevice(), "immortalPower2.dds", "", 0.0f),
-		backgShader, XMFLOAT3(0, 0, -1.5), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(3, 3, 1)
-		);
-
-	entityHandler->Add(immortalIndicator1);
-	entityHandler->Add(immortalIndicator2);
-
-	inverseIndicator1 = new PowerupIndicator(
-		assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/BackgroundPlane.bin"),
-		assetHandler->GetMaterial(d3dHandler->GetDevice(), "error.dds", "", 0.0f),
-		backgShader, XMFLOAT3(0, 0, -1.5f), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(2, 2, 1)
-		);
-
-	inverseIndicator2 = new PowerupIndicator(
-		assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/BackgroundPlane.bin"),
-		assetHandler->GetMaterial(d3dHandler->GetDevice(), "error.dds", "", 0.0f),
-		backgShader, XMFLOAT3(0, 0, -1.5f), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(2, 2, 1)
-		);
-
-	entityHandler->Add(inverseIndicator1);
-	entityHandler->Add(inverseIndicator2);
-
 
 	
 	// Create Background
@@ -337,7 +293,7 @@ Application::Application(bool fullscreen, bool showCursor, int screenWidth, int 
 		new BackgroundAsset(
 			assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/Earth.bin"),
 			assetHandler->GetMaterial(d3dHandler->GetDevice(), "EarthTexture.dds", "EarthNormalMap.dds", 0.0f, DirectX::XMFLOAT3(0.2, 0.2, 0.2), 10.0f, DirectX::XMFLOAT3(0.1, 0.1, 0.1), DirectX::XMFLOAT3(0.8, 0.8, 0.8)),
-			playerShader, XMFLOAT3(0, 0, 170), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0.05f, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(15, 15, 15))
+			playerShader, XMFLOAT3(0, 0, 170), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0.03f, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(15, 15, 15))
 		);
 
 	//Light
@@ -598,6 +554,51 @@ Application::Application(bool fullscreen, bool showCursor, int screenWidth, int 
 		playerShader,
 		entityHandler
 	);
+
+	slowSpeedIndicator1 = new PowerupIndicator(
+		assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/BackgroundPlane.bin"),
+		assetHandler->GetMaterial(d3dHandler->GetDevice(), "FrostPower.dds", "", 0.0f),
+		backgShader, XMFLOAT3(0, 0, -1.50), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(1.7f, 2.6f, 1)
+		);
+	slowSpeedIndicator2 = new PowerupIndicator(
+		assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/BackgroundPlane.bin"),
+		assetHandler->GetMaterial(d3dHandler->GetDevice(), "FrostPower.dds", "", 0.0f),
+		backgShader, XMFLOAT3(0, 0, -1.51), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(1.7f, 2.6f, 1)
+		);
+
+	entityHandler->Add(slowSpeedIndicator1);
+	entityHandler->Add(slowSpeedIndicator2);
+
+	immortalIndicator1 = new PowerupIndicator(
+		assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/BackgroundPlane.bin"),
+		assetHandler->GetMaterial(d3dHandler->GetDevice(), "immortalPower.dds", "", 0.0f),
+		backgShader, XMFLOAT3(0, 0, -1.52), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(3, 3, 1)
+		);
+
+	immortalIndicator2 = new PowerupIndicator(
+		assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/BackgroundPlane.bin"),
+		assetHandler->GetMaterial(d3dHandler->GetDevice(), "immortalPower.dds", "", 0.0f),
+		backgShader, XMFLOAT3(0, 0, -1.53), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(3, 3, 1)
+		);
+
+	entityHandler->Add(immortalIndicator1);
+	entityHandler->Add(immortalIndicator2);
+
+	inverseIndicator1 = new PowerupIndicator(
+		assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/BackgroundPlane.bin"),
+		assetHandler->GetMaterial(d3dHandler->GetDevice(), "error.dds", "", 0.0f),
+		backgShader, XMFLOAT3(0, 0, -1.54f), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(2, 2, 1)
+		);
+
+	inverseIndicator2 = new PowerupIndicator(
+		assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/BackgroundPlane.bin"),
+		assetHandler->GetMaterial(d3dHandler->GetDevice(), "error.dds", "", 0.0f),
+		backgShader, XMFLOAT3(0, 0, -1.55f), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(2, 2, 1)
+		);
+
+	entityHandler->Add(inverseIndicator1);
+	entityHandler->Add(inverseIndicator2);
+
 }
 
 Application::~Application()
