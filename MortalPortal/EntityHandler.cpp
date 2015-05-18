@@ -201,7 +201,8 @@ void EntityHandler::Add(Entity* entity)
 void EntityHandler::HandleCollision(Player* player, Entity* entity2, std::string name, AudioMaster &aMaster)
 {
 	MapItem* item = dynamic_cast<MapItem*>(entity2);
-	bool isPortal = name == "nurbsSphere1";
+
+	bool isPortal = name == "Portal";
 
 	if (item)
 	{
