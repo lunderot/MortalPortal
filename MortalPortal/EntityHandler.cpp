@@ -130,10 +130,6 @@ void EntityHandler::Render(ID3D11DeviceContext* deviceContext, D3DHandler* d3dHa
 		{
 			if ((*i)->GetVisible())
 			{
-				if (dynamic_cast<PowerupIndicator*>(*i))
-				{
-					d3dHandler->EnableAlphaBlendingSeverlOverlapping();
-				}
 
 				Geometry* geometry = (*i)->GetGeometry();
 				Material* material = (*i)->GetMaterial();
@@ -192,11 +188,6 @@ void EntityHandler::Render(ID3D11DeviceContext* deviceContext, D3DHandler* d3dHa
 				deviceContext->PSSetConstantBuffers(1, 1, &material->pointerToBufferM);
 
 				deviceContext->Draw(vertexCount, 0);
-
-				if (dynamic_cast<PowerupIndicator*> (*i))
-				{
-					d3dHandler->EnableAlphaBlendingFewOverlapping();
-				}
 			}
 		}
 	}
@@ -218,7 +209,7 @@ void EntityHandler::HandleCollision(Player* player, Entity* entity2, std::string
 		{
 			case MapItem::objectType::Comet:
 			{
-				if (player->getImmortalPortal() == true)
+				if (player->GetImmortalPortal() == true)
 				{
 					player->AddCombo(false);
 					player->AddComboText();
@@ -264,7 +255,7 @@ void EntityHandler::HandleCollision(Player* player, Entity* entity2, std::string
 
 					if (rnd == 4) // Inverse Control
 					{
-						player->setInvertControl(5.0f);
+						player->SetInvertControl(5.0f);
 					}
 				}
 
@@ -284,7 +275,7 @@ void EntityHandler::HandleCollision(Player* player, Entity* entity2, std::string
 				}
 				else
 				{
-					if (player->getImmortalPortal() == true)
+					if (player->GetImmortalPortal() == true)
 					{
 						player->AddCombo(false);
 						player->AddComboText();

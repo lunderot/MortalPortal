@@ -30,7 +30,7 @@ RectangleScreen::RectangleScreen(buttonPoint* points, Material* mat1, Material* 
 }
 
 
-void RectangleScreen::RenderText(ID3D11DeviceContext* deviceContext)
+void RectangleScreen::Render(ID3D11DeviceContext* deviceContext)
 {
 	unsigned int vertexSize = sizeof(float) * 4;
 	unsigned int offset = 0;

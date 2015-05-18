@@ -58,32 +58,32 @@ Player::~Player()
 	delete comboDisplayText[3];
 }
 
-bool Player::getInvertControl()
+bool Player::GetInvertControl()
 {
 	return inverControlTimer > 0.0f;
 }
 
-bool Player::getSlowDownAcceleration()
+bool Player::GetSlowDownAcceleration()
 {
 	return slowDownAccelerationTimer > 0.0f;
 }
 
-bool Player::getBonusCombo()
+bool Player::GetBonusCombo()
 {
 	return bonusComboTimer > 0.0f;
 }
 
-bool Player::getImmortalPortal()
+bool Player::GetImmortalPortal()
 {
 	return immortalPortalTimer > 0.0f;
 }
 
-bool Player::getCrystalFrenzy()
+bool Player::GetCrystalFrenzy()
 {
 	return crystalFrenzy;
 }
 
-void Player::setInvertControl(float powerUp_InvertControl)
+void Player::SetInvertControl(float powerUp_InvertControl)
 {
 	this->inverControlTimer = powerUp_InvertControl;
 }
@@ -237,9 +237,6 @@ void Player::AddComboText()
 	comboCounterChange_10++;
 	comboCounterChange_100++;
 
-	std::cout << "ComboCounter: " << comboCounter << std::endl;
-	std::cout << "ComboCounterChange: " << comboCounter << std::endl;
-
 	if (comboCounter == 999)
 	{
 		comboMax = true;
@@ -291,7 +288,12 @@ void Player::Reset()
 	acceleration = DirectX::XMFLOAT3(0, 0, 0);
 	this->powerBar->Reset();
 	this->alive = true;
-	this->SetPosition(DirectX::XMFLOAT3(-15, 0, 0));
+
+	if (GetColor() == Color::RED || GetColor() == Color::GREEN)
+		this->SetPosition(DirectX::XMFLOAT3(-15, 5, 0));
+	else
+		this->SetPosition(DirectX::XMFLOAT3(-15, -5, 0));
+
 	this->colorState = colors[0];
 	this->comboCounter = 0;
 	this->comboCounterChange_10 = 0;
@@ -304,7 +306,7 @@ void Player::Reset()
 	bonusComboTimer = 0;
 	immortalPortalTimer = 0;
 
-	setInvertControl(0.0f);
+	SetInvertControl(0.0f);
 	setSlowDownAcceleration(0.0f);
 	setBonusCombo(0.0f);
 	setImmortalPortal(0.0f);

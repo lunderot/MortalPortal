@@ -188,7 +188,7 @@ unsigned int Particle::GetNrOfParticles()
 {
 	return nrOfParticles;
 }
-ID3D11UnorderedAccessView* Particle::getUAV()
+ID3D11UnorderedAccessView* Particle::GetUAV()
 {
 	return particleUAV;
 }

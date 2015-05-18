@@ -10,9 +10,8 @@ StartButton::StartButton(EntityHandler* entityHandler,
 	this->player2 = player2;
 }
 
-bool StartButton::isClicked()
+bool StartButton::IsClicked()
 {
-	std::cout << "START!" << std::endl;
 	entityHandler->KillAllMapItems();
 
 	player1->Reset();

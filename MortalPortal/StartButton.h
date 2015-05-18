@@ -14,6 +14,6 @@ public:
 	StartButton(EntityHandler* entityHandler, Player* player1, Player* player2, DirectX::XMFLOAT2 position, DirectX::XMFLOAT2 scale, Material* material);
 	~StartButton();
 
-	bool isClicked();
+	bool IsClicked();
 
 };
