@@ -20,7 +20,6 @@ Player::Player(ID3D11Device* device, Geometry* geometry, Material* material, Mat
 	comboDisplayText[0] = new ComboDisplayText(device, material);
 	comboDisplayText[1] = new ComboDisplayText(device, material);
 	comboDisplayText[2] = new ComboDisplayText(device, material);
-	comboDisplayText[3] = new ComboDisplayText(device, material);
 
 	comboCounter = 0;
 	comboCounterChange_10 = 0;
@@ -55,35 +54,34 @@ Player::~Player()
 	delete comboDisplayText[0];
 	delete comboDisplayText[1];
 	delete comboDisplayText[2];
-	delete comboDisplayText[3];
 }
 
-bool Player::getInvertControl()
+bool Player::GetInvertControl()
 {
 	return inverControlTimer > 0.0f;
 }
 
-bool Player::getSlowDownAcceleration()
+bool Player::GetSlowDownAcceleration()
 {
 	return slowDownAccelerationTimer > 0.0f;
 }
 
-bool Player::getBonusCombo()
+bool Player::GetBonusCombo()
 {
 	return bonusComboTimer > 0.0f;
 }
 
-bool Player::getImmortalPortal()
+bool Player::GetImmortalPortal()
 {
 	return immortalPortalTimer > 0.0f;
 }
 
-bool Player::getCrystalFrenzy()
+bool Player::GetCrystalFrenzy()
 {
 	return crystalFrenzy;
 }
 
-void Player::setInvertControl(float powerUp_InvertControl)
+void Player::SetInvertControl(float powerUp_InvertControl)
 {
 	this->inverControlTimer = powerUp_InvertControl;
 }
@@ -127,6 +125,33 @@ void Player::ReactToInput(bool currentButtonState, AudioMaster &aMaster)
 		}
 	}
 	previousButtonState = currentButtonState;
+}
+
+void Player::ReactToControl(DirectX::XMFLOAT2 dir, bool invertControl, bool slowDown)
+{
+	float slowDownAcc = 5.0f;
+	float notSlowDownAcc = 30.0f;
+	float test3 = 2.0f;
+	// Player 1 - control
+	// PowerUp - Invert Control - effect on | Player2
+	if (invertControl)
+	{
+		dir.x *= -0.5f;
+		dir.y *= -0.5f;
+	}
+
+	// PowerUp - Slow Down Acceleration - effect on | Player2
+	if (slowDown)
+	{
+		dir.x *= slowDownAcc;
+		dir.y *= slowDownAcc;
+	}
+	else
+	{
+		dir.x *= notSlowDownAcc;
+		dir.y *= notSlowDownAcc;
+	}
+	SetAcceleration(DirectX::XMFLOAT3(dir.x, dir.y, 0.0f));
 }
 
 void Player::Update(float deltaTime)
@@ -210,9 +235,6 @@ void Player::AddComboText()
 	comboCounterChange_10++;
 	comboCounterChange_100++;
 
-	std::cout << "ComboCounter: " << comboCounter << std::endl;
-	std::cout << "ComboCounterChange: " << comboCounter << std::endl;
-
 	if (comboCounter == 999)
 	{
 		comboMax = true;
@@ -220,15 +242,15 @@ void Player::AddComboText()
 
 	if (comboMax != true)
 	{
-		comboDisplayText[1]->AddCombo();
+		comboDisplayText[0]->AddCombo();
 		if (comboCounterChange_10 >= 10)
 		{
-			comboDisplayText[2]->AddCombo();
+			comboDisplayText[1]->AddCombo();
 			comboCounterChange_10 = 0;
 		}
 		if (comboCounterChange_100 >= 100)
 		{
-			comboDisplayText[3]->AddCombo();
+			comboDisplayText[2]->AddCombo();
 			comboCounterChange_100 = 0;
 		}
 	}
@@ -264,7 +286,12 @@ void Player::Reset()
 	acceleration = DirectX::XMFLOAT3(0, 0, 0);
 	this->powerBar->Reset();
 	this->alive = true;
-	this->SetPosition(DirectX::XMFLOAT3(-15, 0, 0));
+
+	if (GetColor() == Color::RED || GetColor() == Color::GREEN)
+		this->SetPosition(DirectX::XMFLOAT3(-15, 5, 0));
+	else
+		this->SetPosition(DirectX::XMFLOAT3(-15, -5, 0));
+
 	this->colorState = colors[0];
 	this->comboCounter = 0;
 	this->comboCounterChange_10 = 0;
@@ -277,7 +304,7 @@ void Player::Reset()
 	bonusComboTimer = 0;
 	immortalPortalTimer = 0;
 
-	setInvertControl(0.0f);
+	SetInvertControl(0.0f);
 	setSlowDownAcceleration(0.0f);
 	setBonusCombo(0.0f);
 	setImmortalPortal(0.0f);
@@ -305,9 +332,9 @@ void Player::RemoveComboText()
 	comboCounter = 0;
 	comboCounterChange_10 = 0;
 	comboCounterChange_100 = 0;
+	comboDisplayText[0]->RemoveCombo();
 	comboDisplayText[1]->RemoveCombo();
 	comboDisplayText[2]->RemoveCombo();
-	comboDisplayText[3]->RemoveCombo();
 }
 
 void Player::AddScore(int amount)

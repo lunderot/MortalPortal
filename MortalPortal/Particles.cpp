@@ -14,6 +14,8 @@ Particle::Particle(unsigned int type,
 	this->material1 = material1;
 	this->material2 = material2;
 	changeTexture = false;
+	renderPortalEngine = false;
+	//slowEffect = false;
 
 	// Crystal Pick-up
 	if (type == 1)
@@ -110,6 +112,26 @@ Particle::Particle(unsigned int type,
 		}
 	}
 
+	// Portal Engine
+	if (type == 5)
+	{
+		for (unsigned int i = 0; i < nrOfParticles; i++)
+		{
+			Particles p;
+			p.type = type;
+			p.lifeTime = (float)(rand()) / (float)(RAND_MAX / 0.3f);
+			p.pos.x = 0;
+			p.pos.y = 0;
+			p.pos.z = 0;
+			float r = (float)(rand()) / (float)(RAND_MAX / DirectX::XM_PIDIV4) + DirectX::XM_PI - DirectX::XM_PIDIV4 * 0.5;
+			p.velocity.x = (rand() % 100 + 50) * cos(r);
+			p.velocity.y = (rand() % 100 + 50) * sin(r);
+			p.acceleration.x = 0;
+			p.acceleration.y = 0;
+			particle.push_back(p);
+		}
+	}
+
 	HRESULT hr;
 	this->nrOfParticles = nrOfParticles;
 	ID3D11Buffer* vertexBuffer = nullptr;
@@ -166,7 +188,7 @@ unsigned int Particle::GetNrOfParticles()
 {
 	return nrOfParticles;
 }
-ID3D11UnorderedAccessView* Particle::getUAV()
+ID3D11UnorderedAccessView* Particle::GetUAV()
 {
 	return particleUAV;
 }
@@ -218,6 +240,7 @@ void Particle::Render(ID3D11DeviceContext* deviceContext)
 	else
 		SRV = material2->GetTexture();
 	deviceContext->PSSetShaderResources(0, 1, &SRV);
+	deviceContext->PSSetConstantBuffers(0, 1, &constantBuffer);
 	deviceContext->Draw(nrOfParticles, 0);
 }
 
@@ -243,9 +266,6 @@ Particle::~Particle()
 	if (geometry->GetVertexBuffer())
 		geometry->GetVertexBuffer()->Release();
 	delete geometry;
-
-	if (SRV)
-		SRV->Release();
 }
 
 void Particle::UpdateColor(bool renderParticles, const Color color, Particle* explosionParticles, std::vector<Material*> materials)

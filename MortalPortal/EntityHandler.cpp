@@ -102,15 +102,13 @@ void EntityHandler::Update(float deltaTime, AudioMaster &aMaster)
 
 					model2 = scaleMatrix * model2;
 
-					bool collision = false;
-					for (std::vector<CollisionSphere>::iterator k = collision1->spheres.begin(); k != collision1->spheres.end() && !collision; ++k)
+					for (std::vector<CollisionSphere>::iterator k = collision1->spheres.begin(); k != collision1->spheres.end(); ++k)
 					{
-						for (std::vector<CollisionSphere>::iterator l = collision2->spheres.begin(); l != collision2->spheres.end() && !collision; ++l)
+						for (std::vector<CollisionSphere>::iterator l = collision2->spheres.begin(); l != collision2->spheres.end(); ++l)
 						{
 							if (IsSpheresColliding((*k), (*l), model1, model2))
 							{
-								HandleCollision((*i), (*j), aMaster);
-								collision = true;
+								HandleCollision((*i), (*j), (*k).name, aMaster);
 							}
 						}
 					}
@@ -132,10 +130,6 @@ void EntityHandler::Render(ID3D11DeviceContext* deviceContext, D3DHandler* d3dHa
 		{
 			if ((*i)->GetVisible())
 			{
-				if (dynamic_cast<PowerupIndicator*>(*i))
-				{
-					d3dHandler->EnableAlphaBlendingSeverlOverlapping();
-				}
 
 				Geometry* geometry = (*i)->GetGeometry();
 				Material* material = (*i)->GetMaterial();
@@ -188,14 +182,12 @@ void EntityHandler::Render(ID3D11DeviceContext* deviceContext, D3DHandler* d3dHa
 				ID3D11ShaderResourceView* normal_map = material->GetNormalMap();
 				deviceContext->PSSetShaderResources(1, 1, &normal_map);
 
+				ID3D11ShaderResourceView* specular_map = material->GetSpecularMap();
+				deviceContext->PSSetShaderResources(2, 1, &specular_map);
+
 				deviceContext->PSSetConstantBuffers(1, 1, &material->pointerToBufferM);
 
 				deviceContext->Draw(vertexCount, 0);
-
-				if (dynamic_cast<PowerupIndicator*> (*i))
-				{
-					d3dHandler->EnableAlphaBlendingFewOverlapping();
-				}
 			}
 		}
 	}
@@ -206,16 +198,18 @@ void EntityHandler::Add(Entity* entity)
 	entities[entity->GetShader()].push_back(entity);
 }
 
-void EntityHandler::HandleCollision(Player* player, Entity* entity2, AudioMaster &aMaster)
+void EntityHandler::HandleCollision(Player* player, Entity* entity2, std::string name, AudioMaster &aMaster)
 {
 	MapItem* item = dynamic_cast<MapItem*>(entity2);
+	bool isPortal = name == "nurbsSphere1";
+
 	if (item)
 	{
 		switch (item->type)
 		{
 			case MapItem::objectType::Comet:
 			{
-				if (player->getImmortalPortal() == true)
+				if (player->GetImmortalPortal() == true)
 				{
 					player->AddCombo(false);
 					player->AddComboText();
@@ -235,39 +229,41 @@ void EntityHandler::HandleCollision(Player* player, Entity* entity2, AudioMaster
 			}	
 			case MapItem::objectType::PowerUp:
 			{
-				unsigned int rnd = rand() % 1;
-
-				if (rnd == 0) // Slow Down Acceleration
+				if (isPortal)
 				{
-					player->setSlowDownAcceleration(5.0f);
-				}
+					unsigned int rnd = rand() % 5;
 
-				if (rnd == 1) // Immortal Portal
-				{
-					player->setImmortalPortal(5.0f);
-				}
+					if (rnd == 0) // Slow Down Acceleration
+					{
+						player->setSlowDownAcceleration(5.0f);
+					}
 
-				if (rnd == 2) // Combo Bonus
-				{
-					player->setBonusCombo(5.0f);
-				}
+					if (rnd == 1) // Immortal Portal
+					{
+						player->setImmortalPortal(5.0f);
+					}
 
-				if (rnd == 3) // Crystal Frenzy
-				{
-					player->setCrystalFrenzy(5.0f);
-				}
+					if (rnd == 2) // Combo Bonus
+					{
+						player->setBonusCombo(5.0f);
+					}
 
-				if (rnd == 4) // Inverse Control
-				{
-					player->setInvertControl(5.0f);
-				}
+					if (rnd == 3) // Crystal Frenzy
+					{
+						player->setCrystalFrenzy(5.0f);
+					}
 
+					if (rnd == 4) // Inverse Control
+					{
+						player->SetInvertControl(5.0f);
+					}
+				}
 
 				break;
 			}
 			case MapItem::objectType::Crystal:
 			{
-				if (player->GetColor() == item->GetColor())
+				if (player->GetColor() == item->GetColor() && isPortal)
 				{
 					player->AddCombo(false);
 					player->AddComboText();
@@ -279,7 +275,7 @@ void EntityHandler::HandleCollision(Player* player, Entity* entity2, AudioMaster
 				}
 				else
 				{
-					if (player->getImmortalPortal() == true)
+					if (player->GetImmortalPortal() == true)
 					{
 						player->AddCombo(false);
 						player->AddComboText();

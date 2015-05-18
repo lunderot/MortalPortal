@@ -40,7 +40,7 @@ LevelGenerator::LevelGenerator(std::string pathToFiles, std::string pheaderFile)
 	lastLine.spawnNext = 1.5f;
 
 	timeSinceLastFileSpawn = 0.0f;
-	timeSinceBackgroundAssetSpawn = 0.0f;
+	timeSinceBackgroundAssetSpawn = 28.0f;
 
 	srand(time(NULL));
 }
@@ -123,9 +123,9 @@ void LevelGenerator::Update(EntityHandler* entityHandler, float deltaTime, bool 
 		float rnd_AngVelZ = (float)(rand() / (RAND_MAX / 0.1f));
 		//float rnd_PosZ = (float)(rand() / (RAND_MAX / 50.0f)) + 70.0f;
 		float rnd_PosY = (float)(rand() / (RAND_MAX / 100.0f)) - 50.0f;
-		float rnd_Vel = (float)(rand() / (RAND_MAX / 10.0f) + 10.0f);
+		float rnd_Vel = (float)(rand() / (RAND_MAX / 10.0f) + 20.0f);
 		Entity* backgroundAsset = new BackgroundAsset(backgroundAssetGeometry[rnd], backgroundAssetMaterial[rnd], backgroundAssetShader[rnd],
-			DirectX::XMFLOAT3(XSpawnPos, rnd_PosY, 80), DirectX::XMFLOAT3(-lastLine.velocity, 0, 0), DirectX::XMFLOAT3(rnd_AngVelX, rnd_AngVelY, rnd_AngVelZ), DirectX::XMFLOAT3(0, 0, 0), DirectX::XMFLOAT3((float)(rand() / (RAND_MAX / DirectX::XM_PI)), (float)(rand() / (RAND_MAX / DirectX::XM_PI)), (float)(rand() / (RAND_MAX / DirectX::XM_PI))), DirectX::XMFLOAT3(1, 1, 1));
+			DirectX::XMFLOAT3(XSpawnPos, rnd_PosY, 80), DirectX::XMFLOAT3(-rnd_Vel, 0, 0), DirectX::XMFLOAT3(rnd_AngVelX, rnd_AngVelY, rnd_AngVelZ), DirectX::XMFLOAT3(0, 0, 0), DirectX::XMFLOAT3((float)(rand() / (RAND_MAX / DirectX::XM_PI)), (float)(rand() / (RAND_MAX / DirectX::XM_PI)), (float)(rand() / (RAND_MAX / DirectX::XM_PI))), DirectX::XMFLOAT3(1, 1, 1));
 		entityHandler->Add(backgroundAsset);
 	}
 	timeSinceBackgroundAssetSpawn += deltaTime;
@@ -159,25 +159,25 @@ void LevelGenerator::Update(EntityHandler* entityHandler, float deltaTime, bool 
 		else if (lastLine.type == "p11")
 		{
 			MapItem* crystal = new MapItem(playerOneCrystalGeometry[0], playerOneCrystalMaterial[0], playerOneCrystalShader[0], MapItem::Crystal, Color::GREEN,
-				DirectX::XMFLOAT3(XSpawnPos, lastLine.position, 0), DirectX::XMFLOAT3(-lastLine.velocity, 0, 0), DirectX::XMFLOAT3(0,1,0));
+				DirectX::XMFLOAT3(XSpawnPos, lastLine.position, 0), DirectX::XMFLOAT3(-lastLine.velocity, 0, 0), DirectX::XMFLOAT3(0.2,1,0));
 			entityHandler->Add(crystal);
 		}
 		else if (lastLine.type == "p12")
 		{
 			Entity* crystal = new MapItem(playerOneCrystalGeometry[1], playerOneCrystalMaterial[1], playerOneCrystalShader[1], MapItem::Crystal, Color::RED,
-				DirectX::XMFLOAT3(XSpawnPos, lastLine.position, 0), DirectX::XMFLOAT3(-lastLine.velocity, 0, 0));
+				DirectX::XMFLOAT3(XSpawnPos, lastLine.position, 0), DirectX::XMFLOAT3(-lastLine.velocity, 0, 0), DirectX::XMFLOAT3(0.2, 1, 0));
 			entityHandler->Add(crystal);
 		}
 		else if (lastLine.type == "p21")
 		{
 			Entity* crystal = new MapItem(playerTwoCrystalGeometry[0], playerTwoCrystalMaterial[0], playerTwoCrystalShader[0], MapItem::Crystal, Color::YELLOW,
-				DirectX::XMFLOAT3(XSpawnPos, lastLine.position, 0), DirectX::XMFLOAT3(-lastLine.velocity, 0, 0));
+				DirectX::XMFLOAT3(XSpawnPos, lastLine.position, 0), DirectX::XMFLOAT3(-lastLine.velocity, 0, 0), DirectX::XMFLOAT3(0.2, 1, 0));
 			entityHandler->Add(crystal);
 		}
 		else if (lastLine.type == "p22")
 		{
 			Entity* crystal = new MapItem(playerTwoCrystalGeometry[1], playerTwoCrystalMaterial[1], playerTwoCrystalShader[1], MapItem::Crystal, Color::BLUE,
-				DirectX::XMFLOAT3(XSpawnPos, lastLine.position, 0), DirectX::XMFLOAT3(-lastLine.velocity, 0, 0));
+				DirectX::XMFLOAT3(XSpawnPos, lastLine.position, 0), DirectX::XMFLOAT3(-lastLine.velocity, 0, 0), DirectX::XMFLOAT3(0.2, 1, 0));
 			entityHandler->Add(crystal);
 		}
 		else if (lastLine.type == "e")

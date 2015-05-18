@@ -7,6 +7,7 @@ class Material
 private:
 	ID3D11ShaderResourceView* texture;
 	ID3D11ShaderResourceView* normalMap;
+	ID3D11ShaderResourceView* specularMap;
 
 	float normalDepth;
 	DirectX::XMFLOAT3 specular;
@@ -19,7 +20,7 @@ private:
 	struct MaterialInformation
 	{	
 		DirectX::XMFLOAT3 Specular;
-		float Specular_factor;
+		float Specular_Factor;
 		DirectX::XMFLOAT3 Ambient;
 		float pad1;
 		DirectX::XMFLOAT3 Diffuse;
@@ -40,11 +41,13 @@ public:
 		DirectX::XMFLOAT3 ambient = DirectX::XMFLOAT3(0, 0, 0),
 		DirectX::XMFLOAT3 diffuse = DirectX::XMFLOAT3(0, 0, 0),
 		DirectX::XMFLOAT3 transparency_color = DirectX::XMFLOAT3(0, 0, 0),
-		DirectX::XMFLOAT3 incandescence = DirectX::XMFLOAT3(0, 0, 0));
+		DirectX::XMFLOAT3 incandescence = DirectX::XMFLOAT3(0, 0, 0),
+		ID3D11ShaderResourceView* specular_map = nullptr);
 	~Material();
 
 	ID3D11ShaderResourceView* GetTexture() const;
 	ID3D11ShaderResourceView* GetNormalMap() const;
+	ID3D11ShaderResourceView* GetSpecularMap() const;
 	float GetNormalDepth();
 	DirectX::XMFLOAT3 GetSpecular();
 	float GetSpecularFactor();

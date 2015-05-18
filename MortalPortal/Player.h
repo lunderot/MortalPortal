@@ -22,6 +22,7 @@ public:
 	~Player();
 
 	void ReactToInput(bool currentButtonState, AudioMaster &aMaster);
+	void ReactToControl(DirectX::XMFLOAT2 dir, bool invertControl, bool slowDown);
 	void Update(float deltaTime);
 
 	Material* GetMaterial() const;
@@ -36,7 +37,7 @@ public:
 
 	void AddComboText();
 	void RemoveComboText();
-	ComboDisplayText* comboDisplayText[4];
+	ComboDisplayText* comboDisplayText[3];
 	
 	Color GetColor() const;
 	void SetColor(Color color);
@@ -46,19 +47,19 @@ public:
 	
 	// Power ups
 	// Invert Control
-	bool getInvertControl();
-	void setInvertControl(float powerUp_InvertControl);
+	bool GetInvertControl();
+	void SetInvertControl(float powerUp_InvertControl);
 	// Slow Down Acceleration
-	bool getSlowDownAcceleration();
+	bool GetSlowDownAcceleration();
 	void setSlowDownAcceleration(float powerUp_SlowDownAcceleration);
 	// Bonus Combo
-	bool getBonusCombo();
+	bool GetBonusCombo();
 	void setBonusCombo(float powerUp_BonusCombo);
 	// Immortal Portal
-	bool getImmortalPortal();
+	bool GetImmortalPortal();
 	void setImmortalPortal(float powerUp_ImmortalPortal);
 	// Crystal Frenzy
-	bool getCrystalFrenzy();
+	bool GetCrystalFrenzy();
 	void setCrystalFrenzy(bool powerUp_CrystalFrenzy);
 
 	void Reset();

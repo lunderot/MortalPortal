@@ -4,16 +4,20 @@ PowerBar::PowerBar(ID3D11Device* device)
 {
 	Points p[4] =
 	{
-		DirectX::XMFLOAT2(-0.08f, 1.0f),
+		// längst upp - höger
+		// längst ner - höger
+		// längst upp - vänster
+		// längst ner - vänster
+		DirectX::XMFLOAT2(0.318f, 0.974f),
 		DirectX::XMFLOAT2(1.0f, 0.0f),
 
-		DirectX::XMFLOAT2(-0.08f, 0.9f),
+		DirectX::XMFLOAT2(0.318f, 0.903f),
 		DirectX::XMFLOAT2(1.0f, 1.0f),
 
-		DirectX::XMFLOAT2(-0.595f, 1.0f),
+		DirectX::XMFLOAT2(-0.184f, 0.974f),
 		DirectX::XMFLOAT2(0.0f, 0.0f),
 
-		DirectX::XMFLOAT2(-0.595f, 0.9f),
+		DirectX::XMFLOAT2(-0.184f, 0.903f),
 		DirectX::XMFLOAT2(0.0f, 1.0f)
 	};
 
@@ -22,8 +26,8 @@ PowerBar::PowerBar(ID3D11Device* device)
 	points[2] = p[2];
 	points[3] = p[3];
 
-	maxMinValue.x = -0.08f;
-	maxMinValue.y = -0.59f;
+	maxMinValue.x = 0.318f;
+	maxMinValue.y = -0.184f;
 	powerAdd = 0.02f;
 	powerRemove = 0.04f;
 	dead = false;

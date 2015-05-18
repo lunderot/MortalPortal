@@ -63,18 +63,16 @@ void StartMenu::Update(bool up, bool down, bool enter)
 	{
 		currentSelect++;
 		check = 1;
-		std::cout << "DOWN" << std::endl;
 	}
 	if (up == true && currentSelect > 0 && currentSelect < buttons.size() && check == 0)
 	{
 		check = 1;
 		currentSelect--;
-		std::cout << "UP" << std::endl;
 	}
 	if (enter == true && check == 0)
 	{
 		check = 1;
-		renderMenu = buttons[currentSelect]->isClicked();
+		renderMenu = buttons[currentSelect]->IsClicked();
 	}
 	if (enter == false && up == false && down == false)
 		check = 0;
@@ -98,6 +96,7 @@ void StartMenu::Render(ID3D11DeviceContext* deviceContext)
 		buttonScale.scale = DirectX::XMMatrixTranspose(DirectX::XMMatrixTransformation2D(scalingOrigin, 0.0f, scaling, rotationOrigin, 0.0f, translation));
 		UpdateConstantBuffer(deviceContext, &buttonScale);
 		deviceContext->VSSetConstantBuffers(0, 1, &constantBuffer);
+		deviceContext->PSSetConstantBuffers(0, 1, &constantBuffer);
 		deviceContext->IASetVertexBuffers(0, 1, &vertexBuffer, &vertexSize, &offset);
 		deviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);
 
@@ -122,8 +121,6 @@ void StartMenu::UpdateConstantBuffer(ID3D11DeviceContext* deviceContext, ButtonS
 
 void StartMenu::AddButton(Button* button)
 {
-	//battons = button;
-	std::cout << button->position.x << button->position.y << std::endl;
 	buttons.push_back(button);
 }
 
@@ -136,8 +133,5 @@ StartMenu::~StartMenu()
 
 	if (buttonVertexBuffer)
 		buttonVertexBuffer->Release();
-
-	if (SRV)
-		SRV->Release();
 	delete buttonGeometry;
 }

@@ -63,18 +63,16 @@ void RestartMenu::Update(bool up, bool down, bool enter)
 	{
 		currentSelect++;
 		check = 1;
-		std::cout << "DOWN" << std::endl;
 	}
 	if (up == true && currentSelect > 0 && currentSelect < buttons.size() && check == 0)
 	{
 		check = 1;
 		currentSelect--;
-		std::cout << "UP" << std::endl;
 	}
 	if (enter == true && check == 0)
 	{
 		check = 1;
-		renderMenu = buttons[currentSelect]->isClicked();
+		renderMenu = buttons[currentSelect]->IsClicked();
 	}
 	if (enter == false && up == false && down == false)
 		check = 0;
@@ -97,6 +95,7 @@ void RestartMenu::Render(ID3D11DeviceContext* deviceContext)
 
 		UpdateConstantBuffer(deviceContext, &buttonScale);
 		deviceContext->VSSetConstantBuffers(0, 1, &constantBuffer);
+		deviceContext->PSSetConstantBuffers(0, 1, &constantBuffer);
 		deviceContext->IASetVertexBuffers(0, 1, &vertexBuffer, &vertexSize, &offset);
 		deviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);
 
@@ -122,8 +121,6 @@ void RestartMenu::UpdateConstantBuffer(ID3D11DeviceContext* deviceContext, Butto
 
 void RestartMenu::AddButton(Button* button)
 {
-	//battons = button;
-	std::cout << button->position.x << button->position.y << std::endl;
 	buttons.push_back(button);
 }
 

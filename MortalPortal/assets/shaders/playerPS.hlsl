@@ -1,7 +1,8 @@
-texture2D test : register (t0);
+texture2D texturem : register (t0);
 
-//normalmap texture
 texture2D normalm : register (t1);
+
+texture2D specularm : register (t2);
 
 SamplerState sample1;
 
@@ -10,9 +11,7 @@ cbuffer Lightbuffer : register (b0)
 {
 	float3 positionC;
 	int isDirectional;
-	//float3 ambientC;
 	float3 colorC;
-	//float3 specularC;
 }
 
 cbuffer Materialbuffer : register (b1)
@@ -63,22 +62,22 @@ float4 main(VS_OUT input) : SV_Target
 
 	//ljus
 	float3 lightDirection = normalize(positionC);
-	float3 cameraPosition = (0, 0, -20);
+	float3 cameraPosition = float3(0, 0, -20);
 	float3 vecCamToFace = normalize(cameraPosition - input.worldPos.xyz);
 	float3 reflection = reflect(lightDirection, finalNormalM);
 
 	//diffuse
 	float3 diffuseLight = mul(max(dot(-lightDirection, finalNormalM), 0.0f), colorC);
-	float3 specularLight = mul(pow(max(dot(vecCamToFace, reflection), 0.0f), specularFactor), specular);
+	float3 specularLight = mul(pow(max(dot(vecCamToFace, reflection), 0.0f), (specularFactor * 10.0f)), max(specularm.Sample(sample1, input.texCoord).xyz, specular));
 
-	float3 addAmbDiffSpec = saturate(diffuseLight + specularLight + ambient);
+	float3 addAmbDiffSpec = saturate(diffuseLight + ambient);
 
 
 	// ----------- end
 
 
 
-	float4 test3 = test.Sample(sample1, input.texCoord);
+	float4 outputTextured = texturem.Sample(sample1, input.texCoord);
 
 	if (colorState == 1)
 	{
@@ -86,8 +85,6 @@ float4 main(VS_OUT input) : SV_Target
 	}
 	else
 	{
-		return test3; //* float4(addAmbDiffSpec, 1.0f)/* + float4(ambientC, 1.0f)*/;
-		//return float4(input.texCoord, 1, 1);
+		return saturate(outputTextured * float4(addAmbDiffSpec, 1.0f) + float4(specularLight, 0.0f));
 	}
-
 }

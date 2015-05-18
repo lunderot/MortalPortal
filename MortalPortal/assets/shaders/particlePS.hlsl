@@ -1,5 +1,13 @@
 texture2D tex;
 SamplerState samplState;
+cbuffer particleBuffer : register (cb0)
+{
+	float lifeTime;
+	float3 position;
+	float deltaTime;
+	bool reset;
+};
+
 struct VS_OUT
 {
 	float4 position : SV_POSITION;
@@ -32,6 +40,22 @@ float4 main(VS_OUT input) : SV_Target
 		texColor.a -= lerp(0, 0, input.lifeTime / 0.5f);
 		//texColor[3] -= input.lifeTime * 0.05f;
 		//texColor[3] = saturate(texColor[3]);
+	}
+
+	else if (input.type == 5)
+	{
+		texColor = tex.Sample(samplState, input.texCoord);
+		if (reset == true)
+		{
+			texColor.a = 0;
+		}
+		else
+		{
+			texColor.x += input.lifeTime * 2.5f;
+			texColor.y += input.lifeTime * 2.5f;
+			texColor.z += input.lifeTime * 2.5f;
+			texColor.a -= lerp(0, 0, input.lifeTime / 0.5f);
+		}
 	}
 	else
 		texColor = tex.Sample(samplState, input.texCoord);

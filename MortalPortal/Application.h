@@ -74,6 +74,8 @@ private:
 	Particle* particleBackground;
 	Particle* particlePortal1;
 	Particle* particlePortal2;
+	Particle* particlePortal1Engine;
+	Particle* particlePortal2Engine;
 
 	// Particle Materials
 	std::vector <Material*> particleMaterials;
@@ -125,5 +127,8 @@ public:
 
 	bool Update(float deltaTime); //Returns true on quit
 	void Render();
+
+private:
+	void UpdatePlayerControls(Input* input, Player* player, Player* enemyPlayer, PowerupIndicator* importalPortalIndicator, PowerupIndicator* inverseIndicator, PowerupIndicator* slowSpeedIndicator, Particle* portalEngine, Particle* portal);
 };
 

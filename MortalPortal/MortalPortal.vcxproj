@@ -118,7 +118,6 @@
     <ClCompile Include="RectangleScreen.cpp" />
     <ClCompile Include="RestartMenu.cpp" />
     <ClCompile Include="StartMenu.cpp" />
-    <ClCompile Include="OptionsButton.cpp" />
     <ClCompile Include="Particles.cpp" />
     <ClCompile Include="ParticleShader.cpp" />
     <ClCompile Include="Player.cpp" />
@@ -166,15 +165,14 @@
     <ClInclude Include="ObjectShader.h" />
     <ClInclude Include="PauseMenu.h" />
     <ClInclude Include="PowerupIndicator.h" />
+    <ClInclude Include="QuitButton.h" />
     <ClInclude Include="RectangleScreen.h" />
     <ClInclude Include="RestartMenu.h" />
     <ClInclude Include="StartMenu.h" />
-    <ClInclude Include="OptionsButton.h" />
     <ClInclude Include="Particles.h" />
     <ClInclude Include="ParticleShader.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="PowerBar.h" />
-    <ClInclude Include="QuitButton.h" />
     <ClInclude Include="Shader.h" />
     <ClInclude Include="StartButton.h" />
     <ClInclude Include="System.h" />

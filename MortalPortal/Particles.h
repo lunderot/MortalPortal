@@ -48,12 +48,13 @@ public:
 
 	~Particle();
 
-	ID3D11UnorderedAccessView* getUAV();
+	ID3D11UnorderedAccessView* GetUAV();
 	unsigned int GetNrOfParticles();
 	float particleCounter;
 	std::vector<Particles> particle;
 	ConstantBufferData constantBufferData;
 	bool changeTexture;
+	bool renderPortalEngine;
 
 	void UpdatePosition(DirectX::XMFLOAT3 pos);
 	void UpdateParticle(float deltaTime, ID3D11DeviceContext* deviceContext, ID3D11ComputeShader* computeShader);

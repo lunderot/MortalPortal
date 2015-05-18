@@ -6,9 +6,8 @@ ContinueButton::ContinueButton(DirectX::XMFLOAT2 position, DirectX::XMFLOAT2 sca
 
 }
 
-bool ContinueButton::isClicked()
+bool ContinueButton::IsClicked()
 {
-	std::cout << "Continue!" << std::endl;
 	return false;
 }
 

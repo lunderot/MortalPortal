@@ -32,8 +32,8 @@ Scale: 12 12 1
 groundPlane_transform
 Transform name length: 5
 ParentID: -1
-Position: -12.9622 7.96754 -0.18868
-Rotation: -0.18868 -0.570245 -0.136574 0.787761
+Position: -14.0059 0.220937 0.00423911
+Rotation: 0.00423911 -0.678148 0.00392017 0.734903
 Scale: 1 1 1
 
 persp
@@ -65,13 +65,13 @@ Rotation: 0 0 0 1
 Scale: 0.5 0.5 0.5
 
 Portal_body_03
-Transform name length: 12
+Transform name length: 6
 ParentID: -1
 Position: 0 0 0
 Rotation: 0 0 0 1
 Scale: 1 1 1
 
-nurbsSphere1
+Portal
 Transform name length: 12
 ParentID: -1
 Position: 0 1.7 0
@@ -157,12 +157,12 @@ Projection type: 1
 4
 sideShape
 NURB
- Nurb name lengtht: 17
+ Nurb name lengtht: 11
  Number of nurbs: 1
 Radius: 1.2
 
 6
-nurbsSphereShape1
+PortalShape
 NURB
  Nurb name lengtht: 17
  Number of nurbs: 1
@@ -40920,7 +40920,7 @@ Transform id:
 0.522603
 -0.270374
 -0.846664
-0.45832
+0.458321
 -0.1613
 -0.857371
 0.488772
@@ -40929,7 +40929,7 @@ Transform id:
 0.488772
 -0.270374
 -0.846664
-0.45832
+0.458321
 -0.311992
 -0.852784
 0.418833
@@ -41313,7 +41313,7 @@ Transform id:
 -0.349259
 -0.270374
 -0.846664
-0.45832
+0.458321
 -0.352974
 -0.851155
 0.388515
@@ -136059,7 +136059,7 @@ Transform id:
 0.522603
 -0.270374
 -0.846664
-0.458321
+0.45832
 -0.1613
 -0.857371
 0.488772
@@ -136068,7 +136068,7 @@ Transform id:
 0.488772
 -0.270374
 -0.846664
-0.458321
+0.45832
 -0.311992
 -0.852784
 0.418833
@@ -136452,7 +136452,7 @@ Transform id:
 -0.349259
 -0.270374
 -0.846664
-0.458321
+0.45832
 -0.352974
 -0.851155
 0.388515

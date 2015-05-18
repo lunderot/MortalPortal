@@ -76,7 +76,7 @@ Material* AssetHandler::GetMaterial(ID3D11Device* device, std::string filename, 
 	return returnValue;
 }
 
-Material* AssetHandler::GetMaterial(ID3D11Device* device, std::string diffuse_map, std::string normal_map, float normal_depth, DirectX::XMFLOAT3 specular, float specular_factor, DirectX::XMFLOAT3 ambient, DirectX::XMFLOAT3 diffuse, DirectX::XMFLOAT3 transparency_color, DirectX::XMFLOAT3 incandescence)
+Material* AssetHandler::GetMaterial(ID3D11Device* device, std::string diffuse_map, std::string normal_map, float normal_depth, DirectX::XMFLOAT3 specular, float specular_factor, DirectX::XMFLOAT3 ambient, DirectX::XMFLOAT3 diffuse, DirectX::XMFLOAT3 transparency_color, DirectX::XMFLOAT3 incandescence, std::string specular_map)
 {
 	Material* returnValue = nullptr;
 
@@ -86,7 +86,7 @@ Material* AssetHandler::GetMaterial(ID3D11Device* device, std::string diffuse_ma
 	}
 	else
 	{
-		returnValue = new Material(device, textureHandler.LoadTexture(diffuse_map, device), (normal_map.length() != 0 ? textureHandler.LoadTexture(normal_map, device) : nullptr), normal_depth, specular, specular_factor, ambient, diffuse, transparency_color, incandescence);
+		returnValue = new Material(device, textureHandler.LoadTexture(diffuse_map, device), (normal_map.length() != 0 ? textureHandler.LoadTexture(normal_map, device) : nullptr), normal_depth, specular, specular_factor, ambient, diffuse, transparency_color, incandescence, (specular_map.length() != 0 ? textureHandler.LoadTexture(specular_map, device) : nullptr));
 		material[diffuse_map + normal_map] = returnValue;
 	}
 	return returnValue;
@@ -116,7 +116,7 @@ void AssetHandler::LoadFile(ID3D11Device* device, std::string filename)
 			isDir = false;
 		}
 		
-		this->light[filename] = new LightL(device, DirectX::XMFLOAT3(-0.5f, -0.5f, -0.5f), isDir, DirectX::XMFLOAT3(thisLight.color[0], thisLight.color[1], thisLight.color[2]));
+		this->light[filename] = new LightL(device, DirectX::XMFLOAT3(1.0f, 0.0f, 0.5f), isDir, DirectX::XMFLOAT3(thisLight.color[0], thisLight.color[1], thisLight.color[2]));
 	}
 
 
@@ -217,6 +217,7 @@ void AssetHandler::LoadFile(ID3D11Device* device, std::string filename)
 
 		ID3D11ShaderResourceView* diffuseMap = nullptr;
 		ID3D11ShaderResourceView* normalMap = nullptr;
+		ID3D11ShaderResourceView* specularMap = nullptr;
 
 		const ImporterMaterial& thisMaterial = materials[i];
 
@@ -230,13 +231,19 @@ void AssetHandler::LoadFile(ID3D11Device* device, std::string filename)
 			normalMap = textureHandler.LoadTexture(thisMaterial.normal_map, device);
 		}
 
+		if (thisMaterial.specular_map_length > 0)
+		{
+			specularMap = textureHandler.LoadTexture(thisMaterial.specular_map, device);
+		}
+
 		material[filename + thisMaterial.name] = new Material(	device, diffuseMap, normalMap, thisMaterial.normal_depth, 
 																DirectX::XMFLOAT3(thisMaterial.specular[0], thisMaterial.specular[1], thisMaterial.specular[2]), 
 																thisMaterial.specular_factor, 
 																DirectX::XMFLOAT3(thisMaterial.ambient[0], thisMaterial.ambient[1], thisMaterial.ambient[2]), 
 																DirectX::XMFLOAT3(thisMaterial.diffuse[0], thisMaterial.diffuse[1], thisMaterial.diffuse[2]),
 																DirectX::XMFLOAT3(thisMaterial.transparency_color[0], thisMaterial.transparency_color[1], thisMaterial.transparency_color[2]),
-																DirectX::XMFLOAT3(thisMaterial.incandescence[0], thisMaterial.incandescence[1], thisMaterial.incandescence[2])
+																DirectX::XMFLOAT3(thisMaterial.incandescence[0], thisMaterial.incandescence[1], thisMaterial.incandescence[2]),
+																specularMap
 															 );
 	}
 
