@@ -130,7 +130,7 @@ void Player::ReactToInput(bool currentButtonState, AudioMaster &aMaster)
 void Player::ReactToControl(DirectX::XMFLOAT2 dir, bool invertControl, bool slowDown)
 {
 	float slowDownAcc = 5.0f;
-	float notSlowDownAcc = 50.0f;
+	float notSlowDownAcc = 35.0f;
 	float test3 = 2.0f;
 	// Player 1 - control
 	// PowerUp - Invert Control - effect on | Player2
@@ -157,15 +157,19 @@ void Player::ReactToControl(DirectX::XMFLOAT2 dir, bool invertControl, bool slow
 void Player::Update(float deltaTime)
 {
 	Entity::Update(deltaTime);
+	DirectX::XMFLOAT3 length;
+	DirectX::XMStoreFloat3(&length, DirectX::XMVector3Length(DirectX::XMLoadFloat3(&velocity)));
 
-	if (velocity.x > 20.0f)
+	if (length.x > 50.0f)
 	{
-		velocity.x = 20.0f;
+		DirectX::XMVECTOR NormalDir;
+		NormalDir = DirectX::XMVector3Normalize(DirectX::XMLoadFloat3(&velocity));
+		NormalDir = DirectX::XMVectorScale(NormalDir, 50.0f);
+		XMStoreFloat3(&length, NormalDir);
+		velocity.x = length.x;
+		velocity.y = length.y;
 	}
-	if (velocity.y > 20.0f)
-	{
-		velocity.y = 20.0f;
-	}
+
 	for (std::vector<CollisionSphere>::iterator Sphere = geometry->GetCollision()->spheres.begin(); Sphere != geometry->GetCollision()->spheres.end(); Sphere++)
 	{
 		DirectX::XMVECTOR rotationQuat = DirectX::XMQuaternionRotationRollPitchYawFromVector(XMLoadFloat3(&rotation));
@@ -189,14 +193,14 @@ void Player::Update(float deltaTime)
 			velocity.x = 0;
 		}
 
-		if (position.y + posF3.y - Sphere->radius < -18)
+		if (position.y + posF3.y - Sphere->radius < -17)
 		{
-			position.y = -18 - posF3.y + Sphere->radius;
+			position.y = -17 - posF3.y + Sphere->radius;
 			velocity.y = 0;
 		}
-		else if (position.y + posF3.y + Sphere->radius > 18)
+		else if (position.y + posF3.y + Sphere->radius > 17)
 		{
-			position.y = 18 - posF3.y - Sphere->radius;
+			position.y = 17 - posF3.y - Sphere->radius;
 			velocity.y = 0;
 		}
 	}

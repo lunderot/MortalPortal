@@ -1,6 +1,8 @@
 normalPart
 Part1.txt
-
+Part2.txt
+Part3.txt
+Part4.txt
 
 
 freenzyPart
