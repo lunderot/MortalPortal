@@ -9,7 +9,7 @@ int main()
 
 	try
 	{
-		Application app(false, true, 1220, 720, L"Mortal Portal");
+		Application app(false, true, 1920, 1080, L"Mortal Portal");
 		app.Run();
 		
 	}

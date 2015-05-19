@@ -30,7 +30,7 @@ Specular factor: 0.3
 Shininess: 0.7
 Reflection: 0 0 0
 Reflection factor: 0.136752
-Ambient: 0.162387 0.162387 0.162387
+Ambient: 1 1 1
 Diffuse: 0 0 0
 Diffuse factor: 0.8
 Transparency color: 0 0 0
