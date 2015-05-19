@@ -112,20 +112,20 @@ void LevelGenerator::Update(EntityHandler* entityHandler, float deltaTime, bool 
 		}
 	}
 
-	if (timeSinceBackgroundAssetSpawn > 30.0f)
+	if (timeSinceBackgroundAssetSpawn > 5.0f)
 	{
-		float XSpawnPos = 200;
+		float XSpawnPos = 300;
 
 		timeSinceBackgroundAssetSpawn = 0.0f;
 		unsigned int rnd = rand() % backgroundAssetGeometry.size();
 		float rnd_AngVelX = (float)(rand() / (RAND_MAX / 0.1f));
 		float rnd_AngVelY = (float)(rand() / (RAND_MAX / 0.1f));
 		float rnd_AngVelZ = (float)(rand() / (RAND_MAX / 0.1f));
-		//float rnd_PosZ = (float)(rand() / (RAND_MAX / 50.0f)) + 70.0f;
+		float rnd_PosZ = (float)(rand() / (RAND_MAX / 65.0f)) + 55.0f;
 		float rnd_PosY = (float)(rand() / (RAND_MAX / 100.0f)) - 50.0f;
 		float rnd_Vel = (float)(rand() / (RAND_MAX / 10.0f) + 20.0f);
 		Entity* backgroundAsset = new BackgroundAsset(backgroundAssetGeometry[rnd], backgroundAssetMaterial[rnd], backgroundAssetShader[rnd],
-			DirectX::XMFLOAT3(XSpawnPos, rnd_PosY, 80), DirectX::XMFLOAT3(-rnd_Vel, 0, 0), DirectX::XMFLOAT3(rnd_AngVelX, rnd_AngVelY, rnd_AngVelZ), DirectX::XMFLOAT3(0, 0, 0), DirectX::XMFLOAT3((float)(rand() / (RAND_MAX / DirectX::XM_PI)), (float)(rand() / (RAND_MAX / DirectX::XM_PI)), (float)(rand() / (RAND_MAX / DirectX::XM_PI))), DirectX::XMFLOAT3(1, 1, 1));
+			DirectX::XMFLOAT3(XSpawnPos, rnd_PosY, rnd_PosZ), DirectX::XMFLOAT3(-rnd_Vel, 0, 0), DirectX::XMFLOAT3(rnd_AngVelX, rnd_AngVelY, rnd_AngVelZ), DirectX::XMFLOAT3(0, 0, 0), DirectX::XMFLOAT3((float)(rand() / (RAND_MAX / DirectX::XM_PI)), (float)(rand() / (RAND_MAX / DirectX::XM_PI)), (float)(rand() / (RAND_MAX / DirectX::XM_PI))), DirectX::XMFLOAT3(1, 1, 1));
 		entityHandler->Add(backgroundAsset);
 	}
 	timeSinceBackgroundAssetSpawn += deltaTime;

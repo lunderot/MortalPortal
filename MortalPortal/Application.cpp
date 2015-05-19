@@ -121,9 +121,12 @@ Application::Application(bool fullscreen, bool showCursor, int screenWidth, int 
 		assetHandler->GetMaterial(d3dHandler->GetDevice(), "Zbrush_DeadPortal.dds", "", 0.0f),
 		playerShader);
 
-	levelGenerator->addBackgroundAsset(assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/big_comet.bin"),
-		assetHandler->GetMaterial(d3dHandler->GetDevice(), "assets/big_comet.bin", "Comet"),
-		playerShader);
+	for (int i = 0; i < 15; i++)
+	{
+		levelGenerator->addBackgroundAsset(assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/big_comet.bin"),
+			assetHandler->GetMaterial(d3dHandler->GetDevice(), "assets/big_comet.bin", "Comet"),
+			playerShader);
+	}
 
 	levelGenerator->setPowerUp(assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/PowerUp.bin"),
 		assetHandler->GetMaterial(d3dHandler->GetDevice(), "Zbrush_PowerUp.dds", "", 0.0f),
@@ -249,7 +252,7 @@ Application::Application(bool fullscreen, bool showCursor, int screenWidth, int 
 	entityHandler->Add(
 		new Background(
 			assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/BackgroundPlane.bin"),
-			assetHandler->GetMaterial(d3dHandler->GetDevice(), "spaceBackgroundBlue.dds", "", 0.0f),
+			assetHandler->GetMaterial(d3dHandler->GetDevice(), "spaceBackground7.dds", "", 0.0f),
 			backgShader, XMFLOAT3(0, 0, 230), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(400, 225, 1))
 		);
 	//stars
@@ -284,6 +287,13 @@ Application::Application(bool fullscreen, bool showCursor, int screenWidth, int 
 	//entityHandler->Add(
 	//	new Background(
 	//	assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/BackgroundPlane.bin"),
+	//	assetHandler->GetMaterial(d3dHandler->GetDevice(), "spaceDust3.dds", "", 0.0f),
+	//	backgShader, XMFLOAT3(-10, 0, 5.0), XMFLOAT3(0.02, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(337, 190, 1))
+	//	);
+
+	//entityHandler->Add(
+	//	new Background(
+	//	assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/BackgroundPlane.bin"),
 	//	assetHandler->GetMaterial(d3dHandler->GetDevice(), "spaceAsteroider2.dds", "", 0.0f),
 	//	backgShader, XMFLOAT3(0, 0, 199.7), XMFLOAT3(1.5, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(337, 190, 1))
 	//	);
@@ -293,7 +303,7 @@ Application::Application(bool fullscreen, bool showCursor, int screenWidth, int 
 		new BackgroundAsset(
 			assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/Earth.bin"),
 			assetHandler->GetMaterial(d3dHandler->GetDevice(), "EarthTexture.dds", "EarthNormalMap.dds", 0.0f, DirectX::XMFLOAT3(0.0, 0.0, 0.0), 10.0f, DirectX::XMFLOAT3(0.1, 0.1, 0.1), DirectX::XMFLOAT3(0.8, 0.8, 0.8), DirectX::XMFLOAT3(0.0, 0.0, 0.0), DirectX::XMFLOAT3(0.0, 0.0, 0.0), "EarthSpecularMap.dds"),
-			playerShader, XMFLOAT3(0, 0, 170), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0.43f, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(7, 7, 7))
+			playerShader, XMFLOAT3(0, 0, 170), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0.05f, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(7, 7, 7))
 		);
 
 	//Light
