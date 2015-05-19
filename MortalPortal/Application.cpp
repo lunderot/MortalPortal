@@ -106,7 +106,7 @@ Application::Application(bool fullscreen, bool showCursor, int screenWidth, int 
 		playerShader);
 
 	levelGenerator->addBackgroundAsset(assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/EscapePod.bin"),
-		assetHandler->GetMaterial(d3dHandler->GetDevice(), "Zbrush_EscapePod.dds", "", 0.0f, DirectX::XMFLOAT3(0.5, 0.5, 0.5), 10.0f, DirectX::XMFLOAT3(0.1, 0.1, 0.1), DirectX::XMFLOAT3(0, 0, 0)),
+		assetHandler->GetMaterial(d3dHandler->GetDevice(), "assets/EscapePod.bin", "blinn1"),
 		playerShader);
 
 	//levelGenerator->addBackgroundAsset(assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/DeadPortal.bin"),
@@ -114,11 +114,11 @@ Application::Application(bool fullscreen, bool showCursor, int screenWidth, int 
 	//	playerShader);
 
 	levelGenerator->addBackgroundAsset(assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/Satellite.bin"),
-		assetHandler->GetMaterial(d3dHandler->GetDevice(), "Zbrush_Satellite.dds", "", 0.0f),
+		assetHandler->GetMaterial(d3dHandler->GetDevice(), "assets/Satellite.bin", "blinn1"),
 		playerShader);
 
 	levelGenerator->addBackgroundAsset(assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/DeadPortal.bin"),
-		assetHandler->GetMaterial(d3dHandler->GetDevice(), "Zbrush_DeadPortal.dds", "", 0.0f),
+		assetHandler->GetMaterial(d3dHandler->GetDevice(), "assets/DeadPortal.bin", "blinn1"),
 		playerShader);
 
 	levelGenerator->addBackgroundAsset(assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/big_comet.bin"),
@@ -126,7 +126,7 @@ Application::Application(bool fullscreen, bool showCursor, int screenWidth, int 
 		playerShader);
 
 	levelGenerator->setPowerUp(assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/PowerUp.bin"),
-		assetHandler->GetMaterial(d3dHandler->GetDevice(), "Zbrush_PowerUp.dds", "", 0.0f),
+		assetHandler->GetMaterial(d3dHandler->GetDevice(), "assets/PowerUp.bin", "blinn1"),
 		mapItemShader);
 
 
@@ -134,8 +134,8 @@ Application::Application(bool fullscreen, bool showCursor, int screenWidth, int 
 	//Create player and add it to entity handler
 	player1 = new Player(d3dHandler->GetDevice(),
 		assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/New_Portal.bin"),
-		assetHandler->GetMaterial(d3dHandler->GetDevice(), "Zbrush_Portal_Green.dds", "", 0.0f, DirectX::XMFLOAT3(0.5, 0.5, 0.5), 10.0f, DirectX::XMFLOAT3(0.1, 0.1, 0.1), DirectX::XMFLOAT3(0, 0, 0)),
-		assetHandler->GetMaterial(d3dHandler->GetDevice(), "Zbrush_Portal_Red.dds", "", 0.0f, DirectX::XMFLOAT3(0.5, 0.5, 0.5), 10.0f, DirectX::XMFLOAT3(0.1, 0.1, 0.1), DirectX::XMFLOAT3(0, 0, 0)),
+		assetHandler->GetMaterial(d3dHandler->GetDevice(), "assets/New_Portal.bin", "Green"),
+		assetHandler->GetMaterial(d3dHandler->GetDevice(), "assets/New_Portal.bin", "Red"),
 		playerShader,
 
 		Color::GREEN, Color::RED,
@@ -145,8 +145,8 @@ Application::Application(bool fullscreen, bool showCursor, int screenWidth, int 
 
 	player2 = new Player(d3dHandler->GetDevice(),
 		assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/New_Portal.bin"),
-		assetHandler->GetMaterial(d3dHandler->GetDevice(), "Zbrush_Portal_Yellow.dds", "", 0.0f, DirectX::XMFLOAT3(0.5, 0.5, 0.5), 10.0f, DirectX::XMFLOAT3(0.1, 0.1, 0.1), DirectX::XMFLOAT3(0, 0, 0)),
-		assetHandler->GetMaterial(d3dHandler->GetDevice(), "Zbrush_Portal_Blue.dds", "", 0.0f, DirectX::XMFLOAT3(0.5, 0.5, 0.5), 10.0f, DirectX::XMFLOAT3(0.1, 0.1, 0.1), DirectX::XMFLOAT3(0, 0, 0)),
+		assetHandler->GetMaterial(d3dHandler->GetDevice(), "assets/New_Portal.bin", "Yellow"),
+		assetHandler->GetMaterial(d3dHandler->GetDevice(), "assets/New_Portal.bin", "Blue"),
 		playerShader,
 
 		Color::YELLOW, Color::BLUE,
@@ -314,52 +314,20 @@ Application::Application(bool fullscreen, bool showCursor, int screenWidth, int 
 
 	buttonPoint points[4] =
 	{
-		DirectX::XMFLOAT2(-0.2f, 0.4f),
+		DirectX::XMFLOAT2(-0.3f, 0.4f),
 		DirectX::XMFLOAT2(0.0f, 1.0f),
 
-		DirectX::XMFLOAT2(-0.2f, 0.6f),
+		DirectX::XMFLOAT2(-0.3f, 0.8f),
 		DirectX::XMFLOAT2(0.0f, 0.0f),
 
-		DirectX::XMFLOAT2(0.2f, 0.4f),
+		DirectX::XMFLOAT2(0.3f, 0.4f),
 		DirectX::XMFLOAT2(1.0f, 1.0f),
 
-		DirectX::XMFLOAT2(0.2f, 0.6f),
+		DirectX::XMFLOAT2(0.3f, 0.8f),
 		DirectX::XMFLOAT2(1.0f, 0.0f)
 
 	};
 	playerWins = new RectangleScreen(points, assetHandler->GetMaterial(d3dHandler->GetDevice(), "player1win.dds", "", 0.0f), assetHandler->GetMaterial(d3dHandler->GetDevice(), "player2win.dds", "", 0.0f), d3dHandler->GetDevice());
-	buttonPoint player1Points[4] =
-	{
-		DirectX::XMFLOAT2(-1.0f, 0.85f),
-		DirectX::XMFLOAT2(0.0f, 1.0f),
-
-		DirectX::XMFLOAT2(-1.0f, 1.0f),
-		DirectX::XMFLOAT2(0.0f, 0.0f),
-
-		DirectX::XMFLOAT2(1.0f, 0.85f),
-		DirectX::XMFLOAT2(1.0f, 1.0f),
-
-		DirectX::XMFLOAT2(1.0f, 1.0f),
-		DirectX::XMFLOAT2(1.0f, 0.0f)
-	};
-
-	player1Info = new RectangleScreen(player1Points, assetHandler->GetMaterial(d3dHandler->GetDevice(), "gui_Player1.dds", "", 0.0f), assetHandler->GetMaterial(d3dHandler->GetDevice(), "player2win.dds", "", 0.0f), d3dHandler->GetDevice());
-	buttonPoint player2Points[4] =
-	{
-		DirectX::XMFLOAT2(-1.0f, -1.0f),
-		DirectX::XMFLOAT2(0.0f, 1.0f),
-
-		DirectX::XMFLOAT2(-1.0f, -0.85f),
-		DirectX::XMFLOAT2(0.0f, 0.0f),
-
-		DirectX::XMFLOAT2(1.0f, -1.0f),
-		DirectX::XMFLOAT2(1.0f, 1.0f),
-
-		DirectX::XMFLOAT2(1.0f, -0.85f),
-		DirectX::XMFLOAT2(1.0f, 0.0f)
-	};
-	player2Info = new RectangleScreen(player2Points, assetHandler->GetMaterial(d3dHandler->GetDevice(), "gui_Player2.dds", "", 0.0f), assetHandler->GetMaterial(d3dHandler->GetDevice(), "player2win.dds", "", 0.0f), d3dHandler->GetDevice());
-	
 	// Combo bars, player1 & player2
 	// Player 1
 	DirectX::XMFLOAT2 comboBarUV[4];
@@ -555,21 +523,24 @@ Application::Application(bool fullscreen, bool showCursor, int screenWidth, int 
 		entityHandler
 		);
 
-	
-	entityHandler->Add(new HudDisplay(
-		assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/BackgroundPlane.bin"),
-		assetHandler->GetMaterial(d3dHandler->GetDevice(), "gui_Player2.dds", "", 0.0f),
-		numberShader,
-		XMFLOAT3(-0.01, -0.5 + 0.05, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0.5, 0.05, 0.5)
-		)
-	);
-	entityHandler->Add(new HudDisplay(
+	player1Hud = new HudDisplay(
 		assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/BackgroundPlane.bin"),
 		assetHandler->GetMaterial(d3dHandler->GetDevice(), "gui_Player1.dds", "", 0.0f),
 		numberShader,
-		XMFLOAT3(-0.01, 0.5 - 0.05, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0.5, 0.05, 0.5)
-		)
+		XMFLOAT3(-0.007, 0.5 - 0.038, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0.5, 0.038, 0.5)
 		);
+
+	player2Hud = new HudDisplay(
+		assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/BackgroundPlane.bin"),
+		assetHandler->GetMaterial(d3dHandler->GetDevice(), "gui_Player2.dds", "", 0.0f),
+		numberShader,
+		XMFLOAT3(-0.007, -0.5 + 0.038, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0.5, 0.038, 0.5)
+		);
+
+	entityHandler->Add(player1Hud);
+	entityHandler->Add(player2Hud);
+	player1Hud->SetVisible(false);
+	player2Hud->SetVisible(false);
 }
 
 Application::~Application()
@@ -608,8 +579,6 @@ Application::~Application()
 	delete pauseMenu;
 	delete restartMenu;
 	delete playerWins;
-	delete player1Info;
-	delete player2Info;
 
 	delete oneDirection;
 
@@ -765,10 +734,10 @@ void Application::Render()
 
 	if (startMenu->renderMenu == false)
 	{
+		player1Hud->SetVisible(true);
+		player2Hud->SetVisible(true);
 		powerBarShader->Use(d3dHandler->GetDeviceContext());
 		playerWins->playerWinsText = false;
-		player1Info->Render(d3dHandler->GetDeviceContext());
-		player2Info->Render(d3dHandler->GetDeviceContext());
 		// Particles
 		particleShader->Use(d3dHandler->GetDeviceContext());
 		particlePowerBar1->SRV2 = greenParticle->GetTexture();

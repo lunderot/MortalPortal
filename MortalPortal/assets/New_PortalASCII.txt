@@ -1,6 +1,6 @@
 Number of groups: 11
 Number of meshes: 2
-Number of materials: 1
+Number of materials: 5
 Number of cameras: 4
 Number of lights: 0
 Number of joints: 0
@@ -23,6 +23,66 @@ Transparency color: 0 0 0
 Incandescence: 0 0 0
 
 lambert1
+Material type: 1
+Normal depth: 0
+Specular: 0.205127 0.205127 0.205127
+Specular factor: 0.3
+Shininess: 0.7
+Reflection: 0 0 0
+Reflection factor: 0.205128
+Ambient: 0.256413 0.256413 0.256413
+Diffuse: 0 0 0
+Diffuse factor: 0.8
+Transparency color: 0 0 0
+Incandescence: 0 0 0
+
+Blue
+Zbrush_Portal_Blue.dds
+Material type: 1
+Normal depth: 0
+Specular: 0.205127 0.205127 0.205127
+Specular factor: 0.3
+Shininess: 0.7
+Reflection: 0 0 0
+Reflection factor: 0.205128
+Ambient: 0.256413 0.256413 0.256413
+Diffuse: 0 0 0
+Diffuse factor: 0.8
+Transparency color: 0 0 0
+Incandescence: 0 0 0
+
+Green
+Zbrush_Portal_Green.dds
+Material type: 1
+Normal depth: 0
+Specular: 0.205127 0.205127 0.205127
+Specular factor: 0.3
+Shininess: 0.7
+Reflection: 0 0 0
+Reflection factor: 0.205128
+Ambient: 0.256413 0.256413 0.256413
+Diffuse: 0 0 0
+Diffuse factor: 0.8
+Transparency color: 0 0 0
+Incandescence: 0 0 0
+
+Red
+Zbrush_Portal_Red.dds
+Material type: 1
+Normal depth: 0
+Specular: 0.205127 0.205127 0.205127
+Specular factor: 0.3
+Shininess: 0.7
+Reflection: 0 0 0
+Reflection factor: 0.205128
+Ambient: 0.256413 0.256413 0.256413
+Diffuse: 0 0 0
+Diffuse factor: 0.8
+Transparency color: 0 0 0
+Incandescence: 0 0 0
+
+Yellow
+Zbrush_Portal_Yellow.dds
 Transform name length: 21
 ParentID: -1
 Position: 0 0 0.707107
@@ -32,8 +92,8 @@ Scale: 12 12 1
 groundPlane_transform
 Transform name length: 5
 ParentID: -1
-Position: -14.0059 0.220937 0.00423911
-Rotation: 0.00423911 -0.678148 0.00392017 0.734903
+Position: -8.64152 5.26069 -0.173581
+Rotation: -0.173581 -0.419408 -0.0820446 0.887263
 Scale: 1 1 1
 
 persp
@@ -44631,10 +44691,10 @@ Transform id:
 0.986797
 -0.0609474
 -0.101806
-0.992935
+0.992936
 -0.0609474
 -0.101806
-0.992935
+0.992936
 -0.0755168
 -0.143282
 0.986797
@@ -44694,7 +44754,7 @@ Transform id:
 0.978902
 -0.0609474
 -0.101806
-0.992935
+0.992936
 -0.609866
 -0.264881
 -0.746928
@@ -44751,7 +44811,7 @@ Transform id:
 0.601937
 -0.0609474
 -0.101806
-0.992935
+0.992936
 -0.0580606
 -0.0456755
 0.997268
@@ -73213,10 +73273,10 @@ Transform id:
 0.00550069
 -0.989667
 -0.143278
--0.00656202
+-0.00656201
 -0.994723
 -0.102392
--0.00656202
+-0.00656201
 -0.994723
 -0.102392
 0.00550069
@@ -73276,7 +73336,7 @@ Transform id:
 -0.173463
 -0.970297
 -0.168624
--0.00656202
+-0.00656201
 -0.994723
 -0.102392
 -0.792505
@@ -73333,7 +73393,7 @@ Transform id:
 -0.804831
 -0.393971
 -0.443884
--0.00656202
+-0.00656201
 -0.994723
 -0.102392
 0.0303169
@@ -85808,7 +85868,7 @@ Transform id:
 0.579229
 -0.573573
 5
-0
+1
 0 / 56 / 0
 1 / 47 / 1
 2 / 12 / 2

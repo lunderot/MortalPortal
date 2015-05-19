@@ -1,10 +1,10 @@
-Number of groups: 7
+Number of groups: 6
 Number of meshes: 1
 Number of materials: 2
 Number of cameras: 4
 Number of lights: 0
 Number of joints: 0
-Number of nurbSurfices: 1
+Number of nurbSurfices: 0
 Number of animation curves: 0
 Number of skins: 0
 Number of morph animations: 0
@@ -23,20 +23,20 @@ Transparency color: 0 0 0
 Incandescence: 0 0 0
 
 lambert1
-Material type: 0
+Material type: 1
 Normal depth: 0
-Specular: 0 0 0
-Specular factor: 0
-Shininess: 0
+Specular: 0.162387 0.162387 0.162387
+Specular factor: 0.3
+Shininess: 0.7
 Reflection: 0 0 0
-Reflection factor: 0
-Ambient: 0 0 0
+Reflection factor: 0.136752
+Ambient: 0.162387 0.162387 0.162387
 Diffuse: 0 0 0
 Diffuse factor: 0.8
 Transparency color: 0 0 0
 Incandescence: 0 0 0
 
-lambert3
+blinn1
 Zbrush_PowerUp.dds
 Transform name length: 21
 ParentID: -1
@@ -47,8 +47,8 @@ Scale: 12 12 1
 groundPlane_transform
 Transform name length: 5
 ParentID: -1
-Position: 11.4697 4.83913 0.129518
-Rotation: 0.129518 -0.353293 -0.0494583 -0.925183
+Position: 15.4332 5.80344 0.106594
+Rotation: 0.106594 -0.321855 -0.0364953 -0.940061
 Scale: 1 1 1
 
 persp
@@ -80,13 +80,6 @@ Rotation: 0 0 0 1
 Scale: 0.3 0.3 0.3
 
 pCube1
-Transform name length: 12
-ParentID: -1
-Position: 0 0 0
-Rotation: 0 0 0 1
-Scale: 1 1 1
-
-nurbsSphere1
 Camera name length: 10
 Number of parents: 1
 CAMERA
@@ -143,13 +136,6 @@ Projection type: 1
 
 4
 sideShape
-NURB
- Nurb name lengtht: 17
- Number of nurbs: 1
-Radius: 0.63
-
-6
-nurbsSphereShape1
 Name Length: 11
 Vertex Count: 48
 Indices Count: 276
