@@ -47,7 +47,7 @@ public:
 		DirectX::XMFLOAT3 scale = DirectX::XMFLOAT3(1, 1, 1));
 
 	~Particle();
-
+	ID3D11ShaderResourceView* SRV2;
 	ID3D11UnorderedAccessView* GetUAV();
 	unsigned int GetNrOfParticles();
 	float particleCounter;
@@ -55,6 +55,7 @@ public:
 	ConstantBufferData constantBufferData;
 	bool changeTexture;
 	bool renderPortalEngine;
+	bool powerBar;
 
 	void UpdatePosition(DirectX::XMFLOAT3 pos);
 	void UpdateParticle(float deltaTime, ID3D11DeviceContext* deviceContext, ID3D11ComputeShader* computeShader);

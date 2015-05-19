@@ -11,10 +11,12 @@ Particle::Particle(unsigned int type,
 	DirectX::XMFLOAT3 acceleration, DirectX::XMFLOAT3 scale) : Entity(nullptr, nullptr, nullptr, position, velocity, angleVelocity, acceleration, scale)
 {
 	SRV = nullptr;
+	SRV2 = nullptr;
 	this->material1 = material1;
 	this->material2 = material2;
 	changeTexture = false;
 	renderPortalEngine = false;
+	powerBar = false;
 	//slowEffect = false;
 
 	// Crystal Pick-up
@@ -54,6 +56,7 @@ Particle::Particle(unsigned int type,
 			p.acceleration.x = 0;
 			p.acceleration.y = 0;
 			particle.push_back(p);
+			powerBar = true;
 		}
 	}
 
@@ -239,7 +242,9 @@ void Particle::Render(ID3D11DeviceContext* deviceContext)
 		SRV = material1->GetTexture();
 	else
 		SRV = material2->GetTexture();
+
 	deviceContext->PSSetShaderResources(0, 1, &SRV);
+	deviceContext->PSSetShaderResources(1, 1, &SRV2);
 	deviceContext->PSSetConstantBuffers(0, 1, &constantBuffer);
 	deviceContext->Draw(nrOfParticles, 0);
 }

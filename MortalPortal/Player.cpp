@@ -130,7 +130,7 @@ void Player::ReactToInput(bool currentButtonState, AudioMaster &aMaster)
 void Player::ReactToControl(DirectX::XMFLOAT2 dir, bool invertControl, bool slowDown)
 {
 	float slowDownAcc = 5.0f;
-	float notSlowDownAcc = 30.0f;
+	float notSlowDownAcc = 50.0f;
 	float test3 = 2.0f;
 	// Player 1 - control
 	// PowerUp - Invert Control - effect on | Player2
@@ -158,6 +158,14 @@ void Player::Update(float deltaTime)
 {
 	Entity::Update(deltaTime);
 
+	if (velocity.x > 20.0f)
+	{
+		velocity.x = 20.0f;
+	}
+	if (velocity.y > 20.0f)
+	{
+		velocity.y = 20.0f;
+	}
 	for (std::vector<CollisionSphere>::iterator Sphere = geometry->GetCollision()->spheres.begin(); Sphere != geometry->GetCollision()->spheres.end(); Sphere++)
 	{
 		DirectX::XMVECTOR rotationQuat = DirectX::XMQuaternionRotationRollPitchYawFromVector(XMLoadFloat3(&rotation));
@@ -287,10 +295,12 @@ void Player::Reset()
 	this->powerBar->Reset();
 	this->alive = true;
 
-	if (GetColor() == Color::RED || GetColor() == Color::GREEN)
+	if (HasColor(Color::RED))
 		this->SetPosition(DirectX::XMFLOAT3(-15, 5, 0));
 	else
 		this->SetPosition(DirectX::XMFLOAT3(-15, -5, 0));
+
+	
 
 	this->colorState = colors[0];
 	this->comboCounter = 0;

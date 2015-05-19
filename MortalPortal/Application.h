@@ -35,6 +35,8 @@
 
 #include "HudShader.h"
 #include "ObjectShader.h"
+#include "OrthoHudShader.h"
+#include "HudDisplay.h"
 
 class Application : public System
 {
@@ -52,6 +54,8 @@ private:
 	HudShader* buttonShader;
 	HudShader* powerBarShader;
 	ComboBarShader* comboBarShader;
+
+	OrthoHudShader* numberShader;
 
 	ParticleShader* particleShader;
 
@@ -90,11 +94,9 @@ private:
 	//Player data
 	char player1Keys[5];
 	char player2Keys[5];
-	unsigned int player1Test = 0;
-	unsigned int player2Test = 1;
 	RectangleScreen* playerWins;
-	RectangleScreen* player1Info;
-	RectangleScreen* player2Info;
+	HudDisplay* player1Hud;
+	HudDisplay* player2Hud;
 
 	//Power up Inidcators
 	PowerupIndicator* player1Plane;

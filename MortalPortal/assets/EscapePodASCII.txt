@@ -23,20 +23,21 @@ Transparency color: 0 0 0
 Incandescence: 0 0 0
 
 lambert1
-Material type: 0
+Material type: 1
 Normal depth: 0
-Specular: 0 0 0
-Specular factor: 0
-Shininess: 0
+Specular: 0.136751 0.136751 0.136751
+Specular factor: 0.3
+Shininess: 0.7
 Reflection: 0 0 0
-Reflection factor: 0
-Ambient: 0 0 0
-Diffuse: 0.5 0.5 0.5
+Reflection factor: 0.25641
+Ambient: 0.264958 0.264958 0.264958
+Diffuse: 0 0 0
 Diffuse factor: 0.8
 Transparency color: 0 0 0
 Incandescence: 0 0 0
 
-checker1Material
+blinn1
+Zbrush_EscapePod.dds
 Transform name length: 21
 ParentID: -1
 Position: 0 0 0.707107
@@ -46,8 +47,8 @@ Scale: 12 12 1
 groundPlane_transform
 Transform name length: 5
 ParentID: -1
-Position: 14.6033 47.9479 -0.29518
-Rotation: -0.29518 0.101474 0.0315457 0.949514
+Position: 20.9283 29.5918 -0.209359
+Rotation: -0.209359 0.114049 0.0245941 0.970854
 Scale: 1 1 1
 
 persp
@@ -24994,7 +24995,7 @@ Transform id:
 0.10355
 0.703306
 5
-0
+1
 46 / 182 / 0
 47 / 183 / 1
 49 / 185 / 2

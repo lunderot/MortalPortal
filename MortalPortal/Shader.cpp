@@ -3,7 +3,7 @@
 using namespace DirectX;
 
 
-Shader::Shader(ID3D11Device* device, unsigned int screenWidth, unsigned int screenHeight, float screenNear, float screenFar)
+Shader::Shader(ID3D11Device* device, unsigned int screenWidth, unsigned int screenHeight, float screenNear, float screenFar, bool isOrtograhic)
 {
 	vertexShader = nullptr;
 	hullShader = nullptr;
@@ -28,7 +28,16 @@ Shader::Shader(ID3D11Device* device, unsigned int screenWidth, unsigned int scre
 	XMMATRIX view = XMMatrixLookAtLH(XMLoadFloat3(&camPos), XMLoadFloat3(&lookAt), XMLoadFloat3(&up));
 	XMStoreFloat4x4(&constantBufferPerFrameData.viewMatrix, XMMatrixTranspose(view));
 
-	XMMATRIX projection = XMMatrixPerspectiveFovLH(XM_PI * 0.45f, (float)screenWidth / (float)screenHeight, screenNear, screenFar);
+	XMMATRIX projection;
+	if (isOrtograhic)
+	{
+		projection = XMMatrixOrthographicLH(1.0f, 1.0f, screenNear, screenFar);
+	}
+	else
+	{
+		projection = XMMatrixPerspectiveFovLH(XM_PI * 0.45f, (float)screenWidth / (float)screenHeight, screenNear, screenFar);
+	}
+	
 	XMStoreFloat4x4(&constantBufferPerFrameData.projectionMatrix, XMMatrixTranspose(projection));
 
 	ZeroMemory(&bufferDesc, sizeof(bufferDesc));

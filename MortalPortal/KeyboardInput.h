@@ -12,7 +12,7 @@ public:
 	 KeyboardInput(char keys[]);
 	~KeyboardInput();
 
-	DirectX::XMFLOAT2 GetDirection(unsigned int playerNr);
+	DirectX::XMFLOAT2 GetDirection();
 	bool GetButtonState();
 	bool GetButtonEnterState();
 	bool GetButtonUpState();

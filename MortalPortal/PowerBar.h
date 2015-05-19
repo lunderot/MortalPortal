@@ -40,6 +40,10 @@ public:
 	const bool IsDead();
 	const DirectX::XMFLOAT2 GetMaxMinValue();
 	ID3D11Buffer* GetVertexBuffer();
+	bool removingPower;
+	bool addingPower;
+	float powerRemovalValue;
+	float powerAddValue;
 
 	void Update(float deltaTime, ID3D11DeviceContext* deviceContext);
 	void Render(ID3D11DeviceContext* deviceContext, Shader* shader);
