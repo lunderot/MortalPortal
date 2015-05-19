@@ -299,6 +299,9 @@ void EntityHandler::HandleCollision(Player* player, Entity* entity2, std::string
 				break;
 		}
 		item->SetAlive(false);
+		if (item->GetChild())
+			item->GetChild()->SetAlive(false);
+
 	}
 }
 

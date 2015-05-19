@@ -10,10 +10,12 @@ Application::Application(bool fullscreen, bool showCursor, int screenWidth, int 
 	d3dHandler = new D3DHandler(screenWidth, screenHeight, hwnd, fullscreen, screenFar, screenNear);
 
 	//Object shaders
-	playerShader = new ObjectShader(d3dHandler->GetDevice(), L"assets/shaders/playerVS.hlsl", L"assets/shaders/playerPS.hlsl", screenWidth, screenHeight, screenNear, screenFar);
-	mapItemShader = new ObjectShader(d3dHandler->GetDevice(), L"assets/shaders/MapItemVS.hlsl", L"assets/shaders/MapItemPS.hlsl", screenWidth, screenHeight, screenNear, screenFar);
+	//mapItemShader = new ObjectShader(d3dHandler->GetDevice(), L"assets/shaders/MapItemVS.hlsl", L"assets/shaders/MapItemPS.hlsl", screenWidth, screenHeight, screenNear, screenFar);
 	backgShader = new ObjectShader(d3dHandler->GetDevice(), L"assets/shaders/BackgroundVertexShader.hlsl", L"assets/shaders/BackgroundPixelShader.hlsl", screenWidth, screenHeight, screenNear, screenFar);
-	
+	playerShader = new ObjectShader(d3dHandler->GetDevice(), L"assets/shaders/playerVS.hlsl", L"assets/shaders/playerPS.hlsl", screenWidth, screenHeight, screenNear, screenFar);
+	transparencyShader = new ObjectShader(d3dHandler->GetDevice(), L"assets/shaders/BackgroundVertexShader.hlsl", L"assets/shaders/BackgroundPixelShader.hlsl", screenWidth, screenHeight, screenNear, screenFar);
+	powerShader = new ObjectShader(d3dHandler->GetDevice(), L"assets/shaders/BackgroundVertexShader.hlsl", L"assets/shaders/BackgroundPixelShader.hlsl", screenWidth, screenHeight, screenNear, screenFar);
+
 	//HUD shaders
 	buttonShader = new HudShader(d3dHandler->GetDevice(), L"assets/shaders/buttonVS.hlsl", L"assets/shaders/buttonPS.hlsl", screenWidth, screenHeight, screenNear, screenFar);
 	powerBarShader = new HudShader(d3dHandler->GetDevice(), L"assets/shaders/powerBarVS.hlsl", L"assets/shaders/powerBarPS.hlsl", screenWidth, screenHeight, screenNear, screenFar);
@@ -23,9 +25,10 @@ Application::Application(bool fullscreen, bool showCursor, int screenWidth, int 
 	particleShader = new ParticleShader(L"assets/shaders/particleCS.hlsl", L"assets/shaders/particleGS.hlsl", d3dHandler->GetDevice(), L"assets/shaders/particleVS.hlsl", L"assets/shaders/particlePS.hlsl", screenWidth, screenHeight, screenNear, screenFar);
 
 	//Audio loading
-	unsigned int pirate = aMaster.addNewSample(L"assets/audio/pirate.wav", "pirate", true);
-	aMaster.addNewSample(L"assets/audio/boing.wav", "boing", false);
-	//aMaster.playSample(pirate);
+	unsigned int bgMusic = aMaster.addNewSample(L"assets/audio/muncher.wav", "background", true);
+	//aMaster.addNewSample(L"assets/audio/boing.wav", "boing", false);
+
+	aMaster.playSample(bgMusic);
 	
 	// Player 1 keys
 	player1Keys[0] = 'W';
@@ -81,14 +84,24 @@ Application::Application(bool fullscreen, bool showCursor, int screenWidth, int 
 		playerShader,
 		assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/crystal_v2.bin"),
 		assetHandler->GetMaterial(d3dHandler->GetDevice(), "assets/crystal_v2.bin", "Crystal_Red"),
-		playerShader);
+		playerShader,
+		assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/glow.bin"),
+		assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/glow.bin"),
+		assetHandler->GetMaterial(d3dHandler->GetDevice(), "assets/glow.bin", "Glow_Green"),
+		assetHandler->GetMaterial(d3dHandler->GetDevice(), "assets/glow.bin", "Glow_Red"),
+		transparencyShader);
 
 	levelGenerator->setPlayerTwoCrystals(assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/crystal_v2.bin"),
 		assetHandler->GetMaterial(d3dHandler->GetDevice(), "assets/crystal_v2.bin", "Crystal_Yellow"),
 		playerShader,
 		assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/crystal_v2.bin"),
 		assetHandler->GetMaterial(d3dHandler->GetDevice(), "assets/crystal_v2.bin", "Crystal_Blue"),
-		playerShader);
+		playerShader,
+		assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/glow.bin"),
+		assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/glow.bin"),
+		assetHandler->GetMaterial(d3dHandler->GetDevice(), "assets/glow.bin", "Glow_Yellow"),
+		assetHandler->GetMaterial(d3dHandler->GetDevice(), "assets/glow.bin", "Glow_Blue"),
+		transparencyShader);
 
 	// Add available comets for LevelGenerator to choose from
 	levelGenerator->addComet(assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/small_comet_v1.bin"),
@@ -125,7 +138,7 @@ Application::Application(bool fullscreen, bool showCursor, int screenWidth, int 
 
 	levelGenerator->setPowerUp(assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/PowerUp.bin"),
 		assetHandler->GetMaterial(d3dHandler->GetDevice(), "Zbrush_PowerUp.dds", "", 0.0f),
-		mapItemShader);
+		playerShader);
 
 
 
@@ -291,7 +304,7 @@ Application::Application(bool fullscreen, bool showCursor, int screenWidth, int 
 		new BackgroundAsset(
 			assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/Earth.bin"),
 			assetHandler->GetMaterial(d3dHandler->GetDevice(), "EarthTexture.dds", "EarthNormalMap.dds", 0.0f, DirectX::XMFLOAT3(0.0, 0.0, 0.0), 10.0f, DirectX::XMFLOAT3(0.1, 0.1, 0.1), DirectX::XMFLOAT3(0.8, 0.8, 0.8), DirectX::XMFLOAT3(0.0, 0.0, 0.0), DirectX::XMFLOAT3(0.0, 0.0, 0.0), "EarthSpecularMap.dds"),
-			playerShader, XMFLOAT3(0, 0, 170), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0.43f, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(7, 7, 7))
+			playerShader, XMFLOAT3(0, 0, 170), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0.03f, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(7, 7, 7))
 		);
 
 	//Light
@@ -511,12 +524,12 @@ Application::Application(bool fullscreen, bool showCursor, int screenWidth, int 
 	slowSpeedIndicator1 = new PowerupIndicator(
 		assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/BackgroundPlane.bin"),
 		assetHandler->GetMaterial(d3dHandler->GetDevice(), "FrostPower.dds", "", 0.0f),
-		backgShader, XMFLOAT3(0, 0, -1.50), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(1.7f, 2.6f, 1)
+		powerShader, XMFLOAT3(0, 0, -1.50), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(1.7f, 2.6f, 1)
 		);
 	slowSpeedIndicator2 = new PowerupIndicator(
 		assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/BackgroundPlane.bin"),
 		assetHandler->GetMaterial(d3dHandler->GetDevice(), "FrostPower.dds", "", 0.0f),
-		backgShader, XMFLOAT3(0, 0, -1.51), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(1.7f, 2.6f, 1)
+		powerShader, XMFLOAT3(0, 0, -1.51), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(1.7f, 2.6f, 1)
 		);
 
 	entityHandler->Add(slowSpeedIndicator1);
@@ -525,13 +538,13 @@ Application::Application(bool fullscreen, bool showCursor, int screenWidth, int 
 	immortalIndicator1 = new PowerupIndicator(
 		assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/BackgroundPlane.bin"),
 		assetHandler->GetMaterial(d3dHandler->GetDevice(), "immortalPower.dds", "", 0.0f),
-		backgShader, XMFLOAT3(0, 0, -1.52), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(3, 3, 1)
+		powerShader, XMFLOAT3(0, 0, -1.52), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(3, 3, 1)
 		);
 
 	immortalIndicator2 = new PowerupIndicator(
 		assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/BackgroundPlane.bin"),
 		assetHandler->GetMaterial(d3dHandler->GetDevice(), "immortalPower.dds", "", 0.0f),
-		backgShader, XMFLOAT3(0, 0, -1.53), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(3, 3, 1)
+		powerShader, XMFLOAT3(0, 0, -1.53), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(3, 3, 1)
 		);
 
 	entityHandler->Add(immortalIndicator1);
@@ -540,13 +553,13 @@ Application::Application(bool fullscreen, bool showCursor, int screenWidth, int 
 	inverseIndicator1 = new PowerupIndicator(
 		assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/BackgroundPlane.bin"),
 		assetHandler->GetMaterial(d3dHandler->GetDevice(), "error.dds", "", 0.0f),
-		backgShader, XMFLOAT3(0, 0, -1.54f), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(2, 2, 1)
+		powerShader, XMFLOAT3(0, 0, -1.54f), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(2, 2, 1)
 		);
 
 	inverseIndicator2 = new PowerupIndicator(
 		assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/BackgroundPlane.bin"),
 		assetHandler->GetMaterial(d3dHandler->GetDevice(), "error.dds", "", 0.0f),
-		backgShader, XMFLOAT3(0, 0, -1.55f), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(2, 2, 1)
+		powerShader, XMFLOAT3(0, 0, -1.55f), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(2, 2, 1)
 		);
 
 	entityHandler->Add(inverseIndicator1);
@@ -565,6 +578,8 @@ Application::~Application()
 	delete backgShader;
 	delete mapItemShader;
 	delete buttonShader;
+	delete transparencyShader;
+	delete powerShader;
 
 	delete input;
 	delete input2;

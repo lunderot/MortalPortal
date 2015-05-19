@@ -16,8 +16,8 @@ public:
 	void addComet(Geometry* cometsGeometry, Material* cometsMaterial, Shader* cometsShader);
 	void addBackgroundAsset(Geometry* backgroundAssetGeometry, Material* backgroundAssetMaterial, Shader* AssetShader);
 	void setPowerUp(Geometry* powerUpGeometry, Material* powerUpMaterial, Shader* powerUpShader);
-	void setPlayerOneCrystals(Geometry* Crystal1Geometry, Material* Crystal1Material, Shader* Crystal1Shader, Geometry* Crystal2Geometry, Material* Crystal2Material, Shader* Crystal2Shader);
-	void setPlayerTwoCrystals(Geometry* Crystal1Geometry, Material* Crystal1Material, Shader* Crystal1Shader, Geometry* Crystal2Geometry, Material* Crystal2Material, Shader* Crystal2Shader);
+	void setPlayerOneCrystals(Geometry* Crystal1Geometry, Material* Crystal1Material, Shader* Crystal1Shader, Geometry* Crystal2Geometry, Material* Crystal2Material, Shader* Crystal2Shader, Geometry* Glow1, Geometry* Glow2, Material* Glow1Material, Material* Glow2Material, Shader* GlowShader);
+	void setPlayerTwoCrystals(Geometry* Crystal1Geometry, Material* Crystal1Material, Shader* Crystal1Shader, Geometry* Crystal2Geometry, Material* Crystal2Material, Shader* Crystal2Shader, Geometry* Glow1, Geometry* Glow2, Material* Glow1Material, Material* Glow2Material, Shader* GlowShader);
 
 	void Update(EntityHandler* entityHandler, float deltaTime, bool &crystalFrenzy);
 
@@ -51,11 +51,11 @@ protected:
 	Material* powerUpMaterial;
 	Shader* powerUpShader;
 
-	Shader* playerOneCrystalShader[2];
-	Geometry* playerOneCrystalGeometry[2];
-	Material* playerOneCrystalMaterial[2];
+	Shader* playerOneCrystalShader[3];
+	Geometry* playerOneCrystalGeometry[4];
+	Material* playerOneCrystalMaterial[4];
 
-	Shader* playerTwoCrystalShader[2];
-	Geometry* playerTwoCrystalGeometry[2];
-	Material* playerTwoCrystalMaterial[2];
+	Shader* playerTwoCrystalShader[3];
+	Geometry* playerTwoCrystalGeometry[4];
+	Material* playerTwoCrystalMaterial[4];
 };
