@@ -31,13 +31,7 @@ public:
 	PowerBar* powerBar;
 
 
-	void AddCombo(bool bonusComboControl);
 	void RemoveCombo();
-	ComboBar* comboBar;
-
-	void AddComboText();
-	void RemoveComboText();
-	ComboDisplayText* comboDisplayText[3];
 	
 	Color GetColor() const;
 	void SetColor(Color color);
@@ -67,6 +61,9 @@ public:
 	void AddScore(int amount);
 	int GetScore() const;
 
+	void AddCombo(unsigned int comboChange);
+	int GetCombo();
+
 private:
 	// Power ups
 	float inverControlTimer;
@@ -80,16 +77,14 @@ private:
 	bool bonusComboDisplay;
 
 	Material* switchMaterial;
-	
-	unsigned int comboCounter;
-	unsigned int comboCounterChange_10;
-	unsigned int comboCounterChange_100;
-	bool comboMax;
+
 	bool previousButtonState;
 
 	Color colorState;
 	Color colors[2];
 
 	int score;
+	int comboScore;
+	int maxComboScore;
 };
 

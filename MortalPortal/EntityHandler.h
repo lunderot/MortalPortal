@@ -15,7 +15,7 @@
 #include "D3DHandler.h"
 #include "OrthoHudShader.h"
 
-#include "NumberDisplay.h"
+#include "Digit.h"
 
 class EntityHandler
 {

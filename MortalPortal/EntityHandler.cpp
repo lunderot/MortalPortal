@@ -51,7 +51,6 @@ void EntityHandler::Update(float deltaTime, AudioMaster &aMaster)
 							//Remove combo if it was the player's color
 							if (player[i]->HasColor(item->GetColor()))
 							{
-								player[i]->RemoveComboText();
 								player[i]->RemoveCombo();
 							}
 						}
@@ -222,8 +221,6 @@ void EntityHandler::HandleCollision(Player* player, Entity* entity2, std::string
 				if (player->GetImmortalPortal() == true)
 				{
 					player->AddCombo(false);
-					player->AddComboText();
-					player->AddPower(player->comboBar->GetComboCount());
 					player->renderParticles = true;
 					player->doubleUp = true;
 					aMaster.playSample("boing");
@@ -232,7 +229,6 @@ void EntityHandler::HandleCollision(Player* player, Entity* entity2, std::string
 				{
 					player->RemovePower();
 					player->RemoveCombo();
-					player->RemoveComboText();
 					player->AddScore(-20);
 				}
 				break;
@@ -278,9 +274,8 @@ void EntityHandler::HandleCollision(Player* player, Entity* entity2, std::string
 				{
 					if (isPortal)
 					{
-						player->AddCombo(false);
-						player->AddComboText();
-						player->AddPower(player->comboBar->GetComboCount());
+						player->AddCombo(1);
+						player->AddPower(player->GetCombo());
 						player->renderParticles = true;
 						player->doubleUp = true;
 						aMaster.playSample("boing");
@@ -292,8 +287,7 @@ void EntityHandler::HandleCollision(Player* player, Entity* entity2, std::string
 					if (player->GetImmortalPortal() == true)
 					{
 						player->AddCombo(false);
-						player->AddComboText();
-						player->AddPower(player->comboBar->GetComboCount());
+						player->AddPower(player->GetCombo());
 						player->renderParticles = true;
 						player->doubleUp = true;
 						aMaster.playSample("boing");
@@ -304,7 +298,6 @@ void EntityHandler::HandleCollision(Player* player, Entity* entity2, std::string
 						{
 							player->RemovePower();
 							player->RemoveCombo();
-							player->RemoveComboText();
 							player->AddScore(-20);
 						}
 					}

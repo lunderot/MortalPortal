@@ -16,15 +16,7 @@ Player::Player(ID3D11Device* device, Geometry* geometry, Material* material, Mat
 	this->switchMaterial = switchMaterial;
 	
 	powerBar = new PowerBar(device);
-	comboBar = new ComboBar(device, material);
-	comboDisplayText[0] = new ComboDisplayText(device, material);
-	comboDisplayText[1] = new ComboDisplayText(device, material);
-	comboDisplayText[2] = new ComboDisplayText(device, material);
 
-	comboCounter = 0;
-	comboCounterChange_10 = 0;
-	comboCounterChange_100 = 0;
-	comboMax = false;
 	previousButtonState = false;
 	colorState = color1;
 	colors[0] = color1;
@@ -44,16 +36,14 @@ Player::Player(ID3D11Device* device, Geometry* geometry, Material* material, Mat
 	bonusComboDisplay = false;
 
 	score = 0;
+	comboScore = 0;
+	maxComboScore = 999;
 }
 
 
 Player::~Player()
 {
 	delete powerBar;
-	delete comboBar;
-	delete comboDisplayText[0];
-	delete comboDisplayText[1];
-	delete comboDisplayText[2];
 }
 
 bool Player::GetInvertControl()
@@ -228,46 +218,6 @@ void Player::AddPower(unsigned int bonusPower)
 	powerBar->AddPower(bonusPower);
 }
 
-void Player::AddCombo(bool bonusComboControl)
-{
-	if (comboCounterChange_10 >= 9)
-	{
-		comboBar->AddCombo(bonusComboControl);
-	}
-
-	if (bonusComboControl == true)
-	{
-		comboBar->AddCombo(bonusComboControl);
-	}
-}
-
-void Player::AddComboText()
-{
-	comboCounter++;
-	comboCounterChange_10++;
-	comboCounterChange_100++;
-
-	if (comboCounter == 999)
-	{
-		comboMax = true;
-	}
-
-	if (comboMax != true)
-	{
-		comboDisplayText[0]->AddCombo();
-		if (comboCounterChange_10 >= 10)
-		{
-			comboDisplayText[1]->AddCombo();
-			comboCounterChange_10 = 0;
-		}
-		if (comboCounterChange_100 >= 100)
-		{
-			comboDisplayText[2]->AddCombo();
-			comboCounterChange_100 = 0;
-		}
-	}
-}
-
 Color Player::GetColor() const
 {
 	return colorState;
@@ -307,10 +257,6 @@ void Player::Reset()
 	
 
 	this->colorState = colors[0];
-	this->comboCounter = 0;
-	this->comboCounterChange_10 = 0;
-	this->comboCounterChange_100 = 0;
-	this->comboMax = false;
 	this->previousButtonState = false;
 
 	inverControlTimer = 0;
@@ -322,33 +268,19 @@ void Player::Reset()
 	setSlowDownAcceleration(0.0f);
 	setBonusCombo(0.0f);
 	setImmortalPortal(0.0f);
-	comboDisplayText[0]->RemoveCombo();
-	comboDisplayText[1]->RemoveCombo();
-	comboDisplayText[2]->RemoveCombo();
-	comboBar->RemoveCombo();
 
 	score = 0;
+	comboScore = 0;
 }
 
 void Player::RemoveCombo()
 {
-	comboBar->RemoveCombo();
+	comboScore = 0;
 }
 
 void Player::RemovePower()
 {
 	powerBar->RemovePower();
-}
-
-void Player::RemoveComboText()
-{
-	comboMax = false;
-	comboCounter = 0;
-	comboCounterChange_10 = 0;
-	comboCounterChange_100 = 0;
-	comboDisplayText[0]->RemoveCombo();
-	comboDisplayText[1]->RemoveCombo();
-	comboDisplayText[2]->RemoveCombo();
 }
 
 void Player::AddScore(int amount)
@@ -363,4 +295,21 @@ void Player::AddScore(int amount)
 int Player::GetScore() const
 {
 	return score;
+}
+
+void Player::AddCombo(unsigned int comboChange)
+{
+	comboScore += comboChange;
+	if (comboScore < 0)
+	{
+		comboScore = 0;
+	}
+	if (comboScore > maxComboScore)
+	{
+		comboScore = maxComboScore;
+	}
+}
+int Player::GetCombo()
+{
+	return comboScore;
 }

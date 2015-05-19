@@ -92,7 +92,7 @@
     <ClCompile Include="ComboBarShader.cpp" />
     <ClCompile Include="ComboDisplayText.cpp" />
     <ClCompile Include="ContinueButton.cpp" />
-    <ClCompile Include="HighscoreDisplay.cpp" />
+    <ClCompile Include="NumberDisplay.cpp" />
     <ClCompile Include="HudDisplay.cpp" />
     <ClCompile Include="HudShader.cpp" />
     <ClCompile Include="Light.cpp" />
@@ -112,7 +112,7 @@
     <ClCompile Include="LevelGenerator.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Material.cpp" />
-    <ClCompile Include="NumberDisplay.cpp" />
+    <ClCompile Include="Digit.cpp" />
     <ClCompile Include="ObjectShader.cpp" />
     <ClCompile Include="OrthoHudShader.cpp" />
     <ClCompile Include="PauseMenu.cpp" />
@@ -145,7 +145,7 @@
     <ClInclude Include="ComboDisplayText.h" />
     <ClInclude Include="ContinueButton.h" />
     <ClInclude Include="DisableAudio.h" />
-    <ClInclude Include="HighscoreDisplay.h" />
+    <ClInclude Include="NumberDisplay.h" />
     <ClInclude Include="HudDisplay.h" />
     <ClInclude Include="HudShader.h" />
     <ClInclude Include="Light.h" />
@@ -164,7 +164,7 @@
     <ClInclude Include="KeyboardInput.h" />
     <ClInclude Include="LevelGenerator.h" />
     <ClInclude Include="Material.h" />
-    <ClInclude Include="NumberDisplay.h" />
+    <ClInclude Include="Digit.h" />
     <ClInclude Include="ObjectShader.h" />
     <ClInclude Include="OrthoHudShader.h" />
     <ClInclude Include="PauseMenu.h" />

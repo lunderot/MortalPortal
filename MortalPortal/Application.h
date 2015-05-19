@@ -31,7 +31,7 @@
 #include "TextureHandler.h"
 
 #include "AudioMaster.h"
-#include "HighscoreDisplay.h"
+#include "NumberDisplay.h"
 
 #include "HudShader.h"
 #include "ObjectShader.h"
@@ -121,7 +121,11 @@ private:
 	LightL oneDirectionLightObject;
 	LightL* oneDirection;
 
-	HighscoreDisplay* highscoreDisplay;
+	NumberDisplay* highscoreDisplay1;
+	NumberDisplay* highscoreDisplay2;
+
+	NumberDisplay* comboDisplay1;
+	NumberDisplay* comboDisplay2;
 
 public:
 	Application(bool fullscreen, bool showCursor, int screenWidth, int screenHeight, LPCWSTR windowTitle);
@@ -132,5 +136,17 @@ public:
 
 private:
 	void UpdatePlayerControls(Input* input, Player* player, Player* enemyPlayer, PowerupIndicator* importalPortalIndicator, PowerupIndicator* inverseIndicator, PowerupIndicator* slowSpeedIndicator, Particle* portalEngine, Particle* portal);
+
+	void CreateEntities();
+	void CreateBackgroundEntities();
+	void CreateParticleEffects();
+	void CreateLevelGenerator();
+	void CreateInput();
+	void CreateHandlers();
+	void CreateShaders(float screenFar, float screenNear);
+
+	void CreatePlayerEffects();
+	void CreateHudObjects();
+	void CreateMenuObjects();
 };
 

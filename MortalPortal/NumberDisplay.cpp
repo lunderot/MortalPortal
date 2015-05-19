@@ -3,26 +3,22 @@
 
 NumberDisplay::NumberDisplay(Material* m0, Material* m1, Material* m2, Material* m3, Material* m4,
 	Material* m5, Material* m6, Material* m7, Material* m8, Material* m9,
-	Geometry* geometry, Shader* shader, unsigned int number)
-	: Entity(geometry, m0, shader)
+	Geometry* geometry, Shader* shader, EntityHandler* entityHandler, unsigned int numberOfDigits, DirectX::XMFLOAT3 pos)
 {
-	this->numbers[0] = m0;
-	this->numbers[1] = m1;
-	this->numbers[2] = m2;
-	this->numbers[3] = m3;
-	this->numbers[4] = m4;
-	this->numbers[5] = m5;
-	this->numbers[6] = m6;
-	this->numbers[7] = m7;
-	this->numbers[8] = m8;
-	this->numbers[9] = m9;
-	if (number < 10)
+	stridex = 0.015f;
+	scale = 0.01f;
+
+	for (int i = 0; i < numberOfDigits; i++)
 	{
-		this->number = number;
+		numbersDisplay.push_back(new Digit(m0, m1, m2, m3, m4, m5, m6, m7, m8, m9, geometry, shader, 0));
 	}
-	else
+	int index = 0;
+	for (vector<Digit*>::iterator i = numbersDisplay.begin(); i != numbersDisplay.end(); i++)
 	{
-		this->number = 0;
+		(*i)->SetPosition(DirectX::XMFLOAT3(pos.x + -index * stridex, pos.y, pos.z));
+		(*i)->SetScale(DirectX::XMFLOAT3(scale, scale * 1.5f, scale));
+		entityHandler->Add(*i);
+		index++;
 	}
 }
 
@@ -31,26 +27,33 @@ NumberDisplay::~NumberDisplay()
 {
 }
 
-
-void NumberDisplay::SetNumber(unsigned int number)
+void NumberDisplay::Update(unsigned int number)
 {
-	if (number < 10)
+	int index = 0;
+	for (vector<Digit*>::iterator i = numbersDisplay.begin(); i != numbersDisplay.end(); i++)
 	{
-		this->number = number;
-	}
-	else
-	{
-		this->number = 0;
+		int y = pow(10, index);
+		int z = number / y;
+		int x2 = number / (y * 10);
+		(*i)->SetNumber(z - x2 * 10);
+		index++;
 	}
 }
 
-unsigned int NumberDisplay::GetNumber() const
+void NumberDisplay::SetVisible(bool visible)
 {
-	return number;
+	for (vector<Digit*>::iterator i = numbersDisplay.begin(); i != numbersDisplay.end(); i++)
+	{
+		(*i)->SetVisible(visible);
+	}
 }
 
-
-Material* NumberDisplay::GetMaterial() const
+void NumberDisplay::SetPosition(DirectX::XMFLOAT3 position)
 {
-	return numbers[number];
+	int index = 0;
+	for (vector<Digit*>::iterator i = numbersDisplay.begin(); i != numbersDisplay.end(); i++)
+	{
+		(*i)->SetPosition(DirectX::XMFLOAT3(position.x + -index * stridex, position.y, position.z));
+		index++;
+	}
 }
