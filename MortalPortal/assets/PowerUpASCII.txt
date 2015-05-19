@@ -1,10 +1,10 @@
-Number of groups: 6
+Number of groups: 7
 Number of meshes: 1
 Number of materials: 2
 Number of cameras: 4
 Number of lights: 0
 Number of joints: 0
-Number of nurbSurfices: 0
+Number of nurbSurfices: 1
 Number of animation curves: 0
 Number of skins: 0
 Number of morph animations: 0
@@ -47,8 +47,8 @@ Scale: 12 12 1
 groundPlane_transform
 Transform name length: 5
 ParentID: -1
-Position: 15.4332 5.80344 0.106594
-Rotation: 0.106594 -0.321855 -0.0364953 -0.940061
+Position: 19.9295 11.1232 0.194227
+Rotation: 0.194227 -0.426499 -0.0943118 -0.878339
 Scale: 1 1 1
 
 persp
@@ -80,6 +80,13 @@ Rotation: 0 0 0 1
 Scale: 0.3 0.3 0.3
 
 pCube1
+Transform name length: 12
+ParentID: -1
+Position: 0 0 0
+Rotation: 0 0 0 1
+Scale: 1 1 1
+
+nurbsSphere1
 Camera name length: 10
 Number of parents: 1
 CAMERA
@@ -136,6 +143,13 @@ Projection type: 1
 
 4
 sideShape
+NURB
+ Nurb name lengtht: 17
+ Number of nurbs: 1
+Radius: 0.6
+
+6
+nurbsSphereShape1
 Name Length: 11
 Vertex Count: 48
 Indices Count: 276

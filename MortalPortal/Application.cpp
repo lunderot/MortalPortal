@@ -143,7 +143,7 @@ Application::Application(bool fullscreen, bool showCursor, int screenWidth, int 
 
 	levelGenerator->setPowerUp(assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/PowerUp.bin"),
 		assetHandler->GetMaterial(d3dHandler->GetDevice(), "assets/PowerUp.bin", "blinn1"),
-		mapItemShader);
+		playerShader);
 
 
 
