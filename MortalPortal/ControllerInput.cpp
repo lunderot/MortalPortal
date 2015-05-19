@@ -52,44 +52,41 @@ ControllerInput::~ControllerInput()
 {
 }
 
-XMFLOAT2 ControllerInput::GetDirection(unsigned int playerNr)
+XMFLOAT2 ControllerInput::GetDirection()
 {
 	XMFLOAT2 returnValue;
 
 	XInputGetState(id, &state);
+	float leftX = state.Gamepad.sThumbLX;
+	float leftY = state.Gamepad.sThumbLY;
 	
-	if (playerNr == id)
+	float magnitude = sqrt(leftX*leftX + leftY*leftY);
+
+	returnValue.x = leftX / magnitude;
+	returnValue.y = leftY / magnitude;
+
+	float normalizedMagnitude = 0;
+
+	if (magnitude > XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE)
 	{
-		float leftX = state.Gamepad.sThumbLX;
-		float leftY = state.Gamepad.sThumbLY;
-	
-		float magnitude = sqrt(leftX*leftX + leftY*leftY);
-
-		returnValue.x = leftX / magnitude;
-		returnValue.y = leftY / magnitude;
-
-		float normalizedMagnitude = 0;
-
-		if (magnitude > XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE)
+		if (magnitude > 32767)
 		{
-			if (magnitude > 32767)
-			{
-				magnitude = 32767;
-			}
-
-			magnitude -= XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE;
-			normalizedMagnitude = magnitude / (32767 - XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE);
-		}
-		else
-		{
-			magnitude = 0.0;
-			normalizedMagnitude = 0.0;
+			magnitude = 32767;
 		}
 
-
-		returnValue.x *= normalizedMagnitude;
-		returnValue.y *= normalizedMagnitude;
+		magnitude -= XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE;
+		normalizedMagnitude = magnitude / (32767 - XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE);
 	}
+	else
+	{
+		magnitude = 0.0;
+		normalizedMagnitude = 0.0;
+	}
+
+
+
+	returnValue.x *= normalizedMagnitude;
+	returnValue.y *= normalizedMagnitude;
 
 
 

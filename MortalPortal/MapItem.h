@@ -8,7 +8,7 @@ public:
 	enum objectType{Comet, Crystal, PowerUp};
 
 	MapItem(Geometry* geometry, Material* material, Shader* shader,	objectType type,
-		Color color,
+		Color color, MapItem* child = nullptr,
 		DirectX::XMFLOAT3 position = DirectX::XMFLOAT3(0, 0, 0),
 		DirectX::XMFLOAT3 velocity = DirectX::XMFLOAT3(0, 0, 0),
 		DirectX::XMFLOAT3 angleVelocity = DirectX::XMFLOAT3(0, 0, 0),
@@ -23,6 +23,9 @@ public:
 
 	Color GetColor() const;
 	void SetColor(Color color);
+
+	MapItem* GetChild();
 private:
 	Color colorState;
+	MapItem* child;
 };

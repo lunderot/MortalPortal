@@ -13,6 +13,7 @@
 #include "PowerupIndicator.h"
 #include "AudioMaster.h"
 #include "D3DHandler.h"
+#include "OrthoHudShader.h"
 
 #include "NumberDisplay.h"
 

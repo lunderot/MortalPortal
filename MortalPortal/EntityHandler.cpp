@@ -126,14 +126,20 @@ void EntityHandler::Render(ID3D11DeviceContext* deviceContext, D3DHandler* d3dHa
 		Shader* currentShader = ent->first;
 		currentShader->Use(deviceContext);
 
+		if (dynamic_cast<OrthoHudShader*>(currentShader))
+		{
+			d3dHandler->EnableAlphaBlendingSeverlOverlapping();
+		}
+		else
+		{
+			d3dHandler->EnableAlphaBlendingFewOverlapping();
+		}
+
 		for (std::vector<Entity*>::iterator i = ent->second.begin(); i != ent->second.end(); ++i)
 		{
 			if ((*i)->GetVisible())
 			{
-				if (dynamic_cast<NumberDisplay*>((*i)))
-				{
-					int debug = 1902;
-				}
+				
 				Geometry* geometry = (*i)->GetGeometry();
 				Material* material = (*i)->GetMaterial();
 
@@ -267,15 +273,19 @@ void EntityHandler::HandleCollision(Player* player, Entity* entity2, std::string
 			}
 			case MapItem::objectType::Crystal:
 			{
-				if (player->GetColor() == item->GetColor() && isPortal)
+				
+				if (player->GetColor() == item->GetColor())
 				{
-					player->AddCombo(false);
-					player->AddComboText();
-					player->AddPower(player->comboBar->GetComboCount());
-					player->renderParticles = true;
-					player->doubleUp = true;
-					aMaster.playSample("boing");
-					player->AddScore(100);
+					if (isPortal)
+					{
+						player->AddCombo(false);
+						player->AddComboText();
+						player->AddPower(player->comboBar->GetComboCount());
+						player->renderParticles = true;
+						player->doubleUp = true;
+						aMaster.playSample("boing");
+						player->AddScore(100);
+					}
 				}
 				else
 				{
@@ -290,10 +300,13 @@ void EntityHandler::HandleCollision(Player* player, Entity* entity2, std::string
 					}
 					else
 					{
-						player->RemovePower();
-						player->RemoveCombo();
-						player->RemoveComboText();
-						player->AddScore(-20);
+						if (!player->HasColor(item->GetColor()))
+						{
+							player->RemovePower();
+							player->RemoveCombo();
+							player->RemoveComboText();
+							player->AddScore(-20);
+						}
 					}
 				}
 				break;
@@ -302,6 +315,9 @@ void EntityHandler::HandleCollision(Player* player, Entity* entity2, std::string
 				break;
 		}
 		item->SetAlive(false);
+		if (item->GetChild())
+			item->GetChild()->SetAlive(false);
+
 	}
 }
 
