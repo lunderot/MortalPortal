@@ -211,7 +211,7 @@ Application::Application(bool fullscreen, bool showCursor, int screenWidth, int 
 	particlePowerBar1->constantBufferData.reset = false;
 	particlePowerBar1->constantBufferData.lifeTime = 20;
 
-	particlePowerBar2 = new Particle(2, 100, assetHandler->GetMaterial(d3dHandler->GetDevice(), "energybar1.dds", "", 0.0f), NULL, d3dHandler->GetDevice());
+	particlePowerBar2 = new Particle(2, 100, assetHandler->GetMaterial(d3dHandler->GetDevice(), "energybar.dds", "", 0.0f), NULL, d3dHandler->GetDevice());
 	particlePowerBar2->constantBufferData.reset = false;
 	particlePowerBar2->constantBufferData.lifeTime = 20;
 
@@ -292,8 +292,8 @@ Application::Application(bool fullscreen, bool showCursor, int screenWidth, int 
 	entityHandler->Add(
 		new BackgroundAsset(
 			assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/Earth.bin"),
-			assetHandler->GetMaterial(d3dHandler->GetDevice(), "EarthTexture.dds", "EarthNormalMap.dds", 0.0f, DirectX::XMFLOAT3(0.0, 0.0, 0.0), 10.0f, DirectX::XMFLOAT3(0.1, 0.1, 0.1), DirectX::XMFLOAT3(0.8, 0.8, 0.8), DirectX::XMFLOAT3(0.0, 0.0, 0.0), DirectX::XMFLOAT3(0.0, 0.0, 0.0), "EarthSpecularMap.dds"),
-			playerShader, XMFLOAT3(0, 0, 170), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0.43f, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(7, 7, 7))
+			assetHandler->GetMaterial(d3dHandler->GetDevice(), "EarthTexture.dds", "EarthNormalMap.dds", 0.0f, DirectX::XMFLOAT3(0.2, 0.2, 0.2), 10.0f, DirectX::XMFLOAT3(0.1, 0.1, 0.1), DirectX::XMFLOAT3(0.8, 0.8, 0.8)),
+			playerShader, XMFLOAT3(0, 0, 170), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0.03f, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(15, 15, 15))
 		);
 
 	//Light
