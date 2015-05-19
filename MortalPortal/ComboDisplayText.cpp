@@ -133,11 +133,6 @@ void ComboDisplayText::Update(float deltaTime)
 
 ComboDisplayText::~ComboDisplayText()
 {
-	if (SRV)
-	{
-		SRV->Release();
-	}
-
 	if (vertexBuffer)
 	{
 		vertexBuffer->Release();

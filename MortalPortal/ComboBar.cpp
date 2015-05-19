@@ -116,11 +116,6 @@ void ComboBar::Update(float deltaTime)
 
 ComboBar::~ComboBar()
 {
-	if (SRV)
-	{
-		SRV->Release();
-	}
-
 	if (vertexBuffer)
 	{
 		vertexBuffer->Release();
