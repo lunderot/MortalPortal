@@ -126,10 +126,20 @@ void EntityHandler::Render(ID3D11DeviceContext* deviceContext, D3DHandler* d3dHa
 		Shader* currentShader = ent->first;
 		currentShader->Use(deviceContext);
 
+		if (dynamic_cast<OrthoHudShader*>(currentShader))
+		{
+			d3dHandler->EnableAlphaBlendingSeverlOverlapping();
+		}
+		else
+		{
+			d3dHandler->EnableAlphaBlendingFewOverlapping();
+		}
+
 		for (std::vector<Entity*>::iterator i = ent->second.begin(); i != ent->second.end(); ++i)
 		{
 			if ((*i)->GetVisible())
 			{
+				
 				Geometry* geometry = (*i)->GetGeometry();
 				Material* material = (*i)->GetMaterial();
 

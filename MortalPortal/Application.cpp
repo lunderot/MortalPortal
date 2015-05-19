@@ -554,6 +554,22 @@ Application::Application(bool fullscreen, bool showCursor, int screenWidth, int 
 		numberShader,
 		entityHandler
 		);
+
+	
+	entityHandler->Add(new HudDisplay(
+		assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/BackgroundPlane.bin"),
+		assetHandler->GetMaterial(d3dHandler->GetDevice(), "gui_Player2.dds", "", 0.0f),
+		numberShader,
+		XMFLOAT3(-0.01, -0.5 + 0.05, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0.5, 0.05, 0.5)
+		)
+	);
+	entityHandler->Add(new HudDisplay(
+		assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/BackgroundPlane.bin"),
+		assetHandler->GetMaterial(d3dHandler->GetDevice(), "gui_Player1.dds", "", 0.0f),
+		numberShader,
+		XMFLOAT3(-0.01, 0.5 - 0.05, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0.5, 0.05, 0.5)
+		)
+		);
 }
 
 Application::~Application()
@@ -716,6 +732,8 @@ bool Application::Update(float deltaTime)
 
 
 	highscoreDisplay->Update(player1->GetScore(), player2->GetScore());
+
+
 
 	return false;
 }

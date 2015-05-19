@@ -36,6 +36,7 @@
 #include "HudShader.h"
 #include "ObjectShader.h"
 #include "OrthoHudShader.h"
+#include "HudDisplay.h"
 
 class Application : public System
 {

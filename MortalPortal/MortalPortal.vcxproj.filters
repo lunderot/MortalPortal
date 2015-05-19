@@ -177,6 +177,9 @@
     <ClCompile Include="OrthoHudShader.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="HudDisplay.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="System.h">
@@ -324,6 +327,9 @@
       <Filter>Header Files\Buttons</Filter>
     </ClInclude>
     <ClInclude Include="OrthoHudShader.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="HudDisplay.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
