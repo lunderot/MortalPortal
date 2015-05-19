@@ -771,6 +771,8 @@ void Application::Render()
 		player2Info->Render(d3dHandler->GetDeviceContext());
 		// Particles
 		particleShader->Use(d3dHandler->GetDeviceContext());
+		particlePowerBar1->SRV2 = greenParticle->GetTexture();
+		particlePowerBar2->SRV2 = greenParticle->GetTexture();
 		particlePowerBar1->Render(d3dHandler->GetDeviceContext());
 		particlePowerBar2->Render(d3dHandler->GetDeviceContext());
 		if (player1->renderParticles == true)

@@ -31,6 +31,11 @@ PowerBar::PowerBar(ID3D11Device* device)
 	powerAdd = 0.02f;
 	powerRemove = 0.02f;
 	dead = false;
+	removingPower = false;
+	powerRemovalValue = 0;
+	
+	addingPower = false;
+	powerAddValue = 0;
 	material = nullptr;
 
 	D3D11_BUFFER_DESC bufferDesc;
@@ -136,8 +141,10 @@ void PowerBar::AddPower(unsigned int bonusPower)
 		}
 		else
 		{
-			points[0].pos.x  += powerAdd * (bonusPower +1);
-			points[1].pos.x  += powerAdd * (bonusPower + 1);
+			addingPower = true;
+			powerAddValue = points[0].pos.x + powerAdd * (bonusPower + 1);
+			//points[0].pos.x  += powerAdd * (bonusPower +1);
+			//points[1].pos.x  += powerAdd * (bonusPower + 1);
 		}
 	}
 }
@@ -151,8 +158,8 @@ void PowerBar::RemovePower()
 	}
 	else
 	{
-		points[0].pos.x -= powerRemove;
-		points[1].pos.x -= powerRemove;
+		removingPower = true;
+		powerRemovalValue = points[0].pos.x - powerRemove;
 	}
 }
 
@@ -172,6 +179,34 @@ void PowerBar::Update(float deltaTime, ID3D11DeviceContext* deviceContext)
 	}
 	else if (dead == false)
 	{
+		if (removingPower == true || addingPower == true)
+		{
+			if (points[0].pos.x < powerRemovalValue && removingPower == true)
+			{
+				removingPower = false;
+			}
+
+			if (points[0].pos.x > powerAddValue && addingPower == true)
+			{
+				addingPower = false;
+			}
+
+			if (removingPower == true && points[0].pos.x > powerRemovalValue)
+			{
+				points[0].pos.x += barSpeed * deltaTime * 5;
+				points[0].uv.x = 1.0f / (maxMinValue.x - maxMinValue.y) * abs(maxMinValue.y - points[0].pos.x);
+				points[1].pos.x += barSpeed * deltaTime * 5;
+				points[1].uv.x = 1.0f / (maxMinValue.x - maxMinValue.y) * abs(maxMinValue.y - points[1].pos.x);
+			}
+
+			if (addingPower == true && points[0].pos.x < powerAddValue)
+			{
+				points[0].pos.x += abs(barSpeed) * deltaTime * 10;
+				points[0].uv.x = 1.0f / (maxMinValue.x - maxMinValue.y) * abs(maxMinValue.y - points[0].pos.x);
+				points[1].pos.x += abs(barSpeed) * deltaTime * 10;
+				points[1].uv.x = 1.0f / (maxMinValue.x - maxMinValue.y) * abs(maxMinValue.y - points[1].pos.x);
+			}
+		}
 		points[0].pos.x += barSpeed * deltaTime;
 		points[0].uv.x = 1.0f / (maxMinValue.x - maxMinValue.y) * abs(maxMinValue.y - points[0].pos.x);
 		points[1].pos.x += barSpeed * deltaTime;
@@ -185,6 +220,8 @@ void PowerBar::Reset()
 	this->points[0].pos.x = maxMinValue.x;
 	this->points[1].pos.x = maxMinValue.x;
 	this->dead = false;
+	this->addingPower = false;
+	this->removingPower = false;
 }
 
 PowerBar::~PowerBar()
