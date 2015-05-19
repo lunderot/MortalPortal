@@ -130,7 +130,10 @@ void EntityHandler::Render(ID3D11DeviceContext* deviceContext, D3DHandler* d3dHa
 		{
 			if ((*i)->GetVisible())
 			{
-
+				if (dynamic_cast<NumberDisplay*>((*i)))
+				{
+					int debug = 1902;
+				}
 				Geometry* geometry = (*i)->GetGeometry();
 				Material* material = (*i)->GetMaterial();
 

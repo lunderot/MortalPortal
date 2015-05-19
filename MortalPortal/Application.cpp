@@ -19,6 +19,8 @@ Application::Application(bool fullscreen, bool showCursor, int screenWidth, int 
 	powerBarShader = new HudShader(d3dHandler->GetDevice(), L"assets/shaders/powerBarVS.hlsl", L"assets/shaders/powerBarPS.hlsl", screenWidth, screenHeight, screenNear, screenFar);
 	comboBarShader = new ComboBarShader(d3dHandler->GetDevice(), L"assets/shaders/comboBarVS.hlsl", L"assets/shaders/comboBarPS.hlsl", screenWidth, screenHeight, screenNear, screenFar);
 
+	numberShader = new OrthoHudShader(d3dHandler->GetDevice(), L"assets/shaders/numberVS.hlsl", L"assets/shaders/numberPS.hlsl", screenWidth, screenHeight, screenNear, screenFar);
+
 	//Particle shader
 	particleShader = new ParticleShader(L"assets/shaders/particleCS.hlsl", L"assets/shaders/particleGS.hlsl", d3dHandler->GetDevice(), L"assets/shaders/particleVS.hlsl", L"assets/shaders/particlePS.hlsl", screenWidth, screenHeight, screenNear, screenFar);
 
@@ -492,22 +494,6 @@ Application::Application(bool fullscreen, bool showCursor, int screenWidth, int 
 	crystalFrenzy = false;
 	crystalFrenzyControl = false;
 
-	highscoreDisplay = new HighscoreDisplay(
-		assetHandler->GetMaterial(d3dHandler->GetDevice(), "zero.dds", "", 0.0f),
-		assetHandler->GetMaterial(d3dHandler->GetDevice(), "one.dds", "", 0.0f),
-		assetHandler->GetMaterial(d3dHandler->GetDevice(), "two.dds", "", 0.0f),
-		assetHandler->GetMaterial(d3dHandler->GetDevice(), "three.dds", "", 0.0f),
-		assetHandler->GetMaterial(d3dHandler->GetDevice(), "four.dds", "", 0.0f),
-		assetHandler->GetMaterial(d3dHandler->GetDevice(), "five.dds", "", 0.0f),
-		assetHandler->GetMaterial(d3dHandler->GetDevice(), "six.dds", "", 0.0f),
-		assetHandler->GetMaterial(d3dHandler->GetDevice(), "seven.dds", "", 0.0f),
-		assetHandler->GetMaterial(d3dHandler->GetDevice(), "eight.dds", "", 0.0f),
-		assetHandler->GetMaterial(d3dHandler->GetDevice(), "nine.dds", "", 0.0f),
-		assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/BackgroundPlane.bin"),
-		playerShader,
-		entityHandler
-	);
-
 	slowSpeedIndicator1 = new PowerupIndicator(
 		assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/BackgroundPlane.bin"),
 		assetHandler->GetMaterial(d3dHandler->GetDevice(), "FrostPower.dds", "", 0.0f),
@@ -552,6 +538,22 @@ Application::Application(bool fullscreen, bool showCursor, int screenWidth, int 
 	entityHandler->Add(inverseIndicator1);
 	entityHandler->Add(inverseIndicator2);
 
+
+	highscoreDisplay = new HighscoreDisplay(
+		assetHandler->GetMaterial(d3dHandler->GetDevice(), "zero.dds", "", 0.0f),
+		assetHandler->GetMaterial(d3dHandler->GetDevice(), "one.dds", "", 0.0f),
+		assetHandler->GetMaterial(d3dHandler->GetDevice(), "two.dds", "", 0.0f),
+		assetHandler->GetMaterial(d3dHandler->GetDevice(), "three.dds", "", 0.0f),
+		assetHandler->GetMaterial(d3dHandler->GetDevice(), "four.dds", "", 0.0f),
+		assetHandler->GetMaterial(d3dHandler->GetDevice(), "five.dds", "", 0.0f),
+		assetHandler->GetMaterial(d3dHandler->GetDevice(), "six.dds", "", 0.0f),
+		assetHandler->GetMaterial(d3dHandler->GetDevice(), "seven.dds", "", 0.0f),
+		assetHandler->GetMaterial(d3dHandler->GetDevice(), "eight.dds", "", 0.0f),
+		assetHandler->GetMaterial(d3dHandler->GetDevice(), "nine.dds", "", 0.0f),
+		assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/BackgroundPlane.bin"),
+		numberShader,
+		entityHandler
+		);
 }
 
 Application::~Application()
@@ -565,6 +567,8 @@ Application::~Application()
 	delete backgShader;
 	delete mapItemShader;
 	delete buttonShader;
+
+	delete numberShader;
 
 	delete input;
 	delete input2;

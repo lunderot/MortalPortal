@@ -113,6 +113,7 @@
     <ClCompile Include="Material.cpp" />
     <ClCompile Include="NumberDisplay.cpp" />
     <ClCompile Include="ObjectShader.cpp" />
+    <ClCompile Include="OrthoHudShader.cpp" />
     <ClCompile Include="PauseMenu.cpp" />
     <ClCompile Include="PowerupIndicator.cpp" />
     <ClCompile Include="RectangleScreen.cpp" />
@@ -163,6 +164,7 @@
     <ClInclude Include="Material.h" />
     <ClInclude Include="NumberDisplay.h" />
     <ClInclude Include="ObjectShader.h" />
+    <ClInclude Include="OrthoHudShader.h" />
     <ClInclude Include="PauseMenu.h" />
     <ClInclude Include="PowerupIndicator.h" />
     <ClInclude Include="QuitButton.h" />

@@ -14,6 +14,8 @@
 #include "AudioMaster.h"
 #include "D3DHandler.h"
 
+#include "NumberDisplay.h"
+
 class EntityHandler
 {
 	std::map<Shader*, std::vector<Entity*>> entities;

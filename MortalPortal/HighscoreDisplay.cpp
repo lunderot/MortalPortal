@@ -5,8 +5,10 @@ HighscoreDisplay::HighscoreDisplay(Material* m0, Material* m1, Material* m2, Mat
 	Material* m5, Material* m6, Material* m7, Material* m8, Material* m9,
 	Geometry* geometry, Shader* shader, EntityHandler* entityHandler)
 {
-	float offsety = 15.5f;
-	float offsetx = 15.0f;
+	float offsety = 0.0f;
+	float offsetx = 0.1f;
+
+	float stridex = 0.15f;
 
 	for (int i = 0; i < 2; i++)
 	{
@@ -14,8 +16,9 @@ HighscoreDisplay::HighscoreDisplay(Material* m0, Material* m1, Material* m2, Mat
 		for (int j = 0; j < 4; j++)
 		{
 			numbersDisplay[i][j] = new NumberDisplay(m0, m1, m2, m3, m4, m5, m6, m7, m8, m9, geometry, shader, 0);
-			numbersDisplay[i][j]->SetPosition(DirectX::XMFLOAT3(offsetx + -j * 2, offsety + offsety * -2 * i, 0));
-			entityHandler->Add(numbersDisplay[i][j]);
+			numbersDisplay[i][j]->SetPosition(DirectX::XMFLOAT3(offsetx + -j * stridex, offsety + offsety * -2 * i, 0));
+			numbersDisplay[i][j]->SetScale(DirectX::XMFLOAT3(0.1f, 0.1f, 0.1f));
+			//entityHandler->Add(numbersDisplay[i][j]);
 		}
 	}
 }

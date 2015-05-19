@@ -35,6 +35,7 @@
 
 #include "HudShader.h"
 #include "ObjectShader.h"
+#include "OrthoHudShader.h"
 
 class Application : public System
 {
@@ -50,6 +51,8 @@ private:
 	HudShader* buttonShader;
 	HudShader* powerBarShader;
 	ComboBarShader* comboBarShader;
+
+	OrthoHudShader* numberShader;
 
 	ParticleShader* particleShader;
 
