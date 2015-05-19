@@ -5,7 +5,7 @@ HighscoreDisplay::HighscoreDisplay(Material* m0, Material* m1, Material* m2, Mat
 	Material* m5, Material* m6, Material* m7, Material* m8, Material* m9,
 	Geometry* geometry, Shader* shader, EntityHandler* entityHandler)
 {
-	float offsety = 0.41f;
+	float offsety = 0.43f;
 	float offsetx = 0.4f;
 
 	float stridex = 0.015f;

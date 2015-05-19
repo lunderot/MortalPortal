@@ -18,7 +18,7 @@ KeyboardInput::~KeyboardInput()
 {
 }
 
-DirectX::XMFLOAT2 KeyboardInput::GetDirection(unsigned int playerNr)
+DirectX::XMFLOAT2 KeyboardInput::GetDirection()
 {
 	DirectX::XMFLOAT2 returnValue(0.0f, 0.0f);
 	

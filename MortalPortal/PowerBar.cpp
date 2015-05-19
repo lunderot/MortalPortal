@@ -29,7 +29,7 @@ PowerBar::PowerBar(ID3D11Device* device)
 	maxMinValue.x = 0.318f;
 	maxMinValue.y = -0.184f;
 	powerAdd = 0.02f;
-	powerRemove = 0.04f;
+	powerRemove = 0.02f;
 	dead = false;
 	material = nullptr;
 

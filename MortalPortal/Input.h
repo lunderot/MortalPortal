@@ -10,7 +10,7 @@ public:
 	Input();
 	virtual ~Input();
 
-	virtual DirectX::XMFLOAT2 GetDirection(unsigned int playerNr) = 0;
+	virtual DirectX::XMFLOAT2 GetDirection() = 0;
 	virtual bool GetButtonState() = 0;
 	virtual bool GetButtonEnterState() = 0;
 	virtual bool GetButtonUpState() = 0 ;

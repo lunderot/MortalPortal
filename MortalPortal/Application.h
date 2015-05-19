@@ -91,8 +91,6 @@ private:
 	//Player data
 	char player1Keys[5];
 	char player2Keys[5];
-	unsigned int player1Test = 0;
-	unsigned int player2Test = 1;
 	RectangleScreen* playerWins;
 	RectangleScreen* player1Info;
 	RectangleScreen* player2Info;

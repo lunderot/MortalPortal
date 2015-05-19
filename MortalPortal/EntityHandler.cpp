@@ -263,15 +263,19 @@ void EntityHandler::HandleCollision(Player* player, Entity* entity2, std::string
 			}
 			case MapItem::objectType::Crystal:
 			{
-				if (player->GetColor() == item->GetColor() && isPortal)
+				
+				if (player->GetColor() == item->GetColor())
 				{
-					player->AddCombo(false);
-					player->AddComboText();
-					player->AddPower(player->comboBar->GetComboCount());
-					player->renderParticles = true;
-					player->doubleUp = true;
-					aMaster.playSample("boing");
-					player->AddScore(100);
+					if (isPortal)
+					{
+						player->AddCombo(false);
+						player->AddComboText();
+						player->AddPower(player->comboBar->GetComboCount());
+						player->renderParticles = true;
+						player->doubleUp = true;
+						aMaster.playSample("boing");
+						player->AddScore(100);
+					}
 				}
 				else
 				{
@@ -286,10 +290,13 @@ void EntityHandler::HandleCollision(Player* player, Entity* entity2, std::string
 					}
 					else
 					{
-						player->RemovePower();
-						player->RemoveCombo();
-						player->RemoveComboText();
-						player->AddScore(-20);
+						if (!player->HasColor(item->GetColor()))
+						{
+							player->RemovePower();
+							player->RemoveCombo();
+							player->RemoveComboText();
+							player->AddScore(-20);
+						}
 					}
 				}
 				break;

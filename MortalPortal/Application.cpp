@@ -46,7 +46,7 @@ Application::Application(bool fullscreen, bool showCursor, int screenWidth, int 
 	//Setup input
 	try
 	{
-		input = new ControllerInput(player1Test);
+		input = new ControllerInput(0);
 		std::cout << "Using controller input" << std::endl;
 	}
 	catch (std::exception& e)
@@ -58,7 +58,7 @@ Application::Application(bool fullscreen, bool showCursor, int screenWidth, int 
 
 	try
 	{
-		input2 = new ControllerInput(player2Test);
+		input2 = new ControllerInput(1);
 		std::cout << "Using controller input" << std::endl;
 
 	}
@@ -829,7 +829,7 @@ void Application::UpdatePlayerControls(Input* input, Player* player, Player* ene
 	{
 		player->ReactToInput(input->GetButtonState(), aMaster);
 	}
-	player->ReactToControl(input->GetDirection(player1Test), enemyPlayer->GetInvertControl(), enemyPlayer->GetSlowDownAcceleration());
+	player->ReactToControl(input->GetDirection(), enemyPlayer->GetInvertControl(), enemyPlayer->GetSlowDownAcceleration());
 	//Set player indicators depending on powerups
 	importalPortalIndicator->SetVisible(player->GetImmortalPortal());
 	inverseIndicator->SetVisible(player->GetInvertControl());
