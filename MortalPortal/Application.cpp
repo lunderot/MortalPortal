@@ -379,7 +379,9 @@ void Application::CreateMenuObjects()
 
 void Application::CreateHudObjects()
 {
+	float offsety = 0.47f;
 	//HUD combo display
+	float comboOffsetx = -0.22f;
 	comboDisplay1 = new NumberDisplay(
 		assetHandler->GetMaterial(d3dHandler->GetDevice(), "zero.dds", "", 0.0f),
 		assetHandler->GetMaterial(d3dHandler->GetDevice(), "one.dds", "", 0.0f),
@@ -395,7 +397,7 @@ void Application::CreateHudObjects()
 		numberShader,
 		entityHandler,
 		3,
-		XMFLOAT3(-0.1, 0, 0)
+		XMFLOAT3(comboOffsetx, offsety, 0)
 		);
 
 	comboDisplay2 = new NumberDisplay(
@@ -413,10 +415,11 @@ void Application::CreateHudObjects()
 		numberShader,
 		entityHandler,
 		3,
-		XMFLOAT3(-0.1, -0.1, 0)
+		XMFLOAT3(comboOffsetx, -offsety, 0)
 		);
 
 	//HUD highscore display
+	float highscoreOffsetx = 0.465f;
 	highscoreDisplay1 = new NumberDisplay(
 		assetHandler->GetMaterial(d3dHandler->GetDevice(), "zero.dds", "", 0.0f),
 		assetHandler->GetMaterial(d3dHandler->GetDevice(), "one.dds", "", 0.0f),
@@ -432,7 +435,7 @@ void Application::CreateHudObjects()
 		numberShader,
 		entityHandler,
 		6,
-		XMFLOAT3(0, 0, 0)
+		XMFLOAT3(highscoreOffsetx, offsety, 0)
 		);
 	highscoreDisplay2 = new NumberDisplay(
 		assetHandler->GetMaterial(d3dHandler->GetDevice(), "zero.dds", "", 0.0f),
@@ -449,7 +452,7 @@ void Application::CreateHudObjects()
 		numberShader,
 		entityHandler,
 		6,
-		XMFLOAT3(0, -0.1, 0)
+		XMFLOAT3(highscoreOffsetx, -offsety, 0)
 		);
 
 	//HUD background
