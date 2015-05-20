@@ -48,6 +48,7 @@ Player::Player(ID3D11Device* device, Geometry* geometry, Material* material, Mat
 	bonusCounter = 0;
 
 	speedBoost = 1.0f;
+	accelerationBoost = 1.0f;
 }
 
 
@@ -141,11 +142,19 @@ void Player::ReactToControl(float timeSinceStart, DirectX::XMFLOAT2 dir, bool in
 {
 	//std::cout << fmod(timeSinceStart, 20.0f) << std::endl;
 
-	if (fmod(timeSinceStart, 5.0f) < 0.001f)
+	if (fmod(timeSinceStart, 20.0f) < 0.001f)
 	{
 		std::cout << "Player Boost!!! :D" << std::endl;
-		speedBoost += 0.025f;
+		if (speedBoost < 2.0f)
+			speedBoost *= 1.2f;
+
+		if (accelerationBoost < 3.0f)
+			accelerationBoost *= 1.5f;
+		else if (accelerationBoost < 4.0f)
+			accelerationBoost *= 1.3f;
 	}
+
+
 
 	float slowDownAcc = 5.0f;
 	float notSlowDownAcc = 35.0f;
@@ -160,13 +169,27 @@ void Player::ReactToControl(float timeSinceStart, DirectX::XMFLOAT2 dir, bool in
 	// PowerUp - Slow Down Acceleration - effect on | Player2
 	if (slowDown)
 	{
-		dir.x *= slowDownAcc * speedBoost;
-		dir.y *= slowDownAcc * speedBoost;
+		if ((velocity.x < 0.0f && dir.x > 0.0f) || (velocity.x > 0.0f && dir.x < 0.0f))
+			dir.x *= slowDownAcc * speedBoost * 2;
+		else 
+			dir.x *= slowDownAcc * speedBoost;
+
+		if ((velocity.y < 0.0f && dir.y > 0.0f) || (velocity.y > 0.0f && dir.y < 0.0f))
+			dir.y *= slowDownAcc * speedBoost * 2;
+		else
+			dir.y *= slowDownAcc * speedBoost;
 	}
 	else
 	{
-		dir.x *= notSlowDownAcc * speedBoost;
-		dir.y *= notSlowDownAcc * speedBoost;
+		if ((velocity.x < 0.0f && dir.x > 0.0f) || (velocity.x > 0.0f && dir.x < 0.0f))
+			dir.x *= notSlowDownAcc * speedBoost * 2;
+		else
+			dir.x *= notSlowDownAcc * speedBoost;
+
+		if ((velocity.y < 0.0f && dir.y > 0.0f) || (velocity.y > 0.0f && dir.y < 0.0f))
+			dir.y *= notSlowDownAcc * speedBoost * 2;
+		else
+			dir.y *= notSlowDownAcc * speedBoost;
 	}
 	SetAcceleration(DirectX::XMFLOAT3(dir.x, dir.y, 0.0f));
 }
@@ -299,6 +322,13 @@ void Player::Reset()
 	score = 0;
 	comboScore = 0;
 
+
+	speedBoost = 1.0f;
+	accelerationBoost = 1.0f;
+
+	bonusCounter = 0;
+	bonusScore = 0;
+
 	// Audio control
 	SetApplauseControl(false);
 }
@@ -353,7 +383,7 @@ int Player::GetCombo()
 void Player::AddBonus(unsigned int bonusChange)
 {
 	bonusCounter++;
-	if (bonusCounter == 10)
+	if (bonusCounter >= 10)
 	{
 		bonusScore += bonusChange;
 		bonusCounter = 0;

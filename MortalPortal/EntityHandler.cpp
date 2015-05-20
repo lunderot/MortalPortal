@@ -51,7 +51,7 @@ void EntityHandler::Update(float deltaTime, AudioMaster &aMaster)
 							//Remove combo if it was the player's color
 							if (player[i]->HasColor(item->GetColor()))
 							{
-								//player[i]->RemoveCombo();
+								player[i]->RemoveCombo();
 							}
 						}
 					}

@@ -104,5 +104,6 @@ private:
 	int maxBonusScore;
 
 	float speedBoost;
+	float accelerationBoost;
 };
 

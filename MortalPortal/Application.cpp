@@ -228,12 +228,19 @@ void Application::CreateLevelGenerator()
 		levelGenerator->addBackgroundAsset(assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/big_comet.bin"),
 			assetHandler->GetMaterial(d3dHandler->GetDevice(), "assets/big_comet.bin", "Comet"),
 			playerShader);
+
+		levelGenerator->addBackgroundAsset(assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/big_comet02.bin"),
+			assetHandler->GetMaterial(d3dHandler->GetDevice(), "assets/big_comet02.bin", "blinn2"),
+			playerShader);
 	}
 
 	levelGenerator->setPowerUp(assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/PowerUp.bin"),
 		assetHandler->GetMaterial(d3dHandler->GetDevice(), "assets/PowerUp.bin", "blinn1"),
-		playerShader);
-
+		playerShader,
+		assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/powerUp_Glow.bin"),
+		assetHandler->GetMaterial(d3dHandler->GetDevice(), "assets/powerUp_Glow.bin", "blinn2"),
+		transparencyShader
+		);
 }
 
 void Application::CreateParticleEffects()
@@ -261,7 +268,7 @@ void Application::CreateParticleEffects()
 	particlePowerBar2->constantBufferData.lifeTime = 20;
 
 	particleBackground = new Particle(3, 200, assetHandler->GetMaterial(d3dHandler->GetDevice(), "particleTest.dds", "", 0.0f), NULL, d3dHandler->GetDevice());
-	particleBackground->constantBufferData.position = DirectX::XMFLOAT3(80, 0, 0);
+	particleBackground->constantBufferData.position = DirectX::XMFLOAT3(90, 0, 0);
 	particleBackground->constantBufferData.reset = false;
 
 	particlePortal1 = new Particle(4, 200, greenParticle, redParticle, d3dHandler->GetDevice());
@@ -774,7 +781,7 @@ bool Application::Update(float deltaTime)
 	comboDisplay2->Update(player2->GetCombo());
 
 	bonusDisplay1->Update(player1->GetBonus());
-	bonusDisplay2->Update(player1->GetBonus());
+	bonusDisplay2->Update(player2->GetBonus());
 
 	return false;
 }
@@ -846,6 +853,7 @@ void Application::Render()
 			restartMenu->Render(d3dHandler->GetDeviceContext());
 
 			if (player2->powerBar->IsDead() == true)
+				playerWins->player1Wins = true;
 				if (player2->GetApplauseControl() == false)
 				{
 					aMaster.playSample("Applause");

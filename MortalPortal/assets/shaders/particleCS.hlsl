@@ -78,7 +78,7 @@ void main(uint3 dispatchThreadID : SV_DispatchThreadID)
 			life -= lifeTime;
 		}
 
-		else if (pos.x > position.x - 1.0f)
+		else if (pos.x > position.x)
 		{
 			int whatEngine = dispatchThreadID.x % 2;
 			if (whatEngine == 0)

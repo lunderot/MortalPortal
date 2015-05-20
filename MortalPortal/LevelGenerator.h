@@ -16,7 +16,7 @@ public:
 
 	void addComet(Geometry* cometsGeometry, Material* cometsMaterial, Shader* cometsShader);
 	void addBackgroundAsset(Geometry* backgroundAssetGeometry, Material* backgroundAssetMaterial, Shader* AssetShader);
-	void setPowerUp(Geometry* powerUpGeometry, Material* powerUpMaterial, Shader* powerUpShader);
+	void setPowerUp(Geometry* powerUpGeometry, Material* powerUpMaterial, Shader* powerUpShader, Geometry* powerUpGeometryGlow, Material* PowerUpMaterialGlow, Shader* PowerUpShaderGlow);
 	void setPlayerOneCrystals(Geometry* Crystal1Geometry, Material* Crystal1Material, Shader* Crystal1Shader, Geometry* Crystal2Geometry, Material* Crystal2Material, Shader* Crystal2Shader, Geometry* Glow1, Geometry* Glow2, Material* Glow1Material, Material* Glow2Material, Shader* GlowShader);
 	void setPlayerTwoCrystals(Geometry* Crystal1Geometry, Material* Crystal1Material, Shader* Crystal1Shader, Geometry* Crystal2Geometry, Material* Crystal2Material, Shader* Crystal2Shader, Geometry* Glow1, Geometry* Glow2, Material* Glow1Material, Material* Glow2Material, Shader* GlowShader);
 
@@ -52,9 +52,9 @@ protected:
 	vector<Material*> backgroundAssetMaterial;
 	vector<Shader*>	backgroundAssetShader;
 
-	Geometry* powerUpGeometry;
-	Material* powerUpMaterial;
-	Shader* powerUpShader;
+	Geometry* powerUpGeometry[2];
+	Material* powerUpMaterial[2];
+	Shader* powerUpShader[2];
 
 	Shader* playerOneCrystalShader[3];
 	Geometry* playerOneCrystalGeometry[4];
