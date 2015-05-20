@@ -329,7 +329,7 @@ void Application::CreateMenuObjects()
 	// Start Menu
 	startMenu = new StartMenu(d3dHandler->GetDevice());
 
-	startMenu->AddButton(new StartButton(entityHandler,
+	startMenu->AddButton(new StartButton(levelGenerator, entityHandler,
 		player1, player2,
 		DirectX::XMFLOAT2(0, 0.2f),
 		DirectX::XMFLOAT2(0.1f, 0.1f),
@@ -347,7 +347,7 @@ void Application::CreateMenuObjects()
 		DirectX::XMFLOAT2(0.1f, 0.1f),
 		assetHandler->GetMaterial(d3dHandler->GetDevice(), "continue.dds", "", 0.0f)));
 
-	pauseMenu->AddButton(new StartButton(entityHandler,
+	pauseMenu->AddButton(new StartButton(levelGenerator, entityHandler,
 		player1, player2,
 		DirectX::XMFLOAT2(0, 0.0f),
 		DirectX::XMFLOAT2(0.1f, 0.1f),
@@ -361,7 +361,7 @@ void Application::CreateMenuObjects()
 	// Restart Menu
 	restartMenu = new RestartMenu(d3dHandler->GetDevice());
 
-	restartMenu->AddButton(new StartButton(entityHandler,
+	restartMenu->AddButton(new StartButton(levelGenerator, entityHandler,
 		player1, player2,
 		DirectX::XMFLOAT2(0, 0.2f),
 		DirectX::XMFLOAT2(0.1f, 0.1f),
@@ -689,6 +689,7 @@ bool Application::Update(float deltaTime)
 	comboDisplay1->Update(player1->GetCombo());
 	comboDisplay2->Update(player2->GetCombo());
 
+	//Update background
 
 	return false;
 }
@@ -797,7 +798,7 @@ void Application::UpdatePlayerControls(Input* input, Player* player, Player* ene
 	{
 		player->ReactToInput(input->GetButtonState(), aMaster);
 	}
-	player->ReactToControl(input->GetDirection(), enemyPlayer->GetInvertControl(), enemyPlayer->GetSlowDownAcceleration());
+	player->ReactToControl(levelGenerator->getTimeSinceLvlStart(), input->GetDirection(), enemyPlayer->GetInvertControl(), enemyPlayer->GetSlowDownAcceleration());
 	//Set player indicators depending on powerups
 	importalPortalIndicator->SetVisible(player->GetImmortalPortal());
 	inverseIndicator->SetVisible(player->GetInvertControl());

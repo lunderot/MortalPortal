@@ -38,6 +38,7 @@ Player::Player(ID3D11Device* device, Geometry* geometry, Material* material, Mat
 	score = 0;
 	comboScore = 0;
 	maxComboScore = 999;
+	speedBoost = 1.0f;
 }
 
 
@@ -117,29 +118,36 @@ void Player::ReactToInput(bool currentButtonState, AudioMaster &aMaster)
 	previousButtonState = currentButtonState;
 }
 
-void Player::ReactToControl(DirectX::XMFLOAT2 dir, bool invertControl, bool slowDown)
+void Player::ReactToControl(float timeSinceStart, DirectX::XMFLOAT2 dir, bool invertControl, bool slowDown)
 {
+	//std::cout << fmod(timeSinceStart, 20.0f) << std::endl;
+
+	if (fmod(timeSinceStart, 5.0f) < 0.001f)
+	{
+		std::cout << "Player Boost!!! :D" << std::endl;
+		speedBoost += 0.1f;
+	}
+
 	float slowDownAcc = 5.0f;
 	float notSlowDownAcc = 35.0f;
-	float test3 = 2.0f;
 	// Player 1 - control
 	// PowerUp - Invert Control - effect on | Player2
 	if (invertControl)
 	{
-		dir.x *= -0.5f;
-		dir.y *= -0.5f;
+		dir.x *= -0.5f * speedBoost;
+		dir.y *= -0.5f * speedBoost;
 	}
 
 	// PowerUp - Slow Down Acceleration - effect on | Player2
 	if (slowDown)
 	{
-		dir.x *= slowDownAcc;
-		dir.y *= slowDownAcc;
+		dir.x *= slowDownAcc * speedBoost;
+		dir.y *= slowDownAcc * speedBoost;
 	}
 	else
 	{
-		dir.x *= notSlowDownAcc;
-		dir.y *= notSlowDownAcc;
+		dir.x *= notSlowDownAcc * speedBoost;
+		dir.y *= notSlowDownAcc * speedBoost;
 	}
 	SetAcceleration(DirectX::XMFLOAT3(dir.x, dir.y, 0.0f));
 }
@@ -150,11 +158,11 @@ void Player::Update(float deltaTime)
 	DirectX::XMFLOAT3 length;
 	DirectX::XMStoreFloat3(&length, DirectX::XMVector3Length(DirectX::XMLoadFloat3(&velocity)));
 
-	if (length.x > 50.0f)
+	if (length.x > 50.0f * speedBoost)
 	{
 		DirectX::XMVECTOR NormalDir;
 		NormalDir = DirectX::XMVector3Normalize(DirectX::XMLoadFloat3(&velocity));
-		NormalDir = DirectX::XMVectorScale(NormalDir, 50.0f);
+		NormalDir = DirectX::XMVectorScale(NormalDir, 50.0f * speedBoost);
 		XMStoreFloat3(&length, NormalDir);
 		velocity.x = length.x;
 		velocity.y = length.y;
