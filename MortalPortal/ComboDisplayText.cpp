@@ -115,7 +115,7 @@ void ComboDisplayText::Render(ID3D11DeviceContext* deviceContext, Shader* shader
 	{
 		// comboNr | 0 = combo text
 		// comboNr | 1 - 10 = siffror : 0, 1, 2, 3, 4, 5, 6, 7, 8, 9
-		//SRV = materialUsing[comboNr]->GetTexture();
+		SRV = materialUsing[comboNr]->GetTexture();
 	}
 
 	deviceContext->PSSetShaderResources(0, 1, &SRV);
