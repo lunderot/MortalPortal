@@ -32,7 +32,8 @@ public:
 
 
 	void RemoveCombo();
-	
+	void RemoveBonus();
+
 	Color GetColor() const;
 	void SetColor(Color color);
 	bool HasColor(Color color) const;
@@ -64,6 +65,13 @@ public:
 	void AddCombo(unsigned int comboChange);
 	int GetCombo();
 
+	void AddBonus(unsigned int bonusChange);
+	int GetBonus();
+
+	// Audio control
+	bool GetApplauseControl();
+	void SetApplauseControl(bool applauseControl);
+
 private:
 	// Power ups
 	float inverControlTimer;
@@ -76,6 +84,11 @@ private:
 	bool slowDownAccelerationDisplay;
 	bool bonusComboDisplay;
 
+	unsigned int bonusCounter;
+
+	// Audio control
+	bool ApplauseControl;
+
 	Material* switchMaterial;
 
 	bool previousButtonState;
@@ -86,6 +99,9 @@ private:
 	int score;
 	int comboScore;
 	int maxComboScore;
+
+	int bonusScore;
+	int maxBonusScore;
 
 	float speedBoost;
 };

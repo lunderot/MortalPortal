@@ -51,7 +51,7 @@ void EntityHandler::Update(float deltaTime, AudioMaster &aMaster)
 							//Remove combo if it was the player's color
 							if (player[i]->HasColor(item->GetColor()))
 							{
-								player[i]->RemoveCombo();
+								//player[i]->RemoveCombo();
 							}
 						}
 					}
@@ -227,9 +227,11 @@ void EntityHandler::HandleCollision(Player* player, Entity* entity2, std::string
 				}
 				else
 				{
+					player->RemoveBonus();
 					player->RemovePower();
 					player->RemoveCombo();
 					player->AddScore(-20);
+					aMaster.playSample("Punch");
 				}
 				break;
 			}	
@@ -275,10 +277,11 @@ void EntityHandler::HandleCollision(Player* player, Entity* entity2, std::string
 					if (isPortal)
 					{
 						player->AddCombo(1);
+						player->AddBonus(1);
 						player->AddPower(player->GetCombo());
 						player->renderParticles = true;
 						player->doubleUp = true;
-						aMaster.playSample("boing");
+						aMaster.playSample("PickUp");
 						player->AddScore(100);
 					}
 				}
@@ -296,6 +299,7 @@ void EntityHandler::HandleCollision(Player* player, Entity* entity2, std::string
 					{
 						if (!player->HasColor(item->GetColor()))
 						{
+							player->RemoveBonus();
 							player->RemovePower();
 							player->RemoveCombo();
 							player->AddScore(-20);

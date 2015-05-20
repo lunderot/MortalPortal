@@ -35,9 +35,18 @@ Player::Player(ID3D11Device* device, Geometry* geometry, Material* material, Mat
 	slowDownAccelerationDisplay = false;
 	bonusComboDisplay = false;
 
+	// Audio control
+	ApplauseControl = false;
+
 	score = 0;
 	comboScore = 0;
 	maxComboScore = 999;
+
+	bonusScore = 0;
+	maxBonusScore = 10;
+
+	bonusCounter = 0;
+
 	speedBoost = 1.0f;
 }
 
@@ -45,6 +54,11 @@ Player::Player(ID3D11Device* device, Geometry* geometry, Material* material, Mat
 Player::~Player()
 {
 	delete powerBar;
+}
+
+bool Player::GetApplauseControl()
+{
+	return ApplauseControl;
 }
 
 bool Player::GetInvertControl()
@@ -70,6 +84,11 @@ bool Player::GetImmortalPortal()
 bool Player::GetCrystalFrenzy()
 {
 	return crystalFrenzy;
+}
+
+void Player::SetApplauseControl(bool applauseControl)
+{
+	this->ApplauseControl = applauseControl;
 }
 
 void Player::SetInvertControl(float powerUp_InvertControl)
@@ -279,6 +298,14 @@ void Player::Reset()
 
 	score = 0;
 	comboScore = 0;
+
+	// Audio control
+	SetApplauseControl(false);
+}
+
+void Player::RemoveBonus()
+{
+	bonusScore = 0;
 }
 
 void Player::RemoveCombo()
@@ -317,7 +344,32 @@ void Player::AddCombo(unsigned int comboChange)
 		comboScore = maxComboScore;
 	}
 }
+
 int Player::GetCombo()
 {
 	return comboScore;
+}
+
+void Player::AddBonus(unsigned int bonusChange)
+{
+	bonusCounter++;
+	if (bonusCounter == 10)
+	{
+		bonusScore += bonusChange;
+		bonusCounter = 0;
+	}
+
+	if (bonusScore < 0)
+	{
+		bonusScore = 0;
+	}
+	if (bonusScore > maxBonusScore)
+	{
+		bonusScore = maxBonusScore;
+	}
+}
+
+int Player::GetBonus()
+{
+	return bonusScore;
 }
