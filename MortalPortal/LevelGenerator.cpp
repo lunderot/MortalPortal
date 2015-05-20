@@ -125,7 +125,7 @@ void LevelGenerator::Update(EntityHandler* entityHandler, float deltaTime, bool 
 	if (fmod(timeSinceStart, 5.0f) < 0.001f)
 	{
 		cout << "Crystal Boost!!! :D" << endl;
-		bonusSpeed += 0.4f;
+		bonusSpeed += 0.1f;
 	}
 
 	while (!partFile.is_open() || crystalFrenzy == true)

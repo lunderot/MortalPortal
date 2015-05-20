@@ -17,7 +17,7 @@ Application::Application(bool fullscreen, bool showCursor, int screenWidth, int 
 	unsigned int punchSound = aMaster.addNewSample(L"assets/audio/punch.wav", "Punch", false);
 	unsigned int pickUpSound = aMaster.addNewSample(L"assets/audio/pickUp.wav", "PickUp", false);
 	unsigned int applauseSound = aMaster.addNewSample(L"assets/audio/applause.wav", "Applause", false);
-	//aMaster.playSample(bgMusic);
+	aMaster.playSample(bgMusic);
 	
 
 	CreateInput();

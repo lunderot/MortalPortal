@@ -144,7 +144,7 @@ void Player::ReactToControl(float timeSinceStart, DirectX::XMFLOAT2 dir, bool in
 	if (fmod(timeSinceStart, 5.0f) < 0.001f)
 	{
 		std::cout << "Player Boost!!! :D" << std::endl;
-		speedBoost += 0.1f;
+		speedBoost += 0.025f;
 	}
 
 	float slowDownAcc = 5.0f;
