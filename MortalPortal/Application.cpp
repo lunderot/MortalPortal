@@ -261,7 +261,7 @@ void Application::CreateParticleEffects()
 	particlePowerBar2->constantBufferData.lifeTime = 20;
 
 	particleBackground = new Particle(3, 200, assetHandler->GetMaterial(d3dHandler->GetDevice(), "particleTest.dds", "", 0.0f), NULL, d3dHandler->GetDevice());
-	particleBackground->constantBufferData.position = DirectX::XMFLOAT3(80, 0, 0);
+	particleBackground->constantBufferData.position = DirectX::XMFLOAT3(90, 0, 0);
 	particleBackground->constantBufferData.reset = false;
 
 	particlePortal1 = new Particle(4, 200, greenParticle, redParticle, d3dHandler->GetDevice());

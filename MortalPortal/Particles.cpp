@@ -69,7 +69,7 @@ Particle::Particle(unsigned int type,
 			p.type = type;
 			p.lifeTime = (float)(rand()) / (float)(RAND_MAX / 0.5f);
 			p.velocity.x = (float)(rand()) / (float)(RAND_MAX / 5.0f) - 10.0f;
-			p.velocity.y = (float)(rand()) / (float)(RAND_MAX / 8.0f) - 4.0f;
+			p.velocity.y = (float)(rand()) / (float)(RAND_MAX / 4.0f) - 2.0f;
 
 			p.pos.x = rand() % 90 - 30;
 			if (p.velocity.y > 0)
