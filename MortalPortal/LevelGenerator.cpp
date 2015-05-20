@@ -158,7 +158,7 @@ void LevelGenerator::Update(EntityHandler* entityHandler, float deltaTime, bool 
 		float rnd_AngVelX = (float)(rand() / (RAND_MAX / 0.1f));
 		float rnd_AngVelY = (float)(rand() / (RAND_MAX / 0.1f));
 		float rnd_AngVelZ = (float)(rand() / (RAND_MAX / 0.1f));
-		float rnd_PosZ = (float)(rand() / (RAND_MAX / 65.0f)) + 55.0f;
+		float rnd_PosZ = (float)(rand() / (RAND_MAX / 60.0f)) + 60.0f;
 		float rnd_PosY = (float)(rand() / (RAND_MAX / 100.0f)) - 50.0f;
 		float rnd_Vel = (float)(rand() / (RAND_MAX / 10.0f) + 20.0f);
 		Entity* backgroundAsset = new BackgroundAsset(backgroundAssetGeometry[rnd], backgroundAssetMaterial[rnd], backgroundAssetShader[rnd],
