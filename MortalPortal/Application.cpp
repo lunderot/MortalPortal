@@ -14,7 +14,10 @@ Application::Application(bool fullscreen, bool showCursor, int screenWidth, int 
 
 	//Audio loading
 	unsigned int bgMusic = aMaster.addNewSample(L"assets/audio/muncher.wav", "background", true);
-	aMaster.playSample(bgMusic);
+	unsigned int punchSound = aMaster.addNewSample(L"assets/audio/punch.wav", "Punch", false);
+	unsigned int pickUpSound = aMaster.addNewSample(L"assets/audio/pickUp.wav", "PickUp", false);
+	unsigned int applauseSound = aMaster.addNewSample(L"assets/audio/applause.wav", "Applause", false);
+	//aMaster.playSample(bgMusic);
 	
 
 	CreateInput();
@@ -62,6 +65,8 @@ Application::Application(bool fullscreen, bool showCursor, int screenWidth, int 
 	crystalFrenzy = false;
 	crystalFrenzyControl = false;
 
+	// audio control
+	applauseControl = false;
 	
 	CreatePlayerEffects();
 	CreateHudObjects();
@@ -379,7 +384,43 @@ void Application::CreateMenuObjects()
 
 void Application::CreateHudObjects()
 {
-	float offsety = 0.47f;
+	bonusDisplay1 = new NumberDisplay(
+		assetHandler->GetMaterial(d3dHandler->GetDevice(), "0ggr.dds", "", 0.0f),
+		assetHandler->GetMaterial(d3dHandler->GetDevice(), "2ggr.dds", "", 0.0f),
+		assetHandler->GetMaterial(d3dHandler->GetDevice(), "3ggr.dds", "", 0.0f),
+		assetHandler->GetMaterial(d3dHandler->GetDevice(), "4ggr.dds", "", 0.0f),
+		assetHandler->GetMaterial(d3dHandler->GetDevice(), "5ggr.dds", "", 0.0f),
+		assetHandler->GetMaterial(d3dHandler->GetDevice(), "6ggr.dds", "", 0.0f),
+		assetHandler->GetMaterial(d3dHandler->GetDevice(), "7ggr.dds", "", 0.0f),
+		assetHandler->GetMaterial(d3dHandler->GetDevice(), "8ggr.dds", "", 0.0f),
+		assetHandler->GetMaterial(d3dHandler->GetDevice(), "9ggr.dds", "", 0.0f),
+		assetHandler->GetMaterial(d3dHandler->GetDevice(), "10ggr.dds", "", 0.0f),
+		assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/BackgroundPlane.bin"),
+		numberShader,
+		entityHandler,
+		1,
+		XMFLOAT3(0.275f,0.471f,0)
+		);
+
+	bonusDisplay2 = new NumberDisplay(
+		assetHandler->GetMaterial(d3dHandler->GetDevice(), "0ggr.dds", "", 0.0f),
+		assetHandler->GetMaterial(d3dHandler->GetDevice(), "2ggr.dds", "", 0.0f),
+		assetHandler->GetMaterial(d3dHandler->GetDevice(), "3ggr.dds", "", 0.0f),
+		assetHandler->GetMaterial(d3dHandler->GetDevice(), "4ggr.dds", "", 0.0f),
+		assetHandler->GetMaterial(d3dHandler->GetDevice(), "5ggr.dds", "", 0.0f),
+		assetHandler->GetMaterial(d3dHandler->GetDevice(), "6ggr.dds", "", 0.0f),
+		assetHandler->GetMaterial(d3dHandler->GetDevice(), "7ggr.dds", "", 0.0f),
+		assetHandler->GetMaterial(d3dHandler->GetDevice(), "8ggr.dds", "", 0.0f),
+		assetHandler->GetMaterial(d3dHandler->GetDevice(), "9ggr.dds", "", 0.0f),
+		assetHandler->GetMaterial(d3dHandler->GetDevice(), "10ggr.dds", "", 0.0f),
+		assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/BackgroundPlane.bin"),
+		numberShader,
+		entityHandler,
+		1,
+		XMFLOAT3(0.275f, -0.471f, 0)
+		);
+
+	float offsety = 0.471f;
 	//HUD combo display
 	float comboOffsetx = -0.22f;
 	comboDisplay1 = new NumberDisplay(
@@ -399,7 +440,7 @@ void Application::CreateHudObjects()
 		3,
 		XMFLOAT3(comboOffsetx, offsety, 0)
 		);
-
+	offsety = 0.473f;
 	comboDisplay2 = new NumberDisplay(
 		assetHandler->GetMaterial(d3dHandler->GetDevice(), "zero.dds", "", 0.0f),
 		assetHandler->GetMaterial(d3dHandler->GetDevice(), "one.dds", "", 0.0f),
@@ -420,6 +461,7 @@ void Application::CreateHudObjects()
 
 	//HUD highscore display
 	float highscoreOffsetx = 0.465f;
+	offsety = 0.469f;
 	highscoreDisplay1 = new NumberDisplay(
 		assetHandler->GetMaterial(d3dHandler->GetDevice(), "zero.dds", "", 0.0f),
 		assetHandler->GetMaterial(d3dHandler->GetDevice(), "one.dds", "", 0.0f),
@@ -437,6 +479,7 @@ void Application::CreateHudObjects()
 		6,
 		XMFLOAT3(highscoreOffsetx, offsety, 0)
 		);
+	offsety = 0.471f;
 	highscoreDisplay2 = new NumberDisplay(
 		assetHandler->GetMaterial(d3dHandler->GetDevice(), "zero.dds", "", 0.0f),
 		assetHandler->GetMaterial(d3dHandler->GetDevice(), "one.dds", "", 0.0f),
@@ -569,6 +612,9 @@ Application::~Application()
 
 	delete comboDisplay1;
 	delete comboDisplay2;
+
+	delete bonusDisplay1;
+	delete bonusDisplay2;
 }
 
 bool Application::Update(float deltaTime)
@@ -689,6 +735,8 @@ bool Application::Update(float deltaTime)
 	comboDisplay1->Update(player1->GetCombo());
 	comboDisplay2->Update(player2->GetCombo());
 
+	bonusDisplay1->Update(player1->GetBonus());
+	bonusDisplay2->Update(player1->GetBonus());
 
 	return false;
 }
@@ -749,13 +797,23 @@ void Application::Render()
 
 		if (player1->powerBar->IsDead() == true || player2->powerBar->IsDead() == true)
 		{
+			if (player1->GetApplauseControl() == false)
+			{ 
+				aMaster.playSample("Applause");
+				player1->SetApplauseControl(true);
+			}
 			buttonShader->Use(d3dHandler->GetDeviceContext());
 			restartMenu->renderMenu = true;
 			restartMenu->buttonScale.button = true;
 			restartMenu->Render(d3dHandler->GetDeviceContext());
 
 			if (player2->powerBar->IsDead() == true)
-				playerWins->player1Wins = true;
+				if (player2->GetApplauseControl() == false)
+				{
+					aMaster.playSample("Applause");
+					player2->SetApplauseControl(true);
+				}
+				
 			restartMenu->buttonScale.button = false;
 			restartMenu->UpdateConstantBuffer(d3dHandler->GetDeviceContext(), &restartMenu->buttonScale);
 			playerWins->playerWinsText = true;

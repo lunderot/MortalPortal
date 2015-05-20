@@ -90,6 +90,8 @@ private:
 	Material* yellowParticle;
 	Material* blueParticle;
 
+	// audio control
+	bool applauseControl;
 
 	//Player data
 	char player1Keys[5];
@@ -126,6 +128,9 @@ private:
 
 	NumberDisplay* comboDisplay1;
 	NumberDisplay* comboDisplay2;
+
+	NumberDisplay* bonusDisplay1;
+	NumberDisplay* bonusDisplay2;
 
 public:
 	Application(bool fullscreen, bool showCursor, int screenWidth, int screenHeight, LPCWSTR windowTitle);
