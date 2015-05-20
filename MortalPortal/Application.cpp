@@ -850,6 +850,7 @@ void Application::Render()
 			restartMenu->Render(d3dHandler->GetDeviceContext());
 
 			if (player2->powerBar->IsDead() == true)
+				playerWins->player1Wins = true;
 				if (player2->GetApplauseControl() == false)
 				{
 					aMaster.playSample("Applause");
