@@ -778,7 +778,7 @@ bool Application::Update(float deltaTime)
 	comboDisplay2->Update(player2->GetCombo());
 
 	bonusDisplay1->Update(player1->GetBonus());
-	bonusDisplay2->Update(player1->GetBonus());
+	bonusDisplay2->Update(player2->GetBonus());
 
 	return false;
 }
