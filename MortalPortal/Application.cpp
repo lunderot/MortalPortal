@@ -236,8 +236,11 @@ void Application::CreateLevelGenerator()
 
 	levelGenerator->setPowerUp(assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/PowerUp.bin"),
 		assetHandler->GetMaterial(d3dHandler->GetDevice(), "assets/PowerUp.bin", "blinn1"),
-		playerShader);
-
+		playerShader,
+		assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/powerUp_Glow.bin"),
+		assetHandler->GetMaterial(d3dHandler->GetDevice(), "assets/powerUp_Glow.bin", "blinn2"),
+		transparencyShader
+		);
 }
 
 void Application::CreateParticleEffects()

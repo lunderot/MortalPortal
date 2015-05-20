@@ -74,14 +74,18 @@ void LevelGenerator::addBackgroundAsset(Geometry* backgroundAssetGeometry, Mater
 	this->backgroundAssetShader.push_back(AssetShader);
 }
 
-void LevelGenerator::setPowerUp(Geometry* powerUpGeometry, Material* powerUpMaterial, Shader* powerUpShader)
+void LevelGenerator::setPowerUp(Geometry* powerUpGeometry, Material* powerUpMaterial, Shader* powerUpShader, Geometry* powerUpGeometryGlow, Material* PowerUpMaterialGlow, Shader* PowerUpShaderGlow)
 {
 	//this->powerUpGeometry.push_back(powerUpGeometry);
 	//this->powerUpMaterial.push_back(powerUpMaterial);
 	//this->powerUpShader.push_back(powerUpShader);
-	this->powerUpGeometry = powerUpGeometry;
-	this->powerUpMaterial = powerUpMaterial;
-	this->powerUpShader = powerUpShader;
+	this->powerUpGeometry[0] = powerUpGeometry;
+	this->powerUpMaterial[0] = powerUpMaterial;
+	this->powerUpShader[0] = powerUpShader;
+
+	this->powerUpGeometry[1] = powerUpGeometryGlow;
+	this->powerUpMaterial[1] = PowerUpMaterialGlow;
+	this->powerUpShader[1] = PowerUpShaderGlow;
 }
 
 void LevelGenerator::setPlayerOneCrystals(Geometry* Crystal1Geometry, Material* Crystal1Material, Shader* Crystal1Shader, Geometry* Crystal2Geometry, Material* Crystal2Material, Shader* Crystal2Shader, Geometry* Glow1, Geometry* Glow2, Material* Glow1Material, Material* Glow2Material, Shader* GlowShader)
@@ -188,7 +192,11 @@ void LevelGenerator::Update(EntityHandler* entityHandler, float deltaTime, bool 
 		}
 		else if (lastLine.type == "pu") // power up
 		{
-			Entity* PowerUp = new MapItem(powerUpGeometry, powerUpMaterial, powerUpShader, MapItem::PowerUp, Color::BLUE, nullptr,
+			MapItem* glow = new MapItem(powerUpGeometry[1], powerUpMaterial[1], powerUpShader[1], MapItem::PowerUp, Color::BLUE, nullptr,
+				DirectX::XMFLOAT3(XSpawnPos, lastLine.position, 0), DirectX::XMFLOAT3(-(lastLine.velocity * bonusSpeed), 0, 0), DirectX::XMFLOAT3(0, 0, 0));
+			entityHandler->Add(glow);
+
+			Entity* PowerUp = new MapItem(powerUpGeometry[0], powerUpMaterial[0], powerUpShader[0], MapItem::PowerUp, Color::BLUE, glow,
 				DirectX::XMFLOAT3(XSpawnPos, lastLine.position, 0), DirectX::XMFLOAT3(-(lastLine.velocity * bonusSpeed), 0, 0), DirectX::XMFLOAT3(0.0, 0.35, 0), DirectX::XMFLOAT3(0, 0, 0));
 			entityHandler->Add(PowerUp);
 		}
