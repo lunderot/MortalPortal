@@ -228,6 +228,10 @@ void Application::CreateLevelGenerator()
 		levelGenerator->addBackgroundAsset(assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/big_comet.bin"),
 			assetHandler->GetMaterial(d3dHandler->GetDevice(), "assets/big_comet.bin", "Comet"),
 			playerShader);
+
+		levelGenerator->addBackgroundAsset(assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/big_comet02.bin"),
+			assetHandler->GetMaterial(d3dHandler->GetDevice(), "assets/big_comet02.bin", "blinn2"),
+			playerShader);
 	}
 
 	levelGenerator->setPowerUp(assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/PowerUp.bin"),

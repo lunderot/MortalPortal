@@ -299,6 +299,9 @@ void Player::Reset()
 	score = 0;
 	comboScore = 0;
 
+	bonusCounter = 0;
+	bonusScore = 0;
+
 	// Audio control
 	SetApplauseControl(false);
 }
@@ -353,7 +356,7 @@ int Player::GetCombo()
 void Player::AddBonus(unsigned int bonusChange)
 {
 	bonusCounter++;
-	if (bonusCounter == 10)
+	if (bonusCounter >= 10)
 	{
 		bonusScore += bonusChange;
 		bonusCounter = 0;
