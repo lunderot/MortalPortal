@@ -17,7 +17,7 @@ Application::Application(bool fullscreen, bool showCursor, int screenWidth, int 
 	unsigned int punchSound = aMaster.addNewSample(L"assets/audio/punch.wav", "Punch", false);
 	unsigned int pickUpSound = aMaster.addNewSample(L"assets/audio/pickUp.wav", "PickUp", false);
 	unsigned int applauseSound = aMaster.addNewSample(L"assets/audio/applause.wav", "Applause", false);
-	//aMaster.playSample(bgMusic);
+	aMaster.playSample(bgMusic);
 	
 
 	CreateInput();
@@ -287,7 +287,7 @@ void Application::CreateBackgroundEntities()
 	entityHandler->Add(
 		new Background(
 		assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/BackgroundPlane.bin"),
-		assetHandler->GetMaterial(d3dHandler->GetDevice(), "spaceBackground7.dds", "", 0.0f),
+		assetHandler->GetMaterial(d3dHandler->GetDevice(), "spaceBackground2.dds", "", 0.0f),
 		backgShader, XMFLOAT3(0, 0, 230), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(400, 225, 1))
 		);
 	//stars
@@ -319,6 +319,44 @@ void Application::CreateBackgroundEntities()
 		backgShader, XMFLOAT3(0, 0, 199.8), XMFLOAT3(3, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(337, 190, 1))
 		);
 
+	entityHandler->Add(
+		new Background(
+		assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/BackgroundPlane.bin"),
+		assetHandler->GetMaterial(d3dHandler->GetDevice(), "spaceStars1.dds", "", 0.0f),
+		backgShader, XMFLOAT3(0, 0, 199.7), XMFLOAT3(3, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(337, 190, 1))
+		);
+
+	entityHandler->Add(
+		new Background(
+		assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/BackgroundPlane.bin"),
+		assetHandler->GetMaterial(d3dHandler->GetDevice(), "spaceStars1.dds", "", 0.0f),
+		backgShader, XMFLOAT3(-674, 0, 199.7), XMFLOAT3(3, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(337, 190, 1))
+		);
+
+
+	entityHandler->Add(
+		new Background(
+		assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/BackgroundPlane.bin"),
+		assetHandler->GetMaterial(d3dHandler->GetDevice(), "spaceStars2.dds", "", 0.0f),
+		backgShader, XMFLOAT3(0, 0, 190), XMFLOAT3(1, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(337, 190, 1))
+		);
+
+
+	entityHandler->Add(
+		new Background(
+		assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/BackgroundPlane.bin"),
+		assetHandler->GetMaterial(d3dHandler->GetDevice(), "spaceStars2.dds", "", 0.0f),
+		backgShader, XMFLOAT3(-674, 0, 190), XMFLOAT3(1, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(337, 190, 1))
+		);
+
+
+	entityHandler->Add(
+		new Background(
+		assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/BackgroundPlane.bin"),
+		assetHandler->GetMaterial(d3dHandler->GetDevice(), "spaceDust2.dds", "", 0.0f),
+		transparencyShader, XMFLOAT3(0, 0, 10), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(337, 190, 1))
+		);
+
 	// create Earth
 	entityHandler->Add(
 		new BackgroundAsset(
@@ -334,7 +372,7 @@ void Application::CreateMenuObjects()
 	// Start Menu
 	startMenu = new StartMenu(d3dHandler->GetDevice());
 
-	startMenu->AddButton(new StartButton(entityHandler,
+	startMenu->AddButton(new StartButton(levelGenerator, entityHandler,
 		player1, player2,
 		DirectX::XMFLOAT2(0, 0.2f),
 		DirectX::XMFLOAT2(0.1f, 0.1f),
@@ -352,7 +390,7 @@ void Application::CreateMenuObjects()
 		DirectX::XMFLOAT2(0.1f, 0.1f),
 		assetHandler->GetMaterial(d3dHandler->GetDevice(), "continue.dds", "", 0.0f)));
 
-	pauseMenu->AddButton(new StartButton(entityHandler,
+	pauseMenu->AddButton(new StartButton(levelGenerator, entityHandler,
 		player1, player2,
 		DirectX::XMFLOAT2(0, 0.0f),
 		DirectX::XMFLOAT2(0.1f, 0.1f),
@@ -366,7 +404,7 @@ void Application::CreateMenuObjects()
 	// Restart Menu
 	restartMenu = new RestartMenu(d3dHandler->GetDevice());
 
-	restartMenu->AddButton(new StartButton(entityHandler,
+	restartMenu->AddButton(new StartButton(levelGenerator, entityHandler,
 		player1, player2,
 		DirectX::XMFLOAT2(0, 0.2f),
 		DirectX::XMFLOAT2(0.1f, 0.1f),
@@ -855,7 +893,7 @@ void Application::UpdatePlayerControls(Input* input, Player* player, Player* ene
 	{
 		player->ReactToInput(input->GetButtonState(), aMaster);
 	}
-	player->ReactToControl(input->GetDirection(), enemyPlayer->GetInvertControl(), enemyPlayer->GetSlowDownAcceleration());
+	player->ReactToControl(levelGenerator->getTimeSinceLvlStart(), input->GetDirection(), enemyPlayer->GetInvertControl(), enemyPlayer->GetSlowDownAcceleration());
 	//Set player indicators depending on powerups
 	importalPortalIndicator->SetVisible(player->GetImmortalPortal());
 	inverseIndicator->SetVisible(player->GetInvertControl());
