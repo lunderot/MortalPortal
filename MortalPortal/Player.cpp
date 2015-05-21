@@ -322,7 +322,6 @@ void Player::Reset()
 	score = 0;
 	comboScore = 0;
 
-
 	speedBoost = 1.0f;
 	accelerationBoost = 1.0f;
 
