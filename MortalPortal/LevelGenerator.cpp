@@ -126,10 +126,13 @@ void LevelGenerator::setPlayerTwoCrystals(Geometry* Crystal1Geometry, Material* 
 
 void LevelGenerator::Update(EntityHandler* entityHandler, float deltaTime, bool &crystalFrenzy)
 {
-	if (fmod(timeSinceStart, 5.0f) < 0.001f)
+	if (fmod(timeSinceStart, 20.0f) < 0.001f && bonusSpeed < 3.0f)
 	{
 		cout << "Crystal Boost!!! :D" << endl;
-		bonusSpeed += 0.1f;
+		if (bonusSpeed < 2.0f)
+			bonusSpeed *= 1.3f;
+		else if (bonusSpeed < 3.0f)
+			bonusSpeed *= 1.15;
 	}
 
 	while (!partFile.is_open() || crystalFrenzy == true)
@@ -202,45 +205,54 @@ void LevelGenerator::Update(EntityHandler* entityHandler, float deltaTime, bool 
 		}
 		else if (lastLine.type == "p11")
 		{
+			unsigned int rnd_angVel = (float)(rand() / (RAND_MAX / 2.0f) + 1.0f );
 			MapItem* glow = new MapItem(playerOneCrystalGeometry[2], playerOneCrystalMaterial[2], playerOneCrystalShader[2], MapItem::Crystal, Color::GREEN, nullptr,
 				DirectX::XMFLOAT3(XSpawnPos, lastLine.position, 0), DirectX::XMFLOAT3(-(lastLine.velocity * bonusSpeed), 0, 0), DirectX::XMFLOAT3(0, 0, 0));
 			entityHandler->Add(glow);
 			MapItem* crystal = new MapItem(playerOneCrystalGeometry[0], playerOneCrystalMaterial[0], playerOneCrystalShader[0], MapItem::Crystal, Color::GREEN, glow,
-				DirectX::XMFLOAT3(XSpawnPos, lastLine.position, 0), DirectX::XMFLOAT3(-(lastLine.velocity * bonusSpeed), 0, 0), DirectX::XMFLOAT3(0.2, 0.1, 0));
+				DirectX::XMFLOAT3(XSpawnPos, lastLine.position, 0), DirectX::XMFLOAT3(-(lastLine.velocity * bonusSpeed), 0, 0), DirectX::XMFLOAT3(0.2 * rnd_angVel, 1 * rnd_angVel, 0));
 			entityHandler->Add(crystal);
 		}
 		else if (lastLine.type == "p12")
 		{
+			unsigned int rnd_angVel = (float)(rand() / (RAND_MAX / 2.0f) + 1.0f);
 			MapItem* glow = new MapItem(playerOneCrystalGeometry[3], playerOneCrystalMaterial[3], playerOneCrystalShader[2], MapItem::Crystal, Color::RED, nullptr,
 				DirectX::XMFLOAT3(XSpawnPos, lastLine.position, 0), DirectX::XMFLOAT3(-(lastLine.velocity * bonusSpeed), 0, 0), DirectX::XMFLOAT3(0, 0, 0));
 			entityHandler->Add(glow);
 			Entity* crystal = new MapItem(playerOneCrystalGeometry[1], playerOneCrystalMaterial[1], playerOneCrystalShader[1], MapItem::Crystal, Color::RED, glow,
-				DirectX::XMFLOAT3(XSpawnPos, lastLine.position, 0), DirectX::XMFLOAT3(-(lastLine.velocity * bonusSpeed), 0, 0), DirectX::XMFLOAT3(0.2, 1, 0));
+				DirectX::XMFLOAT3(XSpawnPos, lastLine.position, 0), DirectX::XMFLOAT3(-(lastLine.velocity * bonusSpeed), 0, 0), DirectX::XMFLOAT3(0.2 * rnd_angVel, 1 * rnd_angVel, 0));
 			entityHandler->Add(crystal);
 
 		}
 		else if (lastLine.type == "p21")
 		{
+			unsigned int rnd_angVel = (float)(rand() / (RAND_MAX / 2.0f) + 1.0f);
 			MapItem* glow = new MapItem(playerTwoCrystalGeometry[2], playerTwoCrystalMaterial[2], playerTwoCrystalShader[2], MapItem::Crystal, Color::YELLOW, nullptr,
 				DirectX::XMFLOAT3(XSpawnPos, lastLine.position, 0), DirectX::XMFLOAT3(-(lastLine.velocity * bonusSpeed), 0, 0), DirectX::XMFLOAT3(0, 0, 0));
 			entityHandler->Add(glow);
 			Entity* crystal = new MapItem(playerTwoCrystalGeometry[0], playerTwoCrystalMaterial[0], playerTwoCrystalShader[0], MapItem::Crystal, Color::YELLOW, glow,
-				DirectX::XMFLOAT3(XSpawnPos, lastLine.position, 0), DirectX::XMFLOAT3(-(lastLine.velocity * bonusSpeed), 0, 0), DirectX::XMFLOAT3(0.2, 1, 0));
+				DirectX::XMFLOAT3(XSpawnPos, lastLine.position, 0), DirectX::XMFLOAT3(-(lastLine.velocity * bonusSpeed), 0, 0), DirectX::XMFLOAT3(0.2 * rnd_angVel, 1 * rnd_angVel, 0));
 			entityHandler->Add(crystal);
 		}
 		else if (lastLine.type == "p22")
 		{
+			unsigned int rnd_angVel = (float)(rand() / (RAND_MAX / 2.0f) + 1.0f);
 			MapItem* glow = new MapItem(playerTwoCrystalGeometry[3], playerTwoCrystalMaterial[3], playerTwoCrystalShader[2], MapItem::Crystal, Color::BLUE, nullptr,
 				DirectX::XMFLOAT3(XSpawnPos, lastLine.position, 0), DirectX::XMFLOAT3(-(lastLine.velocity * bonusSpeed), 0, 0), DirectX::XMFLOAT3(0, 0, 0));
 			entityHandler->Add(glow);
 			Entity* crystal = new MapItem(playerTwoCrystalGeometry[1], playerTwoCrystalMaterial[1], playerTwoCrystalShader[1], MapItem::Crystal, Color::BLUE, glow,
-				DirectX::XMFLOAT3(XSpawnPos, lastLine.position, 0), DirectX::XMFLOAT3(-(lastLine.velocity * bonusSpeed), 0, 0), DirectX::XMFLOAT3(0.2, 1, 0));
+				DirectX::XMFLOAT3(XSpawnPos, lastLine.position, 0), DirectX::XMFLOAT3(-(lastLine.velocity * bonusSpeed), 0, 0), DirectX::XMFLOAT3(0.2 * rnd_angVel, 1 * rnd_angVel, 0));
 			entityHandler->Add(crystal);
 		}
 		else if (lastLine.type == "e")
 		{
 			partFile.close();
 		}
+		if (timeSinceStart != 600)
+			lastLine.spawnNext /= (1 - timeSinceStart / 600) * 1 + timeSinceStart / 600 * bonusSpeed;
+		else
+			lastLine.spawnNext /= bonusSpeed;
+
 	}
 
 	timeSinceBackgroundAssetSpawn += deltaTime;
