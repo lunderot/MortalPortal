@@ -15,7 +15,13 @@ Application::Application(bool fullscreen, bool showCursor, int screenWidth, int 
 	//Audio loading
 	unsigned int bgMusic = aMaster.addNewSample(L"assets/audio/muncher.wav", "background", true);
 	unsigned int punchSound = aMaster.addNewSample(L"assets/audio/punch.wav", "Punch", false);
-	unsigned int pickUpSound = aMaster.addNewSample(L"assets/audio/pickUp.wav", "PickUp", false);
+	unsigned int pickUpSound_01 = aMaster.addNewSample(L"assets/audio/rightCrystal.wav", "RightCrystal", false);
+	unsigned int pickUpSound_02 = aMaster.addNewSample(L"assets/audio/wrongCrystal.wav", "WrongCrystal", false);
+	unsigned int pickUpSound_03 = aMaster.addNewSample(L"assets/audio/wrongColor.wav", "WrongColor", false);
+	unsigned int powerUpSound_01 = aMaster.addNewSample(L"assets/audio/freeze.wav", "Freeze", false);
+	unsigned int powerUpSound_02 = aMaster.addNewSample(L"assets/audio/invert.wav", "Invert", false);
+	unsigned int powerUpSound_03 = aMaster.addNewSample(L"assets/audio/immortal.wav", "Immortal", false);
+	unsigned int powerUpSound_04 = aMaster.addNewSample(L"assets/audio/crystalFrenzy.wav", "CrystalFrenzy", false);
 	unsigned int applauseSound = aMaster.addNewSample(L"assets/audio/applause.wav", "Applause", false);
 	aMaster.playSample(bgMusic);
 	
@@ -429,6 +435,7 @@ void Application::CreateMenuObjects()
 
 void Application::CreateHudObjects()
 {
+	// Bonus Display
 	bonusDisplay1 = new NumberDisplay(
 		assetHandler->GetMaterial(d3dHandler->GetDevice(), "0ggr.dds", "", 0.0f),
 		assetHandler->GetMaterial(d3dHandler->GetDevice(), "2ggr.dds", "", 0.0f),
@@ -868,6 +875,10 @@ void Application::Render()
 
 		comboBarShader->Use(d3dHandler->GetDeviceContext());
 
+		bonusDisplay1->SetVisible(true);
+		bonusDisplay2->SetVisible(true);
+		comboDisplay1->SetVisible(true);
+		comboDisplay2->SetVisible(true);
 		highscoreDisplay1->SetVisible(true);
 		highscoreDisplay2->SetVisible(true);
 	}
@@ -876,6 +887,10 @@ void Application::Render()
 	{
 		buttonShader->Use(d3dHandler->GetDeviceContext());
 		startMenu->Render(d3dHandler->GetDeviceContext());
+		bonusDisplay1->SetVisible(false);
+		bonusDisplay2->SetVisible(false);
+		comboDisplay1->SetVisible(false);
+		comboDisplay2->SetVisible(false);
 		highscoreDisplay1->SetVisible(false);
 		highscoreDisplay2->SetVisible(false);
 	}

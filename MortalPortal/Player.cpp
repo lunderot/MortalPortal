@@ -356,7 +356,7 @@ int Player::GetCombo()
 void Player::AddBonus(unsigned int bonusChange)
 {
 	bonusCounter++;
-	if (bonusCounter >= 10)
+	if (bonusCounter > 9)
 	{
 		bonusScore += bonusChange;
 		bonusCounter = 0;

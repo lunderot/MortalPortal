@@ -239,32 +239,36 @@ void EntityHandler::HandleCollision(Player* player, Entity* entity2, std::string
 			{
 				if (isPortal)
 				{
-					unsigned int rnd = rand() % 5;
+					unsigned int rnd = rand() % 4;
 
 					if (rnd == 0) // Slow Down Acceleration
 					{
 						player->setSlowDownAcceleration(5.0f);
+						aMaster.playSample("Freeze");
 					}
 
 					if (rnd == 1) // Immortal Portal
 					{
 						player->setImmortalPortal(5.0f);
+						aMaster.playSample("Immortal");
 					}
 
-					if (rnd == 2) // Combo Bonus
-					{
-						player->setBonusCombo(5.0f);
-					}
-
-					if (rnd == 3) // Crystal Frenzy
+					if (rnd == 2) // Crystal Frenzy
 					{
 						player->setCrystalFrenzy(5.0f);
+						aMaster.playSample("CrystalFrenzy");
 					}
 
-					if (rnd == 4) // Inverse Control
+					if (rnd == 3) // Inverse Control
 					{
 						player->SetInvertControl(5.0f);
+						aMaster.playSample("Invert");
 					}
+
+					//if (rnd == 2) // Combo Bonus
+					//{
+					//	player->setBonusCombo(5.0f);
+					//}
 				}
 
 				break;
@@ -281,8 +285,8 @@ void EntityHandler::HandleCollision(Player* player, Entity* entity2, std::string
 						player->AddPower(player->GetCombo());
 						player->renderParticles = true;
 						player->doubleUp = true;
-						aMaster.playSample("PickUp");
 						player->AddScore(100);
+						aMaster.playSample("RightCrystal");
 					}
 				}
 				else
@@ -303,8 +307,10 @@ void EntityHandler::HandleCollision(Player* player, Entity* entity2, std::string
 							player->RemovePower();
 							player->RemoveCombo();
 							player->AddScore(-20);
+							aMaster.playSample("WrongCrystal");
 						}
 					}
+					aMaster.playSample("WrongColor");
 				}
 				break;
 			}
