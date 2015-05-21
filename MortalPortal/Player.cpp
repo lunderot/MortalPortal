@@ -1,8 +1,7 @@
 #include "Player.h"
-
 #include <iostream>
 
-Player::Player(ID3D11Device* device, Geometry* geometry, Material* material, Material* switchMaterial, Shader* shader,
+Player::Player(DWORD ID, ID3D11Device* device, Geometry* geometry, Material* material, Material* switchMaterial, Shader* shader,
 	Color color1, Color color2,
 	DirectX::XMFLOAT3 position,
 	DirectX::XMFLOAT3 velocity,
@@ -49,6 +48,9 @@ Player::Player(ID3D11Device* device, Geometry* geometry, Material* material, Mat
 
 	speedBoost = 1.0f;
 	accelerationBoost = 1.0f;
+
+	vibrationTimer = 0.0f;
+	this->ID = ID;
 }
 
 
@@ -141,17 +143,12 @@ void Player::ReactToInput(bool currentButtonState, AudioMaster &aMaster)
 void Player::ReactToControl(float timeSinceStart, DirectX::XMFLOAT2 dir, bool invertControl, bool slowDown)
 {
 	//std::cout << fmod(timeSinceStart, 20.0f) << std::endl;
-
-	if (fmod(timeSinceStart, 20.0f) < 0.001f)
+	float TimeTillMaxSpeedBoost = 120.0f;
+	if (fmod(timeSinceStart, 1.0f) < 0.001f && accelerationBoost < 5.0f)
 	{
-		std::cout << "Player Boost!!! :D" << std::endl;
-		if (speedBoost < 2.0f)
-			speedBoost *= 1.2f;
-
-		if (accelerationBoost < 3.0f)
-			accelerationBoost *= 1.5f;
-		else if (accelerationBoost < 4.0f)
-			accelerationBoost *= 1.3f;
+		speedBoost = (1 - timeSinceStart / TimeTillMaxSpeedBoost) * 1.0f + timeSinceStart / TimeTillMaxSpeedBoost * 2.0f;
+		
+		accelerationBoost = (1 - timeSinceStart / TimeTillMaxSpeedBoost) * 1.0f + timeSinceStart / TimeTillMaxSpeedBoost * 3.0f;
 	}
 
 
@@ -249,6 +246,14 @@ void Player::Update(float deltaTime)
 	inverControlTimer -= deltaTime;
 	bonusComboTimer -= deltaTime;
 	immortalPortalTimer -= deltaTime;
+
+	if (vibrationTimer < 0.0f)
+	{ 
+		//XINPUT_VIBRATION value{ 0, 0 };
+		//XInputSetState(ID, &value);
+	}
+
+	vibrationTimer -= deltaTime;
 }
 
 Material* Player::GetMaterial() const
@@ -330,6 +335,8 @@ void Player::Reset()
 
 	// Audio control
 	SetApplauseControl(false);
+
+	vibrationTimer = 0.0f;
 }
 
 void Player::RemoveBonus()
@@ -402,3 +409,9 @@ int Player::GetBonus()
 {
 	return bonusScore;
 }
+
+//void Player::setVibrationOnController(XINPUT_VIBRATION* values, float Time)
+//{
+//	XInputSetState(ID, values);
+//	vibrationTimer = Time;
+//}

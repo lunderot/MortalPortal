@@ -126,13 +126,10 @@ void LevelGenerator::setPlayerTwoCrystals(Geometry* Crystal1Geometry, Material* 
 
 void LevelGenerator::Update(EntityHandler* entityHandler, float deltaTime, bool &crystalFrenzy)
 {
-	if (fmod(timeSinceStart, 20.0f) < 0.001f && bonusSpeed < 3.0f)
+	float timeTillMaxSpeed = 120.0f;
+	if (fmod(timeSinceStart, 1.0f) < 0.001f && bonusSpeed < 3.0f)
 	{
-		cout << "Crystal Boost!!! :D" << endl;
-		if (bonusSpeed < 2.0f)
-			bonusSpeed *= 1.3f;
-		else if (bonusSpeed < 3.0f)
-			bonusSpeed *= 1.15;
+		bonusSpeed = (1 - timeSinceStart / timeTillMaxSpeed) * 1.0f + timeSinceStart / timeTillMaxSpeed * 3.0f;
 	}
 
 	while (!partFile.is_open() || crystalFrenzy == true)
@@ -198,7 +195,6 @@ void LevelGenerator::Update(EntityHandler* entityHandler, float deltaTime, bool 
 			MapItem* glow = new MapItem(powerUpGeometry[1], powerUpMaterial[1], powerUpShader[1], MapItem::PowerUp, Color::BLUE, nullptr,
 				DirectX::XMFLOAT3(XSpawnPos, lastLine.position, 0), DirectX::XMFLOAT3(-(lastLine.velocity * bonusSpeed), 0, 0), DirectX::XMFLOAT3(0, 0, 0));
 			entityHandler->Add(glow);
-
 			Entity* PowerUp = new MapItem(powerUpGeometry[0], powerUpMaterial[0], powerUpShader[0], MapItem::PowerUp, Color::BLUE, glow,
 				DirectX::XMFLOAT3(XSpawnPos, lastLine.position, 0), DirectX::XMFLOAT3(-(lastLine.velocity * bonusSpeed), 0, 0), DirectX::XMFLOAT3(0.0, 0.35, 0), DirectX::XMFLOAT3(0, 0, 0));
 			entityHandler->Add(PowerUp);
@@ -248,10 +244,10 @@ void LevelGenerator::Update(EntityHandler* entityHandler, float deltaTime, bool 
 		{
 			partFile.close();
 		}
-		if (timeSinceStart != 600)
-			lastLine.spawnNext /= (1 - timeSinceStart / 600) * 1 + timeSinceStart / 600 * bonusSpeed;
-		else
-			lastLine.spawnNext /= bonusSpeed;
+		//if (timeSinceStart != timeTillMaxSpeed)
+		//	lastLine.spawnNext /= (1 - timeSinceStart / timeTillMaxSpeed) * 1.0f + timeSinceStart / timeTillMaxSpeed * 1.6f;
+		//else
+		//	lastLine.spawnNext *= 0.625f;
 
 	}
 

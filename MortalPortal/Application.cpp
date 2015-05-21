@@ -4,6 +4,7 @@ using namespace DirectX;
 
 Application::Application(bool fullscreen, bool showCursor, int screenWidth, int screenHeight, LPCWSTR windowTitle) : System(fullscreen, showCursor, screenWidth, screenHeight, windowTitle)
 {
+
 	//Setup DirectX
 	float screenFar = 1000.0f;
 	float screenNear = 0.1f;
@@ -28,10 +29,13 @@ Application::Application(bool fullscreen, bool showCursor, int screenWidth, int 
 
 	CreateInput();
 	CreateHandlers();
-	CreateLevelGenerator();
-	CreateEntities();
+	
 	CreateParticleEffects();
+	CreateEntities();
+	CreateLevelGenerator();
+	
 	CreateBackgroundEntities();
+	
 
 	//Light
 	this->oneDirection = assetHandler->GetLight(d3dHandler->GetDevice(), "assets/Lighto.bin");
@@ -109,7 +113,7 @@ void Application::CreateShaders(float screenFar, float screenNear)
 void Application::CreateEntities()
 {
 	//Create player and add it to entity handler
-	player1 = new Player(d3dHandler->GetDevice(),
+	player1 = new Player(0, d3dHandler->GetDevice(),
 		assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/New_Portal.bin"),
 		assetHandler->GetMaterial(d3dHandler->GetDevice(), "assets/New_Portal.bin", "Green"),
 		assetHandler->GetMaterial(d3dHandler->GetDevice(), "assets/New_Portal.bin", "Red"),
@@ -120,7 +124,7 @@ void Application::CreateEntities()
 
 	entityHandler->Add(player1);
 
-	player2 = new Player(d3dHandler->GetDevice(),
+	player2 = new Player(1, d3dHandler->GetDevice(),
 		assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/New_Portal.bin"),
 		assetHandler->GetMaterial(d3dHandler->GetDevice(), "assets/New_Portal.bin", "Yellow"),
 		assetHandler->GetMaterial(d3dHandler->GetDevice(), "assets/New_Portal.bin", "Blue"),
@@ -366,8 +370,8 @@ void Application::CreateBackgroundEntities()
 	entityHandler->Add(
 		new Background(
 		assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/BackgroundPlane.bin"),
-		assetHandler->GetMaterial(d3dHandler->GetDevice(), "spaceDust2.dds", "", 0.0f),
-		transparencyShader, XMFLOAT3(0, 0, 10), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(337, 190, 1))
+		assetHandler->GetMaterial(d3dHandler->GetDevice(), "spaceDust3.dds", "", 0.0f),
+		backgShader, XMFLOAT3(0, 0, 10), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(337, 190, 1))
 		);
 
 	// create Earth

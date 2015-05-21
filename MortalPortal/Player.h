@@ -1,16 +1,21 @@
 #pragma once
+//#include <Xinput.h>
+#include <Windows.h>
+#include <stdexcept>
 #include "Entity.h"
 #include "PowerBar.h"
 #include "ComboBar.h"
 #include "ComboDisplayText.h"
 #include "AudioMaster.h"
 
+//#pragma comment(lib,"Xinput9_1_0.lib")
+
 class Player :
 	public Entity
 {
 public:
 
-	Player(ID3D11Device* device, Geometry* geometry, Material* material, Material* switchMaterial, Shader* shader,
+	Player(DWORD ID, ID3D11Device* device, Geometry* geometry, Material* material, Material* switchMaterial, Shader* shader,
 		Color color1, Color color2,
 		DirectX::XMFLOAT3 position = DirectX::XMFLOAT3(0, 0, 0),
 		DirectX::XMFLOAT3 velocity = DirectX::XMFLOAT3(0, 0, 0),
@@ -72,6 +77,8 @@ public:
 	bool GetApplauseControl();
 	void SetApplauseControl(bool applauseControl);
 
+	//void setVibrationOnController(XINPUT_VIBRATION* vibration, float time);
+
 private:
 	// Power ups
 	float inverControlTimer;
@@ -105,5 +112,8 @@ private:
 
 	float speedBoost;
 	float accelerationBoost;
+
+	DWORD ID;
+	float vibrationTimer;
 };
 

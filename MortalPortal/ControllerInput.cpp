@@ -27,6 +27,7 @@ ControllerInput::ControllerInput(unsigned int playerNr)
 			throw std::runtime_error("No controller found");
 		}
 	}*/
+
 	for (int i = 0; i < XUSER_MAX_COUNT; i++)
 	{
 		ZeroMemory(&state, sizeof(state));

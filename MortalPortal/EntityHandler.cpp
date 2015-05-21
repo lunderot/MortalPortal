@@ -10,11 +10,13 @@ EntityHandler::EntityHandler()
 
 EntityHandler::~EntityHandler()
 {
-	for (std::map<Shader*, std::vector<Entity*>>::iterator ent = entities.begin(); ent != entities.end(); ++ent)
+	for (std::map<Shader*, std::list<Entity*>>::iterator ent = entities.begin(); ent != entities.end(); ++ent)
 	{
-		for (std::vector<Entity*>::iterator i = ent->second.begin(); i != ent->second.end(); ++i)
+		for (std::list<Entity*>::iterator i = ent->second.begin(); i != ent->second.end();)
 		{
-			delete *i;
+			std::list<Entity*>::iterator tmp = i;
+			i++;
+			ent->second.erase(tmp);
 		}
 	}
 }
@@ -22,9 +24,9 @@ EntityHandler::~EntityHandler()
 void EntityHandler::Update(float deltaTime, AudioMaster &aMaster)
 {
 	std::vector<Player*> player;
-	for (std::map<Shader*, std::vector<Entity*>>::iterator ent = entities.begin(); ent != entities.end(); ++ent)
+	for (std::map<Shader*, std::list<Entity*>>::iterator ent = entities.begin(); ent != entities.end(); ++ent)
 	{
-		for (std::vector<Entity*>::iterator i = ent->second.begin(); i != ent->second.end();++i)
+		for (std::list<Entity*>::iterator i = ent->second.begin(); i != ent->second.end(); ++i)
 		{
 			Player* tempPlayer = dynamic_cast<Player*>(*i);
 			if (tempPlayer)
@@ -33,9 +35,10 @@ void EntityHandler::Update(float deltaTime, AudioMaster &aMaster)
 			}
 		}
 	}
-	for (std::map<Shader*, std::vector<Entity*>>::iterator ent = entities.begin(); ent != entities.end(); ++ent)
+	for (std::map<Shader*, std::list<Entity*>>::iterator ent = entities.begin(); ent != entities.end(); ++ent)
 	{
-		for (std::vector<Entity*>::iterator i = ent->second.begin(); i != ent->second.end();)
+		unsigned int j = 0;
+		for (std::list<Entity*>::iterator i = ent->second.begin(); i != ent->second.end();)
 		{
 			if (!(*i)->GetAlive())
 			{
@@ -56,21 +59,31 @@ void EntityHandler::Update(float deltaTime, AudioMaster &aMaster)
 						}
 					}
 				}
-				delete (*i);
-				i = ent->second.erase(i);
+				std::list<Entity*>::iterator tmp = ent->second.begin();
+				advance(tmp, j);
+				bool begin = false;
+
+				if (i == ent->second.begin())
+					begin = true;
+
+				ent->second.erase(tmp);
+
+				i = ent->second.begin();
+				j = -1;
 			}
 			else
 			{
 				(*i)->Update(deltaTime);
 				++i;
 			}
+			j++;
 		}
 	}
-	for (std::map<Shader*, std::vector<Entity*>>::iterator ent = entities.begin(); ent != entities.end(); ++ent)
+	for (std::map<Shader*, std::list<Entity*>>::iterator ent = entities.begin(); ent != entities.end(); ++ent)
 	{
 		for (std::vector<Player*>::iterator i = player.begin(); i != player.end(); ++i)
 		{
-			for (std::vector<Entity*>::iterator j = ent->second.begin(); j != ent->second.end(); ++j)
+			for (std::list<Entity*>::iterator j = ent->second.begin(); j != ent->second.end(); ++j)
 			{
 				if ((*i) != (*j))
 				{
@@ -119,10 +132,10 @@ void EntityHandler::Update(float deltaTime, AudioMaster &aMaster)
 
 void EntityHandler::Render(ID3D11DeviceContext* deviceContext, D3DHandler* d3dHandler)
 {
-	for (std::map<Shader*, std::vector<Entity*>>::iterator ent = entities.begin(); ent != entities.end(); ++ent)
+	for (std::vector<Shader*>::iterator shader = shaderOrder.begin(); shader != shaderOrder.end(); ++shader)
 	{
 		//Use the current entity shader
-		Shader* currentShader = ent->first;
+		Shader* currentShader = *shader;
 		currentShader->Use(deviceContext);
 
 		if (dynamic_cast<OrthoHudShader*>(currentShader))
@@ -134,7 +147,8 @@ void EntityHandler::Render(ID3D11DeviceContext* deviceContext, D3DHandler* d3dHa
 			d3dHandler->EnableAlphaBlendingFewOverlapping();
 		}
 
-		for (std::vector<Entity*>::iterator i = ent->second.begin(); i != ent->second.end(); ++i)
+		std::list<Entity*>& ent = entities[*shader];
+		for (std::list<Entity*>::iterator i = ent.begin(); i != ent.end(); ++i)
 		{
 			if ((*i)->GetVisible())
 			{
@@ -203,6 +217,19 @@ void EntityHandler::Render(ID3D11DeviceContext* deviceContext, D3DHandler* d3dHa
 
 void EntityHandler::Add(Entity* entity)
 {
+	if (std::find(shaderOrder.begin(), shaderOrder.end(), entity->GetShader()) == shaderOrder.end())
+	{
+		shaderOrder.push_back(entity->GetShader());
+	}
+	for (std::list<Entity*>::iterator entityList = entities[entity->GetShader()].begin(); entityList != entities[entity->GetShader()].end(); entityList++)
+	{
+		if (entity->position.z > (*entityList)->position.z)
+		{
+			entities[entity->GetShader()].insert(entityList, entity);
+			break;
+		}
+	}
+
 	entities[entity->GetShader()].push_back(entity);
 }
 
@@ -227,6 +254,8 @@ void EntityHandler::HandleCollision(Player* player, Entity* entity2, std::string
 				}
 				else
 				{
+					//XINPUT_VIBRATION vibrationValue{ 65535, 65535 };
+					//player->setVibrationOnController(&vibrationValue, 0.1f);
 					player->RemoveBonus();
 					player->RemovePower();
 					player->RemoveCombo();
@@ -293,6 +322,12 @@ void EntityHandler::HandleCollision(Player* player, Entity* entity2, std::string
 				{
 					if (player->GetImmortalPortal() == true)
 					{
+						if (player->HasColor(item->GetColor()))
+						{
+							player->AddCombo(1);
+							player->AddBonus(1);
+							player->AddScore(100);
+						}
 						player->AddCombo(false);
 						player->AddPower(player->GetCombo());
 						player->renderParticles = true;
@@ -326,9 +361,9 @@ void EntityHandler::HandleCollision(Player* player, Entity* entity2, std::string
 
 void EntityHandler::KillAllMapItems()
 {
-	for (std::map<Shader*, std::vector<Entity*>>::iterator ent = entities.begin(); ent != entities.end(); ++ent)
+	for (std::map<Shader*, std::list<Entity*>>::iterator ent = entities.begin(); ent != entities.end(); ++ent)
 	{
-		for (std::vector<Entity*>::iterator i = ent->second.begin(); i != ent->second.end(); ++i)
+		for (std::list<Entity*>::iterator i = ent->second.begin(); i != ent->second.end(); ++i)
 		{
 		
 			if (dynamic_cast<MapItem*> (*i))

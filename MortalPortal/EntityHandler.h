@@ -2,6 +2,7 @@
 
 #include <vector>
 #include <map>
+#include <list>
 #include <iostream>
 
 #include "Entity.h"
@@ -19,7 +20,8 @@
 
 class EntityHandler
 {
-	std::map<Shader*, std::vector<Entity*>> entities;
+	std::map<Shader*, std::list<Entity*>> entities;
+	std::vector<Shader*> shaderOrder;
 public:
 	EntityHandler();
 	~EntityHandler();
