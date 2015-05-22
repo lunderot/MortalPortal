@@ -9,12 +9,12 @@ AudioMaster::~AudioMaster()
 {
 	unsigned int temp = this->audioSamples.size();
 
+	delete this->audioHandler;
+
 	for (unsigned int i = 0; i < temp; i++)
 	{
 		delete this->audioSamples[i];
 	}
-
-	delete this->audioHandler;
 }
 
 unsigned int AudioMaster::addNewSample(TCHAR file[], std::string name, bool loop)

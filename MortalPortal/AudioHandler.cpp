@@ -14,7 +14,7 @@ AudioHandler::AudioHandler()
 AudioHandler::~AudioHandler()
 {
 #ifndef __DISABLE_AUDIO__
-	//this->Engine->Release();
+	this->Engine->Release();
 #else
 #endif
 }
