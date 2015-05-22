@@ -860,8 +860,17 @@ void Application::Render()
 			restartMenu->buttonScale.button = true;
 			restartMenu->Render(d3dHandler->GetDeviceContext());
 
-			if (player2->powerBar->IsDead() == true)
+			if (player1->GetScore() >= player2->GetScore())
+			{
 				playerWins->player1Wins = true;
+				if (player1->GetScore() == player2->GetScore())
+				{
+					if (player2->powerBar->IsDead() == true)
+						playerWins->player1Wins = true;
+					else
+						playerWins->player1Wins = false;
+				}
+			}
 				if (player2->GetApplauseControl() == false)
 				{
 					aMaster.playSample("Applause");

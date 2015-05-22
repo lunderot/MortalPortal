@@ -314,7 +314,7 @@ void EntityHandler::HandleCollision(Player* player, Entity* entity2, std::string
 						player->AddPower(player->GetCombo());
 						player->renderParticles = true;
 						player->doubleUp = true;
-						player->AddScore(100);
+						player->AddScore(100 * (player->GetBonus() + 1));
 						aMaster.playSample("RightCrystal");
 					}
 				}
