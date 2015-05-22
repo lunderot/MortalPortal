@@ -231,8 +231,8 @@ void Application::CreateLevelGenerator()
 		assetHandler->GetMaterial(d3dHandler->GetDevice(), "assets/DeadPortal.bin", "blinn1"),
 		playerShader);
 
-	for (int i = 0; i < 15; i++)
-	{
+	//for (int i = 0; i < 15; i++)
+	//{
 		levelGenerator->addBackgroundAsset(assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/big_comet.bin"),
 			assetHandler->GetMaterial(d3dHandler->GetDevice(), "assets/big_comet.bin", "Comet"),
 			playerShader);
@@ -240,7 +240,7 @@ void Application::CreateLevelGenerator()
 		levelGenerator->addBackgroundAsset(assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/big_comet02.bin"),
 			assetHandler->GetMaterial(d3dHandler->GetDevice(), "assets/big_comet02.bin", "blinn2"),
 			playerShader);
-	}
+	//}
 
 	levelGenerator->setPowerUp(assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/PowerUp.bin"),
 		assetHandler->GetMaterial(d3dHandler->GetDevice(), "assets/PowerUp.bin", "blinn1"),
@@ -623,7 +623,10 @@ void Application::CreatePlayerEffects()
 Application::~Application()
 {
 	delete d3dHandler;
-	
+
+	delete entityHandler;
+	delete assetHandler;
+
 	delete powerBarShader;
 	delete comboBarShader;
 	delete particleShader;
@@ -638,8 +641,7 @@ Application::~Application()
 	delete input;
 	delete input2;
 
-	delete entityHandler;
-	delete assetHandler;
+
 
 	delete levelGenerator;
 

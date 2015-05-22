@@ -16,7 +16,9 @@ EntityHandler::~EntityHandler()
 		{
 			std::list<Entity*>::iterator tmp = i;
 			i++;
+			Entity* forDelete = *tmp;
 			ent->second.erase(tmp);
+			delete forDelete;		
 		}
 	}
 }
@@ -37,7 +39,7 @@ void EntityHandler::Update(float deltaTime, AudioMaster &aMaster)
 	}
 	for (std::map<Shader*, std::list<Entity*>>::iterator ent = entities.begin(); ent != entities.end(); ++ent)
 	{
-		unsigned int j = 0;
+		int j = 0;
 		for (std::list<Entity*>::iterator i = ent->second.begin(); i != ent->second.end();)
 		{
 			if (!(*i)->GetAlive())
@@ -61,12 +63,10 @@ void EntityHandler::Update(float deltaTime, AudioMaster &aMaster)
 				}
 				std::list<Entity*>::iterator tmp = ent->second.begin();
 				advance(tmp, j);
-				bool begin = false;
-
-				if (i == ent->second.begin())
-					begin = true;
-
+				
+				Entity* forDelete = *tmp;
 				ent->second.erase(tmp);
+				delete forDelete;
 
 				i = ent->second.begin();
 				j = -1;
@@ -221,15 +221,15 @@ void EntityHandler::Add(Entity* entity)
 	{
 		shaderOrder.push_back(entity->GetShader());
 	}
+
 	for (std::list<Entity*>::iterator entityList = entities[entity->GetShader()].begin(); entityList != entities[entity->GetShader()].end(); entityList++)
 	{
 		if (entity->position.z > (*entityList)->position.z)
 		{
 			entities[entity->GetShader()].insert(entityList, entity);
-			break;
+			return;
 		}
 	}
-
 	entities[entity->GetShader()].push_back(entity);
 }
 
