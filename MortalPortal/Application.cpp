@@ -15,18 +15,17 @@ Application::Application(bool fullscreen, bool showCursor, int screenWidth, int 
 
 	//Audio loading
 	unsigned int bgMusic = aMaster.addNewSample(L"assets/audio/muncher.wav", "background", true);
-	unsigned int punchSound = aMaster.addNewSample(L"assets/audio/punch.wav", "Punch", false);
-	unsigned int pickUpSound_01 = aMaster.addNewSample(L"assets/audio/rightCrystal.wav", "RightCrystal", false);
-	unsigned int pickUpSound_02 = aMaster.addNewSample(L"assets/audio/wrongCrystal.wav", "WrongCrystal", false);
-	unsigned int pickUpSound_03 = aMaster.addNewSample(L"assets/audio/wrongColor.wav", "WrongColor", false);
-	unsigned int powerUpSound_01 = aMaster.addNewSample(L"assets/audio/freeze.wav", "Freeze", false);
-	unsigned int powerUpSound_02 = aMaster.addNewSample(L"assets/audio/invert.wav", "Invert", false);
-	unsigned int powerUpSound_03 = aMaster.addNewSample(L"assets/audio/immortal.wav", "Immortal", false);
-	unsigned int powerUpSound_04 = aMaster.addNewSample(L"assets/audio/crystalFrenzy.wav", "CrystalFrenzy", false);
-	unsigned int applauseSound = aMaster.addNewSample(L"assets/audio/applause.wav", "Applause", false);
+	aMaster.addNewSample(L"assets/audio/punch.wav", "Punch", false);
+	aMaster.addNewSample(L"assets/audio/rightCrystal.wav", "RightCrystal", false);
+	aMaster.addNewSample(L"assets/audio/wrongCrystal.wav", "WrongCrystal", false);
+	aMaster.addNewSample(L"assets/audio/wrongColor.wav", "WrongColor", false);
+	aMaster.addNewSample(L"assets/audio/freeze.wav", "Freeze", false);
+	aMaster.addNewSample(L"assets/audio/invert.wav", "Invert", false);
+	aMaster.addNewSample(L"assets/audio/immortal.wav", "Immortal", false);
+	aMaster.addNewSample(L"assets/audio/crystalFrenzy.wav", "CrystalFrenzy", false);
+	aMaster.addNewSample(L"assets/audio/applause.wav", "Applause", false);
 	aMaster.playSample(bgMusic);
 	
-
 	CreateInput();
 	CreateHandlers();
 	
@@ -96,7 +95,6 @@ void Application::CreateShaders(float screenFar, float screenNear)
 	//Object shaders
 	backgShader = new ObjectShader(d3dHandler->GetDevice(), L"assets/shaders/BackgroundVertexShader.hlsl", L"assets/shaders/BackgroundPixelShader.hlsl", screenWidth, screenHeight, screenNear, screenFar);
 	playerShader = new ObjectShader(d3dHandler->GetDevice(), L"assets/shaders/playerVS.hlsl", L"assets/shaders/playerPS.hlsl", screenWidth, screenHeight, screenNear, screenFar);
-	transparencyShader = new ObjectShader(d3dHandler->GetDevice(), L"assets/shaders/BackgroundVertexShader.hlsl", L"assets/shaders/BackgroundPixelShader.hlsl", screenWidth, screenHeight, screenNear, screenFar);
 	powerShader = new ObjectShader(d3dHandler->GetDevice(), L"assets/shaders/BackgroundVertexShader.hlsl", L"assets/shaders/BackgroundPixelShader.hlsl", screenWidth, screenHeight, screenNear, screenFar);
 
 	//HUD shaders
@@ -194,7 +192,7 @@ void Application::CreateLevelGenerator()
 		assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/glow.bin"),
 		assetHandler->GetMaterial(d3dHandler->GetDevice(), "assets/glow.bin", "Glow_Green"),
 		assetHandler->GetMaterial(d3dHandler->GetDevice(), "assets/glow.bin", "Glow_Red"),
-		transparencyShader);
+		backgShader);
 
 	levelGenerator->setPlayerTwoCrystals(assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/crystal_v2.bin"),
 		assetHandler->GetMaterial(d3dHandler->GetDevice(), "assets/crystal_v2.bin", "Crystal_Yellow"),
@@ -206,7 +204,7 @@ void Application::CreateLevelGenerator()
 		assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/glow.bin"),
 		assetHandler->GetMaterial(d3dHandler->GetDevice(), "assets/glow.bin", "Glow_Yellow"),
 		assetHandler->GetMaterial(d3dHandler->GetDevice(), "assets/glow.bin", "Glow_Blue"),
-		transparencyShader);
+		backgShader);
 
 	// Add available comets for LevelGenerator to choose from
 	levelGenerator->addComet(assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/small_comet_v1.bin"),
@@ -249,7 +247,7 @@ void Application::CreateLevelGenerator()
 		playerShader,
 		assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/powerUp_Glow.bin"),
 		assetHandler->GetMaterial(d3dHandler->GetDevice(), "assets/powerUp_Glow.bin", "blinn2"),
-		transparencyShader
+		backgShader
 		);
 }
 
@@ -633,7 +631,6 @@ Application::~Application()
 	delete backgShader;
 	delete mapItemShader;
 	delete buttonShader;
-	delete transparencyShader;
 	delete powerShader;
 
 	delete numberShader;

@@ -47,7 +47,6 @@ private:
 	ObjectShader* playerShader;
 	ObjectShader* mapItemShader;
 	ObjectShader* backgShader;
-	ObjectShader* transparencyShader;
 	ObjectShader* powerShader;
 
 	//HUD shaders
