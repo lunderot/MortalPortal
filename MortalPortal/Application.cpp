@@ -789,7 +789,7 @@ bool Application::Update(float deltaTime)
 
 	//Update HUD displays
 	highscoreDisplay1->Update(player1->GetScore() > 999999 ? 999999 : player1->GetScore());
-	highscoreDisplay2->Update(player2->GetScore());
+	highscoreDisplay2->Update(player2->GetScore() > 999999 ? 999999 : player2->GetScore());
 
 	comboDisplay1->Update(player1->GetCombo());
 	comboDisplay2->Update(player2->GetCombo());

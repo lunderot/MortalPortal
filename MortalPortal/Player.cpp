@@ -351,7 +351,7 @@ void Player::AddScore(int amount)
 
 int Player::GetScore() const
 {
-	return score + 999000;
+	return score;
 }
 
 void Player::AddCombo(unsigned int comboChange)

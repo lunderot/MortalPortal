@@ -12,6 +12,11 @@ MapItem::MapItem(Geometry* geometry, Material* material, Shader* shader, objectT
 void MapItem::Update(float deltaTime)
 {
 	Entity::Update(deltaTime);
+	if (child)
+	{
+		child->SetPosition(GetPosition());
+	}
+	
 	if (position.x < -32)
 	{
 		alive = false;
