@@ -48,6 +48,7 @@ Player::Player(DWORD ID, ID3D11Device* device, Geometry* geometry, Material* mat
 
 	vibrationTimer = 0.0f;
 	this->ID = ID;
+	
 }
 
 
@@ -130,50 +131,50 @@ void Player::ReactToInput(bool currentButtonState, AudioMaster &aMaster)
 void Player::ReactToControl(float timeSinceStart, DirectX::XMFLOAT2 dir, bool invertControl, bool slowDown)
 {
 	//std::cout << fmod(timeSinceStart, 20.0f) << std::endl;
-	float TimeTillMaxSpeedBoost = 120.0f;
-	if (fmod(timeSinceStart, 1.0f) < 0.001f && accelerationBoost < 5.0f)
+	float TimeTillMaxSpeedBoost = 180.0f;
+	if (fmod(timeSinceStart, 30.0f) < 0.1f && accelerationBoost < 2.2f)
 	{
-		speedBoost = (1 - timeSinceStart / TimeTillMaxSpeedBoost) * 1.0f + timeSinceStart / TimeTillMaxSpeedBoost * 2.0f;
+		speedBoost = (1 - timeSinceStart / TimeTillMaxSpeedBoost) * 1.0f + timeSinceStart / TimeTillMaxSpeedBoost * 2.5f;
 		
-		accelerationBoost = (1 - timeSinceStart / TimeTillMaxSpeedBoost) * 1.0f + timeSinceStart / TimeTillMaxSpeedBoost * 3.0f;
+		accelerationBoost = (1 - timeSinceStart / TimeTillMaxSpeedBoost) * 1.0f + timeSinceStart / TimeTillMaxSpeedBoost * 2.2f;
 	}
 
 
-
-	float slowDownAcc = 5.0f;
+	float changeDirectionBoost = 1.5f;
+	float slowDownAcc = 6.0f;
 	float notSlowDownAcc = 35.0f;
 	// Player 1 - control
 	// PowerUp - Invert Control - effect on | Player2
 	if (invertControl)
 	{
-		dir.x *= -0.5f * speedBoost;
-		dir.y *= -0.5f * speedBoost;
+		dir.x *= -0.5f * accelerationBoost;
+		dir.y *= -0.5f * accelerationBoost;
 	}
 
 	// PowerUp - Slow Down Acceleration - effect on | Player2
 	if (slowDown)
 	{
 		if ((velocity.x < 0.0f && dir.x > 0.0f) || (velocity.x > 0.0f && dir.x < 0.0f))
-			dir.x *= slowDownAcc * speedBoost * 2;
+			dir.x *= slowDownAcc * accelerationBoost * changeDirectionBoost;
 		else 
-			dir.x *= slowDownAcc * speedBoost;
+			dir.x *= slowDownAcc * accelerationBoost;
 
 		if ((velocity.y < 0.0f && dir.y > 0.0f) || (velocity.y > 0.0f && dir.y < 0.0f))
-			dir.y *= slowDownAcc * speedBoost * 2;
+			dir.y *= slowDownAcc * accelerationBoost * changeDirectionBoost;
 		else
-			dir.y *= slowDownAcc * speedBoost;
+			dir.y *= slowDownAcc * accelerationBoost;
 	}
 	else
 	{
 		if ((velocity.x < 0.0f && dir.x > 0.0f) || (velocity.x > 0.0f && dir.x < 0.0f))
-			dir.x *= notSlowDownAcc * speedBoost * 2;
+			dir.x *= notSlowDownAcc * accelerationBoost * changeDirectionBoost;
 		else
-			dir.x *= notSlowDownAcc * speedBoost;
+			dir.x *= notSlowDownAcc * accelerationBoost;
 
 		if ((velocity.y < 0.0f && dir.y > 0.0f) || (velocity.y > 0.0f && dir.y < 0.0f))
-			dir.y *= notSlowDownAcc * speedBoost * 2;
+			dir.y *= notSlowDownAcc * accelerationBoost * changeDirectionBoost;
 		else
-			dir.y *= notSlowDownAcc * speedBoost;
+			dir.y *= notSlowDownAcc * accelerationBoost;
 	}
 	SetAcceleration(DirectX::XMFLOAT3(dir.x, dir.y, 0.0f));
 }

@@ -266,39 +266,36 @@ void EntityHandler::HandleCollision(Player* player, Entity* entity2, std::string
 			}	
 			case MapItem::objectType::PowerUp:
 			{
-				if (isPortal)
+				unsigned int rnd = rand() % 4;
+
+				if (rnd == 0) // Slow Down Acceleration
 				{
-					unsigned int rnd = rand() % 4;
-
-					if (rnd == 0) // Slow Down Acceleration
-					{
-						player->setSlowDownAcceleration(5.0f);
-						aMaster.playSample("Freeze");
-					}
-
-					if (rnd == 1) // Immortal Portal
-					{
-						player->setImmortalPortal(5.0f);
-						aMaster.playSample("Immortal");
-					}
-
-					if (rnd == 2) // Crystal Frenzy
-					{
-						player->setCrystalFrenzy(5.0f);
-						aMaster.playSample("CrystalFrenzy");
-					}
-
-					if (rnd == 3) // Inverse Control
-					{
-						player->SetInvertControl(5.0f);
-						aMaster.playSample("Invert");
-					}
-
-					//if (rnd == 2) // Combo Bonus
-					//{
-					//	player->setBonusCombo(5.0f);
-					//}
+					player->setSlowDownAcceleration(5.0f);
+					aMaster.playSample("Freeze");
 				}
+
+				if (rnd == 1) // Immortal Portal
+				{
+					player->setImmortalPortal(5.0f);
+					aMaster.playSample("Immortal");
+				}
+
+				if (rnd == 2) // Crystal Frenzy
+				{
+					player->setCrystalFrenzy(5.0f);
+					aMaster.playSample("CrystalFrenzy");
+				}
+
+				if (rnd == 3) // Inverse Control
+				{
+					player->SetInvertControl(5.0f);
+					aMaster.playSample("Invert");
+				}
+
+				//if (rnd == 2) // Combo Bonus
+				//{
+				//	player->setBonusCombo(5.0f);
+				//}
 
 				break;
 			}

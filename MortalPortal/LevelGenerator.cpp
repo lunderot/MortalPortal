@@ -126,11 +126,12 @@ void LevelGenerator::setPlayerTwoCrystals(Geometry* Crystal1Geometry, Material* 
 
 void LevelGenerator::Update(EntityHandler* entityHandler, float deltaTime, bool &crystalFrenzy)
 {
-	float timeTillMaxSpeed = 120.0f;
-	if (fmod(timeSinceStart, 1.0f) < 0.001f && bonusSpeed < 3.0f)
+	float timeTillMaxSpeed = 180.0f;
+	if (fmod(timeSinceStart, 30.0f) < 0.1f && bonusSpeed < 3.0f)
 	{
-		bonusSpeed = (1 - timeSinceStart / timeTillMaxSpeed) * 1.0f + timeSinceStart / timeTillMaxSpeed * 3.0f;
+		bonusSpeed = ((1 - timeSinceStart / timeTillMaxSpeed) * 1.0f + timeSinceStart / timeTillMaxSpeed * 3.0f);
 	}
+
 
 	while (!partFile.is_open() || crystalFrenzy == true)
 	{
@@ -244,10 +245,11 @@ void LevelGenerator::Update(EntityHandler* entityHandler, float deltaTime, bool 
 		{
 			partFile.close();
 		}
-		//if (timeSinceStart != timeTillMaxSpeed)
-		//	lastLine.spawnNext /= (1 - timeSinceStart / timeTillMaxSpeed) * 1.0f + timeSinceStart / timeTillMaxSpeed * 1.6f;
-		//else
-		//	lastLine.spawnNext *= 0.625f;
+		
+		if (fmod(timeSinceStart, 30.0f) < 10.0f && timeSinceStart < timeTillMaxSpeed)
+			lastLine.spawnNext *= (1 - timeSinceStart / timeTillMaxSpeed) * 1.0f + timeSinceStart / timeTillMaxSpeed * 0.6f;
+		else if (timeSinceStart >= timeTillMaxSpeed)
+			lastLine.spawnNext *= 0.6f;
 
 	}
 
