@@ -57,6 +57,7 @@ void EntityHandler::Update(float deltaTime, AudioMaster &aMaster)
 							if (player[i]->HasColor(item->GetColor()))
 							{
 								player[i]->RemoveCombo();
+								player[i]->RemoveBonus();
 							}
 						}
 					}
@@ -239,7 +240,7 @@ void EntityHandler::HandleCollision(Player* player, Entity* entity2, std::string
 
 	bool isPortal = name == "Portal";
 
-	if (item)
+	if (item && item->GetAlive())
 	{
 		switch (item->type)
 		{
@@ -247,7 +248,8 @@ void EntityHandler::HandleCollision(Player* player, Entity* entity2, std::string
 			{
 				if (player->GetImmortalPortal() == true)
 				{
-					player->AddCombo(false);
+					player->AddCombo(1);
+					player->AddBonus(1);
 					player->renderParticles = true;
 					player->doubleUp = true;
 					aMaster.playSample("boing");
@@ -257,8 +259,8 @@ void EntityHandler::HandleCollision(Player* player, Entity* entity2, std::string
 					//XINPUT_VIBRATION vibrationValue{ 65535, 65535 };
 					//player->setVibrationOnController(&vibrationValue, 0.1f);
 					player->RemoveBonus();
-					player->RemovePower(0.02f);
 					player->RemoveCombo();
+					player->RemovePower(0.02f);
 					player->AddScore(-20);
 					aMaster.playSample("Punch");
 				}
@@ -266,7 +268,8 @@ void EntityHandler::HandleCollision(Player* player, Entity* entity2, std::string
 			}	
 			case MapItem::objectType::PowerUp:
 			{
-				unsigned int rnd = rand() % 4;
+				unsigned int rnd = rand() % 3;
+				rnd = 3;
 
 				if (rnd == 0) // Slow Down Acceleration
 				{
@@ -274,19 +277,19 @@ void EntityHandler::HandleCollision(Player* player, Entity* entity2, std::string
 					aMaster.playSample("Freeze");
 				}
 
-				if (rnd == 1) // Immortal Portal
+				if (rnd == 3) // Immortal Portal
 				{
 					player->setImmortalPortal(5.0f);
 					aMaster.playSample("Immortal");
 				}
 
-				if (rnd == 2) // Crystal Frenzy
+				if (rnd == 1) // Crystal Frenzy
 				{
 					player->setCrystalFrenzy(5.0f);
 					aMaster.playSample("CrystalFrenzy");
 				}
 
-				if (rnd == 3) // Inverse Control
+				if (rnd == 2) // Inverse Control
 				{
 					player->SetInvertControl(5.0f);
 					aMaster.playSample("Invert");
@@ -321,28 +324,26 @@ void EntityHandler::HandleCollision(Player* player, Entity* entity2, std::string
 					{
 						if (player->HasColor(item->GetColor()))
 						{
-							player->AddCombo(1);
-							player->AddBonus(1);
 							player->AddScore(100);
-						}
-						player->AddCombo(false);
+						}	
+						player->AddCombo(1);
+						player->AddBonus(1);
 						player->AddPower(player->GetCombo());
 						player->renderParticles = true;
 						player->doubleUp = true;
-						aMaster.playSample("boing");
+						aMaster.playSample("RightCrystal");
 					}
 					else
 					{
 						if (!player->HasColor(item->GetColor()))
 						{
+							player->RemoveCombo();
 							player->RemoveBonus();
 							player->RemovePower(0);
-							player->RemoveCombo();
 							player->AddScore(-20);
 							aMaster.playSample("WrongCrystal");
 						}
 					}
-					aMaster.playSample("WrongColor");
 				}
 				break;
 			}

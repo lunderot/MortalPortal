@@ -127,7 +127,7 @@ void LevelGenerator::setPlayerTwoCrystals(Geometry* Crystal1Geometry, Material* 
 void LevelGenerator::Update(EntityHandler* entityHandler, float deltaTime, bool &crystalFrenzy)
 {
 	float timeTillMaxSpeed = 180.0f;
-	if (fmod(timeSinceStart, 30.0f) < 0.1f && bonusSpeed < 3.0f)
+	if (fmod(timeSinceStart, 30.0f) < 5.0f && bonusSpeed < 3.0f)
 	{
 		bonusSpeed = ((1 - timeSinceStart / timeTillMaxSpeed) * 1.0f + timeSinceStart / timeTillMaxSpeed * 3.0f);
 	}
@@ -141,7 +141,7 @@ void LevelGenerator::Update(EntityHandler* entityHandler, float deltaTime, bool 
 			partFile.close();
 			unsigned int newPart = rand() % crystalFreenzyParts.size();
 			std::string tmp = pathToFiles + crystalFreenzyParts[newPart];
-			cout << tmp << endl;
+			//cout << tmp << endl;
 			partFile.open(tmp.c_str());
 			crystalFrenzy = false;
 		}
@@ -149,7 +149,7 @@ void LevelGenerator::Update(EntityHandler* entityHandler, float deltaTime, bool 
 		{
 			unsigned int newPart = rand() % normalLevelParts.size();
 			std::string tmp = pathToFiles + normalLevelParts[newPart];
-			cout << tmp << endl;
+			//cout << tmp << endl;
 			partFile.open(tmp.c_str());
 		}
 	}
