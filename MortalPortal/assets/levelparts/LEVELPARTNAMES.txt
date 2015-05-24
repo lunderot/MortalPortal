@@ -100,8 +100,24 @@ Part98.txt
 Part99.txt
 Part100.txt
 
-
-
-
 freenzyPart
 Frenzy1.txt
+Frenzy2.txt
+Frenzy3.txt
+Frenzy4.txt
+Frenzy5.txt
+Frenzy6.txt
+Frenzy7.txt
+Frenzy8.txt
+Frenzy9.txt
+Frenzy10.txt
+Frenzy11.txt
+Frenzy12.txt
+Frenzy13.txt
+Frenzy14.txt
+Frenzy15.txt
+Frenzy16.txt
+Frenzy17.txt
+Frenzy18.txt
+Frenzy19.txt
+Frenzy20.txt

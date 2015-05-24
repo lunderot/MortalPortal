@@ -39,7 +39,7 @@ Player::Player(DWORD ID, ID3D11Device* device, Geometry* geometry, Material* mat
 	maxComboScore = 999;
 
 	bonusScore = 0;
-	maxBonusScore = 10;
+	maxBonusScore = 9;
 
 	bonusCounter = 0;
 
@@ -132,7 +132,7 @@ void Player::ReactToControl(float timeSinceStart, DirectX::XMFLOAT2 dir, bool in
 {
 	//std::cout << fmod(timeSinceStart, 20.0f) << std::endl;
 	float TimeTillMaxSpeedBoost = 180.0f;
-	if (fmod(timeSinceStart, 30.0f) < 0.1f && accelerationBoost < 2.2f)
+	if (fmod(timeSinceStart, 30.0f) < 5.0f && accelerationBoost < 2.2f)
 	{
 		speedBoost = (1 - timeSinceStart / TimeTillMaxSpeedBoost) * 1.0f + timeSinceStart / TimeTillMaxSpeedBoost * 2.5f;
 		
@@ -327,6 +327,7 @@ void Player::Reset()
 void Player::RemoveBonus()
 {
 	bonusScore = 0;
+	bonusCounter = 0;
 }
 
 void Player::RemoveCombo()
@@ -350,7 +351,7 @@ void Player::AddScore(int amount)
 
 int Player::GetScore() const
 {
-	return score;
+	return score + 999000;
 }
 
 void Player::AddCombo(unsigned int comboChange)
@@ -373,6 +374,7 @@ int Player::GetCombo()
 
 void Player::AddBonus(unsigned int bonusChange)
 {
+
 	bonusCounter++;
 	if (bonusCounter > 9)
 	{
@@ -388,6 +390,7 @@ void Player::AddBonus(unsigned int bonusChange)
 	{
 		bonusScore = maxBonusScore;
 	}
+
 }
 
 int Player::GetBonus()

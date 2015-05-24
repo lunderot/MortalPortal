@@ -228,8 +228,8 @@ void Application::CreateLevelGenerator()
 		assetHandler->GetMaterial(d3dHandler->GetDevice(), "assets/DeadPortal.bin", "blinn1"),
 		playerShader);
 
-	//for (int i = 0; i < 15; i++)
-	//{
+	for (int i = 0; i < 15; i++)
+	{
 		levelGenerator->addBackgroundAsset(assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/big_comet.bin"),
 			assetHandler->GetMaterial(d3dHandler->GetDevice(), "assets/big_comet.bin", "Comet"),
 			playerShader);
@@ -237,7 +237,7 @@ void Application::CreateLevelGenerator()
 		levelGenerator->addBackgroundAsset(assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/big_comet02.bin"),
 			assetHandler->GetMaterial(d3dHandler->GetDevice(), "assets/big_comet02.bin", "blinn2"),
 			playerShader);
-	//}
+	}
 
 	levelGenerator->setPowerUp(assetHandler->GetGeometry(d3dHandler->GetDevice(), "assets/PowerUp.bin"),
 		assetHandler->GetMaterial(d3dHandler->GetDevice(), "assets/PowerUp.bin", "blinn1"),
@@ -788,7 +788,7 @@ bool Application::Update(float deltaTime)
 		restartMenu->Update(input->GetButtonUpState(), input->GetButtonDownState(), input->GetButtonEnterState());
 
 	//Update HUD displays
-	highscoreDisplay1->Update(player1->GetScore());
+	highscoreDisplay1->Update(player1->GetScore() > 999999 ? 999999 : player1->GetScore());
 	highscoreDisplay2->Update(player2->GetScore());
 
 	comboDisplay1->Update(player1->GetCombo());
