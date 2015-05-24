@@ -32,7 +32,7 @@ public:
 
 	Material* GetMaterial() const;
 	void AddPower(unsigned int bonusPower);
-	void RemovePower();
+	void RemovePower(float removeValue);
 	PowerBar* powerBar;
 
 
@@ -73,10 +73,6 @@ public:
 	void AddBonus(unsigned int bonusChange);
 	int GetBonus();
 
-	// Audio control
-	bool GetApplauseControl();
-	void SetApplauseControl(bool applauseControl);
-
 	//void setVibrationOnController(XINPUT_VIBRATION* vibration, float time);
 
 private:
@@ -92,9 +88,6 @@ private:
 	bool bonusComboDisplay;
 
 	unsigned int bonusCounter;
-
-	// Audio control
-	bool ApplauseControl;
 
 	Material* switchMaterial;
 

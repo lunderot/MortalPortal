@@ -126,11 +126,12 @@ void LevelGenerator::setPlayerTwoCrystals(Geometry* Crystal1Geometry, Material* 
 
 void LevelGenerator::Update(EntityHandler* entityHandler, float deltaTime, bool &crystalFrenzy)
 {
-	float timeTillMaxSpeed = 120.0f;
-	if (fmod(timeSinceStart, 1.0f) < 0.001f && bonusSpeed < 3.0f)
+	float timeTillMaxSpeed = 180.0f;
+	if (fmod(timeSinceStart, 30.0f) < 5.0f && bonusSpeed < 3.0f)
 	{
-		bonusSpeed = (1 - timeSinceStart / timeTillMaxSpeed) * 1.0f + timeSinceStart / timeTillMaxSpeed * 3.0f;
+		bonusSpeed = ((1 - timeSinceStart / timeTillMaxSpeed) * 1.0f + timeSinceStart / timeTillMaxSpeed * 3.0f);
 	}
+
 
 	while (!partFile.is_open() || crystalFrenzy == true)
 	{
@@ -140,7 +141,7 @@ void LevelGenerator::Update(EntityHandler* entityHandler, float deltaTime, bool 
 			partFile.close();
 			unsigned int newPart = rand() % crystalFreenzyParts.size();
 			std::string tmp = pathToFiles + crystalFreenzyParts[newPart];
-			cout << tmp << endl;
+			//cout << tmp << endl;
 			partFile.open(tmp.c_str());
 			crystalFrenzy = false;
 		}
@@ -148,7 +149,7 @@ void LevelGenerator::Update(EntityHandler* entityHandler, float deltaTime, bool 
 		{
 			unsigned int newPart = rand() % normalLevelParts.size();
 			std::string tmp = pathToFiles + normalLevelParts[newPart];
-			cout << tmp << endl;
+			//cout << tmp << endl;
 			partFile.open(tmp.c_str());
 		}
 	}
@@ -216,7 +217,7 @@ void LevelGenerator::Update(EntityHandler* entityHandler, float deltaTime, bool 
 				DirectX::XMFLOAT3(XSpawnPos, lastLine.position, 0), DirectX::XMFLOAT3(-(lastLine.velocity * bonusSpeed), 0, 0), DirectX::XMFLOAT3(0, 0, 0));
 			entityHandler->Add(glow);
 			Entity* crystal = new MapItem(playerOneCrystalGeometry[1], playerOneCrystalMaterial[1], playerOneCrystalShader[1], MapItem::Crystal, Color::RED, glow,
-				DirectX::XMFLOAT3(XSpawnPos, lastLine.position, 0), DirectX::XMFLOAT3(-(lastLine.velocity * bonusSpeed), 0, 0), DirectX::XMFLOAT3(0.2 * rnd_angVel, 1 * rnd_angVel, 0));
+				DirectX::XMFLOAT3(XSpawnPos, lastLine.position, 0), DirectX::XMFLOAT3(-(lastLine.velocity * bonusSpeed), 0, 0), DirectX::XMFLOAT3(0.2 * 0, 1 * rnd_angVel, 0));
 			entityHandler->Add(crystal);
 
 		}
@@ -244,10 +245,11 @@ void LevelGenerator::Update(EntityHandler* entityHandler, float deltaTime, bool 
 		{
 			partFile.close();
 		}
-		//if (timeSinceStart != timeTillMaxSpeed)
-		//	lastLine.spawnNext /= (1 - timeSinceStart / timeTillMaxSpeed) * 1.0f + timeSinceStart / timeTillMaxSpeed * 1.6f;
-		//else
-		//	lastLine.spawnNext *= 0.625f;
+		
+		if (fmod(timeSinceStart, 30.0f) < 10.0f && timeSinceStart < timeTillMaxSpeed)
+			lastLine.spawnNext *= (1 - timeSinceStart / timeTillMaxSpeed) * 1.0f + timeSinceStart / timeTillMaxSpeed * 0.6f;
+		else if (timeSinceStart >= timeTillMaxSpeed)
+			lastLine.spawnNext *= 0.6f;
 
 	}
 
