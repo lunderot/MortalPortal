@@ -23,7 +23,7 @@ Application::Application(bool fullscreen, bool showCursor, int screenWidth, int 
 	aMaster.addNewSample(L"assets/audio/invert.wav", "Invert", false);
 	aMaster.addNewSample(L"assets/audio/immortal.wav", "Immortal", false);
 	aMaster.addNewSample(L"assets/audio/crystalFrenzy.wav", "CrystalFrenzy", false);
-	aMaster.addNewSample(L"assets/audio/applause.wav", "Applause", false);
+
 	aMaster.playSample(bgMusic);
 	
 	CreateInput();
@@ -73,9 +73,6 @@ Application::Application(bool fullscreen, bool showCursor, int screenWidth, int 
 	// Power Up
 	crystalFrenzy = false;
 	crystalFrenzyControl = false;
-
-	// audio control
-	applauseControl = false;
 	
 	CreatePlayerEffects();
 	CreateHudObjects();
@@ -675,12 +672,25 @@ Application::~Application()
 bool Application::Update(float deltaTime)
 {
 	pauseMenu->CheckIfToPause(input->GetButtonStartState());
-	if (pauseMenu->renderMenu == true && startMenu->renderMenu == false || restartMenu->renderMenu == true)
+	
+	if (pauseMenu->renderMenu == true && startMenu->renderMenu == false /*|| restartMenu->renderMenu == true*/)
 	{
 		deltaTime = 0;
 		playerWins->player1Wins = false;
 	}
+
+	player1->powerBar->Update(deltaTime, d3dHandler->GetDeviceContext());
+	player2->powerBar->Update(deltaTime, d3dHandler->GetDeviceContext());
+
+	particlePowerBar1->UpdateParticle(deltaTime, d3dHandler->GetDeviceContext(), particleShader->GetComputeShader());
+	particlePowerBar1->UpdatePosition(DirectX::XMFLOAT3(player1->powerBar->GetCurrentMaxPosition().x, player1->powerBar->GetCurrentMaxPosition().y, 0.0f));
 	
+	particlePowerBar2->UpdateParticle(deltaTime, d3dHandler->GetDeviceContext(), particleShader->GetComputeShader());
+	particlePowerBar2->UpdatePosition(DirectX::XMFLOAT3(player2->powerBar->GetCurrentMaxPosition().x, player2->powerBar->GetCurrentMaxPosition().y, 0.0f));
+
+	if (restartMenu->renderMenu == true)
+		deltaTime = 0;
+
 	UpdatePlayerControls(input, player1, player2, immortalIndicator1, inverseIndicator1, slowSpeedIndicator1, particlePortal2Engine, particlePortal2);
 	UpdatePlayerControls(input2, player2, player1, immortalIndicator2, inverseIndicator2, slowSpeedIndicator2,particlePortal1Engine, particlePortal1);
 
@@ -692,8 +702,7 @@ bool Application::Update(float deltaTime)
 		crystalFrenzy = true;
 	}
 
-	player1->powerBar->Update(deltaTime, d3dHandler->GetDeviceContext());
-	player2->powerBar->Update(deltaTime, d3dHandler->GetDeviceContext());
+
 
 	entityHandler->Update(deltaTime, aMaster);
 
@@ -703,9 +712,7 @@ bool Application::Update(float deltaTime)
 	particlePortal1->UpdatePosition(player1->GetPosition());
 	particlePortal1->UpdateColor(player1->renderParticles, player1->GetColor(), particle, particleMaterials);
 
-	particlePowerBar1->UpdateParticle(deltaTime, d3dHandler->GetDeviceContext(), particleShader->GetComputeShader());
-	particlePowerBar1->UpdatePosition(DirectX::XMFLOAT3(player1->powerBar->GetCurrentMaxPosition().x, player1->powerBar->GetCurrentMaxPosition().y, 0.0f));
-	
+
 
 	particlePortal1Engine->UpdateParticle(deltaTime, d3dHandler->GetDeviceContext(), particleShader->GetComputeShader());
 	particlePortal1Engine->UpdatePosition(player1->GetPosition());
@@ -732,9 +739,6 @@ bool Application::Update(float deltaTime)
 	}
 
 	// Particles for player 2
-	particlePowerBar2->UpdateParticle(deltaTime, d3dHandler->GetDeviceContext(), particleShader->GetComputeShader());
-	particlePowerBar2->UpdatePosition(DirectX::XMFLOAT3(player2->powerBar->GetCurrentMaxPosition().x, player2->powerBar->GetCurrentMaxPosition().y, 0.0f));
-	
 	particlePortal2->UpdateParticle(deltaTime, d3dHandler->GetDeviceContext(), particleShader->GetComputeShader());
 	particlePortal2->UpdatePosition(player2->GetPosition());
 	particlePortal2->UpdateColor(player2->renderParticles, player2->GetColor(), particle2, particleMaterials);
@@ -831,8 +835,10 @@ void Application::Render()
 		particleShader->Use(d3dHandler->GetDeviceContext());
 		particlePowerBar1->SRV2 = greenParticle->GetTexture();
 		particlePowerBar2->SRV2 = greenParticle->GetTexture();
-		particlePowerBar1->Render(d3dHandler->GetDeviceContext());
-		particlePowerBar2->Render(d3dHandler->GetDeviceContext());
+		if (player1->powerBar->GetPowerRemaining() > 0.0f)
+			particlePowerBar1->Render(d3dHandler->GetDeviceContext());
+		if (player2->powerBar->GetPowerRemaining() > 0.0f)
+			particlePowerBar2->Render(d3dHandler->GetDeviceContext());
 		if (player1->renderParticles == true)
 		{
 			particle->Render(d3dHandler->GetDeviceContext());
@@ -852,15 +858,22 @@ void Application::Render()
 
 		if (player1->powerBar->IsDead() == true || player2->powerBar->IsDead() == true)
 		{
-			if (player1->GetApplauseControl() == false)
-			{ 
-				aMaster.playSample("Applause");
-				player1->SetApplauseControl(true);
-			}
 			buttonShader->Use(d3dHandler->GetDeviceContext());
 			restartMenu->renderMenu = true;
 			restartMenu->buttonScale.button = true;
 			restartMenu->Render(d3dHandler->GetDeviceContext());
+			if (player1->powerBar->IsDead() == true && player2->powerBar->GetPowerRemaining() > 0.0f)
+			{
+				player2->powerBar->EndGame();
+				player2->AddScore(1);
+				player2->RemovePower(0.01f);
+			}
+			else if (player2->powerBar->IsDead() == true && player1->powerBar->GetPowerRemaining() > 0.0f)
+			{
+				player1->powerBar->EndGame();
+				player1->AddScore(1);
+				player1->RemovePower(0.01f);
+			}
 
 			if (player1->GetScore() >= player2->GetScore())
 			{
@@ -873,16 +886,14 @@ void Application::Render()
 						playerWins->player1Wins = false;
 				}
 			}
-				if (player2->GetApplauseControl() == false)
-				{
-					aMaster.playSample("Applause");
-					player2->SetApplauseControl(true);
-				}
+			else
+				playerWins->player1Wins = false;
 				
 			restartMenu->buttonScale.button = false;
 			restartMenu->UpdateConstantBuffer(d3dHandler->GetDeviceContext(), &restartMenu->buttonScale);
 			playerWins->playerWinsText = true;
-			playerWins->Render(d3dHandler->GetDeviceContext());
+			if (player1->powerBar->GetPowerRemaining() == 0.0f &&  player2->powerBar->GetPowerRemaining() == 0.0f)
+				playerWins->Render(d3dHandler->GetDeviceContext());
 		}
 
 		comboBarShader->Use(d3dHandler->GetDeviceContext());
