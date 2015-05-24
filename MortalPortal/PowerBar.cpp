@@ -31,9 +31,10 @@ PowerBar::PowerBar(ID3D11Device* device)
 	powerAdd = 0.02f;
 	powerRemove = 0.02f;
 	dead = false;
+	endGame = false;
 	removingPower = false;
 	powerRemovalValue = 0;
-	
+
 	addingPower = false;
 	powerAddValue = 0;
 	material = nullptr;
@@ -149,9 +150,9 @@ void PowerBar::AddPower(unsigned int bonusPower)
 	}
 }
 
-void PowerBar::RemovePower()
+void PowerBar::RemovePower(float removeValue)
 {
-	if (points[0].pos.x - powerRemove < maxMinValue.y)
+	if (points[0].pos.x - removeValue < maxMinValue.y)
 	{
 		points[0].pos.x = maxMinValue.y;
 		points[1].pos.x = maxMinValue.y;
@@ -163,19 +164,30 @@ void PowerBar::RemovePower()
 	}
 }
 
+void PowerBar::EndGame()
+{
+	endGame = true;
+}
+
 
 void PowerBar::Update(float deltaTime, ID3D11DeviceContext* deviceContext)
 {
-
-	if (points[0].pos.x <= maxMinValue.y && dead == false)
+	if (endGame && points[0].pos.x > maxMinValue.y)
+	{
+		points[0].pos.x += barSpeed * deltaTime * 20;
+		points[0].uv.x = 1.0f / (maxMinValue.x - maxMinValue.y) * abs(maxMinValue.y - points[0].pos.x);
+		points[1].pos.x += barSpeed * deltaTime * 20;
+		points[1].uv.x = 1.0f / (maxMinValue.x - maxMinValue.y) * abs(maxMinValue.y - points[1].pos.x);
+	}
+	else if (points[0].pos.x <= maxMinValue.y && dead == false)
 	{
 		points[0].pos.x = maxMinValue.y;
 		dead = true;
 	}
-	else if (points[0].pos.x  > maxMinValue.x && dead == false)
+	else if (points[0].pos.x > maxMinValue.x && dead == false)
 	{
-		points[0].pos.x = maxMinValue.x;	
-		points[1].pos.x = maxMinValue.x;	
+		points[0].pos.x = maxMinValue.x;
+		points[1].pos.x = maxMinValue.x;
 	}
 	else if (dead == false)
 	{
@@ -211,6 +223,7 @@ void PowerBar::Update(float deltaTime, ID3D11DeviceContext* deviceContext)
 		points[0].uv.x = 1.0f / (maxMinValue.x - maxMinValue.y) * abs(maxMinValue.y - points[0].pos.x);
 		points[1].pos.x += barSpeed * deltaTime;
 		points[1].uv.x = 1.0f / (maxMinValue.x - maxMinValue.y) * abs(maxMinValue.y - points[1].pos.x);
+
 	}
 
 }
@@ -220,8 +233,14 @@ void PowerBar::Reset()
 	this->points[0].pos.x = maxMinValue.x;
 	this->points[1].pos.x = maxMinValue.x;
 	this->dead = false;
+	this->endGame = false;
 	this->addingPower = false;
 	this->removingPower = false;
+}
+
+float PowerBar::GetPowerRemaining()
+{
+	return powerRemaining = abs(maxMinValue.y - points[0].pos.x) / abs(maxMinValue.y - maxMinValue.x);
 }
 
 PowerBar::~PowerBar()

@@ -17,7 +17,9 @@ protected:
 	float barSpeed;
 	float powerAdd;
 	float powerRemove;
+	float powerRemaining;
 	bool dead;
+	bool endGame;
 	Material* material;
 
 	DirectX::XMFLOAT2 maxMinValue;
@@ -34,7 +36,8 @@ public:
 	DirectX::XMFLOAT2 GetCurrentMaxPosition();
 	void SetMaxMinValue(DirectX::XMFLOAT2 value);
 	void AddPower(unsigned int bonusPower);
-	void RemovePower();
+	void RemovePower(float remove);
+	void EndGame();
 	void SetMaterial(Material* mat);
 	const float GetBarSpeed();
 	const bool IsDead();
@@ -44,6 +47,7 @@ public:
 	bool addingPower;
 	float powerRemovalValue;
 	float powerAddValue;
+	float GetPowerRemaining();
 
 	void Update(float deltaTime, ID3D11DeviceContext* deviceContext);
 	void Render(ID3D11DeviceContext* deviceContext, Shader* shader);

@@ -34,9 +34,6 @@ Player::Player(DWORD ID, ID3D11Device* device, Geometry* geometry, Material* mat
 	slowDownAccelerationDisplay = false;
 	bonusComboDisplay = false;
 
-	// Audio control
-	ApplauseControl = false;
-
 	score = 0;
 	comboScore = 0;
 	maxComboScore = 999;
@@ -57,11 +54,6 @@ Player::Player(DWORD ID, ID3D11Device* device, Geometry* geometry, Material* mat
 Player::~Player()
 {
 	delete powerBar;
-}
-
-bool Player::GetApplauseControl()
-{
-	return ApplauseControl;
 }
 
 bool Player::GetInvertControl()
@@ -87,11 +79,6 @@ bool Player::GetImmortalPortal()
 bool Player::GetCrystalFrenzy()
 {
 	return crystalFrenzy;
-}
-
-void Player::SetApplauseControl(bool applauseControl)
-{
-	this->ApplauseControl = applauseControl;
 }
 
 void Player::SetInvertControl(float powerUp_InvertControl)
@@ -333,9 +320,6 @@ void Player::Reset()
 	bonusCounter = 0;
 	bonusScore = 0;
 
-	// Audio control
-	SetApplauseControl(false);
-
 	vibrationTimer = 0.0f;
 }
 
@@ -349,9 +333,9 @@ void Player::RemoveCombo()
 	comboScore = 0;
 }
 
-void Player::RemovePower()
+void Player::RemovePower(float removeValue)
 {
-	powerBar->RemovePower();
+	powerBar->RemovePower(removeValue);
 }
 
 void Player::AddScore(int amount)

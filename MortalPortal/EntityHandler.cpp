@@ -257,7 +257,7 @@ void EntityHandler::HandleCollision(Player* player, Entity* entity2, std::string
 					//XINPUT_VIBRATION vibrationValue{ 65535, 65535 };
 					//player->setVibrationOnController(&vibrationValue, 0.1f);
 					player->RemoveBonus();
-					player->RemovePower();
+					player->RemovePower(0.02f);
 					player->RemoveCombo();
 					player->AddScore(-20);
 					aMaster.playSample("Punch");
@@ -339,7 +339,7 @@ void EntityHandler::HandleCollision(Player* player, Entity* entity2, std::string
 						if (!player->HasColor(item->GetColor()))
 						{
 							player->RemoveBonus();
-							player->RemovePower();
+							player->RemovePower(0);
 							player->RemoveCombo();
 							player->AddScore(-20);
 							aMaster.playSample("WrongCrystal");
