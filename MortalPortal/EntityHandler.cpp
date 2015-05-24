@@ -329,7 +329,7 @@ void EntityHandler::HandleCollision(Player* player, Entity* entity2, std::string
 						player->AddPower(player->GetCombo());
 						player->renderParticles = true;
 						player->doubleUp = true;
-						aMaster.playSample("boing");
+						aMaster.playSample("RightCrystal");
 					}
 					else
 					{
@@ -342,7 +342,7 @@ void EntityHandler::HandleCollision(Player* player, Entity* entity2, std::string
 							aMaster.playSample("WrongCrystal");
 						}
 					}
-					aMaster.playSample("WrongColor");
+
 				}
 				break;
 			}
