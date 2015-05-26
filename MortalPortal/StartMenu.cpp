@@ -10,21 +10,27 @@ StartMenu::StartMenu(ID3D11Device* device)
 
 	ID3D11Buffer* buttonVertexBuffer = nullptr;
 	buttonScale.button = true;
-	buttonPoint points[4] =
-	{
-		DirectX::XMFLOAT2(-1.0f, -1.0f),
-		DirectX::XMFLOAT2(0.0f, 1.0f),
 
-		DirectX::XMFLOAT2(-1.0f, 1.0f),
-		DirectX::XMFLOAT2(0.0f, 0.0f),
+	buttonPoint points[4];
+	points[0].position.x = -1.0f;
+	points[0].position.y = -1.0f;
+	points[0].UV.x = 0.0f;
+	points[0].UV.y = 1.0f;
 
-		DirectX::XMFLOAT2(1.0f, -1.0f),
-		DirectX::XMFLOAT2(1.0f, 1.0f),
+	points[1].position.x = -1.0f;
+	points[1].position.y = 1.0f;
+	points[1].UV.x = 0.0f;
+	points[1].UV.y = 0.0f;
 
-		DirectX::XMFLOAT2(1.0f, 1.0f),
-		DirectX::XMFLOAT2(1.0f, 0.0f)
+	points[2].position.x = 1.0f;
+	points[2].position.y = -1.0f;
+	points[2].UV.x = 1.0f;
+	points[2].UV.y = 1.0f;
 
-	};
+	points[3].position.x = 1.0f;
+	points[3].position.y = 1.0f;
+	points[3].UV.x = 1.0f;
+	points[3].UV.y = 0.0f;
 
 	D3D11_BUFFER_DESC bufferDesc;
 	memset(&bufferDesc, 0, sizeof(bufferDesc));

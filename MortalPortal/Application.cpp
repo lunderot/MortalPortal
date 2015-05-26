@@ -24,7 +24,7 @@ Application::Application(bool fullscreen, bool showCursor, int screenWidth, int 
 	aMaster.addNewSample(L"assets/audio/immortal.wav", "Immortal", false);
 	aMaster.addNewSample(L"assets/audio/crystalFrenzy.wav", "CrystalFrenzy", false);
 
-	//aMaster.playSample(bgMusic);
+	aMaster.playSample(bgMusic);
 	
 	CreateInput();
 	CreateHandlers();

@@ -268,8 +268,7 @@ void EntityHandler::HandleCollision(Player* player, Entity* entity2, std::string
 			}	
 			case MapItem::objectType::PowerUp:
 			{
-				unsigned int rnd = rand() % 3;
-				rnd = 3;
+				unsigned int rnd = rand() % 4;
 
 				if (rnd == 0) // Slow Down Acceleration
 				{
